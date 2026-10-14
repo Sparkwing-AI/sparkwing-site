@@ -1,0 +1,138 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  --bg-deep: #1e4545;
+  --bg: #285a5a;
+  --bg-glow: #3d2d5c;
+  --text: #f4f7f6;
+  --text-muted: #b8cfc9;
+  --accent-gold: #e8b84a;
+  --accent-violet: #9b6fd4;
+  --focus: #e8b84a;
+  --max-width: 36rem;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(155, 111, 212, 0.35), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 80% 100%, rgba(30, 69, 69, 0.9), transparent 50%),
+    linear-gradient(165deg, var(--bg-deep) 0%, var(--bg) 45%, #2a4f58 100%);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 2rem 1.5rem 3rem;
+  text-align: center;
+}
+
+.hero-logo {
+  width: min(11rem, 42vw);
+  height: auto;
+  margin-bottom: 1.75rem;
+  filter: drop-shadow(0 0.5rem 2rem rgba(232, 184, 74, 0.25))
+    drop-shadow(0 0.75rem 2.5rem rgba(155, 111, 212, 0.2));
+}
+
+.brand {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  margin: 0 auto 2rem;
+  max-width: var(--max-width);
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.status {
+  margin: 0 0 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+.contact {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.contact a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184, 207, 201, 0.45);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.contact a:hover {
+  color: var(--accent-violet);
+  border-bottom-color: var(--accent-violet);
+}
+
+.contact a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-bottom-color: transparent;
+}
+
+.regions {
+  margin: 2rem 0 0;
+  font-size: 0.875rem;
+  color: rgba(184, 207, 201, 0.75);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-logo {
+    animation: gentle-float 8s ease-in-out infinite;
+  }
+
+  @keyframes gentle-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo {
+    animation: none;
+  }
+}
