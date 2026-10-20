@@ -1,0 +1,56 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Sparkwing | Take flight with AI you can trust",
+  description = "Sparkwing helps teams in Australia and the Philippines with AI readiness checks, custom builds on Hive, accounting software, and hands-on AI learning. Book a free Spark Check or get in touch.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#1F8576" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/assets/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/fonts.css" />
+    <link rel="stylesheet" href="/tokens.css" />
+    <link rel="stylesheet" href="/components.css" />
+    <link rel="stylesheet" href="/styles.css" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sparkwing.com.au/" />
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="Free Spark Check, custom AI on Hive, Sparkkeeping accounting software, and Academy workshops for teams in Australia and the Philippines."
+    />
+    <meta property="og:image" content="https://sparkwing.com.au/assets/sparkwing-logo.png" />
+    <meta
+      property="og:image:alt"
+      content="Sparkwing logo mark: a golden spark merging into a violet wing"
+    />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:site_name" content="Sparkwing" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:description"
+      content="Book a free Spark Check. Custom AI on Hive, Sparkkeeping, and Academy workshops for Australia and the Philippines."
+    />
+    <meta name="twitter:image" content="https://sparkwing.com.au/assets/sparkwing-logo.png" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

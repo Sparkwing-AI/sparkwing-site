@@ -1,0 +1,336 @@
+/**
+ * Sparkwing design tokens v1.0
+ * Source: sparkwing-brand-colours v1.0 (20 Oct 2026)
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Colour primitives */
+  --primitive-card-teal: #1f8576;
+  --primitive-depth-teal: #1a7a6e;
+  --primitive-lagoon-teal: #1f8576;
+  --primitive-glade-teal: #217a6f;
+  --primitive-night-fern: #285a5a;
+  --primitive-wing-violet: #55459b;
+  --primitive-dusk-wing: #4d3e95;
+  --primitive-spark-gold: #feb938;
+  --primitive-firefly-amber: #ffb81c;
+  --primitive-cocoon-cream: #faefdc;
+  --primitive-morning-silk: #fff8e7;
+  --primitive-cloud-white: #ffffff;
+  --primitive-moonlit-silver: #bec2c6;
+  --primitive-inkwell: #1e2b2a;
+  --primitive-mauve-glow: #7858a3;
+
+  --primitive-lagoon-50: #edf5f4;
+  --primitive-lagoon-100: #d7e9e6;
+  --primitive-lagoon-200: #aed3ce;
+  --primitive-lagoon-300: #7db8b0;
+  --primitive-lagoon-400: #4c9d91;
+  --primitive-lagoon-500: #1f8576;
+  --primitive-lagoon-600: #1a7a6e;
+  --primitive-lagoon-700: #165c53;
+  --primitive-lagoon-800: #114941;
+  --primitive-lagoon-900: #0c352f;
+
+  --primitive-wing-50: #f1f0f7;
+  --primitive-wing-100: #e0deed;
+  --primitive-wing-200: #c2bcdb;
+  --primitive-wing-300: #9c93c5;
+  --primitive-wing-400: #776aaf;
+  --primitive-wing-500: #55459b;
+  --primitive-wing-600: #483b84;
+  --primitive-wing-700: #3b306c;
+  --primitive-wing-800: #2f2655;
+  --primitive-wing-900: #221c3e;
+
+  /* Alpha mixes (no raw rgba in components) */
+  --alpha-night-fern-08: color-mix(in srgb, var(--primitive-night-fern) 8%, transparent);
+  --alpha-night-fern-10: color-mix(in srgb, var(--primitive-night-fern) 10%, transparent);
+  --alpha-night-fern-14: color-mix(in srgb, var(--primitive-night-fern) 14%, transparent);
+  --alpha-night-fern-30: color-mix(in srgb, var(--primitive-night-fern) 30%, transparent);
+  --alpha-night-fern-35: color-mix(in srgb, var(--primitive-night-fern) 35%, transparent);
+  --alpha-lagoon-teal-12: color-mix(in srgb, var(--primitive-lagoon-teal) 12%, transparent);
+  --alpha-lagoon-teal-22: color-mix(in srgb, var(--primitive-lagoon-teal) 22%, transparent);
+  --alpha-white-12: color-mix(in srgb, var(--primitive-cloud-white) 12%, transparent);
+  --alpha-white-18: color-mix(in srgb, var(--primitive-cloud-white) 18%, transparent);
+  --alpha-white-85: color-mix(in srgb, var(--primitive-cloud-white) 85%, transparent);
+  --alpha-white-70: color-mix(in srgb, var(--primitive-cloud-white) 70%, transparent);
+  --alpha-wing-violet-08: color-mix(in srgb, var(--primitive-wing-violet) 8%, transparent);
+  --alpha-wing-violet-35: color-mix(in srgb, var(--primitive-wing-violet) 35%, transparent);
+  --alpha-cocoon-cream-55: color-mix(in srgb, var(--primitive-cocoon-cream) 55%, transparent);
+  --alpha-morning-silk-92: color-mix(in srgb, var(--primitive-morning-silk) 92%, transparent);
+  --alpha-inkwell-72: color-mix(in srgb, var(--primitive-inkwell) 72%, transparent);
+  --alpha-spark-gold-35: color-mix(in srgb, var(--primitive-spark-gold) 35%, transparent);
+  --alpha-spark-gold-45: color-mix(in srgb, var(--primitive-spark-gold) 45%, transparent);
+  --alpha-spark-gold-75: color-mix(in srgb, var(--primitive-spark-gold) 75%, transparent);
+  --alpha-spark-gold-85: color-mix(in srgb, var(--primitive-spark-gold) 85%, transparent);
+
+  /* Semantic colour (teal-led site) */
+  --color-bg: var(--primitive-card-teal);
+  --color-bg-elevated: var(--primitive-depth-teal);
+  --color-bg-deep: var(--primitive-night-fern);
+  --color-surface: var(--primitive-card-teal);
+  --color-surface-depth: var(--primitive-depth-teal);
+  --color-surface-fern: var(--primitive-night-fern);
+  --color-surface-panel: var(--primitive-cloud-white);
+  --color-surface-muted: var(--alpha-white-12);
+  --color-surface-featured: linear-gradient(
+    165deg,
+    var(--primitive-depth-teal) 0%,
+    var(--primitive-night-fern) 100%
+  );
+  --color-surface-cream-touch: var(--primitive-cocoon-cream);
+
+  --color-text: var(--primitive-cloud-white);
+  --color-text-strong: var(--primitive-cloud-white);
+  --color-text-muted: var(--alpha-white-85);
+  --color-text-subtle: var(--alpha-white-70);
+  --color-text-fine: var(--primitive-cloud-white);
+  --color-text-on-teal: var(--primitive-cloud-white);
+  --color-text-on-panel: var(--primitive-glade-teal);
+  --color-text-on-panel-strong: var(--primitive-night-fern);
+  --color-text-on-panel-muted: var(--primitive-mauve-glow);
+  --color-text-on-violet: var(--primitive-cloud-white);
+  --color-text-on-fern: var(--primitive-cloud-white);
+
+  --color-accent: var(--primitive-spark-gold);
+  --color-accent-hover: var(--primitive-firefly-amber);
+  --color-link: var(--primitive-cloud-white);
+  --color-link-hover: var(--primitive-spark-gold);
+  --color-focus: var(--primitive-firefly-amber);
+  --color-border: var(--alpha-white-18);
+  --color-border-strong: var(--alpha-white-12);
+  --color-border-panel: var(--alpha-night-fern-14);
+
+  --color-decorative-gold: var(--primitive-spark-gold);
+  --color-decorative-amber: var(--primitive-firefly-amber);
+  --color-decorative-silver: var(--primitive-moonlit-silver);
+
+  --color-price: var(--primitive-spark-gold);
+  --color-price-on-panel: var(--primitive-lagoon-teal);
+  --color-badge: var(--primitive-wing-violet);
+
+  --color-header-bg: color-mix(in srgb, var(--primitive-card-teal) 94%, var(--primitive-night-fern));
+
+  /* Typography */
+  --font-family-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-optical-display: 32;
+  --font-optical-heading: 24;
+  --font-optical-body: 14;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --font-size-display: clamp(2.25rem, 5vw + 1rem, 3.25rem);
+  --font-size-h1: clamp(2rem, 4vw + 0.75rem, 2.75rem);
+  --font-size-h2: clamp(1.5rem, 2.5vw + 0.75rem, 1.85rem);
+  --font-size-h3: clamp(1.15rem, 1.5vw + 0.65rem, 1.35rem);
+  --font-size-h4: clamp(1rem, 1vw + 0.6rem, 1.125rem);
+  --font-size-body-lg: clamp(1.0625rem, 1vw + 0.75rem, 1.125rem);
+  --font-size-body: clamp(1rem, 0.5vw + 0.875rem, 1.0625rem);
+  --font-size-small: clamp(0.875rem, 0.25vw + 0.8rem, 0.9375rem);
+  --font-size-caption: clamp(0.8125rem, 0.2vw + 0.75rem, 0.875rem);
+
+  --line-height-display: 1.15;
+  --line-height-heading: 1.25;
+  --line-height-body: 1.65;
+  --line-height-tight: 1.35;
+
+  --letter-spacing-tight: 0.02em;
+  --letter-spacing-brand: 0.04em;
+  --letter-spacing-caps: 0.06em;
+  --letter-spacing-wide: 0.12em;
+
+  /* Spacing (4px base) */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-11: 2.75rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Radii */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.85rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  /* Borders */
+  --border-width: 1px;
+  --border-width-thick: 2px;
+
+  /* Shadows */
+  --shadow-soft: 0 var(--space-1) var(--space-5) var(--alpha-night-fern-08);
+  --shadow-card: 0 var(--space-2) var(--space-6) var(--alpha-night-fern-08);
+  --shadow-logo-gold: none;
+  --shadow-logo-violet: none;
+  --shadow-spark: none;
+  --shadow-lift: 0 var(--space-3) var(--space-8) color-mix(in srgb, var(--primitive-night-fern) 35%, transparent);
+
+  /* Layout */
+  --container-prose: 42rem;
+  --container-narrow: 36rem;
+  --container-page: 72rem;
+  --grid-gap: var(--space-5);
+  --gutter: var(--space-5);
+
+  /* Z-index */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-skip-link: 100;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 9000ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in-out: ease-in-out;
+
+  /* Breakpoints (documented; used in @media in components.css) */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* Icons */
+  --icon-stroke: 2;
+  --icon-size-sm: 1rem;
+  --icon-size-md: 1.25rem;
+  --icon-size-lg: 1.5rem;
+  --icon-color: var(--color-text-strong);
+  --icon-color-muted: var(--color-text-subtle);
+  --icon-color-on-teal: var(--color-text-on-teal);
+
+  /* Hero spark sizes */
+  --spark-size-1: 0.95rem;
+  --spark-size-2: 0.38rem;
+  --spark-size-3: 0.72rem;
+  --spark-size-4: 0.48rem;
+  --hero-logo-width: min(10rem, 38vw);
+}
+
+/* Base element defaults using tokens only */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: var(--space-0);
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  font-variation-settings: "opsz" var(--font-optical-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 12% 0%, var(--alpha-white-12), transparent 50%),
+    radial-gradient(ellipse 70% 45% at 100% 15%, var(--alpha-lagoon-teal-22), transparent 55%),
+    linear-gradient(
+      180deg,
+      var(--primitive-card-teal) 0%,
+      var(--primitive-depth-teal) 48%,
+      var(--primitive-card-teal) 100%
+    );
+}
+
+.type-display {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-display);
+  letter-spacing: var(--letter-spacing-tight);
+  font-variation-settings: "opsz" var(--font-optical-display);
+  color: var(--color-text-strong);
+}
+
+.surface-panel {
+  color: var(--color-text-on-panel);
+}
+
+.surface-panel .type-h1,
+.surface-panel .type-h2,
+.surface-panel .type-h3,
+.surface-panel .type-h4,
+.surface-panel .type-display {
+  color: var(--color-text-on-panel-strong);
+}
+
+.type-h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  font-variation-settings: "opsz" var(--font-optical-display);
+  color: var(--color-text-strong);
+}
+
+.type-h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  font-variation-settings: "opsz" var(--font-optical-heading);
+  color: var(--color-text-strong);
+}
+
+.type-h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  font-variation-settings: "opsz" var(--font-optical-heading);
+  color: var(--color-text-strong);
+}
+
+.type-h4 {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  font-variation-settings: "opsz" var(--font-optical-heading);
+  color: var(--color-text-strong);
+}
+
+.type-body-lg {
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body);
+}
+
+.type-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.type-small {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-body);
+}
+
+.type-caption {
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

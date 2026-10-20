@@ -1,0 +1,9 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { AppShell } from "../components/react/AppShell";
+---
+
+<BaseLayout>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <AppShell client:load />
+</BaseLayout>

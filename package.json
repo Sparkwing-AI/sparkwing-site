@@ -1,0 +1,30 @@
+{
+  "name": "sparkwing-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:static": "node scripts/sync-static.mjs",
+    "dev": "npm run sync:static && astro dev",
+    "build:storybook": "storybook build -o storybook-static && node scripts/copy-storybook.mjs",
+    "build": "npm run sync:static && npm run build:storybook && astro build",
+    "build:site": "npm run sync:static && astro build",
+    "preview": "astro preview",
+    "storybook": "npm run sync:static && storybook dev -p 6006"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.2.0",
+    "astro": "^5.4.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.0",
+    "@storybook/addon-essentials": "^8.6.0",
+    "@storybook/react-vite": "^8.6.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "storybook": "^8.6.0",
+    "typescript": "^5.8.2"
+  }
+}
