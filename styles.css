@@ -135,9 +135,18 @@ body {
 }
 
 .tagline {
+  margin: 0 auto 0.85rem;
+  max-width: var(--max-width);
+  font-size: clamp(1.2rem, 3vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.offer {
   margin: 0 auto 2rem;
   max-width: var(--max-width);
-  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-size: clamp(1rem, 2.4vw, 1.125rem);
   font-weight: 400;
   color: var(--text-muted);
 }
@@ -164,8 +173,8 @@ body {
 }
 
 .contact a:hover {
-  color: var(--accent-violet);
-  border-bottom-color: var(--accent-violet);
+  color: var(--spark-gold);
+  border-bottom-color: var(--spark-gold);
 }
 
 .contact a:focus-visible {
@@ -177,7 +186,7 @@ body {
 .regions {
   margin: 2rem 0 0;
   font-size: 0.875rem;
-  color: rgba(184, 207, 201, 0.75);
+  color: #aed3ce;
 }
 
 @media (prefers-reduced-motion: no-preference) {
