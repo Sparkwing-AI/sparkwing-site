@@ -8,12 +8,16 @@
   color-scheme: dark;
   --bg-deep: #1e4545;
   --bg: #285a5a;
+  --night-fern: #285a5a;
   --bg-glow: #3d2d5c;
   --text: #f4f7f6;
   --text-muted: #b8cfc9;
-  --accent-gold: #e8b84a;
-  --accent-violet: #9b6fd4;
-  --focus: #e8b84a;
+  --spark-gold: #feb938;
+  --firefly-amber: #ffb81c;
+  --wing-violet: #55459b;
+  --accent-gold: var(--spark-gold);
+  --accent-violet: var(--wing-violet);
+  --focus: var(--spark-gold);
   --max-width: 36rem;
   --font: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -48,13 +52,74 @@ body {
   text-align: center;
 }
 
+.hero-logo-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(11rem, 42vw);
+  margin-bottom: 1.75rem;
+}
+
+.hero-sparks {
+  position: absolute;
+  inset: -22% -26%;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.spark--star {
+  width: var(--spark-size, 1rem);
+  height: auto;
+  fill: var(--spark-gold);
+  filter: drop-shadow(0 0 0.35rem rgba(254, 185, 56, 0.75));
+}
+
+.spark--dot {
+  width: var(--spark-size, 0.45rem);
+  height: var(--spark-size, 0.45rem);
+  border-radius: 50%;
+  background: var(--spark-gold);
+  box-shadow: 0 0 0.5rem rgba(254, 185, 56, 0.85);
+}
+
+.spark--1 {
+  --spark-size: 0.95rem;
+  top: 10%;
+  left: 14%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+}
+
+.spark--2 {
+  --spark-size: 0.38rem;
+  top: 20%;
+  right: 12%;
+  transform: translate(50%, -50%);
+}
+
+.spark--3 {
+  --spark-size: 0.72rem;
+  bottom: 22%;
+  left: 8%;
+  transform: translate(-50%, 50%) rotate(18deg);
+}
+
+.spark--4 {
+  --spark-size: 0.48rem;
+  bottom: 12%;
+  right: 16%;
+  transform: translate(50%, 50%);
+}
+
 .hero-logo {
   display: block;
-  width: min(11rem, 42vw);
+  width: 100%;
   height: auto;
-  margin-bottom: 1.75rem;
-  filter: drop-shadow(0 0.35rem 1.25rem rgba(232, 184, 74, 0.45))
-    drop-shadow(0 0.75rem 2.25rem rgba(155, 111, 212, 0.35))
+  filter: drop-shadow(0 0.35rem 1.25rem rgba(254, 185, 56, 0.45))
+    drop-shadow(0 0.75rem 2.25rem rgba(85, 69, 155, 0.35))
     drop-shadow(0 1.25rem 3rem rgba(0, 0, 0, 0.25));
 }
 
@@ -112,7 +177,7 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-logo {
+  .hero-logo-stage {
     animation: gentle-float 9s ease-in-out infinite;
   }
 
@@ -128,7 +193,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo {
+  .hero-logo-stage {
     animation: none;
   }
 }
