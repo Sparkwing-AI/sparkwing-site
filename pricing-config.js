@@ -3,7 +3,7 @@
  * Edit PHP and AUD values here. Leave a value null to hide that currency's price.
  * Set showPrices to false to hide every price on the site at once.
  */
-const SPARKWING_PRICING = {
+export const SPARKWING_PRICING = {
   showPrices: true,
 
   products: {

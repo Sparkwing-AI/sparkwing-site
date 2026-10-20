@@ -513,3 +513,53 @@
   font-family: inherit;
   font-size: var(--font-size-small);
 }
+
+/* Form fields */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--container-narrow);
+  margin: var(--space-0) auto;
+  text-align: left;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-field__label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+.form-field__hint {
+  margin: var(--space-0);
+  color: var(--color-text-muted);
+}
+
+.form-input,
+.form-textarea {
+  font: inherit;
+  font-size: var(--font-size-body);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-strong);
+}
+
+.form-input:focus-visible,
+.form-textarea:focus-visible {
+  outline: var(--border-width-thick) solid var(--color-focus);
+  outline-offset: var(--space-1);
+}
+
+.btn--compact {
+  min-height: var(--space-10);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-small);
+}

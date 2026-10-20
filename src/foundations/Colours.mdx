@@ -1,0 +1,48 @@
+import { Meta } from "@storybook/blocks";
+import tokens from "../../tokens.json";
+
+<Meta title="Foundations/Colours" />
+
+# Colours
+
+Primitives from brand sheet v1.0. Semantic tokens map in `tokens.css` and `tokens.json`.
+
+## Primitives
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(10rem, 1fr))", gap: "1rem" }}>
+  {Object.entries(tokens.colour.primitive).map(([name, hex]) => (
+    <div key={name} style={{ border: "1px solid var(--color-border)", borderRadius: "var(--radius-md)", overflow: "hidden" }}>
+      <div style={{ background: hex, height: "3rem" }} />
+      <div style={{ padding: "0.75rem", fontSize: "var(--font-size-caption)" }}>
+        <strong>{name}</strong><br />{hex}
+      </div>
+    </div>
+  ))}
+</div>
+
+## Contrast pairs (WCAG 2.x)
+
+Use these approved pairs only. Gold and silver on Lagoon Teal are decorative.
+
+<table className="ds-contrast-table">
+  <thead>
+    <tr>
+      <th>Foreground</th>
+      <th>Background</th>
+      <th>Ratio</th>
+      <th>Rating</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    {tokens.contrast.pairs.map((row) => (
+      <tr key={`${row.foreground}-${row.background}`}>
+        <td>{row.foreground}</td>
+        <td>{row.background}</td>
+        <td>{row.ratio}:1</td>
+        <td>{row.rating}</td>
+        <td>{row.usage}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
