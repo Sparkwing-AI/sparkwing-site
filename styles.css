@@ -135,7 +135,7 @@ body {
 }
 
 .tagline {
-  margin: 0 auto 0.85rem;
+  margin: 0 auto 1.85rem;
   max-width: var(--max-width);
   font-size: clamp(1.2rem, 3vw, 1.45rem);
   font-weight: 500;
