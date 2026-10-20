@@ -18,3 +18,4 @@ for (const file of rootFiles) {
 }
 
 cpSync("assets", "public/assets", { recursive: true });
+mkdirSync("public/assets/emblems", { recursive: true });

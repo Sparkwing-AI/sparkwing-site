@@ -4,10 +4,12 @@
  */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
   /* Colour primitives */
-  --primitive-lagoon-teal: #1f8476;
+  --primitive-card-teal: #1f8576;
+  --primitive-depth-teal: #1a7a6e;
+  --primitive-lagoon-teal: #1f8576;
   --primitive-glade-teal: #217a6f;
   --primitive-night-fern: #285a5a;
   --primitive-wing-violet: #55459b;
@@ -26,8 +28,8 @@
   --primitive-lagoon-200: #aed3ce;
   --primitive-lagoon-300: #7db8b0;
   --primitive-lagoon-400: #4c9d91;
-  --primitive-lagoon-500: #1f8476;
-  --primitive-lagoon-600: #1a7064;
+  --primitive-lagoon-500: #1f8576;
+  --primitive-lagoon-600: #1a7a6e;
   --primitive-lagoon-700: #165c53;
   --primitive-lagoon-800: #114941;
   --primitive-lagoon-900: #0c352f;
@@ -51,6 +53,10 @@
   --alpha-night-fern-35: color-mix(in srgb, var(--primitive-night-fern) 35%, transparent);
   --alpha-lagoon-teal-12: color-mix(in srgb, var(--primitive-lagoon-teal) 12%, transparent);
   --alpha-lagoon-teal-22: color-mix(in srgb, var(--primitive-lagoon-teal) 22%, transparent);
+  --alpha-white-12: color-mix(in srgb, var(--primitive-cloud-white) 12%, transparent);
+  --alpha-white-18: color-mix(in srgb, var(--primitive-cloud-white) 18%, transparent);
+  --alpha-white-85: color-mix(in srgb, var(--primitive-cloud-white) 85%, transparent);
+  --alpha-white-70: color-mix(in srgb, var(--primitive-cloud-white) 70%, transparent);
   --alpha-wing-violet-08: color-mix(in srgb, var(--primitive-wing-violet) 8%, transparent);
   --alpha-wing-violet-35: color-mix(in srgb, var(--primitive-wing-violet) 35%, transparent);
   --alpha-cocoon-cream-55: color-mix(in srgb, var(--primitive-cocoon-cream) 55%, transparent);
@@ -61,42 +67,52 @@
   --alpha-spark-gold-75: color-mix(in srgb, var(--primitive-spark-gold) 75%, transparent);
   --alpha-spark-gold-85: color-mix(in srgb, var(--primitive-spark-gold) 85%, transparent);
 
-  /* Semantic colour */
-  --color-bg: var(--primitive-cocoon-cream);
-  --color-bg-elevated: var(--primitive-morning-silk);
-  --color-surface: var(--primitive-cloud-white);
-  --color-surface-muted: var(--alpha-cocoon-cream-55);
+  /* Semantic colour (teal-led site) */
+  --color-bg: var(--primitive-card-teal);
+  --color-bg-elevated: var(--primitive-depth-teal);
+  --color-bg-deep: var(--primitive-night-fern);
+  --color-surface: var(--primitive-card-teal);
+  --color-surface-depth: var(--primitive-depth-teal);
+  --color-surface-fern: var(--primitive-night-fern);
+  --color-surface-panel: var(--primitive-cloud-white);
+  --color-surface-muted: var(--alpha-white-12);
   --color-surface-featured: linear-gradient(
     165deg,
-    var(--primitive-cloud-white) 0%,
-    var(--primitive-morning-silk) 100%
+    var(--primitive-depth-teal) 0%,
+    var(--primitive-night-fern) 100%
   );
+  --color-surface-cream-touch: var(--primitive-cocoon-cream);
 
-  --color-text: var(--primitive-glade-teal);
-  --color-text-strong: var(--primitive-night-fern);
-  --color-text-muted: var(--primitive-mauve-glow);
-  --color-text-fine: var(--primitive-inkwell);
+  --color-text: var(--primitive-cloud-white);
+  --color-text-strong: var(--primitive-cloud-white);
+  --color-text-muted: var(--alpha-white-85);
+  --color-text-subtle: var(--alpha-white-70);
+  --color-text-fine: var(--primitive-cloud-white);
   --color-text-on-teal: var(--primitive-cloud-white);
+  --color-text-on-panel: var(--primitive-glade-teal);
+  --color-text-on-panel-strong: var(--primitive-night-fern);
+  --color-text-on-panel-muted: var(--primitive-mauve-glow);
   --color-text-on-violet: var(--primitive-cloud-white);
   --color-text-on-fern: var(--primitive-cloud-white);
 
-  --color-accent: var(--primitive-lagoon-teal);
-  --color-accent-hover: var(--primitive-night-fern);
-  --color-link: var(--primitive-wing-violet);
-  --color-link-hover: var(--primitive-night-fern);
-  --color-focus: var(--primitive-spark-gold);
-  --color-border: var(--alpha-night-fern-14);
-  --color-border-strong: var(--alpha-night-fern-35);
-  --color-border-accent: var(--alpha-lagoon-teal-22);
+  --color-accent: var(--primitive-spark-gold);
+  --color-accent-hover: var(--primitive-firefly-amber);
+  --color-link: var(--primitive-cloud-white);
+  --color-link-hover: var(--primitive-spark-gold);
+  --color-focus: var(--primitive-firefly-amber);
+  --color-border: var(--alpha-white-18);
+  --color-border-strong: var(--alpha-white-12);
+  --color-border-panel: var(--alpha-night-fern-14);
 
   --color-decorative-gold: var(--primitive-spark-gold);
   --color-decorative-amber: var(--primitive-firefly-amber);
   --color-decorative-silver: var(--primitive-moonlit-silver);
 
-  --color-price: var(--primitive-lagoon-teal);
+  --color-price: var(--primitive-spark-gold);
+  --color-price-on-panel: var(--primitive-lagoon-teal);
   --color-badge: var(--primitive-wing-violet);
 
-  --color-header-bg: var(--alpha-morning-silk-92);
+  --color-header-bg: color-mix(in srgb, var(--primitive-card-teal) 94%, var(--primitive-night-fern));
 
   /* Typography */
   --font-family-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -157,9 +173,10 @@
   /* Shadows */
   --shadow-soft: 0 var(--space-1) var(--space-5) var(--alpha-night-fern-08);
   --shadow-card: 0 var(--space-2) var(--space-6) var(--alpha-night-fern-08);
-  --shadow-logo-gold: 0 var(--space-1) var(--space-5) var(--alpha-spark-gold-35);
-  --shadow-logo-violet: 0 var(--space-3) var(--space-8) var(--alpha-wing-violet-08);
-  --shadow-spark: 0 0 var(--space-2) var(--alpha-spark-gold-85);
+  --shadow-logo-gold: none;
+  --shadow-logo-violet: none;
+  --shadow-spark: none;
+  --shadow-lift: 0 var(--space-3) var(--space-8) color-mix(in srgb, var(--primitive-night-fern) 35%, transparent);
 
   /* Layout */
   --container-prose: 42rem;
@@ -192,7 +209,7 @@
   --icon-size-md: 1.25rem;
   --icon-size-lg: 1.5rem;
   --icon-color: var(--color-text-strong);
-  --icon-color-muted: var(--color-text-muted);
+  --icon-color-muted: var(--color-text-subtle);
   --icon-color-on-teal: var(--color-text-on-teal);
 
   /* Hero spark sizes */
@@ -228,17 +245,13 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   background-image:
-    radial-gradient(
-      ellipse 100% 60% at 50% -10%,
-      var(--alpha-lagoon-teal-12),
-      transparent 55%
-    ),
-    radial-gradient(ellipse 50% 40% at 100% 20%, var(--alpha-wing-violet-08), transparent 50%),
+    radial-gradient(ellipse 90% 55% at 12% 0%, var(--alpha-white-12), transparent 50%),
+    radial-gradient(ellipse 70% 45% at 100% 15%, var(--alpha-lagoon-teal-22), transparent 55%),
     linear-gradient(
       180deg,
-      var(--color-bg-elevated) 0%,
-      var(--color-bg) 45%,
-      var(--color-bg-elevated) 100%
+      var(--primitive-card-teal) 0%,
+      var(--primitive-depth-teal) 48%,
+      var(--primitive-card-teal) 100%
     );
 }
 
@@ -249,6 +262,18 @@ body {
   letter-spacing: var(--letter-spacing-tight);
   font-variation-settings: "opsz" var(--font-optical-display);
   color: var(--color-text-strong);
+}
+
+.surface-panel {
+  color: var(--color-text-on-panel);
+}
+
+.surface-panel .type-h1,
+.surface-panel .type-h2,
+.surface-panel .type-h3,
+.surface-panel .type-h4,
+.surface-panel .type-display {
+  color: var(--color-text-on-panel-strong);
 }
 
 .type-h1 {

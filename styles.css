@@ -37,15 +37,13 @@
   width: var(--spark-size, var(--spark-size-1));
   height: auto;
   fill: var(--color-decorative-gold);
-  filter: drop-shadow(var(--shadow-spark));
 }
 
 .spark--dot {
   width: var(--spark-size, var(--spark-size-2));
   height: var(--spark-size, var(--spark-size-2));
   border-radius: var(--radius-pill);
-  background: var(--color-decorative-gold);
-  box-shadow: var(--shadow-spark);
+  background: var(--color-decorative-amber);
 }
 
 .spark--1 {
@@ -80,7 +78,6 @@
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(var(--shadow-logo-gold)) drop-shadow(var(--shadow-logo-violet));
 }
 
 .brand {
@@ -94,7 +91,7 @@
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
   font-variation-settings: "opsz" var(--font-optical-heading);
-  color: var(--color-text-strong);
+  color: var(--color-text-on-teal);
 }
 
 .offer {
