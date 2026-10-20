@@ -9,16 +9,13 @@
       content="Sparkwing helps teams in Australia and the Philippines with AI readiness checks, custom builds on Hive, accounting software, and hands-on AI learning. Book a free Spark Check or get in touch."
     />
     <meta name="theme-color" content="#1F8476" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
-      rel="stylesheet"
-    />
     <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="icon" href="assets/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="assets/favicon-16x16.png" type="image/png" sizes="16x16" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="components.css" />
     <link rel="stylesheet" href="styles.css" />
 
     <meta property="og:type" content="website" />
@@ -49,14 +46,16 @@
     <header class="site-header">
       <div class="site-header__inner">
         <p class="site-header__brand">Sparkwing</p>
-        <div class="currency-toggle" role="group" aria-label="Display prices in">
-          <button type="button" class="currency-toggle__btn" data-currency-btn="PHP" aria-pressed="false">
-            PHP
-          </button>
-          <button type="button" class="currency-toggle__btn" data-currency-btn="AUD" aria-pressed="false">
-            AUD
-          </button>
-        </div>
+        <nav class="site-nav" aria-label="Site">
+          <div class="currency-toggle" role="group" aria-label="Display prices in">
+            <button type="button" class="currency-toggle__btn" data-currency-btn="PHP" aria-pressed="false">
+              PHP
+            </button>
+            <button type="button" class="currency-toggle__btn" data-currency-btn="AUD" aria-pressed="false">
+              AUD
+            </button>
+          </div>
+        </nav>
       </div>
     </header>
 
@@ -86,7 +85,7 @@
             decoding="async"
           />
         </div>
-        <h1 class="brand" id="brand-heading">Sparkwing</h1>
+        <h1 class="brand type-h1" id="brand-heading">Sparkwing</h1>
         <p class="tagline">Take flight with AI you can trust.</p>
         <p class="offer">
           Custom AI and in-house AI learning courses that give your team hours back, and accounting
@@ -103,16 +102,23 @@
       </section>
 
       <section class="offerings" aria-labelledby="offerings-heading">
-        <h2 id="offerings-heading" class="section-heading">What we offer</h2>
+        <h2 id="offerings-heading" class="section-heading type-h2">What we offer</h2>
         <p class="section-intro">
           Practical AI for growing teams. Every build runs on Hive so answers stay grounded in your
           own sources.
         </p>
 
-        <ul class="card-grid">
+        <ul class="card-grid card-grid--offerings">
           <li class="card" id="spark-check">
-            <h3 class="card__title">Spark Check</h3>
-            <p class="card__price" data-price-key="sparkCheck"></p>
+            <div class="card__header">
+              <div
+                class="offering-card__emblem offering-card__emblem--placeholder"
+                aria-hidden="true"
+                title="Product emblem coming soon"
+              ></div>
+              <h3 class="card__title">Spark Check</h3>
+            </div>
+            <p class="price-tag" data-price-key="sparkCheck"></p>
             <p class="card__body">
               A free AI readiness check with 10 plain-language questions. You get a short summary of
               where you are today and sensible next steps, with no sales pressure.
@@ -126,8 +132,15 @@
           </li>
 
           <li class="card card--featured" id="studio">
-            <h3 class="card__title">Sparkwing Studio</h3>
-            <p class="card__price" data-price-key="studio"></p>
+            <div class="card__header">
+              <div
+                class="offering-card__emblem offering-card__emblem--placeholder"
+                aria-hidden="true"
+                title="Product emblem coming soon"
+              ></div>
+              <h3 class="card__title">Sparkwing Studio</h3>
+            </div>
+            <p class="price-tag" data-price-key="studio"></p>
             <p class="card__body">
               Custom AI workflows built on Hive for your team. We discover what matters, design the
               flow, build it with Receipts and Guardrails, then help you evolve it as you learn.
@@ -169,7 +182,7 @@
                 Optional monthly care after go-live: health checks, small prompt and template tweaks,
                 and a plain-language monthly report. Levels match your build size.
               </p>
-              <p class="card__price card__price--inline" data-price-key="carePlans"></p>
+              <p class="price-tag price-tag--inline" data-price-key="carePlans"></p>
             </div>
 
             <a
@@ -181,8 +194,15 @@
           </li>
 
           <li class="card" id="hive">
-            <h3 class="card__title">Sparkwing Hive</h3>
-            <p class="card__price" data-price-key="hive"></p>
+            <div class="card__header">
+              <div
+                class="offering-card__emblem offering-card__emblem--placeholder"
+                aria-hidden="true"
+                title="Product emblem coming soon"
+              ></div>
+              <h3 class="card__title">Sparkwing Hive</h3>
+            </div>
+            <p class="price-tag" data-price-key="hive"></p>
             <p class="card__body">
               The base platform behind every Studio build. Hive is your context library of sparks:
               curated knowledge your AI can draw on. Receipts show sources on every answer, and
@@ -191,8 +211,15 @@
           </li>
 
           <li class="card" id="sparkkeeping">
-            <h3 class="card__title">Sparkkeeping by Sparkwing</h3>
-            <p class="card__price" data-price-key="sparkkeeping"></p>
+            <div class="card__header">
+              <div
+                class="offering-card__emblem offering-card__emblem--placeholder"
+                aria-hidden="true"
+                title="Product emblem coming soon"
+              ></div>
+              <h3 class="card__title">Sparkkeeping by Sparkwing</h3>
+            </div>
+            <p class="price-tag" data-price-key="sparkkeeping"></p>
             <p class="card__body">
               Accounting software that gets the books off paper. Capture receipts and invoices,
               organise records, and spend less time on manual data entry.
@@ -206,8 +233,15 @@
           </li>
 
           <li class="card" id="academy">
-            <h3 class="card__title">Sparkwing Academy</h3>
-            <p class="card__price" data-price-key="academy"></p>
+            <div class="card__header">
+              <div
+                class="offering-card__emblem offering-card__emblem--placeholder"
+                aria-hidden="true"
+                title="Product emblem coming soon"
+              ></div>
+              <h3 class="card__title">Sparkwing Academy</h3>
+            </div>
+            <p class="price-tag" data-price-key="academy"></p>
             <p class="card__body">
               In-house AI learning courses and workshops for your team. Practical sessions on using AI
               safely and well, tailored to how you already work.
@@ -223,7 +257,7 @@
       </section>
 
       <section class="closing-cta" aria-labelledby="closing-heading">
-        <h2 id="closing-heading" class="section-heading">Ready when you are</h2>
+        <h2 id="closing-heading" class="section-heading type-h2">Ready when you are</h2>
         <p class="section-intro">
           Start with a free Spark Check, or email us with questions. We work with clients in Australia
           and the Philippines.
@@ -242,9 +276,23 @@
     <footer class="site-footer">
       <p class="site-footer__regions">Australia · Philippines</p>
       <p class="site-footer__tax" id="price-tax-note">Prices exclude applicable taxes.</p>
-      <p class="site-footer__contact">
-        <a href="mailto:info@sparkwing.com.au">info@sparkwing.com.au</a>
-      </p>
+      <div class="site-footer__contact-row">
+        <span class="site-footer__contact-item">
+          <svg class="icon icon--sm icon--muted" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <path d="M22 6 12 13 2 6" />
+          </svg>
+          <a href="mailto:info@sparkwing.com.au">info@sparkwing.com.au</a>
+        </span>
+        <span class="site-footer__contact-item">
+          <svg class="icon icon--sm icon--muted" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+            <path d="M2 12h20" />
+          </svg>
+          <span>sparkwing.com.au</span>
+        </span>
+      </div>
     </footer>
 
     <script src="pricing-config.js"></script>
