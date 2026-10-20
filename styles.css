@@ -144,7 +144,7 @@ body {
 }
 
 .offer {
-  margin: 0 auto 2rem;
+  margin: 0 auto 2.85rem;
   max-width: var(--max-width);
   font-size: clamp(1rem, 2.4vw, 1.125rem);
   font-weight: 400;
