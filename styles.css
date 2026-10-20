@@ -48,21 +48,15 @@ body {
   text-align: center;
 }
 
-.hero-logo-wrap {
-  margin-bottom: 1.75rem;
-  padding: 0.75rem 1rem;
-  line-height: 0;
-  background: #000;
-  border-radius: 1rem;
-  box-shadow:
-    0 0.5rem 2rem rgba(232, 184, 74, 0.2),
-    0 0.75rem 2.5rem rgba(155, 111, 212, 0.15);
-}
-
 .hero-logo {
   display: block;
-  width: min(10rem, 78vw);
+  width: min(11rem, 42vw);
   height: auto;
+  margin-bottom: 1.75rem;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0.35rem 1.25rem rgba(232, 184, 74, 0.45))
+    drop-shadow(0 0.75rem 2.25rem rgba(155, 111, 212, 0.35))
+    drop-shadow(0 1.25rem 3rem rgba(0, 0, 0, 0.25));
 }
 
 .brand {
@@ -119,23 +113,23 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-logo-wrap {
-    animation: gentle-float 8s ease-in-out infinite;
+  .hero-logo {
+    animation: gentle-float 9s ease-in-out infinite;
   }
 
   @keyframes gentle-float {
     0%,
     100% {
-      transform: translateY(0);
+      transform: translateY(0) rotate(0deg);
     }
     50% {
-      transform: translateY(-6px);
+      transform: translateY(-10px) rotate(-1.5deg);
     }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo-wrap {
+  .hero-logo {
     animation: none;
   }
 }
