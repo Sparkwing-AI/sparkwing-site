@@ -151,6 +151,11 @@ body {
   color: var(--text-muted);
 }
 
+.offer strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .status {
   margin: 0 0 2.5rem;
   font-size: 0.95rem;
