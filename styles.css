@@ -6,12 +6,16 @@
 
 :root {
   color-scheme: dark;
-  --bg-deep: #1e4545;
-  --bg: #285a5a;
+  --lagoon: #1f8476;
+  --glade: #217a6f;
   --night-fern: #285a5a;
-  --bg-glow: #3d2d5c;
-  --text: #f4f7f6;
-  --text-muted: #b8cfc9;
+  --lagoon-700: #165c53;
+  --lagoon-800: #114941;
+  --bg-deep: var(--lagoon-700);
+  --bg: var(--night-fern);
+  --bg-glow: var(--lagoon);
+  --text: #ffffff;
+  --text-muted: #d7e9e6;
   --spark-gold: #feb938;
   --firefly-amber: #ffb81c;
   --wing-violet: #55459b;
@@ -34,11 +38,11 @@ body {
   font-family: var(--font);
   line-height: 1.6;
   color: var(--text);
-  background-color: var(--bg);
+  background-color: var(--night-fern);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(155, 111, 212, 0.35), transparent 55%),
-    radial-gradient(ellipse 90% 60% at 80% 100%, rgba(30, 69, 69, 0.9), transparent 50%),
-    linear-gradient(165deg, var(--bg-deep) 0%, var(--bg) 45%, #2a4f58 100%);
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(31, 132, 118, 0.85), transparent 58%),
+    radial-gradient(ellipse 70% 50% at 85% 100%, rgba(85, 69, 155, 0.28), transparent 55%),
+    linear-gradient(165deg, var(--lagoon-800) 0%, var(--night-fern) 42%, var(--lagoon) 100%);
 }
 
 .page {
@@ -155,7 +159,7 @@ body {
 .contact a {
   color: var(--text);
   text-decoration: none;
-  border-bottom: 1px solid rgba(184, 207, 201, 0.45);
+  border-bottom: 1px solid rgba(174, 211, 206, 0.55);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
