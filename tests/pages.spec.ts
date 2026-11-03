@@ -69,11 +69,11 @@ test.describe('Apps', () => {
     });
   }
 
-  test('/apps redirects to Magnet and is not indexed', async ({ page }) => {
+  test('/apps redirects to Magnet and points its canonical there', async ({ page }) => {
     await page.goto('/apps');
     await expect(page).toHaveURL(/\/apps\/magnet$/);
     const response = await page.request.get('/apps');
-    expect(await response.text()).toContain('noindex');
+    expect(await response.text()).toContain('rel="canonical" href="https://sparkwing.com.au/apps/magnet"');
   });
 });
 
@@ -151,5 +151,90 @@ test.describe('404', () => {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
     await expect(page.locator('main').getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
     await expect(page.locator('main').getByRole('link', { name: 'Sparkkeeper' })).toHaveAttribute('href', '/sparkkeeper');
+  });
+});
+
+test.describe('Review fixes', () => {
+  for (const route of ['/spark-studio', '/scale-ai']) {
+    test(`hero button focus ring is visible on the dark band: ${route}`, async ({ page }) => {
+      await page.goto(route);
+      const button = page.locator('.ph .sw-btn').first();
+      await button.focus();
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
+      await expect(button).toBeFocused();
+      const outline = await button.evaluate((el) => getComputedStyle(el).outlineColor);
+      const gold = await page.evaluate(() => {
+        const probe = document.createElement('span');
+        probe.style.color = getComputedStyle(document.documentElement).getPropertyValue('--sw-color-focus-on-deep');
+        document.body.append(probe);
+        const value = getComputedStyle(probe).color;
+        probe.remove();
+        return value;
+      });
+      expect(outline).toBe(gold);
+    });
+  }
+
+  test('without JavaScript the beta form is hidden and the email address is offered', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto('/sparkkeeper/beta');
+    await expect(page.locator('#beta-form')).toBeHidden();
+    await expect(page.locator('main').getByRole('link', { name: 'info@sparkwing.com.au' }).first()).toBeVisible();
+    await context.close();
+  });
+
+  test('without JavaScript both language blocks are readable', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto('/sparkkeeper');
+    await expect(page.locator('[data-lang-block="en"]')).toBeVisible();
+    await expect(page.locator('[data-lang-block="tl"]')).toBeVisible();
+    await context.close();
+  });
+
+  test('Taglish toggle swaps the language block and sets lang', async ({ page }) => {
+    await page.goto('/sparkkeeper');
+    await page.getByRole('button', { name: 'Taglish' }).click();
+    await expect(page.locator('[data-lang-block="tl"]')).toBeVisible();
+    await expect(page.locator('[data-lang-block="tl"]')).toHaveAttribute('lang', 'fil');
+    await expect(page.locator('[data-lang-block="en"]')).toBeHidden();
+  });
+
+  test('page metadata matches the requirements table', async ({ page }) => {
+    const expected: Record<string, string> = {
+      '/trust': 'How Sparkwing keeps AI trustworthy',
+      '/bring-ai-in': 'Bring AI into your business, Sparkwing',
+      '/scale-ai': 'Scale AI responsibly, Sparkwing',
+      '/sparkkeeper/beta': 'Apply for the Sparkkeeper beta, Sparkwing',
+      '/spark-studio': 'Spark Studio: AI consulting, custom apps and agents',
+    };
+    for (const [route, title] of Object.entries(expected)) {
+      await page.goto(route);
+      await expect(page).toHaveTitle(title);
+    }
+  });
+
+  test('links on the new pages match the requirements link table', async ({ page }) => {
+    const checks: Array<[string, string, string]> = [
+      ['/sparkkeeper', 'Apply for the beta', '/sparkkeeper/beta'],
+      ['/bring-ai-in', 'See what it covers today', '/sparkkeeper#scope'],
+      ['/scale-ai', 'Control Tower Governance and guardrails', '/trust#control-tower'],
+      ['/scale-ai', 'Academy', '/apps/academy'],
+      ['/scale-ai', 'Nest', '/apps/nest'],
+      ['/spark-studio', 'How the base platform works', '/trust'],
+    ];
+    for (const [route, name, href] of checks) {
+      await page.goto(route);
+      await expect(page.locator('main').getByRole('link', { name: new RegExp(name) }).first(), `${route} ${name}`).toHaveAttribute('href', href);
+    }
+  });
+
+  test('sticky sub-nav does not hide a focused link', async ({ page }) => {
+    await page.goto('/apps/magnet');
+    const padding = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop));
+    const bar = await page.locator('.sw-subnav').evaluate((el) => el.getBoundingClientRect().height);
+    expect(padding).toBeGreaterThanOrEqual(bar);
   });
 });

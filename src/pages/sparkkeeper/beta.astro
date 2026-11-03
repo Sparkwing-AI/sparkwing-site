@@ -25,8 +25,8 @@ const next = [
 ---
 
 <BaseLayout
-  title="Apply for the Sparkkeeper beta"
-  description="Tell us about your business and we'll tell you if it's a fit for the Sparkkeeper beta."
+  title="Apply for the Sparkkeeper beta, Sparkwing"
+  description="Full Sparkkeeper features for one month, with AI credits to start and top-ups on request. See what to expect and apply."
 >
   <section class="bt-hero" aria-labelledby="pa-title">
     <div class="bt-grid">
@@ -40,7 +40,7 @@ const next = [
           <p class="bt-lead">Tell us about your business and we'll tell you if it's a fit.</p>
         </div>
 
-        <form class="sw-form" id="beta-form" novalidate>
+        <form class="sw-form" id="beta-form" novalidate hidden>
           <div class="sw-field">
             <label for="name">Your name</label>
             <input class="sw-input" id="name" name="name" type="text" autocomplete="name" required aria-required="true" />
@@ -99,6 +99,12 @@ const next = [
           <Button variant="deep" size="lg" type="submit" class="sw-form-submit">Send my application</Button>
         </form>
 
+        <noscript>
+          <p class="sw-form-error">
+            That didn't send. Please try again, or email <a href={mailto}>{company.email}</a>.
+          </p>
+        </noscript>
+
         <div class="bt-done" id="beta-done" tabindex="-1" role="status" hidden>
           <h2>Thanks, we've got it.</h2>
           <p>We'll email <span id="beta-done-email"></span> to tell you if the beta is a fit.</p>
@@ -106,7 +112,7 @@ const next = [
         </div>
       </div>
 
-      <div class="bt-expect" aria-labelledby="pa-expect">
+      <div class="bt-expect">
         <h2 id="pa-expect">What to expect</h2>
         <ul class="bt-points">
           {
@@ -181,6 +187,8 @@ const next = [
   const fail = document.getElementById('beta-fail');
 
   if (root && form && done && doneEmail && fail) {
+    // The form needs JavaScript to send, so it stays hidden until the script runs. Without it the page shows the email address.
+    form.hidden = false;
     const CONSENT_WORDING_VERSION = 'beta-v1';
     const messages = {
       name: 'Please enter your name.',

@@ -52,3 +52,8 @@
 .sw-subnav .sw-subnav-anchor--first {
   margin-left: auto;
 }
+
+/* Keeps focused links and in-page anchors clear of the sticky bar (WCAG 2.4.11). */
+:root {
+  scroll-padding-top: calc(var(--sw-space-9) + var(--sw-space-2));
+}

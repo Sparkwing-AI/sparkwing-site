@@ -151,3 +151,17 @@ Files: src/pages (sparkkeeper, sparkkeeper/beta, apps/*, apps, spark-studio, tru
 Regression risks: page.css was split out of home.css, so Home imports both. Header and footer unchanged.
 
 Gates run locally: lint, build and check-dist, test:legal, test:links, Playwright (189 pass, wide and compact, axe on all 13 routes) and Lighthouse (all routes except /404 meet 0.9, 1, 0.9, 1).
+
+### Rose run 3 (steps 5 and 6, static review) findings and fixes
+
+- H1 fixed: gold focus ring on the Studio and Scale hero buttons (`.ph--deep` and `.ph--navy`). A test checks the outline colour.
+- M1 fixed: titles and descriptions for /trust, /bring-ai-in, /scale-ai and /sparkkeeper/beta now equal the REQUIREMENTS.md section 6 table. A test checks the titles.
+- M2 fixed: the Beta form stays hidden until the script runs. Without JavaScript the page shows the FR-910 sentence with the email address. No GET submit can put details in the URL.
+- M3 fixed: `scroll-padding-top` on pages with the sticky sub-nav.
+- M4 fixed: both language blocks show without JavaScript.
+- M5: 1440 captures compared for every new page, and 390, 768 and 1024 captured for Beta, Trust, Magnet, Scale, Start, Studio and Sparkkeeper. Beta "What to expect" heading colour fixed (it was inheriting the ink colour).
+- L1: /apps no longer carries noindex, only the canonical. L3: stray aria-labelledby removed. L7: href tests added for the new pages.
+- Not changed: L2 (Error prefix, helps screen readers), L5 (popover stays open on Tab out of No, Esc and outside click still close it), L6 (script-set popover position), L8 (rounded delay steps), L9 (Beta h1 33px at 390 against 38px on the canvas), L10 (raw px layout literals, as on Home), L12.
+- FR-010 in REQUIREMENTS.md still says "Pause button". Elly's click-to-pause replaces it, so the wording needs her update.
+
+Gates after fixes: lint, build, check-dist, test:legal, Playwright (211 pass).

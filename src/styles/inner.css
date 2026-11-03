@@ -221,3 +221,8 @@
   max-width: var(--sw-container);
   margin-inline: auto;
 }
+
+.ph--deep .sw-btn:focus-visible,
+.ph--navy .sw-btn:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
+}
