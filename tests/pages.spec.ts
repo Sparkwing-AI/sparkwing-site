@@ -202,20 +202,37 @@ test.describe('Review fixes', () => {
     await expect(page.locator('[data-lang-block="en"]')).toBeHidden();
   });
 
-  test('page metadata matches the requirements table', async ({ page }) => {
-    const expected: Record<string, string> = {
-      '/trust': 'How Sparkwing keeps AI trustworthy',
-      '/bring-ai-in': 'Bring AI into your business, Sparkwing',
-      '/scale-ai': 'Scale AI responsibly, Sparkwing',
-      '/sparkkeeper/beta': 'Apply for the Sparkkeeper beta, Sparkwing',
-      '/spark-studio': 'Spark Studio: AI consulting, custom apps and agents',
+  test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
+    const rows: Record<string, [string, string]> = {
+      '/': ['Sparkwing: AI automation for less paperwork, more business', 'Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI.'],
+      '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.'],
+      '/spark-studio': ['Spark Studio: AI consulting, automation and custom AI agents', 'AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more.'],
+      '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in.'],
+      '/bring-ai-in': ['AI for business: start with one app, Sparkwing', 'AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed.'],
+      '/scale-ai': ['AI strategy and governance for your team, Sparkwing', 'Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement.'],
+      '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply.'],
     };
-    for (const [route, title] of Object.entries(expected)) {
+    for (const [route, [title, description]] of Object.entries(rows)) {
       await page.goto(route);
-      await expect(page).toHaveTitle(title);
+      await expect(page, route).toHaveTitle(title);
+      expect(title.length, `${route} title length`).toBeLessThanOrEqual(60);
+      expect(description.length, `${route} description length`).toBeLessThanOrEqual(155);
+      await expect(page.locator('meta[name="description"]'), route).toHaveAttribute('content', description);
+      await expect(page.locator('meta[property="og:title"]'), route).toHaveAttribute('content', title);
+      await expect(page.locator('meta[property="og:description"]'), route).toHaveAttribute('content', description);
+      await expect(page.locator('meta[name="twitter:title"]'), route).toHaveAttribute('content', title);
+      await expect(page.locator('meta[name="twitter:description"]'), route).toHaveAttribute('content', description);
     }
   });
 
+  test('Trust anchors land on the whole card, with its label visible', async ({ page }) => {
+    for (const id of ['hive', 'ai-crew', 'control-tower']) {
+      await page.goto(`/trust#${id}`);
+      const card = page.locator(`#${id}`);
+      await expect(card).toBeInViewport({ ratio: 1 });
+      await expect(card.locator('.pf-tag')).toBeInViewport({ ratio: 1 });
+    }
+  });
   test('links on the new pages match the requirements link table', async ({ page }) => {
     const checks: Array<[string, string, string]> = [
       ['/sparkkeeper', 'Apply for the beta', '/sparkkeeper/beta'],

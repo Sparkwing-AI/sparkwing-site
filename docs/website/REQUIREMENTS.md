@@ -28,18 +28,18 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Home | Main, MainMedium, MainCompact | `Main-*.png` | Lead with less paperwork, and send people down one of two paths |
-| `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
+| `/` | Sparkwing: AI automation for less paperwork, more business | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
+| `/sparkkeeper` | Sparkkeeper: AI for bookkeeping and client records | Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports. |
 | `/apps/magnet` | Magnet | Apps (Magnet tab) | `Apps-*.png` | Coming soon app |
 | `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
 | `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
-| `/spark-studio` | Spark Studio | Studio, StudioMedium, StudioCompact | `Studio-*.png` | AI consulting, setup, custom apps and AI agents |
-| `/trust` | Trust and base platform | Platform, PlatformMedium, PlatformCompact | `Platform-*.png` | Hive, AI Crew, Control Tower, masking, who manages |
-| `/bring-ai-in` | Path: bring AI in | Start, StartMedium, StartCompact | `Start-*.png` | For growing businesses |
-| `/scale-ai` | Path: scale responsibly | Scale, ScaleMedium, ScaleCompact | `Scale-*.png` | For teams that need rules and records |
+| `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
+| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in. |
+| `/bring-ai-in` | AI for business: start with one app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
+| `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
 | `/privacy` | Privacy policy | Privacy, PrivacyMedium, PrivacyCompact | `Privacy-*.png` | Legal. Don't reword |
 | `/terms` | Terms of use | Terms, TermsMedium, TermsCompact | `Terms-*.png` | Legal. Don't reword |
-| `/sparkkeeper/beta` | Beta application | Beta, BetaMedium, BetaCompact | `Beta-*.png` | Form on the left, what to expect on the right, FAQ below |
+| `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
 | `/404` | Not found | None. Use header, footer and tokens | None | "We couldn't find that page." with links to Home and Sparkkeeper |
 
 Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (review it on the "Enquiry modal: form and confirmation" board).

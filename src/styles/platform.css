@@ -83,7 +83,7 @@
   gap: calc(var(--sw-space-3) + 2px);
   padding: var(--sw-space-6);
   border-radius: calc(var(--sw-radius-xl) + 2px);
-  scroll-margin-top: calc(var(--sw-space-10) + var(--sw-space-4));
+  scroll-margin-top: var(--sw-space-5);
 }
 
 .pf-panel--hive {
@@ -118,7 +118,6 @@
   font-size: calc(var(--sw-text-h2) * 0.7);
   font-weight: var(--sw-weight-extrabold);
   letter-spacing: -0.02em;
-  scroll-margin-top: calc(var(--sw-space-10) + var(--sw-space-4));
 }
 
 .pf-panel h2 img {
