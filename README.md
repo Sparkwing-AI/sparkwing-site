@@ -32,6 +32,7 @@ Add each new route to `tests/routes.ts` and `lighthouserc.cjs`.
 ## Where things live
 
 - `src/styles/tokens.css`: the only file with raw colour, font and size values
-- `src/config/site.ts`: company details and the demo link
+- `src/config/site.ts`: company details, the demo link, and the analytics and Search Console tokens
+- `docs/website/LAUNCH-CHECKLIST.md`: what Elly does at launch
 - `public/assets/logos/`: app marks. Replacing an SVG updates it everywhere
 - `design/`: screens, canvas source and tokens from the handoff

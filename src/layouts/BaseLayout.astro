@@ -1,7 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
-import { company, site } from '../config/site';
+import { company, integrations, site } from '../config/site';
 
 interface Props {
   title: string;
@@ -23,6 +23,11 @@ const canonical = new URL(cleanPath, site.url).href;
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="author" content={company.legalName} />
+    {
+      integrations.googleSiteVerification && (
+        <meta name="google-site-verification" content={integrations.googleSiteVerification} />
+      )
+    }
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -42,5 +47,15 @@ const canonical = new URL(cleanPath, site.url).href;
       <slot />
     </main>
     <slot name="footer" />
+    {
+      integrations.cloudflareAnalyticsToken && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: integrations.cloudflareAnalyticsToken })}
+        />
+      )
+    }
   </body>
 </html>

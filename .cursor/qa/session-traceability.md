@@ -28,6 +28,9 @@ Build the Sparkwing marketing website (CORE-173) as static Astro on GitHub Pages
 - [x] AC-6: A raw hex value fails the build (stylelint in CSS, `check-source.mjs` in markup)
 - [ ] AC-7: Preview deploys. Blocked: needs a hosting decision from Elly
 - [x] AC-8: Bracketed placeholders fail the build (FR-107 guard, `check-dist.mjs`)
+- [x] AC-9 (added 8:09 PM): Cloudflare Web Analytics JS snippet in `BaseLayout.astro`, from `PUBLIC_CF_ANALYTICS_TOKEN`, rendered only in production builds with the token set. Verified: absent with no token, present with token, absent in dev with token
+- [x] AC-10 (added 8:09 PM): `google-site-verification` meta tag from `PUBLIC_GOOGLE_SITE_VERIFICATION`, production only, no script. Same three cases verified
+- [x] AC-11 (added 8:09 PM): `docs/website/LAUNCH-CHECKLIST.md` with the analytics token and Search Console items (verify domain, submit sitemap.xml)
 
 ## Functional requirements in scope
 

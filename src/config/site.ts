@@ -19,4 +19,10 @@ export const site = {
   showPlaceholders: import.meta.env.PUBLIC_SHOW_PLACEHOLDERS === 'true',
 } as const;
 
+/** Both render in production builds only, and only when their token is set. */
+export const integrations = {
+  cloudflareAnalyticsToken: import.meta.env.PROD ? import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN || '' : '',
+  googleSiteVerification: import.meta.env.PROD ? import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || '' : '',
+} as const;
+
 export const mailto = `mailto:${company.email}`;
