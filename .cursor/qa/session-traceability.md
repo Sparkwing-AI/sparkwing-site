@@ -26,7 +26,7 @@ Build the Sparkwing marketing website (CORE-173) as static Astro on GitHub Pages
 - [x] AC-4: One config file for company details and `PUBLIC_DEMO_URL` (`src/config/site.ts`)
 - [x] AC-5: CI runs lint, build, link check, axe and Lighthouse on pull requests
 - [x] AC-6: A raw hex value fails the build (stylelint in CSS, `check-source.mjs` in markup)
-- [ ] AC-7: Preview deploys. Blocked: needs a hosting decision from Elly
+- [ ] AC-7: Preview deploys. Elly chose Cloudflare Pages previews (8:15 PM). `preview.yml` is written and skips until `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets exist. Still to verify: a real deploy, and `X-Robots-Tag: noindex` on the preview URL. Other decisions: Storybook after step 2, and meta-refresh redirects for `/apps` and old paths in step 8
 - [x] AC-8: Bracketed placeholders fail the build (FR-107 guard, `check-dist.mjs`)
 - [x] AC-9 (added 8:09 PM): Cloudflare Web Analytics JS snippet in `BaseLayout.astro`, from `PUBLIC_CF_ANALYTICS_TOKEN`, rendered only in production builds with the token set. Verified: absent with no token, present with token, absent in dev with token
 - [x] AC-10 (added 8:09 PM): `google-site-verification` meta tag from `PUBLIC_GOOGLE_SITE_VERIFICATION`, production only, no script. Same three cases verified

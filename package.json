@@ -32,6 +32,7 @@
     "linkinator": "8.1.0",
     "postcss-html": "2.0.0",
     "stylelint": "17.16.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.156.2"
   }
 }

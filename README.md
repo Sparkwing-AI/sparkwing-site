@@ -29,6 +29,12 @@ These run on every pull request in `.github/workflows/ci.yml`.
 
 Add each new route to `tests/routes.ts` and `lighthouserc.cjs`.
 
+## Previews
+
+`.github/workflows/preview.yml` deploys each pull request to the Cloudflare Pages project `sparkwing-site`. The link appears on the pull request as a deployment. Previews send `X-Robots-Tag: noindex`, and they are public unless Cloudflare Access is turned on for the project. Previews never include analytics or the Search Console tag.
+
+It needs two repository secrets: `CLOUDFLARE_API_TOKEN` (an account token with Cloudflare Pages: Edit) and `CLOUDFLARE_ACCOUNT_ID`. Until both are set, the workflow skips with a notice.
+
 ## Where things live
 
 - `src/styles/tokens.css`: the only file with raw colour, font and size values
