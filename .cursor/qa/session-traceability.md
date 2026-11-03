@@ -74,6 +74,6 @@ Blank page renders in DM Sans on Morning Silk using tokens. Skip link is first f
 
 | Agent | Run | Verdict | Notes |
 |-------|-----|---------|-------|
-| Rose | 1 (commit 9e14d91 plus working tree) | PASS WITH NOTES | No Critical or High. Fixed M1 (skip link must be in the viewport, proven by breaking the focus rule), M2 (one route list in tests/routes.json), M4 (named colour attributes, `color(`, more file types), L1 to L4, L7, L8. M3: neither main nor feature/website-build has branch protection, raised with Elly. L5 and L6 deferred |
+| Rose | 1 (commit 9e14d91 plus working tree) | PASS WITH NOTES | No Critical or High. Fixed M1 (skip link must be in the viewport, proven by breaking the focus rule), M2 (one route list in tests/routes.json), M4 (named colour attributes, `color(`, more file types), L1 to L4, L7, L8. M3: Elly approved branch protection. Both main and feature/website-build now require a PR and the CI check, with no force pushes or deletions. Admins can still bypass. L5 and L6 deferred |
 | Senior Reviewer | n/a | | Tier 2 |
 | Judge | | | |
