@@ -120,3 +120,52 @@ Gates run locally: lint, build, test:legal, test:links, Playwright (wide and com
 - Tests rewritten in tests/home.spec.ts (77 pass). Rose has not re-run on this change.
 
 - Sparkkeeper logo: new mark (open book with sparkles) replaces the temporary logo on Home and in the Products menu. Uses the 256px on-light PNG from the Sparkkeeper app repo, because the on-light SVG is not in either repo. The on-dark SVG is saved as public/assets/logos/sparkkeeper-on-dark.svg for the Sparkkeeper page. Site favicon stays the Sparkwing one.
+
+## Steps 5 and 6 and the 404: Sparkkeeper, apps, Studio, Trust, paths, Beta
+
+Tier: 2 (new pages, multi-file, new form). Work type: new feature.
+
+User intent: "continue with the other pages". Build every remaining route from the canvas, with the Beta application form posting to the same endpoint contract as the enquiry modal.
+
+Routes built: /sparkkeeper, /sparkkeeper/beta, /apps/magnet, /apps/academy, /apps/nest (one AppPage template), /apps (static meta-refresh redirect to Magnet, noindex), /spark-studio, /trust, /bring-ai-in, /scale-ai, /404 (noindex).
+
+Acceptance criteria covered:
+- FR-201/FR-301 sticky sub-nav with aria-current, routes not anchors (FR-303).
+- FR-302 "Ask us about this app" opens the modal with topic app.
+- FR-401/402 Studio: hero, four services, four steps, trust panel, no prices or names.
+- FR-501/502 Trust anchors #hive, #ai-crew, #control-tower and the "how Sparkwing is designed" sentence.
+- FR-901 to 903, 909 to 911 Beta: fields, errors under each field with aria-invalid and aria-describedby, focus on first error, entries kept, confirmation takes focus, honeypot company_site, two unticked tickboxes, failure message from FR-910. FAQ uses details. Server-side validation arrives with CORE-189.
+- Hero animations use shared motion primitives (src/styles/motion.css), each with a click-to-pause trigger. Static end state is the base CSS.
+
+UX notes and deviations to flag to Elly:
+- check-dist allows the exact tokens [CUSTOMER 1], [EMAIL 1] and [PHONE 1] because they are real Trust copy. Any other bracketed text still fails the build.
+- linkinator skips only the exact /sparkkeeper link. A directory named sparkkeeper (for /sparkkeeper/beta) next to sparkkeeper.html confuses its file server. Playwright visits /sparkkeeper and checks the links.
+- Lighthouse skips /404 (noindex and status 404 cannot score 1 for SEO). axe still covers it.
+- Beta posts what the business does and the first admin task as one `message` field, as the FR-906 table has no columns for them. CORE-189 can split them.
+- Beta wording version is beta-v1, enquiry is enquiry-v1.
+- Canvas sizes without a token map to the nearest token or a calc() of tokens. Static scene states differ slightly from the canvas first frame (for example the Trust scene shows the placeholders, not the real name).
+- /apps hard-codes the canonical via site.url from config. No inline styles.
+
+Files: src/pages (sparkkeeper, sparkkeeper/beta, apps/*, apps, spark-studio, trust, bring-ai-in, scale-ai, 404), src/components (AppPage, ProductNav), src/config/apps.ts, src/styles (page, motion, inner, subnav, sparkkeeper, apps, studio, platform, start, scale, beta), tests/pages.spec.ts, tests/routes.json, scripts/check-dist.mjs, linkinator.config.json, lighthouserc.cjs.
+
+Regression risks: page.css was split out of home.css, so Home imports both. Header and footer unchanged.
+
+Gates run locally: lint, build and check-dist, test:legal, test:links, Playwright (189 pass, wide and compact, axe on all 13 routes) and Lighthouse (all routes except /404 meet 0.9, 1, 0.9, 1).
+
+### Rose run 3 (steps 5 and 6, static review) findings and fixes
+
+- H1 fixed: gold focus ring on the Studio and Scale hero buttons (`.ph--deep` and `.ph--navy`). A test checks the outline colour.
+- M1 fixed: titles and descriptions for /trust, /bring-ai-in, /scale-ai and /sparkkeeper/beta now equal the REQUIREMENTS.md section 6 table. A test checks the titles.
+- M2 fixed: the Beta form stays hidden until the script runs. Without JavaScript the page shows the FR-910 sentence with the email address. No GET submit can put details in the URL.
+- M3 fixed: `scroll-padding-top` on pages with the sticky sub-nav.
+- M4 fixed: both language blocks show without JavaScript.
+- M5: 1440 captures compared for every new page, and 390, 768 and 1024 captured for Beta, Trust, Magnet, Scale, Start, Studio and Sparkkeeper. Beta "What to expect" heading colour fixed (it was inheriting the ink colour).
+- L1: /apps no longer carries noindex, only the canonical. L3: stray aria-labelledby removed. L7: href tests added for the new pages.
+- Not changed: L2 (Error prefix, helps screen readers), L5 (popover stays open on Tab out of No, Esc and outside click still close it), L6 (script-set popover position), L8 (rounded delay steps), L9 (Beta h1 33px at 390 against 38px on the canvas), L10 (raw px layout literals, as on Home), L12.
+- FR-010 in REQUIREMENTS.md still says "Pause button". Elly's click-to-pause replaces it, so the wording needs her update.
+
+Gates after fixes: lint, build, check-dist, test:legal, Playwright (211 pass).
+
+### Rose run 4 (static re-run): PASS WITH NOTES
+
+All six earlier findings confirmed fixed. Applied after the run: L1 (no-JS language blocks use display flex, so the gap is kept) and L5 (`method="post"` on the Beta form as a defence). Left for later: L3 (a `<style>` inside `<noscript>`, the CSP in step 8 will need to allow it or we switch to showing both blocks and letting JS hide one), L4 (no-JS sentence is the FR-910 wording, Elly to confirm), L6 (CLS of the Beta form unmeasured, Lighthouse passes), L7, L8, L9, and a keyboard test that tabs through the sub-nav.

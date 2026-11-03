@@ -1,0 +1,178 @@
+/* Bring AI in page. Tokens only. */
+.st-paper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+  width: 62px;
+  height: 80px;
+  padding: calc(var(--sw-space-2) + 1px);
+  border-radius: var(--sw-radius-sm);
+  background: var(--sw-color-surface);
+}
+
+.st-paper i {
+  display: block;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--sw-color-deep);
+  opacity: 0.3;
+}
+
+.st-paper i:nth-child(1) {
+  width: 60%;
+}
+
+.st-paper i:nth-child(3) {
+  width: 90%;
+}
+
+.st-paper i:nth-child(5) {
+  width: 70%;
+}
+
+.st-paper--tint {
+  background: var(--sw-color-accent-tint);
+}
+
+.st-paper--muted {
+  background: var(--sw-color-on-deep-muted);
+}
+
+.st-paper--1 {
+  --mv-x: 230px;
+  --mv-y: 70px;
+  left: 6%;
+  top: 8%;
+}
+
+.st-paper--2 {
+  --mv-x: 170px;
+  --mv-y: 50px;
+  left: 20%;
+  top: 14%;
+}
+
+.st-paper--3 {
+  --mv-x: 220px;
+  --mv-y: 0px;
+  left: 9%;
+  top: 42%;
+}
+
+.st-paper--4 {
+  --mv-x: 150px;
+  --mv-y: -20px;
+  left: 25%;
+  top: 50%;
+}
+
+.st-paper--5 {
+  --mv-x: 200px;
+  --mv-y: -70px;
+  left: 12%;
+  top: 70%;
+}
+
+.st-ring {
+  left: 70%;
+  top: 48%;
+  width: 180px;
+  height: 180px;
+}
+
+.st-glow {
+  position: absolute;
+  left: calc(70% - 44px);
+  top: calc(48% - 44px);
+  width: 88px;
+  height: 88px;
+}
+
+.st-hours {
+  position: absolute;
+  bottom: 10%;
+  left: calc(70% - 50px);
+  background: var(--sw-color-accent);
+  white-space: nowrap;
+}
+
+.st-star {
+  top: 12%;
+  right: 10%;
+  width: 18px;
+  height: 18px;
+}
+
+/* Where most businesses start */
+.st-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: var(--sw-space-4);
+}
+
+.st-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  padding: var(--sw-space-6);
+  border: 1px solid var(--sw-color-border);
+  border-radius: calc(var(--sw-radius-xl) + 2px);
+  background: var(--sw-color-surface);
+  color: var(--sw-color-deep);
+  text-decoration: none;
+}
+
+.st-card--deep {
+  border-color: var(--sw-color-deep);
+  background: var(--sw-color-deep);
+  color: var(--sw-color-on-deep);
+}
+
+.st-card:hover {
+  border-color: var(--sw-color-action);
+}
+
+.st-card:focus-visible {
+  outline: var(--sw-focus-ring);
+  outline-offset: var(--sw-focus-offset);
+}
+
+.st-card--deep:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
+}
+
+.st-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sw-space-2);
+}
+
+.st-card-name {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--sw-space-3) - 2px);
+  font-size: calc(var(--sw-text-h3));
+  font-weight: var(--sw-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.st-card-name img {
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+
+.st-card p {
+  margin: 0;
+  font-size: var(--sw-text-body-lg);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.st-card--deep p {
+  color: var(--sw-color-tint);
+}
