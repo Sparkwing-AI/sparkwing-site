@@ -1,11 +1,11 @@
-const base = 'http://localhost:4321';
+const base = 'http://localhost:4323';
 const paths = require('./tests/routes.json');
 
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: 'npm run preview',
-      startServerReadyPattern: 'localhost:4321',
+      startServerCommand: 'npx astro preview --port 4323',
+      startServerReadyPattern: 'localhost:4323',
       url: paths.map((path) => `${base}${path}`),
       numberOfRuns: 3,
       settings: {

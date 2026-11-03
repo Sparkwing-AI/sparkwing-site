@@ -20,6 +20,10 @@ body {
   line-height: var(--sw-leading-body);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 img,
 svg {
   display: block;

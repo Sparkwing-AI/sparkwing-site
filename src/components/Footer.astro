@@ -1,0 +1,32 @@
+---
+import Button from './Button.astro';
+import { footerColumns } from '../config/nav';
+import { company, mailto } from '../config/site';
+---
+
+<footer class="sw-footer">
+  <div class="sw-footer-inner">
+    <div class="sw-footer-cta">
+      <h2>Ready to get your hours back? Let's talk.</h2>
+      <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
+    </div>
+    <div class="sw-footer-cols">
+      {
+        footerColumns.map((column) => (
+          <div class="sw-footer-col">
+            <p class="sw-eyebrow">{column.heading}</p>
+            {column.links.map((link) => <a href={link.href}>{link.label}</a>)}
+          </div>
+        ))
+      }
+      <div class="sw-footer-col">
+        <p class="sw-eyebrow">SAY HELLO</p>
+        <a href={mailto}>{company.email}</a>
+        <span>Based in Sydney. Working with businesses across Australia and the Philippines.</span>
+      </div>
+    </div>
+    <p class="sw-footer-legal">
+      {company.legalName} · ABN {company.abn} · {company.location} · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
+    </p>
+  </div>
+</footer>

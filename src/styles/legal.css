@@ -1,0 +1,79 @@
+/* Privacy and Terms. The wording is copied from the canvas, so this file only styles it. */
+.sw-legal-head {
+  padding: var(--sw-space-10) var(--sw-gutter) var(--sw-space-7);
+}
+
+.sw-legal-body {
+  padding: 0 var(--sw-gutter) var(--sw-space-11);
+}
+
+.sw-legal-inner {
+  display: flex;
+  flex-direction: column;
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.sw-legal-head .sw-legal-inner {
+  gap: var(--sw-space-4);
+}
+
+.sw-legal-body .sw-legal-inner {
+  gap: var(--sw-space-7);
+  font-size: var(--sw-text-body-lg);
+  line-height: 1.6;
+  color: var(--sw-mock-rail);
+}
+
+.sw-legal-head h1 {
+  font-size: var(--sw-text-h1);
+  font-weight: var(--sw-weight-extrabold);
+  line-height: 1;
+  letter-spacing: var(--sw-tracking-display);
+}
+
+.sw-legal-updated {
+  font-size: var(--sw-text-small);
+  color: var(--sw-color-text-muted);
+}
+
+.sw-legal-lead {
+  font-size: var(--sw-text-lead);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.sw-legal-block,
+.sw-legal-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+}
+
+.sw-legal-card {
+  padding: var(--sw-space-6);
+  border: 1px solid var(--sw-color-border);
+  border-radius: var(--sw-radius-xl);
+  background: var(--sw-color-surface);
+}
+
+.sw-legal-body h2 {
+  /* The canvas sets 26px, which sits between the lead and h3 tokens. Built from the lead token plus one space step. */
+  font-size: calc(var(--sw-text-lead) + var(--sw-space-1));
+  font-weight: var(--sw-weight-bold);
+  line-height: var(--sw-leading-snug);
+  letter-spacing: normal;
+  color: var(--sw-color-ink);
+}
+
+.sw-legal-body ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-2);
+  margin: 0;
+  padding-left: var(--sw-space-5);
+}
+
+.sw-legal-body a {
+  color: var(--sw-color-link);
+}

@@ -1,0 +1,137 @@
+---
+import Badge from './Badge.astro';
+import Button from './Button.astro';
+import { menuPageLinks, pageLinks, productGroups } from '../config/nav';
+import { mailto, site } from '../config/site';
+
+interface Props {
+  /** Current path, used to mark the current page link. */
+  path?: string;
+}
+
+const { path = '' } = Astro.props;
+const current = (href: string) => (path === href ? 'page' : undefined);
+---
+
+<header class="sw-header" data-header>
+  <div class="sw-announce">
+    <span>Sparkkeeper beta applications are open. Places are limited.</span>
+    <a href="/sparkkeeper/beta">Join the beta</a>
+  </div>
+  <div class="sw-nav">
+  <div class="sw-nav-row">
+    <div class="sw-nav-left">
+      <a class="sw-logo" href="/">
+        <img src="/assets/sparkwing-mark.png" alt="" width="40" height="40" />
+        <span class="sw-logo-text">
+          <span class="sw-logo-name">Sparkwing</span>
+          <span class="sw-logo-tag">AN AI TRANSFORMATION COMPANY</span>
+        </span>
+        <span class="sw-visually-hidden"> home</span>
+      </a>
+      <nav class="sw-nav-links" aria-label="Main">
+        <button
+          type="button"
+          class="sw-products-btn"
+          aria-expanded="false"
+          aria-controls="sw-menu"
+          data-menu-toggle
+        >
+          Products
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l4 4 4-4"></path></svg>
+        </button>
+        {pageLinks.map((link) => <a class="sw-nav-link" href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
+      </nav>
+    </div>
+    <div class="sw-nav-right">
+      <a class="sw-nav-call" href={mailto} data-enquiry="call">Book a call</a>
+      <Button class="sw-nav-try" size="sm" href={site.demoUrl}>Try Sparkkeeper</Button>
+      <button
+        class="sw-menu-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="sw-menu"
+        data-menu-toggle
+        data-menu-label>Menu</button>
+    </div>
+  </div>
+  </div>
+  <div id="sw-menu" class="sw-menu" hidden>
+    <div class="sw-menu-grid">
+      <div class="sw-compact-only sw-menu-pages">
+        {menuPageLinks.map((link) => <a href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
+        <a class="sw-menu-pages-action" href={site.demoUrl}>Try Sparkkeeper</a>
+        <a class="sw-menu-pages-action" href={mailto} data-enquiry="call">Book a call</a>
+      </div>
+      {
+        productGroups.map((group, index) => (
+          <div class="sw-menu-col">
+            <p class="sw-eyebrow">{group.heading}</p>
+            {group.items.map((item) => (
+              <a class="sw-menu-item" href={item.href}>
+                <img src={item.logo} alt="" width="36" height="36" />
+                <span class="sw-menu-item-text">
+                  <span class="sw-menu-item-title">
+                    {item.label}
+                    {item.badge && <Badge tone={item.badge.tone} size="sm">{item.badge.label}</Badge>}
+                  </span>
+                  <span class="sw-menu-item-summary">{item.summary}</span>
+                </span>
+              </a>
+            ))}
+            {index === productGroups.length - 1 && (
+              <div class="sw-menu-call">
+                <p class="sw-menu-call-title">Not sure where to begin?</p>
+                <p>Tell us your goals on a discovery call. We come back with a recommendation made for your business.</p>
+                <a href={mailto} data-enquiry="call">Book a discovery call</a>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const panel = document.getElementById('sw-menu');
+  const toggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-menu-toggle]'));
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+  let opener: HTMLButtonElement | null = null;
+
+  function setOpen(open: boolean, returnFocus = false) {
+    if (!panel) return;
+    panel.hidden = !open;
+    toggles.forEach((button) => button.setAttribute('aria-expanded', String(open)));
+    if (label) label.textContent = open ? 'Close' : 'Menu';
+    if (!open && returnFocus) opener?.focus();
+    if (!open) opener = null;
+  }
+
+  toggles.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (panel?.hidden) {
+        opener = button;
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && panel && !panel.hidden) setOpen(false, true);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!panel || panel.hidden || !header) return;
+    const target = event.target as Node;
+    if (header.contains(target)) return;
+    const focusInside = !document.activeElement || document.activeElement === document.body;
+    setOpen(false, focusInside);
+  });
+
+  /** Opening the enquiry modal from the panel closes the panel. The modal returns focus to the menu button. */
+  document.addEventListener('sw:enquiry-open', () => setOpen(false));
+</script>

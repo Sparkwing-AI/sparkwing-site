@@ -39,6 +39,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Legal wording matches the canvas
+        run: npm run test:legal
+
       - name: Link check
         run: npm run test:links
 

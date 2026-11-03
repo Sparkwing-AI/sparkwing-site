@@ -15,6 +15,8 @@ export const site = {
   lang: 'en-AU',
   /** Pending: replace with a Sparkwing domain before launch. Override with PUBLIC_DEMO_URL. */
   demoUrl: import.meta.env.PUBLIC_DEMO_URL || 'https://sparkkeeper.moxie-strife.workers.dev/',
+  /** Base URL of the forms Worker, with no trailing slash (CORE-189). Unset until the Worker exists. */
+  formEndpoint: (import.meta.env.PUBLIC_FORM_ENDPOINT || '').replace(/\/$/, ''),
   /** Placeholders such as "[First client story]" only render when this is on. Production builds fail if any render. */
   showPlaceholders: import.meta.env.PUBLIC_SHOW_PLACEHOLDERS === 'true',
 } as const;
