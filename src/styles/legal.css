@@ -22,7 +22,7 @@
   gap: var(--sw-space-7);
   font-size: var(--sw-text-body-lg);
   line-height: 1.6;
-  color: var(--sw-mock-rail);
+  color: var(--sw-color-text);
 }
 
 .sw-legal-head h1 {

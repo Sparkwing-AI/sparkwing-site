@@ -1,6 +1,7 @@
 ---
 // Generated from design/source/Privacy.dc.html by scripts/convert-legal.mjs. Do not reword by hand.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { company } from '../config/site';
 import '../styles/legal.css';
 ---
 
@@ -12,7 +13,7 @@ import '../styles/legal.css';
       <div class="sw-legal-inner">
         <h1 id="pv-title">Privacy policy</h1>
         <p class="sw-legal-updated">Last updated 3 November 2026</p>
-        <p class="sw-legal-lead">This policy explains how Sparkwing Pty Ltd (ABN 90 703 825 370), based in Sydney, Australia, collects, uses, shares and protects personal information. It covers our website, enquiries, discovery calls and apps.</p>
+        <p class="sw-legal-lead">This policy explains how {company.legalName} (ABN {company.abn}), based in Sydney, Australia, collects, uses, shares and protects personal information. It covers our website, enquiries, discovery calls and apps.</p>
       </div>
     </section>
 

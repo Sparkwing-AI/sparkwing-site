@@ -309,7 +309,7 @@ const options = [
             <a class="home-app-card" href={app.href}>
               <span class="home-app-head">
                 <span class="home-app-name">
-                  <img src={app.logo} alt="" width="36" height="36" />
+                  <img src={app.logo} alt="" width="36" height="36" loading="lazy" decoding="async" />
                   {app.name}
                 </span>
                 <Badge>Coming soon</Badge>
@@ -321,7 +321,7 @@ const options = [
       </div>
 
       <a class="home-studio" href="/spark-studio">
-        <img src={logo('spark-studio')} alt="" width="56" height="56" />
+        <img src={logo('spark-studio')} alt="" width="56" height="56" loading="lazy" decoding="async" />
         <span class="home-studio-text">
           <b>Need something built around your business?</b>
           <span>Spark Studio is our AI consulting team. We set you up and can build custom apps or AI agents for you.</span>
@@ -456,7 +456,7 @@ const options = [
               </div>
             </div>
           </div>
-          <img class="story-spark" src="/assets/brand/sparkwing-logo-mark-transparent.png" alt="" width="120" height="120" />
+          <img class="story-spark" src="/assets/brand/sparkwing-logo-mark-transparent.png" alt="" width="120" height="120" loading="lazy" decoding="async" />
           <div class="story-out">
             <div class="story-row"><span>Records</span><span>✓</span></div>
             <div class="story-row story-row--2"><span>Reports</span><span>✓</span></div>

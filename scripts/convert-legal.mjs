@@ -37,6 +37,8 @@ for (const page of pages) {
   main = main.replace(/<div>/g, '<div class="sw-legal-block">');
   main = main.replace(/href="([^"]+\.dc\.html)"/g, (_, file) => `href="${internalLinks[file]}"`);
   main = main.replace(/<a href="(https:\/\/[^"]+)">/g, '<a href="$1" rel="noopener">');
+  // Company details come from src/config/site.ts (FR-006). The rendered text is unchanged.
+  main = main.replaceAll('ABN 90 703 825 370', 'ABN {company.abn}').replaceAll('Sparkwing Pty Ltd', '{company.legalName}');
   if (/style=|\.dc\.html/.test(main)) throw new Error(`${page.source}: unconverted style or link left in markup`);
 
   const body = main
@@ -48,6 +50,7 @@ for (const page of pages) {
   const astro = `---
 // Generated from design/source/${page.source}.dc.html by scripts/convert-legal.mjs. Do not reword by hand.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { company } from '../config/site';
 import '../styles/legal.css';
 ---
 

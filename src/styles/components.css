@@ -684,3 +684,27 @@ textarea.sw-input {
   height: 1px;
   overflow: hidden;
 }
+
+/* Pause control for looping animations */
+.sw-pause {
+  min-height: var(--sw-target-min);
+  padding: 0 var(--sw-space-4);
+  border: 1.5px solid currentColor;
+  border-radius: var(--sw-radius-pill);
+  background: transparent;
+  color: var(--sw-color-deep);
+  font: inherit;
+  font-size: var(--sw-text-small);
+  font-weight: var(--sw-weight-bold);
+  cursor: pointer;
+}
+
+.sw-pause:focus-visible {
+  outline: var(--sw-focus-ring);
+  outline-offset: var(--sw-focus-offset);
+}
+
+.sw-pause[hidden] {
+  display: none;
+}
+

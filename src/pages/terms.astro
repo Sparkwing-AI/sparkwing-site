@@ -1,6 +1,7 @@
 ---
 // Generated from design/source/Terms.dc.html by scripts/convert-legal.mjs. Do not reword by hand.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { company } from '../config/site';
 import '../styles/legal.css';
 ---
 
@@ -12,7 +13,7 @@ import '../styles/legal.css';
       <div class="sw-legal-inner">
         <h1 id="tm-title">Terms of use</h1>
         <p class="sw-legal-updated">Last updated 3 November 2026</p>
-        <p class="sw-legal-lead">These terms apply when you use the website of Sparkwing Pty Ltd (ABN 90 703 825 370), based in Sydney, Australia. By using our website, you agree to them. If you don't agree, please don't use it.</p>
+        <p class="sw-legal-lead">These terms apply when you use the website of {company.legalName} (ABN {company.abn}), based in Sydney, Australia. By using our website, you agree to them. If you don't agree, please don't use it.</p>
       </div>
     </section>
 

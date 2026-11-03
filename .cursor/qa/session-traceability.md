@@ -4,7 +4,7 @@
 
 ## Task summary
 
-Build the Sparkwing marketing website (CORE-173) as static Astro on GitHub Pages. Current step: 1, repo setup, tokens and CI (CORE-174).
+Build the Sparkwing marketing website (CORE-173) as static Astro on GitHub Pages. Current steps: 2 to 4, shell, legal pages and Home (see the Steps 2 to 4 section). Step 1 shipped in PR #3.
 
 ## Work type
 
@@ -99,3 +99,14 @@ Files: src/pages/index.astro, src/components/PauseButton.astro, src/styles/home.
 Regression risks: header or footer changes affect every page. home.css is only imported by Home. Lighthouse must use its own port (4323), because a running dev server on 4321 made SEO fail.
 
 Gates run locally: lint, build, test:legal, test:links, Playwright (wide and compact, axe) and Lighthouse all pass.
+
+### Rose run 2 findings and fixes (steps 2 to 4)
+
+- H1 fixed: the Spark Studio band's gold focus ring on a white section is removed. A test checks it uses the deep focus colour.
+- M1: linkinator still skips routes that do not exist yet (/sparkkeeper, /apps, /spark-studio, /trust, /bring-ai-in, /scale-ai). Remove each skip when its page lands in steps 5 and 6. A new Home test asserts every Home href against the requirements link table.
+- M2: new tests prove every loop runs when motion is allowed and stops on Pause, the paused end state of the story and marquee, and no sideways scroll at 390, 768, 1024 and 1440.
+- M4: `.sw-pause` moved to components.css so later pages can use it.
+- M5: loops start only after JavaScript has run (`html[data-motion]`). Without JavaScript the page is static and the Pause buttons are hidden. Tabs show the first panel only.
+- M6: the enquiry modal shows its failure state with the email address until `PUBLIC_FORM_ENDPOINT` exists (CORE-189). Expected on previews.
+- L1, L3, L4, L6 fixed: legal body text token, ABN and legal name read from config in the generated legal pages (rendered text unchanged), `main` takes focus from the skip link, below-fold images lazy.
+- Open for Elly: M3, the Pause label swap with aria-pressed. L5, list semantics with `display: contents` in Safari and VoiceOver, goes into the manual screen reader pass.

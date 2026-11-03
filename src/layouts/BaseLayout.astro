@@ -46,7 +46,7 @@ const canonical = new URL(cleanPath, site.url).href;
   <body>
     <a class="sw-skip-link" href="#main">Skip to main content</a>
     <Header path={cleanPath} />
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <Footer />

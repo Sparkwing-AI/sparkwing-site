@@ -1,6 +1,8 @@
 ---
 // Pauses and resumes every looping animation on the page (WCAG 2.2.2).
 // The state sits on <html data-paused>. All pause buttons on a page stay in step.
+// Loops start only once this script has run (html[data-motion]), so a visitor without JavaScript sees
+// the static page instead of motion they cannot pause. The buttons stay hidden until then.
 interface Props {
   class?: string;
 }
@@ -8,13 +10,18 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<button class:list={['sw-pause', className]} type="button" aria-pressed="false" data-pause-toggle>
+<button class:list={['sw-pause', className]} type="button" aria-pressed="false" data-pause-toggle hidden>
   <span data-pause-label>Pause animations</span>
 </button>
 
 <script>
   const root = document.documentElement;
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-pause-toggle]');
+
+  root.setAttribute('data-motion', '');
+  buttons.forEach((button) => {
+    button.hidden = false;
+  });
 
   function sync() {
     const paused = root.hasAttribute('data-paused');
