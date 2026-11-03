@@ -1,0 +1,14 @@
+---
+description: Rules for building the Sparkwing website
+alwaysApply: true
+---
+Read docs/website/REQUIREMENTS.md before starting any task. Build the deep teal design only.
+
+- Copy comes from design/source and the requirements. Don't reword it. Never reword Privacy or Terms.
+- Use tokens from src/styles/tokens.css for every colour, font, size and space. No inline styles. No raw hex outside the tokens file.
+- Build shared components first, then pages. Compare each page with design/screens at 390, 768, 1024 and 1440.
+- WCAG 2.2 AA is required. Anything that moves needs a pause control and must respect reduced motion.
+- Only two forms: beta application and enquiry modal. No newsletter signup, no trackers or pixels other than Cloudflare Web Analytics.
+- Sparkkeeper doesn't issue invoices or file taxes. Never imply it does, and never say it is BIR accredited.
+- Company details come from one config file. Don't hard-code the ABN.
+- Keep CNAME. Work on a branch and open a pull request for Elly to review.

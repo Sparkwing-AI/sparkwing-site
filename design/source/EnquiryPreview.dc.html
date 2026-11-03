@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enquiry modal preview</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}a{color:var(--sw-color-link)}</style></helmet>
+<main style="display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; align-items: flex-start; padding: 32px; background: rgba(12,53,47,.6); min-height: 100vh; box-sizing: border-box">
+  <h1 style="position: absolute; left: -9999px">Enquiry modal</h1>
+  <div style="width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 24px; border: none; border-radius: 20px; background: var(--sw-brand-white); color: var(--sw-color-deep); font-family: var(--sw-font-sans)"><div style="display: flex; flex-direction: column; gap: 16px"><div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="enq-title" style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Talk to us</h2><button type="button" aria-label="Close" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; background: var(--sw-color-tint); color: var(--sw-color-deep); font: inherit; font-size: 24px; line-height: 1; cursor: pointer">&times;</button></div><form novalidate style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-name" style="font-size: 16px; font-weight: 700">Your name</label><input class="sw-e" id="enq-name" name="enq-name" type="text" autocomplete="name" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-email" style="font-size: 16px; font-weight: 700">Email</label><input class="sw-e" id="enq-email" name="enq-email" type="email" autocomplete="email" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-business" style="font-size: 16px; font-weight: 700">Business name <span style="font-weight: 500; color: var(--sw-color-text-muted)">(optional)</span></label><input class="sw-e" id="enq-business" name="enq-business" type="text" autocomplete="organization" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-topic" style="font-size: 16px; font-weight: 700">What is it about?</label><select class="sw-e" id="enq-topic" name="enq-topic" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><option value="call">Book a discovery call</option><option value="app">Ask about an app</option><option value="studio">Spark Studio</option><option value="other">Something else</option></select></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-message" style="font-size: 16px; font-weight: 700">Your message</label><textarea class="sw-e" id="enq-message" name="enq-message" rows="3" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px; resize: vertical"></textarea></div>
+        <div aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden"><label for="enq-site">Leave this empty</label><input id="enq-site" name="company_site" type="text" tabindex="-1" autocomplete="off"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-consent" name="enq-consent" type="checkbox" aria-required="true" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>Sparkwing staff can contact me about this enquiry. My details will only be used for this enquiry, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our <a href="Privacy.dc.html">Privacy policy</a> explains.</span></label>
+          </div>
+          <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-marketing" name="enq-marketing" type="checkbox" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. <span style="color: var(--sw-color-text-muted)">(optional)</span></span></label>
+        </div>
+        <button type="submit" style="align-self: flex-start; min-height: 54px; padding: 0 28px; border: none; border-radius: 999px; background: var(--sw-color-deep); color: var(--sw-brand-white); font: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Send</button>
+      </form></div></div>
+  <div style="width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 24px; border: none; border-radius: 20px; background: var(--sw-brand-white); color: var(--sw-color-deep); font-family: var(--sw-font-sans)"><div style="display: flex; flex-direction: column; gap: 16px"><div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Talk to us</h2><button type="button" aria-label="Close" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; background: var(--sw-color-tint); color: var(--sw-color-deep); font: inherit; font-size: 24px; line-height: 1; cursor: pointer">&times;</button></div><div style="display: flex; flex-direction: column; gap: 10px; padding: 8px 0 12px; outline: none"><p style="margin: 0; font-size: 19px; line-height: 1.5; color: var(--sw-color-text)">Thanks, we received your message. We'll get back to you real soon.</p></div></div></div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

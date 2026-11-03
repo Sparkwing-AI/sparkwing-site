@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enquiry modal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>
+dialog#sw-enquiry::backdrop{background:rgba(12,53,47,.6)}
+.sw-e:focus-visible,.sw-c:focus-visible{outline:3px solid var(--sw-color-deep);outline-offset:2px}
+.sw-e[aria-invalid="true"]{border-color:var(--sw-color-error)}
+</style></helmet>
+<dialog id="sw-enquiry" aria-labelledby="enq-title" style="width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 24px; border: none; border-radius: 20px; background: var(--sw-brand-white); color: var(--sw-color-deep); font-family: var(--sw-font-sans)">
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="enq-title" style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Talk to us</h2><button type="button" onClick="{{close}}" aria-label="Close" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; background: var(--sw-color-tint); color: var(--sw-color-deep); font: inherit; font-size: 24px; line-height: 1; cursor: pointer">&times;</button></div>
+    <sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}"><form onSubmit="{{submit}}" novalidate style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-name" style="font-size: 16px; font-weight: 700">Your name</label><input class="sw-e" id="enq-name" name="enq-name" type="text" autocomplete="name" required aria-required="true" aria-invalid="{{inv.name}}" aria-describedby="enq-name-err" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><sc-if value="{{err.name}}" hint-placeholder-val="{{ false }}"><span id="enq-name-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.name}}</span></sc-if></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-email" style="font-size: 16px; font-weight: 700">Email</label><input class="sw-e" id="enq-email" name="enq-email" type="email" autocomplete="email" required aria-required="true" aria-invalid="{{inv.email}}" aria-describedby="enq-email-err" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><sc-if value="{{err.email}}" hint-placeholder-val="{{ false }}"><span id="enq-email-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.email}}</span></sc-if></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-business" style="font-size: 16px; font-weight: 700">Business name <span style="font-weight: 500; color: var(--sw-color-text-muted)">(optional)</span></label><input class="sw-e" id="enq-business" name="enq-business" type="text" autocomplete="organization" aria-invalid="{{inv.business}}" aria-describedby="enq-business-err" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><sc-if value="{{err.business}}" hint-placeholder-val="{{ false }}"><span id="enq-business-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.business}}</span></sc-if></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-topic" style="font-size: 16px; font-weight: 700">What is it about?</label><select class="sw-e" id="enq-topic" name="enq-topic" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><option value="call">Book a discovery call</option><option value="app">Ask about an app</option><option value="studio">Spark Studio</option><option value="other">Something else</option></select><sc-if value="{{err.topic}}" hint-placeholder-val="{{ false }}"><span id="enq-topic-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.topic}}</span></sc-if></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-message" style="font-size: 16px; font-weight: 700">Your message</label><textarea class="sw-e" id="enq-message" name="enq-message" rows="3" required aria-required="true" aria-invalid="{{inv.message}}" aria-describedby="enq-message-err" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px; resize: vertical"></textarea><sc-if value="{{err.message}}" hint-placeholder-val="{{ false }}"><span id="enq-message-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.message}}</span></sc-if></div>
+        <div aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden"><label for="enq-site">Leave this empty</label><input id="enq-site" name="company_site" type="text" tabindex="-1" autocomplete="off"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-consent" name="enq-consent" type="checkbox" aria-required="true" aria-invalid="{{inv.consent}}" aria-describedby="enq-consent-err" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>Sparkwing staff can contact me about this enquiry. My details will only be used for this enquiry, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our <a href="Privacy.dc.html">Privacy policy</a> explains.</span></label>
+          <sc-if value="{{err.consent}}" hint-placeholder-val="{{ false }}"><span id="enq-consent-err" style="font-size: 15px; font-weight: 700; color: var(--sw-color-error)">{{err.consent}}</span></sc-if></div>
+          <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-marketing" name="enq-marketing" type="checkbox" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. <span style="color: var(--sw-color-text-muted)">(optional)</span></span></label>
+        </div>
+        <button type="submit" style="align-self: flex-start; min-height: 54px; padding: 0 28px; border: none; border-radius: 999px; background: var(--sw-color-deep); color: var(--sw-brand-white); font: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Send</button>
+      </form></sc-if>
+    <sc-if value="{{done}}" hint-placeholder-val="{{ false }}"><div id="enq-done" tabindex="-1" role="status" style="display: flex; flex-direction: column; gap: 10px; padding: 8px 0 12px; outline: none"><p style="margin: 0; font-size: 19px; line-height: 1.5; color: var(--sw-color-text)">Thanks, we received your message. We'll get back to you real soon.</p></div></sc-if>
+  </div>
+</dialog>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":40}}'>
+class Component extends DCLogic {
+  state = { err: {}, done: false };
+  componentDidMount() {
+    this.onDocClick = (e) => {
+      const a = e.target.closest && e.target.closest('a[data-enquiry]');
+      const d = document.getElementById('sw-enquiry');
+      if (!a || !d || !d.showModal) return;
+      e.preventDefault();
+      this.setState({ err: {}, done: false }, () => {
+        d.showModal();
+        const t = document.getElementById('enq-topic');
+        if (t) t.value = a.getAttribute('data-enquiry');
+        const n = document.getElementById('enq-name');
+        if (n) n.focus();
+      });
+    };
+    document.addEventListener('click', this.onDocClick);
+  }
+  componentWillUnmount() { document.removeEventListener('click', this.onDocClick); }
+  renderVals() {
+    const err = this.state.err;
+    const inv = {};
+    ['name', 'email', 'message', 'consent'].forEach((k) => { inv[k] = err[k] ? 'true' : 'false'; });
+    inv.business = 'false';
+    return {
+      err, inv,
+      done: this.state.done,
+      showForm: !this.state.done,
+      close: () => { const d = document.getElementById('sw-enquiry'); if (d) d.close(); },
+      submit: (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const v = (k) => (f.elements[k].value || '').trim();
+        const next = {};
+        if (!v('enq-name')) next.name = 'Please enter your name.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('enq-email'))) next.email = 'Please enter a valid email, like you@business.com.';
+        if (!v('enq-message')) next.message = 'Please tell us what you need.';
+        if (!f.elements['enq-consent'].checked) next.consent = 'Please tick this box so we can contact you.';
+        const first = Object.keys(next)[0];
+        if (first) {
+          this.setState({ err: next });
+          f.elements['enq-' + first].focus();
+          return;
+        }
+        // Production: POST to the form endpoint here. On failure, show the email fallback.
+        this.setState({ err: {}, done: true }, () => {
+          const d = document.getElementById('enq-done');
+          if (d) d.focus();
+        });
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
