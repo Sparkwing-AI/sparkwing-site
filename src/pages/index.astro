@@ -2,7 +2,7 @@
 import '../styles/home.css';
 import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
-import PauseButton from '../components/PauseButton.astro';
+import MotionTrigger from '../components/MotionTrigger.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 
@@ -116,7 +116,6 @@ const options = [
         <div class="home-actions">
           <Button variant="primary" size="lg" href={site.demoUrl}>Try Sparkkeeper</Button>
           <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
-          <PauseButton />
         </div>
       </div>
 
@@ -146,6 +145,7 @@ const options = [
             height="112"
           />
         </div>
+        <MotionTrigger class="home-hero-hit" />
         <p class="home-doors-label">Where are you starting from?</p>
         <a class="home-door" href="/bring-ai-in">
           <span class="home-door-text">
@@ -342,8 +342,8 @@ const options = [
           {marquee.map((item) => <li>{item}</li>)}
         </ul>
       </div>
+      <MotionTrigger />
     </div>
-    <PauseButton />
   </section>
 
   <section class="home-band home-trust" aria-labelledby="trust-title">
@@ -408,6 +408,7 @@ const options = [
     <div class="home-band-inner">
       <h2 class="home-h2" id="watch-title">See it take flight.</h2>
       <div class="home-watch-grid">
+        <div class="home-story-wrap">
         <div
           class="home-story"
           role="img"
@@ -465,13 +466,14 @@ const options = [
           <span class="story-caption story-caption--first">Your paperwork, however it arrives.</span>
           <span class="story-caption story-caption--second">Records, reports and email reminders. You stay in charge.</span>
         </div>
+        <MotionTrigger />
+        </div>
         <div class="home-watch-copy">
           <p class="big">Your paperwork goes in. Tidy records come out, ready for you to check.</p>
           <p class="home-lead">
             Upload your invoices, receipts and spreadsheets. Sparkkeeper reads them into records, and they save only after you check them. From there, create reports and send email reminders.
           </p>
           <Button variant="primary" size="md" href={site.demoUrl}>Try the demo</Button>
-          <PauseButton />
         </div>
       </div>
     </div>

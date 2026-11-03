@@ -685,26 +685,53 @@ textarea.sw-input {
   overflow: hidden;
 }
 
-/* Pause control for looping animations */
-.sw-pause {
-  min-height: var(--sw-target-min);
-  padding: 0 var(--sw-space-4);
-  border: 1.5px solid currentColor;
-  border-radius: var(--sw-radius-pill);
+/* Click-to-pause for looping animations. The trigger is a real button laid over the animation. */
+.sw-motion-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
   background: transparent;
-  color: var(--sw-color-deep);
-  font: inherit;
-  font-size: var(--sw-text-small);
-  font-weight: var(--sw-weight-bold);
   cursor: pointer;
 }
 
-.sw-pause:focus-visible {
-  outline: var(--sw-focus-ring);
-  outline-offset: var(--sw-focus-offset);
-}
-
-.sw-pause[hidden] {
+.sw-motion-hit[hidden] {
   display: none;
 }
 
+.sw-motion-hit:hover {
+  background: color-mix(in srgb, var(--sw-color-accent) 12%, transparent);
+}
+
+.sw-motion-hit:focus-visible {
+  outline: var(--sw-focus-ring);
+  outline-offset: calc(var(--sw-focus-offset) * -1);
+}
+
+.sw-motion-pop {
+  position: absolute;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  min-width: 220px;
+  padding: var(--sw-space-4);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-lg);
+  background: var(--sw-color-surface);
+  color: var(--sw-color-ink);
+  box-shadow: var(--sw-shadow-md);
+}
+
+.sw-motion-pop p {
+  margin: 0;
+  font-size: var(--sw-text-body);
+  font-weight: var(--sw-weight-bold);
+}
+
+.sw-motion-pop-actions {
+  display: flex;
+  gap: var(--sw-space-2);
+}

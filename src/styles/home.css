@@ -786,6 +786,7 @@
 }
 
 .home-marquee-window {
+  position: relative;
   flex: 1 1 280px;
   min-width: 0;
   overflow: hidden;
@@ -978,6 +979,22 @@
   margin: 0;
   font-size: var(--sw-text-body-lg);
   line-height: var(--sw-leading-body);
+}
+
+/* Click-to-pause areas */
+.home-hero-hit {
+  inset: calc(var(--sw-space-6) * -1) 0 auto 0;
+  height: calc(var(--sw-space-9) + var(--sw-space-5) + var(--sw-space-6));
+  border-radius: var(--sw-radius-xl);
+}
+
+.home-story-wrap {
+  position: relative;
+  border-radius: var(--sw-radius-2xl);
+}
+
+.home-story-wrap .sw-motion-hit:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
 }
 
 /* Story animation */

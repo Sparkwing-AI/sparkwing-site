@@ -1,4 +1,9 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function pauseViaStory(page: Page) {
+  await page.locator('.home-story-wrap [data-motion-trigger]').click();
+  await page.getByRole('button', { name: /^Yes/ }).click();
+}
 
 test.describe('Home', () => {
   test('has one h1 and the two doors', async ({ page }) => {
@@ -39,21 +44,63 @@ test.describe('Home', () => {
     await expect(page.locator('.mock').getByText('Sample data').first()).toBeVisible();
   });
 
-  test('every pause button pauses and resumes together', async ({ page }) => {
+  test('clicking an animation asks first, and Yes and No behave', async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: 'no-preference' });
+    const page = await context.newPage();
     await page.goto('/');
-    const buttons = page.getByRole('button', { name: /animations$/ });
-    expect(await buttons.count()).toBeGreaterThanOrEqual(3);
-    await buttons.first().click();
-    await expect(page.locator('html')).toHaveAttribute('data-paused', '');
-    for (const button of await buttons.all()) {
-      await expect(button).toHaveAttribute('aria-pressed', 'true');
-      await expect(button).toHaveText('Play animations');
-    }
-    await buttons.last().click();
+    const triggers = page.locator('[data-motion-trigger]');
+    expect(await triggers.count()).toBe(3);
+    const marquee = page.locator('.home-marquee [data-motion-trigger]');
+    const dialog = page.getByRole('dialog', { name: 'Pause animation?' });
+
+    await marquee.click();
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole('button', { name: 'No' }).click();
+    await expect(dialog).toHaveCount(0);
     await expect(page.locator('html')).not.toHaveAttribute('data-paused', '');
-    await expect(buttons.first()).toHaveText('Pause animations');
+    await expect(marquee).toBeFocused();
+
+    await marquee.click();
+    await dialog.getByRole('button', { name: /^Yes/ }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-paused', '');
+    for (const trigger of await triggers.all()) await expect(trigger).toHaveAccessibleName('Resume animation');
+
+    const story = page.locator('.home-story-wrap [data-motion-trigger]');
+    await story.click();
+    await expect(page.getByRole('dialog', { name: 'Resume animation?' })).toBeVisible();
+    await page.getByRole('button', { name: /^Yes/ }).click();
+    await expect(page.locator('html')).not.toHaveAttribute('data-paused', '');
+    await expect(story).toHaveAccessibleName('Pause animation');
+    await context.close();
   });
 
+  test('the pause question works from the keyboard and Escape closes it', async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: 'no-preference' });
+    const page = await context.newPage();
+    await page.goto('/');
+    const trigger = page.locator('.home-hero-hit');
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    const yes = page.getByRole('button', { name: /^Yes/ });
+    await expect(yes).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await page.keyboard.press('Space');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('html')).toHaveAttribute('data-paused', '');
+    await context.close();
+  });
+
+  test('there is no separate Pause animations button any more', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('button', { name: /animations$/ })).toHaveCount(0);
+  });
+
+  test('pause triggers are hidden when the visitor prefers reduced motion', async ({ page }) => {
+    await page.goto('/');
+    for (const trigger of await page.locator('[data-motion-trigger]').all()) await expect(trigger).toBeHidden();
+  });
   test('marquee shows every item with no duplicate set when motion is reduced', async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: 'reduce' });
     const page = await context.newPage();
@@ -78,7 +125,7 @@ test.describe('Home', () => {
     const loops = ['.home-marquee-track', '.home-float', '.home-underline', '.story-doc--1', '.story-spark', '.story-row'];
     const name = (selector: string) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
     for (const selector of loops) await expect.poll(() => name(selector), { message: selector }).not.toBe('none');
-    await page.getByRole('button', { name: 'Pause animations' }).first().click();
+    await pauseViaStory(page);
     for (const selector of loops) expect(await name(selector), selector).toBe('none');
     await context.close();
   });
@@ -87,7 +134,7 @@ test.describe('Home', () => {
     const context = await browser.newContext({ reducedMotion: 'no-preference' });
     const page = await context.newPage();
     await page.goto('/');
-    await page.getByRole('button', { name: 'Pause animations' }).first().click();
+    await pauseViaStory(page);
     const opacity = (selector: string) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).opacity);
     expect(await opacity('.story-row')).toBe('1');
     expect(await opacity('.story-doc--1')).toBe('1');
@@ -99,11 +146,11 @@ test.describe('Home', () => {
     await context.close();
   });
 
-  test('without JavaScript nothing moves and the pause buttons are hidden', async ({ browser }) => {
+  test('without JavaScript nothing moves and the pause triggers are hidden', async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: 'no-preference', javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto('/');
-    await expect(page.locator('[data-pause-toggle]').first()).toBeHidden();
+    await expect(page.locator('[data-motion-trigger]').first()).toBeHidden();
     const animation = await page.locator('.home-marquee-track').evaluate((el) => getComputedStyle(el).animationName);
     expect(animation).toBe('none');
     await context.close();

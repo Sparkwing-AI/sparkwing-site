@@ -111,3 +111,10 @@ Gates run locally: lint, build, test:legal, test:links, Playwright (wide and com
 - L1, L3, L4, L6 fixed: legal body text token, ABN and legal name read from config in the generated legal pages (rendered text unchanged), `main` takes focus from the skip link, below-fold images lazy.
 - Open for Elly: M3, the Pause label swap with aria-pressed. L5, list semantics with `display: contents` in Safari and VoiceOver, goes into the manual screen reader pass.
 | Rose | Steps 2 to 4, run 1 then run 2 (commit 49bbec2) | FAIL, then PASS WITH NOTES | Run 1: H1 focus ring, M1 to M6. All fixed or recorded. Run 2: no Critical, High or Medium. Notes: extend loop and link tests, hide Pause under reduced motion (open), marquee layout shift not measured, line-height values outside tokens (flag to Elly) |
+
+### Click-to-pause (Elly's change, after Rose run 2)
+
+- The three "Pause animations" buttons are gone. Each looping area (hero art, marquee, story) has a transparent real button laid over it. Click, Enter or Space opens a small dialog: "Pause animation?" with Yes and No, or "Resume animation?" when paused. Esc and No close it and return focus. Yes applies to every loop on the page (html[data-paused]).
+- Keeps WCAG 2.2.2 and keyboard access, because the trigger is focusable and named "Pause animation" or "Resume animation". Resolves Rose M3 (no label swap with aria-pressed) and L-d (triggers hidden under reduced motion and without JS).
+- Risk: nothing on screen says the animation is clickable beyond the pointer cursor and a hover tint. Ask Elly whether to add a hint.
+- Tests rewritten in tests/home.spec.ts (77 pass). Rose has not re-run on this change.
