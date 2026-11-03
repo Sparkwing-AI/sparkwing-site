@@ -1,0 +1,276 @@
+---
+import '../../styles/page.css';
+import '../../styles/beta.css';
+import Button from '../../components/Button.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { company, mailto, site } from '../../config/site';
+
+const expect = [
+  { title: 'Free for the beta month', body: 'You get all of Sparkkeeper, and we cover your AI credits.' },
+  {
+    title: 'AI credits to get you started',
+    body: 'Your account comes with a starter allowance. The app shows how much you have used.',
+  },
+  { title: 'Top-ups if you need more', body: 'Running low? Ask us for a top-up.' },
+  { title: 'Limited seats', body: 'We keep numbers small so we can look after everyone in it.' },
+  { title: 'A say in what we build next', body: 'Send feedback and feature requests from inside the app.' },
+];
+
+const next = [
+  'You send this form.',
+  'We read it and email you to say if it is a fit.',
+  'We set up your account for your industry.',
+  'You use Sparkkeeper for a month.',
+];
+---
+
+<BaseLayout
+  title="Apply for the Sparkkeeper beta"
+  description="Tell us about your business and we'll tell you if it's a fit for the Sparkkeeper beta."
+>
+  <section class="bt-hero" aria-labelledby="pa-title">
+    <div class="bt-grid">
+      <div class="bt-main" id="beta-main" data-endpoint={site.formEndpoint}>
+        <div class="bt-head">
+          <span class="bt-eyebrow">
+            <img src="/assets/logos/sparkkeeper.png" alt="" width="44" height="44" />
+            Sparkkeeper beta
+          </span>
+          <h1 class="bt-h1" id="pa-title">Apply for the beta.</h1>
+          <p class="bt-lead">Tell us about your business and we'll tell you if it's a fit.</p>
+        </div>
+
+        <form class="sw-form" id="beta-form" novalidate>
+          <div class="sw-field">
+            <label for="name">Your name</label>
+            <input class="sw-input" id="name" name="name" type="text" autocomplete="name" required aria-required="true" />
+            <span class="sw-error" id="name-err" hidden></span>
+          </div>
+          <div class="sw-field">
+            <label for="email">Work email</label>
+            <input class="sw-input" id="email" name="email" type="email" autocomplete="email" required aria-required="true" />
+            <span class="sw-error" id="email-err" hidden></span>
+          </div>
+          <div class="sw-field">
+            <label for="business">Business name</label>
+            <input class="sw-input" id="business" name="business" type="text" autocomplete="organization" required aria-required="true" />
+            <span class="sw-error" id="business-err" hidden></span>
+          </div>
+          <div class="sw-field">
+            <label for="country">Where is your business?</label>
+            <select class="sw-input" id="country" name="country" required aria-required="true">
+              <option value="">Choose one</option>
+              <option>Australia</option>
+              <option>Philippines</option>
+              <option>Somewhere else</option>
+            </select>
+            <span class="sw-error" id="country-err" hidden></span>
+          </div>
+          <div class="sw-field">
+            <label for="work">What does your business do?</label>
+            <input class="sw-input" id="work" name="work" type="text" autocomplete="off" required aria-required="true" />
+            <span class="sw-error" id="work-err" hidden></span>
+          </div>
+          <div class="sw-field">
+            <label for="first">What admin would you hand over first? <span class="sw-optional">(optional)</span></label>
+            <span class="bt-hint" id="first-hint">Please leave out customer names and other personal details.</span>
+            <textarea class="sw-input" id="first" name="first" rows="3" aria-describedby="first-hint"></textarea>
+          </div>
+          <div class="sw-trap" aria-hidden="true">
+            <label for="company-site">Leave this empty</label>
+            <input id="company-site" name="company_site" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="bt-checks">
+            <div class="sw-field">
+              <label class="sw-check">
+                <input id="consent" name="consent" type="checkbox" aria-required="true" />
+                <span>Sparkwing staff can contact me about this application. My details will only be used for this application, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our <a href="/privacy">Privacy policy</a> explains.</span>
+              </label>
+              <span class="sw-error" id="consent-err" hidden></span>
+            </div>
+            <label class="sw-check">
+              <input id="marketing" name="marketing" type="checkbox" />
+              <span>I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. <span class="sw-optional">(optional)</span></span>
+            </label>
+          </div>
+          <p class="sw-form-error" id="beta-fail" role="alert" hidden>
+            That didn't send. Please try again, or email <a href={mailto}>{company.email}</a>.
+          </p>
+          <Button variant="deep" size="lg" type="submit" class="sw-form-submit">Send my application</Button>
+        </form>
+
+        <div class="bt-done" id="beta-done" tabindex="-1" role="status" hidden>
+          <h2>Thanks, we've got it.</h2>
+          <p>We'll email <span id="beta-done-email"></span> to tell you if the beta is a fit.</p>
+          <a class="sw-link" href="/sparkkeeper">Back to Sparkkeeper</a>
+        </div>
+      </div>
+
+      <div class="bt-expect" aria-labelledby="pa-expect">
+        <h2 id="pa-expect">What to expect</h2>
+        <ul class="bt-points">
+          {
+            expect.map((point) => (
+              <li>
+                <b>{point.title}</b>
+                <span>{point.body}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="bt-next">
+          <h3>What happens next</h3>
+          <ol>
+            {next.map((step) => <li>{step}</li>)}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bt-faq-band" aria-labelledby="pa-faq">
+    <div class="bt-faq-inner">
+      <h2 id="pa-faq">Questions about the beta</h2>
+      <div class="bt-faq">
+        <details>
+          <summary>What does the beta cost?</summary>
+          <p>Nothing. The beta is free, and we cover your AI credits. Seats are limited.</p>
+        </details>
+        <details>
+          <summary>What happens if I run out of AI credits?</summary>
+          <p>Ask us for a top-up, and we will add more where we can, at no cost to you. Until it comes through, AI features pause and everything else keeps working, including your records.</p>
+        </details>
+        <details>
+          <summary>Can I keep my account after the beta?</summary>
+          <p>That is the plan. Before the beta ends, we will share the plans and prices so you can choose one. If you decide not to, you can still sign in, see your records and export them, and AI features stay paused.</p>
+          <p>This is a beta, so things can go wrong. If we ever need to reset data, we will tell you as early as we can and give you the chance to export first wherever possible. Please keep your original files too.</p>
+          <p>Want it all deleted instead? Email <a href={mailto}>{company.email}</a> and we will remove it.</p>
+        </details>
+        <details>
+          <summary>Is my data private? Will it be used to train AI?</summary>
+          <p>We don't use your data to train AI models. Sparkkeeper's AI features use Claude models from Anthropic through its commercial service, and those terms bar Anthropic from training on your content.</p>
+          <p>You can use real records in the beta. Please leave out government ID numbers, card numbers and health details, as Sparkkeeper doesn't need them. By the time your beta starts, Sparkkeeper will mask customers' personal details before anything reaches the AI.</p>
+          <p>We look at how the app is used, such as which features get opened and where errors happen, so we can improve it. If something breaks, we start with system logs. If we need to see your records to fix it, we will ask you first, unless it is an urgent security problem. Our <a href="/privacy">Privacy policy</a> has the full detail.</p>
+        </details>
+        <details>
+          <summary>Will you contact me for feedback?</summary>
+          <p>Maybe. We may reach out to some beta users at random for a short interview, so it isn't guaranteed. You are always free to say no.</p>
+        </details>
+        <details>
+          <summary>How do I send feedback or requests?</summary>
+          <p>From inside the app. There is a place to send feedback and feature requests straight to our team.</p>
+        </details>
+        <details>
+          <summary>Does Sparkkeeper replace my accountant or registered books?</summary>
+          <p>No. It sits alongside your registered books and invoicing. AI answers are drafts, so please check them before you rely on them.</p>
+        </details>
+        <details>
+          <summary>Can I leave early?</summary>
+          <p>Yes, any time. Export your records if you want a copy, then email <a href={mailto}>{company.email}</a> and tell us whether to keep or delete your account.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const root = document.getElementById('beta-main');
+  const form = document.getElementById('beta-form') as HTMLFormElement | null;
+  const done = document.getElementById('beta-done');
+  const doneEmail = document.getElementById('beta-done-email');
+  const fail = document.getElementById('beta-fail');
+
+  if (root && form && done && doneEmail && fail) {
+    const CONSENT_WORDING_VERSION = 'beta-v1';
+    const messages = {
+      name: 'Please enter your name.',
+      email: 'Please enter a valid email, like you@business.com.',
+      business: 'Please enter your business name.',
+      country: 'Please choose where your business is.',
+      work: 'Please tell us what your business does.',
+      consent: 'Please tick this box so we can contact you.',
+    } as const;
+    type Field = keyof typeof messages;
+    const fields = Object.keys(messages) as Field[];
+    const input = (field: Field) => form.elements.namedItem(field) as HTMLInputElement;
+    const errorEl = (field: Field) => document.getElementById(`${field}-err`) as HTMLElement;
+
+    function clearErrors() {
+      fields.forEach((field) => {
+        const el = errorEl(field);
+        el.hidden = true;
+        el.textContent = '';
+        input(field).removeAttribute('aria-invalid');
+        input(field).removeAttribute('aria-describedby');
+      });
+      fail!.hidden = true;
+    }
+
+    function showError(field: Field) {
+      const el = errorEl(field);
+      el.textContent = messages[field];
+      el.hidden = false;
+      input(field).setAttribute('aria-invalid', 'true');
+      input(field).setAttribute('aria-describedby', el.id);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearErrors();
+      const data = new FormData(form);
+      const text = (key: string) => String(data.get(key) ?? '').trim();
+      const invalid: Field[] = [];
+      if (!text('name')) invalid.push('name');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text('email'))) invalid.push('email');
+      if (!text('business')) invalid.push('business');
+      if (!text('country')) invalid.push('country');
+      if (!text('work')) invalid.push('work');
+      if (!input('consent').checked) invalid.push('consent');
+      invalid.forEach(showError);
+      if (invalid.length) {
+        input(invalid[0]).focus();
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      submit.disabled = true;
+      try {
+        const endpoint = root.dataset.endpoint;
+        if (endpoint) {
+          const first = text('first');
+          const response = await fetch(`${endpoint}/api/leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'beta',
+              name: text('name'),
+              email: text('email'),
+              business: text('business'),
+              country: text('country'),
+              message: `What the business does: ${text('work')}${first ? `\nAdmin to hand over first: ${first}` : ''}`,
+              source_page: location.pathname,
+              contact_consent: true,
+              marketing_consent: (form.elements.namedItem('marketing') as HTMLInputElement).checked,
+              consent_wording_version: CONSENT_WORDING_VERSION,
+              company_site: text('company_site'),
+            }),
+          });
+          if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`);
+        } else if (import.meta.env.DEV) {
+          console.info('Beta form: no PUBLIC_FORM_ENDPOINT set, so this submission was not sent (dev only).');
+        } else {
+          throw new Error('No form endpoint configured');
+        }
+        doneEmail.textContent = text('email');
+        form.hidden = true;
+        done.hidden = false;
+        done.focus();
+      } catch (error) {
+        console.error(error);
+        fail.hidden = false;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+</script>

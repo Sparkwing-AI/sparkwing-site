@@ -17,6 +17,8 @@ async function walk(dir) {
   return files.flat();
 }
 
+// Sample masking tokens on the Trust page are real copy (Trust page, "We swap it" step), so they are allowed by exact match.
+const allowed = new Set(['[CUSTOMER 1]', '[EMAIL 1]', '[PHONE 1]']);
 const placeholder = /\[[^\]<>]{2,}?\]/g;
 const readableAttributes =
   /\s(?:alt|title|aria-label|aria-description|placeholder|content|value)\s*=\s*"([^"]*)"/gi;
@@ -38,7 +40,7 @@ for (const file of pages) {
   const attributes = [...html.matchAll(readableAttributes)].map((match) => match[1]).join(' ');
   const readable = `${visibleText(html)} ${attributes}`.replace(/\s+/g, ' ');
   for (const match of readable.matchAll(placeholder)) {
-    problems.push(`${name}: placeholder ${match[0]}`);
+    if (!allowed.has(match[0])) problems.push(`${name}: placeholder ${match[0]}`);
   }
   const body = html.replace(/<script\b[\s\S]*?<\/script>/gi, '');
   if (/<[a-z][^>]*\sstyle\s*=/i.test(body)) problems.push(`${name}: inline style attribute`);

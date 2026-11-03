@@ -1,0 +1,130 @@
+---
+import '../styles/page.css';
+import '../styles/motion.css';
+import '../styles/inner.css';
+import '../styles/platform.css';
+import MotionTrigger from '../components/MotionTrigger.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  { title: 'We spot it', body: 'Names, phone numbers, emails, and ID, tax and account numbers.' },
+  { title: 'We swap it', body: 'Each detail becomes a placeholder, like [CUSTOMER 1] or [PHONE 1].' },
+  { title: 'The AI does the work', body: 'It only ever sees the placeholders.' },
+  {
+    title: 'We put it back',
+    body: 'The real details return inside your own space. The record keeps the masked version.',
+  },
+];
+---
+
+<BaseLayout
+  title="Trust: the base platform behind every Sparkwing app"
+  description="Every Sparkwing app runs on the same base platform: Hive, AI Crew and Control Tower. It comes with every plan."
+>
+  <section class="ph ph--navy" aria-labelledby="pf-title">
+    <div class="ph-grid">
+      <div class="ph-copy">
+        <h1 class="ph-h1" id="pf-title">The part you don't see is why you can trust it.</h1>
+        <p class="ph-lead">
+          Every Sparkwing app runs on the same base platform. It comes with every plan, so there is nothing extra to buy.
+        </p>
+      </div>
+
+      <div class="ph-scene-wrap">
+        <div
+          class="ph-scene"
+          role="img"
+          aria-label="Animation: sample personal details pass through Control Tower and become placeholders before reaching the AI."
+        >
+          <span class="pf-label pf-label--left">Sample details</span>
+          <span class="pf-label pf-label--right">What the AI sees</span>
+          <span class="mv-ring pf-ring"></span>
+          <span class="mv-ring pf-ring mv-d9"></span>
+          <img class="mv-glow pf-glow" src="/assets/logos/control-tower.svg" alt="" width="64" height="64" />
+          <span class="pf-row pf-row--1">
+            <span class="mv-swap-from mv-chip pf-chip pf-chip--from">Maria Reyes</span>
+            <span class="mv-swap-to mv-chip pf-chip pf-chip--to">[CUSTOMER 1]</span>
+          </span>
+          <span class="pf-row pf-row--2">
+            <span class="mv-swap-from mv-chip pf-chip pf-chip--from mv-d3">maria@email.test</span>
+            <span class="mv-swap-to mv-chip pf-chip pf-chip--to mv-d3">[EMAIL 1]</span>
+          </span>
+          <span class="mv-pop mv-chip pf-record mv-d22">Record kept</span>
+        </div>
+        <MotionTrigger />
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface" aria-label="Base platform">
+    <div class="pf-panels">
+      <div class="pf-panel pf-panel--hive">
+        <span class="pf-tag">Knows the business</span>
+        <h2 id="hive">
+          <img src="/assets/logos/hive.svg" alt="" width="52" height="52" />Hive
+        </h2>
+        <p>
+          Your business knowledge library: clients, documents, rules and records. The AI searches it, so answers come from your own information. It is kept separate from every other client.
+        </p>
+      </div>
+      <div class="pf-panel pf-panel--crew">
+        <span class="pf-tag"><span>Does the work</span><span>Coming soon</span></span>
+        <h2 id="ai-crew">
+          <img src="/assets/logos/ai-crew.svg" alt="" width="52" height="52" />AI Crew
+        </h2>
+        <p>AI specialists and bots, like an inbox sorter or a report writer. You choose which helpers your team gets.</p>
+      </div>
+      <div class="pf-panel pf-panel--tower">
+        <span class="pf-tag">Decides what's allowed</span>
+        <h2 id="control-tower">
+          <img src="/assets/logos/control-tower.svg" alt="" width="52" height="52" />Control Tower
+        </h2>
+        <p>Governance and guardrails. It decides what's allowed and keeps a record of what the AI did.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-labelledby="pii-title">
+    <div class="sw-band-inner sw-stack">
+      <div class="pf-pii-head">
+        <h2 class="sw-h2" id="pii-title">Designed to keep your customers' details away from the AI.</h2>
+        <p>
+          If masking can't run for any reason, the AI pauses and nothing is sent. This is how Sparkwing is designed, and we'll confirm what's live for you.
+        </p>
+      </div>
+      <ol class="sw-steps sw-steps--num">
+        {
+          steps.map((step, index) => (
+            <li>
+              <b class="sw-step-n" aria-hidden="true">{index + 1}</b>
+              <b>{step.title}</b>
+              <span>{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface" aria-labelledby="who-title">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="who-title">Who will be managing the apps?</h2>
+      <div class="pf-who">
+        <div class="pf-who-card pf-who-card--rec">
+          <span class="pf-who-tag">Recommended</span>
+          <h3>Managed by Sparkwing</h3>
+          <p>
+            We set up users, licences and settings. Your team logs in and works. You get a monthly usage report and regular check-ins.
+          </p>
+        </div>
+        <div class="pf-who-card">
+          <span class="pf-who-tag">For teams with in-house IT</span>
+          <h3>Self-managed</h3>
+          <p>
+            Your IT adds and removes staff and watches usage and cost. We are there when you need support. Either way, the safety rules always stay on.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

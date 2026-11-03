@@ -1,0 +1,18 @@
+---
+import '../styles/page.css';
+import '../styles/inner.css';
+import Button from '../components/Button.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found, Sparkwing" description="We couldn't find that page." noindex>
+  <section class="sw-band">
+    <div class="nf">
+      <h1 class="ph-h1">We couldn't find that page.</h1>
+      <div class="ph-actions">
+        <Button variant="primary" size="lg" href="/">Home</Button>
+        <Button variant="outline" size="lg" href="/sparkkeeper">Sparkkeeper</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

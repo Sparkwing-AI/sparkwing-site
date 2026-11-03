@@ -1,0 +1,129 @@
+---
+import '../styles/page.css';
+import '../styles/motion.css';
+import '../styles/inner.css';
+import '../styles/scale.css';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import MotionTrigger from '../components/MotionTrigger.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const method = [
+  { title: 'Discover', body: 'Your goals, your rules, and where AI is already in use.' },
+  { title: 'Build', body: 'Your knowledge library, your AI specialists and the apps your team needs.' },
+  { title: 'Govern', body: 'Permissions, an off switch, cost tracking and a record of what the AI did.' },
+  { title: 'Enable', body: 'Training and a home base, so people use it well and keep using it.' },
+];
+
+const tools = [
+  {
+    name: 'Control Tower',
+    href: '/trust#control-tower',
+    logo: '/assets/logos/control-tower.svg',
+    body: "Governance and guardrails. It decides what's allowed and keeps a record of what the AI did.",
+    lead: true,
+  },
+  {
+    name: 'Academy',
+    href: '/apps/academy',
+    logo: '/assets/logos/academy.svg',
+    body: 'Your team learns safe AI habits before using it with real information.',
+    soon: true,
+  },
+  {
+    name: 'Nest',
+    href: '/apps/nest',
+    logo: '/assets/logos/nest.svg',
+    body: "One home for your team's AI news, training and app access.",
+    soon: true,
+  },
+  {
+    name: 'Spark Studio',
+    href: '/spark-studio',
+    logo: '/assets/logos/spark-studio.svg',
+    body: 'AI consulting, setup, and custom apps or AI agents built around how your organisation works.',
+  },
+];
+
+const dots = Array.from({ length: 20 }, (_, index) => ({ delay: Math.round(index * 0.8) }));
+---
+
+<BaseLayout
+  title="Scale AI responsibly with Sparkwing"
+  description="AI strategy, governance, AI ecosystems and enablement for organisations that need to show their work."
+>
+  <section class="ph ph--navy" aria-labelledby="sc-title">
+    <div class="ph-grid">
+      <div class="ph-copy">
+        <span class="ph-eyebrow">I want to scale AI responsibly</span>
+        <h1 class="ph-h1" id="sc-title">Get more from AI across your team, with rules and records in place.</h1>
+        <p class="ph-lead">
+          Your people are already using AI. We bring AI strategy, governance, AI ecosystems and enablement, for organisations that need to show their work.
+        </p>
+        <Button variant="accent" size="lg" enquiry="call" onNavy>Book a discovery call</Button>
+      </div>
+
+      <div class="ph-scene-wrap">
+        <div
+          class="ph-scene sc-scene"
+          role="img"
+          aria-label="Animation: more people join around Control Tower, and each AI action is checked, tracked and recorded."
+        >
+          <div class="sc-dots">
+            {dots.map((dot) => <span class:list={['mv-pop', 'sc-dot', `mv-d${dot.delay}`]} />)}
+          </div>
+          <span class="mv-ring sc-ring"></span>
+          <span class="mv-ring sc-ring mv-d9"></span>
+          <img class="mv-glow sc-glow" src="/assets/logos/control-tower.svg" alt="" width="68" height="68" />
+          <div class="sc-chips">
+            <span class="mv-pop mv-chip mv-d17">Permission checked</span>
+            <span class="mv-pop mv-chip mv-d19">Cost tracked</span>
+            <span class="mv-pop mv-chip sc-chip--accent mv-d22">Recorded</span>
+          </div>
+        </div>
+        <MotionTrigger />
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface" aria-labelledby="sc-method">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="sc-method">How we work with you</h2>
+      <ol class="sw-steps sw-steps--tint">
+        {
+          method.map((step) => (
+            <li>
+              <b>{step.title}</b>
+              <span>{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-labelledby="sc-tools">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="sc-tools">What you get to work with</h2>
+      <div class="sc-tools">
+        {
+          tools.map((tool) => (
+            <a class:list={['sc-tool', tool.lead && 'sc-tool--lead']} href={tool.href}>
+              <span class="sc-tool-head">
+                <span class="sc-tool-name">
+                  <img src={tool.logo} alt="" width="40" height="40" />
+                  {tool.name}
+                </span>
+                {tool.soon && <Badge>Coming soon</Badge>}
+              </span>
+              <p>{tool.body}</p>
+            </a>
+          ))
+        }
+      </div>
+      <p class="sw-lead">
+        Strict rules on where data lives? Hybrid keeps your records on your own server. On-prem, coming soon, keeps everything, including the AI, on your own server.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

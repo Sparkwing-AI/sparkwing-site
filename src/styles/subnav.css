@@ -1,0 +1,54 @@
+/* Sticky product sub-nav shared by Sparkkeeper and the app pages. Tokens only. */
+.sw-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--sw-color-deep);
+}
+
+.sw-subnav-row {
+  display: flex;
+  gap: var(--sw-space-1);
+  max-width: var(--sw-container);
+  margin-inline: auto;
+  padding: 0 var(--sw-gutter);
+  box-sizing: content-box;
+  overflow-x: auto;
+  font-size: var(--sw-text-small);
+  font-weight: var(--sw-weight-semibold);
+  white-space: nowrap;
+}
+
+.sw-subnav a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 calc(var(--sw-space-3) + 2px);
+  border-bottom: 3px solid transparent;
+  box-sizing: border-box;
+  color: var(--sw-color-tint);
+  text-decoration: none;
+}
+
+.sw-subnav a:hover {
+  color: var(--sw-color-on-deep);
+}
+
+.sw-subnav a[aria-current='page'] {
+  border-bottom-color: var(--sw-color-accent);
+  color: var(--sw-color-on-deep);
+}
+
+.sw-subnav a:focus-visible {
+  outline: var(--sw-focus-ring);
+  outline-color: var(--sw-color-focus-on-deep);
+  outline-offset: calc(var(--sw-focus-offset) * -1);
+}
+
+.sw-subnav .sw-subnav-anchor {
+  color: var(--sw-color-accent);
+}
+
+.sw-subnav .sw-subnav-anchor--first {
+  margin-left: auto;
+}

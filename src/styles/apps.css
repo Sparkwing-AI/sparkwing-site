@@ -1,0 +1,248 @@
+/* App pages: Magnet, Academy and Nest share one template. Tokens only. */
+.app-hero {
+  padding: calc(var(--sw-space-10)) var(--sw-gutter);
+}
+
+.app-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr));
+  gap: var(--sw-space-8) calc(var(--sw-space-9) + var(--sw-space-2));
+  align-items: center;
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.app-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--sw-space-5) - 2px);
+}
+
+.app-hero-mark {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sw-space-3);
+}
+
+.app-hero-mark img {
+  width: 64px;
+  height: 64px;
+}
+
+.app-h1 {
+  margin: 0;
+  font-size: var(--sw-text-h1);
+  font-weight: var(--sw-weight-extrabold);
+  line-height: var(--sw-leading-tight);
+  letter-spacing: var(--sw-tracking-display);
+}
+
+.app-promise {
+  max-width: 560px;
+  margin: 0;
+  font-size: var(--sw-text-h3);
+  font-weight: var(--sw-weight-semibold);
+  line-height: var(--sw-leading-snug);
+  letter-spacing: -0.01em;
+}
+
+.app-body {
+  max-width: 560px;
+  margin: 0;
+  font-size: var(--sw-text-body-lg);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.app-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-4);
+  min-width: 0;
+}
+
+/* Scene */
+.app-scene-wrap {
+  position: relative;
+  border-radius: var(--sw-radius-2xl);
+}
+
+.app-scene-wrap .sw-motion-hit:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
+}
+
+.app-scene {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  overflow: hidden;
+  border-radius: var(--sw-radius-2xl);
+  background: var(--sw-color-deep);
+  color: var(--sw-color-on-deep);
+}
+
+.app-chip--m1 {
+  --mv-x: 210px;
+  --mv-y: 70px;
+  left: 6%;
+  top: 14%;
+}
+
+.app-chip--m2 {
+  --mv-x: 210px;
+  --mv-y: 10px;
+  left: 6%;
+  top: 44%;
+}
+
+.app-chip--m3 {
+  --mv-x: 210px;
+  --mv-y: -60px;
+  left: 6%;
+  top: 74%;
+}
+
+.app-chip--n1 {
+  --mv-x: 120px;
+  --mv-y: 120px;
+  left: 6%;
+  top: 8%;
+}
+
+.app-chip--n2 {
+  --mv-x: 20px;
+  --mv-y: 120px;
+  left: 34%;
+  top: 8%;
+}
+
+.app-chip--n3 {
+  --mv-x: -110px;
+  --mv-y: 120px;
+  left: 70%;
+  top: 8%;
+}
+
+.app-ring--magnet {
+  left: 62%;
+  top: 50%;
+  width: 190px;
+  height: 190px;
+}
+
+.app-ring--nest {
+  left: 50%;
+  top: 64%;
+  width: 200px;
+  height: 200px;
+}
+
+.app-glow {
+  position: absolute;
+}
+
+.app-glow--magnet {
+  left: calc(62% - 40px);
+  top: calc(50% - 56px);
+  width: 80px;
+  height: 80px;
+}
+
+.app-glow--nest {
+  left: calc(50% - 44px);
+  top: calc(64% - 44px);
+  width: 88px;
+  height: 88px;
+}
+
+.app-now {
+  position: absolute;
+  left: calc(62% - 56px);
+  top: calc(50% + 40px);
+  background: var(--sw-color-accent);
+  white-space: nowrap;
+}
+
+.app-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--sw-space-3) + 2px);
+  padding: calc(var(--sw-space-6) - 4px);
+}
+
+.app-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sw-space-3);
+  font-size: var(--sw-text-caption);
+  font-weight: var(--sw-weight-bold);
+}
+
+.app-bar-row > span:first-child {
+  flex: none;
+  width: 118px;
+}
+
+.app-track {
+  flex: 1;
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-color-border-on-deep);
+}
+
+.app-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-color-accent);
+}
+
+.app-done {
+  align-self: flex-start;
+  white-space: normal;
+}
+
+.app-done img {
+  width: 26px;
+  height: 26px;
+}
+
+/* What it will do */
+.app-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  padding: var(--sw-space-6);
+  border: 1px solid var(--sw-color-border);
+  border-radius: var(--sw-radius-2xl);
+  background: var(--sw-color-surface);
+}
+
+.app-points-label {
+  margin: 0 0 var(--sw-space-1);
+  font-size: var(--sw-text-caption);
+  font-weight: var(--sw-weight-bold);
+  color: var(--sw-color-text-muted);
+}
+
+.app-point {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sw-space-3);
+  padding: calc(var(--sw-space-3) + 2px) 0;
+  border-top: 1px solid var(--sw-color-border-soft);
+  font-size: var(--sw-text-body-lg);
+  line-height: 1.4;
+}
+
+.app-point svg {
+  flex: none;
+  margin-top: 3px;
+  fill: var(--sw-color-spark);
+}

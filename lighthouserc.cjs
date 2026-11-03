@@ -1,5 +1,6 @@
 const base = 'http://localhost:4323';
-const paths = require('./tests/routes.json');
+// /404 is noindex and returns 404 by design, so it can never score 1 on SEO. axe still covers it.
+const paths = require('./tests/routes.json').filter((path) => path !== '/404');
 
 module.exports = {
   ci: {

@@ -1,4 +1,5 @@
 ---
+import '../styles/page.css';
 import '../styles/home.css';
 import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
@@ -113,7 +114,7 @@ const options = [
         <p class="home-hero-lead">
           Hand your manual admin to AI you can check. Get your hours back, cut what admin costs you, and put the time into earning more.
         </p>
-        <div class="home-actions">
+        <div class="sw-actions">
           <Button variant="primary" size="lg" href={site.demoUrl}>Try Sparkkeeper</Button>
           <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
         </div>
@@ -169,8 +170,8 @@ const options = [
     </div>
   </section>
 
-  <section class="home-band home-stats" aria-label="What you get">
-    <div class="home-band-inner">
+  <section class="sw-band home-stats" aria-label="What you get">
+    <div class="sw-band-inner">
       <div class="home-stats-grid">
         <div class="home-stat">
           <h2>Get back up to 3 hours a week*</h2>
@@ -214,11 +215,11 @@ const options = [
     </div>
   </section>
 
-  <section class="home-band home-products" aria-labelledby="products-title">
-    <div class="home-band-inner">
-      <div class="home-section-head">
-        <h2 class="home-h2" id="products-title">Start with one app. Add more when you're ready.</h2>
-        <p class="home-lead">
+  <section class="sw-band home-products" aria-labelledby="products-title">
+    <div class="sw-band-inner">
+      <div class="sw-section-head">
+        <h2 class="sw-h2" id="products-title">Start with one app. Add more when you're ready.</h2>
+        <p class="sw-lead">
           Sparkkeeper is first off the runway. It keeps your books and your client list together, with AI that answers from your own records.
         </p>
       </div>
@@ -238,7 +239,7 @@ const options = [
               </button>
             ))
           }
-          <a class="home-link home-showcase-link" href="/sparkkeeper">See everything Sparkkeeper does</a>
+          <a class="sw-link home-showcase-link" href="/sparkkeeper">See everything Sparkkeeper does</a>
         </div>
 
         <div class="mock" aria-hidden="true">
@@ -346,9 +347,9 @@ const options = [
     </div>
   </section>
 
-  <section class="home-band home-trust" aria-labelledby="trust-title">
-    <div class="home-band-inner">
-      <h2 class="home-h2" id="trust-title">Trust comes built into every app.</h2>
+  <section class="sw-band home-trust" aria-labelledby="trust-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="trust-title">Trust comes built into every app.</h2>
       <div class="home-trust-grid">
         {
           trust.map((item) => (
@@ -359,13 +360,13 @@ const options = [
           ))
         }
       </div>
-      <a class="home-link home-trust-link" href="/trust">See how trust is built in</a>
+      <a class="sw-link home-trust-link" href="/trust">See how trust is built in</a>
     </div>
   </section>
 
-  <section class="home-band home-team" aria-labelledby="team-title">
-    <div class="home-band-inner">
-      <h2 class="home-h2" id="team-title">Built by people who know the work.</h2>
+  <section class="sw-band home-team" aria-labelledby="team-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="team-title">Built by people who know the work.</h2>
       <div class="home-team-grid">
         {
           team.map((person) => (
@@ -389,24 +390,24 @@ const options = [
     </div>
   </section>
 
-  <section class="home-band home-try" aria-labelledby="try-title">
-    <div class="home-band-inner">
+  <section class="sw-band home-try" aria-labelledby="try-title">
+    <div class="sw-band-inner">
       <div class="home-try-copy">
         <h2 id="try-title">Have a play with Sparkkeeper.</h2>
         <p>
           Ask Sparky a question, upload a stack of paperwork, create a report. The demo runs on made-up data, so nothing you try can hurt.
         </p>
       </div>
-      <div class="home-actions">
+      <div class="sw-actions">
         <Button variant="deep" size="lg" href={site.demoUrl}>Try the demo</Button>
         <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
       </div>
     </div>
   </section>
 
-  <section class="home-band home-watch" aria-labelledby="watch-title">
-    <div class="home-band-inner">
-      <h2 class="home-h2" id="watch-title">See it take flight.</h2>
+  <section class="sw-band home-watch" aria-labelledby="watch-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="watch-title">See it take flight.</h2>
       <div class="home-watch-grid">
         <div class="home-story-wrap">
         <div
@@ -470,7 +471,7 @@ const options = [
         </div>
         <div class="home-watch-copy">
           <p class="big">Your paperwork goes in. Tidy records come out, ready for you to check.</p>
-          <p class="home-lead">
+          <p class="sw-lead">
             Upload your invoices, receipts and spreadsheets. Sparkkeeper reads them into records, and they save only after you check them. From there, create reports and send email reminders.
           </p>
           <Button variant="primary" size="md" href={site.demoUrl}>Try the demo</Button>
@@ -479,11 +480,11 @@ const options = [
     </div>
   </section>
 
-  <section class="home-band home-where" aria-labelledby="where-title">
-    <div class="home-band-inner">
-      <div class="home-section-head">
-        <h2 class="home-h2" id="where-title">Where will the apps and data live?</h2>
-        <p class="home-lead">
+  <section class="sw-band home-where" aria-labelledby="where-title">
+    <div class="sw-band-inner">
+      <div class="sw-section-head">
+        <h2 class="sw-h2" id="where-title">Where will the apps and data live?</h2>
+        <p class="sw-lead">
           Every option runs the same apps with the same safety rules. Not sure? Start in the cloud. You can move later without changing the apps your team uses.
         </p>
       </div>
