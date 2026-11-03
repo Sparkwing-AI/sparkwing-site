@@ -114,6 +114,7 @@
 .sw-announce {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: var(--sw-space-1) var(--sw-space-3);
   padding: var(--sw-space-2) var(--sw-space-4);
