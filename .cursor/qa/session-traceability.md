@@ -118,3 +118,5 @@ Gates run locally: lint, build, test:legal, test:links, Playwright (wide and com
 - Keeps WCAG 2.2.2 and keyboard access, because the trigger is focusable and named "Pause animation" or "Resume animation". Resolves Rose M3 (no label swap with aria-pressed) and L-d (triggers hidden under reduced motion and without JS).
 - Risk: nothing on screen says the animation is clickable beyond the pointer cursor and a hover tint. Ask Elly whether to add a hint.
 - Tests rewritten in tests/home.spec.ts (77 pass). Rose has not re-run on this change.
+
+- Sparkkeeper logo: new mark (open book with sparkles) replaces the temporary logo on Home and in the Products menu. Uses the 256px on-light PNG from the Sparkkeeper app repo, because the on-light SVG is not in either repo. The on-dark SVG is saved as public/assets/logos/sparkkeeper-on-dark.svg for the Sparkkeeper page. Site favicon stays the Sparkwing one.

@@ -28,7 +28,8 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
         label: 'Sparkkeeper',
         href: '/sparkkeeper',
         summary: 'Your numbers and your clients in one place',
-        logo: logo('sparkkeeper'),
+        // New mark (on light). The on-light SVG is not in the repo yet, so this is the 256px PNG.
+        logo: '/assets/logos/sparkkeeper.png',
         badge: { label: 'Beta', tone: 'success' },
       },
       {
