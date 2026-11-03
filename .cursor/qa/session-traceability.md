@@ -110,3 +110,4 @@ Gates run locally: lint, build, test:legal, test:links, Playwright (wide and com
 - M6: the enquiry modal shows its failure state with the email address until `PUBLIC_FORM_ENDPOINT` exists (CORE-189). Expected on previews.
 - L1, L3, L4, L6 fixed: legal body text token, ABN and legal name read from config in the generated legal pages (rendered text unchanged), `main` takes focus from the skip link, below-fold images lazy.
 - Open for Elly: M3, the Pause label swap with aria-pressed. L5, list semantics with `display: contents` in Safari and VoiceOver, goes into the manual screen reader pass.
+| Rose | Steps 2 to 4, run 1 then run 2 (commit 49bbec2) | FAIL, then PASS WITH NOTES | Run 1: H1 focus ring, M1 to M6. All fixed or recorded. Run 2: no Critical, High or Medium. Notes: extend loop and link tests, hide Pause under reduced motion (open), marquee layout shift not measured, line-height values outside tokens (flag to Elly) |
