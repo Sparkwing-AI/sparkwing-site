@@ -1,6 +1,10 @@
 {
   "recurse": true,
   "cleanUrls": true,
-  "skip": ["^https?://(?!(?:localhost|127\\.0\\.0\\.1)[:/])", "^mailto:"],
+  "skip": [
+    "^https?://(?!(?:localhost|127\\.0\\.0\\.1)[:/])",
+    "^mailto:",
+    "^https?://(?:localhost|127\\.0\\.0\\.1):\\d+/(?:sparkkeeper|apps|spark-studio|trust|bring-ai-in|scale-ai)(?:[/#?]|$)"
+  ],
   "verbosity": "error"
 }

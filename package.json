@@ -17,6 +17,7 @@
     "prebuild": "npm run lint:css && npm run lint:source",
     "build": "astro build && node scripts/check-dist.mjs",
     "preview": "astro preview --port 4321",
+    "test:legal": "node scripts/check-legal.mjs",
     "test:links": "linkinator dist --config linkinator.config.json",
     "test:a11y": "playwright test",
     "test:lighthouse": "lhci autorun --config=lighthouserc.cjs"

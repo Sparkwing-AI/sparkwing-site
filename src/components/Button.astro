@@ -1,0 +1,47 @@
+---
+import { mailto } from '../config/site';
+import type { EnquiryTopic } from '../config/nav';
+
+interface Props {
+  /** primary: teal. deep: dark teal. accent: gold. outline: bordered, transparent. */
+  variant?: 'primary' | 'deep' | 'accent' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  /** Renders a link when set, otherwise a button. */
+  href?: string;
+  /** Opens the enquiry modal with this topic. href then falls back to mailto so it works without JavaScript. */
+  enquiry?: EnquiryTopic;
+  /** Use on navy bands, where the accent button takes navy text. */
+  onNavy?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+  [attr: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  enquiry,
+  onNavy = false,
+  type = 'button',
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const classes = ['sw-btn', `sw-btn--${variant}`, `sw-btn--${size}`, onNavy && 'sw-btn--on-navy', className]
+  .filter(Boolean)
+  .join(' ');
+const link = enquiry ? (href ?? mailto) : href;
+---
+
+{
+  link ? (
+    <a class={classes} href={link} data-enquiry={enquiry} {...attrs}>
+      <slot />
+    </a>
+  ) : (
+    <button class={classes} type={type} {...attrs}>
+      <slot />
+    </button>
+  )
+}

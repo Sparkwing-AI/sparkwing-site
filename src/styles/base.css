@@ -20,6 +20,10 @@ body {
   line-height: var(--sw-leading-body);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 img,
 svg {
   display: block;
@@ -92,4 +96,9 @@ a {
     transition-duration: 0s !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+main:focus {
+  outline: none;
 }

@@ -1,6 +1,10 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/components.css';
+import EnquiryModal from '../components/EnquiryModal.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import { company, integrations, site } from '../config/site';
 
 interface Props {
@@ -38,15 +42,15 @@ const canonical = new URL(cleanPath, site.url).href;
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"
     />
-    <slot name="head" />
   </head>
   <body>
     <a class="sw-skip-link" href="#main">Skip to main content</a>
-    <slot name="header" />
-    <main id="main">
+    <Header path={cleanPath} />
+    <main id="main" tabindex="-1">
       <slot />
     </main>
-    <slot name="footer" />
+    <Footer />
+    <EnquiryModal />
     {
       integrations.cloudflareAnalyticsToken && (
         <script

@@ -1,0 +1,11 @@
+---
+interface Props {
+  /** success: Beta. neutral: Coming soon. */
+  tone?: 'success' | 'neutral';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { tone = 'neutral', size = 'md' } = Astro.props;
+---
+
+<span class={`sw-badge sw-badge--${tone} sw-badge--${size}`}><slot /></span>
