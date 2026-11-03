@@ -59,7 +59,9 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | Products menu: Hive, AI Crew, Control Tower | Header | `/trust#hive`, `/trust#ai-crew`, `/trust#control-tower` |
 | Products menu: Spark Studio | Header | `/spark-studio` |
 | Nav: Bring AI in, Scale responsibly, Spark Studio, Trust | Header | `/bring-ai-in`, `/scale-ai`, `/spark-studio`, `/trust` |
-| "Try Sparkkeeper", "Try the demo" | Header, Home, Start, Sparkkeeper | `PUBLIC_DEMO_URL` (section 10) |
+| "Sparkkeeper login" | Header and small-screen menu | `PUBLIC_APP_URL`, default `https://sparkkeeper.com.au/` (section 10) |
+| "Join the beta" | Home and Bring AI in heroes | `/sparkkeeper/beta` |
+| "Try the demo" | Home, Sparkkeeper | `PUBLIC_DEMO_URL` (section 10) |
 | Door: "I want to bring AI into my business" | Home hero | `/bring-ai-in` |
 | Door: "I want to scale AI responsibly" | Home hero | `/scale-ai` |
 | "See everything Sparkkeeper does" | Home products | `/sparkkeeper` |
@@ -84,7 +86,7 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
-| FR-001 | Header on every page: announcement bar, logo, nav, Book a call, Try Sparkkeeper | Matches Nav board |
+| FR-001 | Header on every page: announcement bar, logo, nav, Book a call, Sparkkeeper login | Matches Nav board |
 | FR-002 | Products menu opens from the Products button with three groups and a discovery call panel | `aria-expanded` updates. Esc and clicking outside close it, and focus returns to the button |
 | FR-003 | Below 1200px, nav links collapse into a Menu button that reads "Menu" or "Close" | Panel shows page links first, then the Products groups, and scrolls inside itself. Matches Compact and Medium boards |
 | FR-004 | Skip link is the first focusable element and jumps to `<main id="main">` | Visible on focus |
@@ -270,7 +272,9 @@ Use `@storybook-astro/framework`, the community framework for Astro. It isn't an
 
 | Item | Tag | Note |
 | --- | --- | --- |
-| Demo link | Pending | `PUBLIC_DEMO_URL` is `https://sparkkeeper.moxie-strife.workers.dev/` today. Replace with a Sparkwing domain before launch, as this one shows a personal name |
+| Sparkkeeper login address | Pending | `PUBLIC_APP_URL` defaults to `https://sparkkeeper.com.au/`. Launch is blocked until Elly confirms it |
+| Analytics token | Pending | `PUBLIC_CF_ANALYTICS_TOKEN` is blank. Launch is blocked until Elly supplies it |
+| Demo link | Pending | `PUBLIC_DEMO_URL` is `https://sparkkeeper.moxie-strife.workers.dev/` today. Elly will confirm whether the demo stays. Launch is blocked until it has a Sparkwing address or is removed, as this one shows a personal name |
 | Booking | Proposed | Book a call uses the enquiry modal for now. A booking tool would need a Privacy update |
 | Beta budget | Pending | The beta and top-ups are free to users. Sparkwing funds them, so top-ups are given at the team's discretion within the beta AI budget |
 | Beta FAQ promises | Proposed | Elly to confirm: accounts are planned to stay after the beta, view and export without a plan, a data reset is possible with early notice, we ask before opening a beta user's records, and real records are allowed |

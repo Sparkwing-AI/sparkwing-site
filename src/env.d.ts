@@ -1,4 +1,5 @@
 interface ImportMetaEnv {
+  readonly PUBLIC_APP_URL?: string;
   readonly PUBLIC_DEMO_URL?: string;
   readonly PUBLIC_SHOW_PLACEHOLDERS?: string;
   readonly PUBLIC_FORM_ENDPOINT?: string;

@@ -242,7 +242,7 @@
   transform: rotate(180deg);
 }
 
-.sw-nav-call {
+.sw-nav-login {
   display: flex;
   align-items: center;
   min-height: var(--sw-target-min);
@@ -400,7 +400,7 @@
 
 @media (max-width: 1199px) {
   .sw-nav-links,
-  .sw-nav-call {
+  .sw-nav-login {
     display: none;
   }
 
@@ -426,7 +426,7 @@
 }
 
 @media (max-width: 480px) {
-  .sw-nav-try {
+  .sw-nav-book {
     display: none;
   }
 

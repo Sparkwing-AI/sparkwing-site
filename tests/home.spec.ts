@@ -166,7 +166,7 @@ test.describe('Home', () => {
     expect(await href(/Meet Spark Studio/)).toBe('/spark-studio');
     expect(await href(/See how trust is built in/)).toBe('/trust');
     expect(await href('Join the beta')).toBe('/sparkkeeper/beta');
-    expect(await page.getByRole('link', { name: 'Try Sparkkeeper' }).first().getAttribute('href')).toContain('http');
+    expect(await page.locator('a', { hasText: 'Sparkkeeper login' }).first().getAttribute('href')).toBe('https://sparkkeeper.com.au/');
     await expect(page.getByRole('link', { name: 'Book a discovery call' }).first()).toHaveAttribute('data-enquiry', 'call');
   });
 

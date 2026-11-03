@@ -24,7 +24,9 @@ export const site = {
     alt: 'Sparkwing: less paperwork, more business.',
   },
   logoPath: '/assets/sparkwing-mark.png',
-  /** Pending: replace with a Sparkwing domain before launch. Override with PUBLIC_DEMO_URL. */
+  /** Sparkkeeper login. Launch blocker: confirm the address before launch. Override with PUBLIC_APP_URL. */
+  appUrl: import.meta.env.PUBLIC_APP_URL || 'https://sparkkeeper.com.au/',
+  /** Pending: replace with a Sparkwing domain or remove before launch. Override with PUBLIC_DEMO_URL. */
   demoUrl: import.meta.env.PUBLIC_DEMO_URL || 'https://sparkkeeper.moxie-strife.workers.dev/',
   /** Base URL of the forms Worker, with no trailing slash (CORE-189). Unset until the Worker exists. */
   formEndpoint: (import.meta.env.PUBLIC_FORM_ENDPOINT || '').replace(/\/$/, ''),
