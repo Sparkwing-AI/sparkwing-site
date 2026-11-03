@@ -49,8 +49,9 @@ Blank page renders in DM Sans on Morning Silk using tokens. Skip link is first f
 ## Files and areas touched
 
 - package.json, package-lock.json, astro.config.mjs, tsconfig.json, .stylelintrc.json, linkinator.config.json, lighthouserc.cjs, playwright.config.ts, .gitignore, .env.example, README.md
-- src/config/site.ts, src/styles/tokens.css, src/styles/base.css, src/layouts/BaseLayout.astro, src/pages/index.astro
-- scripts/check-source.mjs, scripts/check-dist.mjs, tests/a11y.spec.ts, tests/routes.ts
+- src/config/site.ts, src/env.d.ts, src/styles/tokens.css, src/styles/base.css, src/layouts/BaseLayout.astro, src/pages/index.astro
+- scripts/check-source.mjs, scripts/check-dist.mjs, tests/a11y.spec.ts, tests/routes.ts, tests/routes.json
+- .github/workflows/preview.yml
 - .github/workflows/ci.yml
 - public/ (favicons and brand logos copied from assets/, handoff assets)
 - Handoff copied to root: AGENTS.md, .cursor/rules/sparkwing-site.mdc, design/, docs/, public/assets/
@@ -73,6 +74,6 @@ Blank page renders in DM Sans on Morning Silk using tokens. Skip link is first f
 
 | Agent | Run | Verdict | Notes |
 |-------|-----|---------|-------|
-| Rose | | | |
+| Rose | 1 (commit 9e14d91 plus working tree) | PASS WITH NOTES | No Critical or High. Fixed M1 (skip link must be in the viewport, proven by breaking the focus rule), M2 (one route list in tests/routes.json), M4 (named colour attributes, `color(`, more file types), L1 to L4, L7, L8. M3: neither main nor feature/website-build has branch protection, raised with Elly. L5 and L6 deferred |
 | Senior Reviewer | n/a | | Tier 2 |
 | Judge | | | |

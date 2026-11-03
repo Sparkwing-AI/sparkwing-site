@@ -16,7 +16,7 @@ for (const route of routes) {
     await page.keyboard.press('Tab');
     const focused = page.locator(':focus');
     await expect(focused).toHaveAttribute('href', '#main');
-    await expect(focused).toBeVisible();
+    await expect(focused).toBeInViewport();
     await expect(page.locator('main#main')).toHaveCount(1);
   });
 

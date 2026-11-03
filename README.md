@@ -27,7 +27,7 @@ These run on every pull request in `.github/workflows/ci.yml`.
 | `npm run test:a11y` | axe (WCAG 2.2 AA), skip link and sideways scroll at 390 and 1440 wide |
 | `npm run test:lighthouse` | Performance 90+, accessibility 100, best practices 90+, SEO 100 |
 
-Add each new route to `tests/routes.ts` and `lighthouserc.cjs`.
+Add each new route to `tests/routes.json`. The axe tests and Lighthouse both read it.
 
 ## Previews
 

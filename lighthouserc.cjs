@@ -1,5 +1,5 @@
 const base = 'http://localhost:4321';
-const paths = ['/'];
+const paths = require('./tests/routes.json');
 
 module.exports = {
   ci: {
@@ -7,7 +7,7 @@ module.exports = {
       startServerCommand: 'npm run preview',
       startServerReadyPattern: 'localhost:4321',
       url: paths.map((path) => `${base}${path}`),
-      numberOfRuns: 1,
+      numberOfRuns: 3,
       settings: {
         chromeFlags: '--no-sandbox --headless=new',
       },

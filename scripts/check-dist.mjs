@@ -17,8 +17,9 @@ async function walk(dir) {
   return files.flat();
 }
 
-const placeholder = /\[[^\]\n<>]{2,}\]/g;
-const readableAttributes = /\s(?:alt|title|aria-label|placeholder|content)\s*=\s*"([^"]*)"/gi;
+const placeholder = /\[[^\]<>]{2,}?\]/g;
+const readableAttributes =
+  /\s(?:alt|title|aria-label|aria-description|placeholder|content|value)\s*=\s*"([^"]*)"/gi;
 
 function visibleText(html) {
   return html
@@ -35,7 +36,8 @@ for (const file of pages) {
   const name = relative(distPath, file).split(sep).join('/');
   const html = await readFile(file, 'utf8');
   const attributes = [...html.matchAll(readableAttributes)].map((match) => match[1]).join(' ');
-  for (const match of `${visibleText(html)} ${attributes}`.matchAll(placeholder)) {
+  const readable = `${visibleText(html)} ${attributes}`.replace(/\s+/g, ' ');
+  for (const match of readable.matchAll(placeholder)) {
     problems.push(`${name}: placeholder ${match[0]}`);
   }
   const body = html.replace(/<script\b[\s\S]*?<\/script>/gi, '');
