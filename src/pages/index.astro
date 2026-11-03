@@ -103,6 +103,7 @@ const options = [
 ---
 
 <BaseLayout
+  schema={[{ '@type': 'WebSite', '@id': new URL('/#website', site.url).href, name: site.name, url: site.url, inLanguage: site.lang, publisher: { '@id': new URL('/#organization', site.url).href } }]}
   title="Sparkwing: AI automation for less paperwork, more business"
   description="Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI."
 >

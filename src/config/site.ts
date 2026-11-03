@@ -6,6 +6,9 @@ export const company = {
   legalName: 'Sparkwing Pty Ltd',
   abn: '90 703 825 370',
   location: 'Sydney, Australia',
+  /** For structured data (SEO-07). */
+  addressLocality: 'Sydney',
+  addressCountry: 'AU',
   email: 'info@sparkwing.com.au',
 } as const;
 
@@ -13,6 +16,14 @@ export const site = {
   name: 'Sparkwing',
   url: 'https://sparkwing.com.au',
   lang: 'en-AU',
+  /** Share image (SEO-05), built by npm run build:og. */
+  ogImage: {
+    path: '/assets/og-image.png',
+    width: 1200,
+    height: 630,
+    alt: 'Sparkwing: less paperwork, more business.',
+  },
+  logoPath: '/assets/sparkwing-mark.png',
   /** Pending: replace with a Sparkwing domain before launch. Override with PUBLIC_DEMO_URL. */
   demoUrl: import.meta.env.PUBLIC_DEMO_URL || 'https://sparkkeeper.moxie-strife.workers.dev/',
   /** Base URL of the forms Worker, with no trailing slash (CORE-189). Unset until the Worker exists. */

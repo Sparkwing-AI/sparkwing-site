@@ -56,11 +56,25 @@ const scope = [
     a: 'Hindi. Hindi nag-i-issue ng BIR invoices o nagfa-file ng taxes ang Sparkkeeper today. Nananatili ’yun sa registered systems at accountant niyo. Kung applicable sa negosyo niyo ang e-invoicing o CAS rules, sa accountant o tax adviser niyo ’yun.',
   },
 ];
+
+const description = "Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.";
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Sparkkeeper',
+    url: new URL('/sparkkeeper', site.url).href,
+    description,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    publisher: { '@id': new URL('/#organization', site.url).href },
+  },
+];
 ---
 
 <BaseLayout
+  schema={schema}
   title="Sparkkeeper: AI for bookkeeping and client records"
-  description="Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports."
+  description={description}
 >
   <ProductNav
     current="sparkkeeper"

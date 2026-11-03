@@ -6,6 +6,7 @@ import '../styles/studio.css';
 import Button from '../components/Button.astro';
 import MotionTrigger from '../components/MotionTrigger.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
 
 const services = [
   { title: 'AI consulting', body: 'Find the jobs where AI will save the most time, and agree the rules for using it safely.' },
@@ -32,11 +33,28 @@ const steps = [
   },
   { title: 'You grow', body: "We train your people and stay close, and you add more whenever you're ready." },
 ];
+
+const description = "AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more.";
+const schema = [
+  {
+    '@type': 'Service',
+    name: 'Spark Studio',
+    url: new URL('/spark-studio', site.url).href,
+    description,
+    serviceType: 'AI consulting',
+    areaServed: [
+      { '@type': 'Country', name: 'Australia' },
+      { '@type': 'Country', name: 'Philippines' },
+    ],
+    provider: { '@id': new URL('/#organization', site.url).href },
+  },
+];
 ---
 
 <BaseLayout
+  schema={schema}
   title="Spark Studio: AI consulting, automation and custom AI agents"
-  description="AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more."
+  description={description}
 >
   <section class="ph ph--deep" aria-labelledby="ss-title">
     <div class="ph-grid">
