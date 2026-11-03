@@ -6,19 +6,31 @@
 // the static page. The triggers stay hidden until then, and when the visitor asks for reduced motion.
 interface Props {
   class?: string;
+  /** Where the pause icon sits, so it stays clear of the scene's own content. */
+  corner?: 'top-right' | 'top-left' | 'bottom-right';
 }
 
-const { class: className } = Astro.props;
+const { class: className, corner = 'top-right' } = Astro.props;
 ---
 
 <button
-  class:list={['sw-motion-hit', className]}
+  class:list={['sw-motion-hit', `sw-motion-hit--${corner}`, className]}
   type="button"
   aria-label="Pause animation"
   aria-haspopup="dialog"
   aria-expanded="false"
   data-motion-trigger
-  hidden></button>
+  hidden
+>
+  <span class="sw-motion-icon" aria-hidden="true">
+    <svg class="sw-motion-icon-pause" viewBox="0 0 24 24" width="14" height="14" focusable="false">
+      <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"></path>
+    </svg>
+    <svg class="sw-motion-icon-play" viewBox="0 0 24 24" width="14" height="14" focusable="false">
+      <path d="M8 5.5v13l11-6.5z"></path>
+    </svg>
+  </span>
+</button>
 
 <script>
   const root = document.documentElement;

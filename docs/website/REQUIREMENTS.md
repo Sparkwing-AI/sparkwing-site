@@ -93,7 +93,7 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | FR-007 | Every link in section 4 works | Automated link check passes with no broken internal links |
 | FR-008 | Temporary app marks are used as on the canvas, from one folder | Replacing an SVG updates it everywhere |
 | FR-009 | Each hero has its own looping animation as on the canvas: Home, Sparkkeeper, Apps (one per app), Spark Studio, Trust, Bring AI in, Scale. Privacy, Terms and the beta page have none | CSS only. A loop lasts about 9 seconds. No flashing. Logos are never rotated or recoloured |
-| FR-010 | Every hero animation has a Pause button in the hero, and the base styles show the finished state | Pause stops every animation on the page. Reduced motion shows the finished state. Animated stages have `role="img"` and an `aria-label`, or are hidden from screen readers if decorative |
+| FR-010 | Click-to-pause replaces the Pause buttons. A transparent button sits over each animation. Clicking or pressing it asks "Pause animation?" (or "Resume animation?" when paused) with Yes and No. A small pause icon, always visible in a corner of the animation, shows that it can be paused. The base styles show the finished state | The trigger is a keyboard-operable button with the accessible name "Pause animation" or "Resume animation". Yes pauses every animation on the page. Esc and No close the question and return focus. Reduced motion shows the finished state and hides the trigger. Animated stages have `role="img"` and an `aria-label`, or are hidden from screen readers if decorative. The icon is decorative (`aria-hidden`), because the button carries the name, and meets 3:1 contrast on every background |
 | FR-011 | Navy is for trust and governance sections only: Home trust band, Trust hero, Scale hero | Teal stays the colour for product and action. No Wing Violet text on navy. Lagoon Teal on navy is for large text and icons only |
 
 ### Home
@@ -103,8 +103,8 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | FR-101 | Hero with two doors and two CTAs | Matches Main board |
 | FR-102 | Stats band with three stats and footnote sources, including "Industry research, not Sparkkeeper results." | Sources link out. Disclaimer stays visible |
 | FR-103 | Sparkkeeper showcase with Ask, Upload and Create tabs that swap the sample screen | `aria-pressed` updates. "Sample data" label always shows. Mock is hidden from screen readers |
-| FR-104 | Marquee of manual admin work with a Pause button | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
-| FR-105 | "See it take flight" story animation: lined papers go in, then Records, Reports and Reminders come out, with caption changes | Runs in CSS. Has a Pause button. Shows the end state when paused or with reduced motion |
+| FR-104 | Marquee of manual admin work, with click-to-pause (FR-010) | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
+| FR-105 | "See it take flight" story animation: lined papers go in, then Records, Reports and Reminders come out, with caption changes | Runs in CSS. Has click-to-pause (FR-010). Shows the end state when paused or with reduced motion |
 | FR-106 | Team section: three equal cards with photo, name, role, bio | Equal widths at wide. Bios exactly as on canvas |
 | FR-107 | Bracketed placeholders must not ship: "[First client story]" and "[Beta client quote...]" | Hide each behind a flag until the real content is supplied. A CI check fails the production build if any bracketed placeholder is rendered |
 | FR-108 | Spark Studio band after the app cards | Whole band is one link |
@@ -153,12 +153,12 @@ The site is static, so it can't receive a form on its own. Both forms post to on
 | FR-903 | Beta confirmation: "Thanks, we've got it. We'll email [address] to tell you if the beta is a fit." | Replaces the form. Focus moves to the message |
 | FR-904 | Enquiry modal uses native `<dialog>` with `showModal()`. Fields: name, email, optional business name, topic, message, contact consent tickbox, optional marketing tickbox. Topics: Book a discovery call, Ask about an app, Spark Studio, Something else | Topic follows the button that opened it. Esc and the Close button close it, and focus returns to that button. Fits at 320px and scrolls inside itself |
 | FR-905 | Enquiry confirmation: "Thanks, we received your message. We'll get back to you real soon." | Announced to screen readers. Exact wording |
-| FR-906 | Worker endpoint `POST /api/leads` saves each submission to a Cloudflare D1 `leads` table: id, type (`beta`, `enquiry`), created_at, name, email, business, country, topic, message, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version, status, notes | A row exists for every accepted submission. Allowed origin is `sparkwing.com.au` only. Secrets stay out of the repo |
+| FR-906 | Worker endpoint `POST /api/leads` saves each submission to a Cloudflare D1 `leads` table: id, type (`beta`, `enquiry`), created_at, name, email, business, country, topic, message, business_type, first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version, status, notes | `business_type` ("What does your business do?") and `first_task` ("What admin would you hand over first?") are separate columns that only Beta rows fill. Enquiries use `message`. A row exists for every accepted submission. Allowed origin is `sparkwing.com.au` only. Secrets stay out of the repo |
 | FR-907 | Each saved submission emails `info@sparkwing.com.au`. Subjects: `[Beta application] {business}, {country}` and `[Website enquiry] {topic}: {name}`. Reply-To is the submitter. Send through the Microsoft 365 `info@` mailbox using Microsoft Graph, with credentials held as Worker secrets | The row is saved even if the email fails, and the failure is logged. Subject values have line breaks stripped |
-| FR-908 | Private lead list with **Beta** and **Enquiries** tabs, behind Cloudflare Access for the Sparkwing team. Status: New, Contacted, Accepted, Declined. Notes and CSV export | Not reachable without sign-in. `noindex`. This is the first version of Magnet's lead list, so keep the table free of site-specific names |
+| FR-908 | Private lead list with **Beta** and **Enquiries** tabs, behind Cloudflare Access for the Sparkwing team. Status: New, Contacted, Accepted, Declined. The Beta tab shows `business_type` and `first_task`. Notes and CSV export | Not reachable without sign-in. `noindex`. This is the first version of Magnet's lead list, so keep the table free of site-specific names |
 | FR-909 | Spam protection: hidden `company_site` field, server validation, rate limit per IP | Filled hidden field is dropped without a row or an email. Turnstile only if spam gets through, and only after checking the Privacy page covers it |
 | FR-911 | Two separate, unticked tickboxes on both forms, worded as on the canvas. Contact consent is required. Marketing is optional and never blocks sending | Marketing choice and timestamp are stored. No marketing email goes out until the Privacy page covers it and a working unsubscribe exists. The lead list can filter on marketing consent |
-| FR-910 | If sending fails, the form stays filled and shows: "That didn't send. Please try again, or email info@sparkwing.com.au." | Tested with the endpoint down |
+| FR-910 | If sending fails, the form stays filled and shows: "That didn't send. Please try again, or email info@sparkwing.com.au." | Tested with the endpoint down. Without JavaScript the beta form is hidden and the page shows: "This form needs JavaScript to send. Please email info@sparkwing.com.au." |
 
 ### Analytics
 
@@ -222,7 +222,7 @@ The site is static, so it can't receive a form on its own. Both forms post to on
 
 **Design check on 3 Nov 2026:** axe-core 4.10.2 with WCAG 2.0, 2.1 and 2.2 A and AA rules plus best practices, on the 10 canvas pages at 1440 and 390 wide, plus the enquiry modal, with animations at their finished state: no violations. Automated tools only catch part of WCAG, and this was run on the canvas, so the build needs its own checks.
 
-Fixes already in the design: skip link, `<main>` landmark, Pause buttons for the marquee and animation, Menu button for small screens, darker spark colour for contrast, 44px controls, focus outlines.
+Fixes already in the design: skip link, `<main>` landmark, click-to-pause on every animation, Menu button for small screens, darker spark colour for contrast, 44px controls, focus outlines.
 
 **Required on the build:**
 

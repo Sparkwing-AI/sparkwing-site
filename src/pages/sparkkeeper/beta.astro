@@ -101,7 +101,7 @@ const next = [
 
         <noscript>
           <p class="sw-form-error">
-            That didn't send. Please try again, or email <a href={mailto}>{company.email}</a>.
+            This form needs JavaScript to send. Please email <a href={mailto}>{company.email}</a>.
           </p>
         </noscript>
 
@@ -255,7 +255,8 @@ const next = [
               email: text('email'),
               business: text('business'),
               country: text('country'),
-              message: `What the business does: ${text('work')}${first ? `\nAdmin to hand over first: ${first}` : ''}`,
+              business_type: text('work'),
+              first_task: first,
               source_page: location.pathname,
               contact_consent: true,
               marketing_consent: (form.elements.namedItem('marketing') as HTMLInputElement).checked,

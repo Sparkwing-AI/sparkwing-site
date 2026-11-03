@@ -702,6 +702,49 @@ textarea.sw-input {
   display: none;
 }
 
+/* Always-visible, decorative pause icon in a corner. The button carries the accessible name. */
+.sw-motion-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--sw-space-5) + var(--sw-space-1));
+  height: calc(var(--sw-space-5) + var(--sw-space-1));
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: 50%;
+  background: var(--sw-color-surface);
+  color: var(--sw-color-deep);
+  pointer-events: none;
+}
+
+.sw-motion-icon svg {
+  fill: currentcolor;
+}
+
+.sw-motion-icon-play,
+:root[data-paused] .sw-motion-icon-pause {
+  display: none;
+}
+
+:root[data-paused] .sw-motion-icon-play {
+  display: block;
+}
+
+.sw-motion-hit--top-right .sw-motion-icon {
+  top: var(--sw-space-2);
+  right: var(--sw-space-2);
+}
+
+.sw-motion-hit--top-left .sw-motion-icon {
+  top: var(--sw-space-2);
+  left: var(--sw-space-2);
+}
+
+.sw-motion-hit--bottom-right .sw-motion-icon {
+  right: var(--sw-space-2);
+  bottom: var(--sw-space-2);
+}
+
 .sw-motion-hit:hover {
   background: color-mix(in srgb, var(--sw-color-accent) 12%, transparent);
 }

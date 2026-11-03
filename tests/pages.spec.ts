@@ -181,7 +181,11 @@ test.describe('Review fixes', () => {
     const page = await context.newPage();
     await page.goto('/sparkkeeper/beta');
     await expect(page.locator('#beta-form')).toBeHidden();
-    await expect(page.locator('main').getByRole('link', { name: 'info@sparkwing.com.au' }).first()).toBeVisible();
+    // Playwright's no-JavaScript mode does not render <noscript>, so read the sentence from the built HTML.
+    const html = await (await page.request.get('/sparkkeeper/beta')).text();
+    const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/)?.[1] ?? '';
+    expect(noscript).toContain('This form needs JavaScript to send. Please email <a href="mailto:info@sparkwing.com.au">info@sparkwing.com.au</a>.');
+    expect(noscript).not.toContain("That didn't send");
     await context.close();
   });
 
@@ -253,5 +257,93 @@ test.describe('Review fixes', () => {
     const padding = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop));
     const bar = await page.locator('.sw-subnav').evaluate((el) => el.getBoundingClientRect().height);
     expect(padding).toBeGreaterThanOrEqual(bar);
+  });
+});
+
+test.describe('Decisions of 4 Nov', () => {
+  test('beta sends business_type and first_task as separate fields, with no combined message', async ({ page }) => {
+    let body: Record<string, unknown> = {};
+    await page.route('**/api/leads', async (route) => {
+      body = route.request().postDataJSON();
+      await route.fulfill({ status: 200, body: '{}' });
+    });
+    await page.goto('/sparkkeeper/beta');
+    await page.evaluate(() => document.getElementById('beta-main')!.setAttribute('data-endpoint', 'http://localhost:4322'));
+    await page.locator('#name').fill('Test Person');
+    await page.locator('#email').fill('test@example.com');
+    await page.locator('#business').fill('Test Co');
+    await page.locator('#country').selectOption('Australia');
+    await page.locator('#work').fill('Bookkeeping for tradies');
+    await page.locator('#first').fill('Chasing invoices');
+    await page.locator('#consent').check();
+    await page.getByRole('button', { name: 'Send my application' }).click();
+    await expect(page.locator('#beta-done')).toBeVisible();
+    expect(body.type).toBe('beta');
+    expect(body.business_type).toBe('Bookkeeping for tradies');
+    expect(body.first_task).toBe('Chasing invoices');
+    expect(body).not.toHaveProperty('message');
+  });
+
+  test('the failed-send message is not shown for the no-JavaScript case, and is for real failures', async ({ page }) => {
+    await page.route('**/api/leads', (route) => route.fulfill({ status: 500, body: '{}' }));
+    await page.goto('/sparkkeeper/beta');
+    await page.evaluate(() => document.getElementById('beta-main')!.setAttribute('data-endpoint', 'http://localhost:4322'));
+    await page.locator('#name').fill('Test Person');
+    await page.locator('#email').fill('test@example.com');
+    await page.locator('#business').fill('Test Co');
+    await page.locator('#country').selectOption('Australia');
+    await page.locator('#work').fill('Bookkeeping');
+    await page.locator('#consent').check();
+    await page.getByRole('button', { name: 'Send my application' }).click();
+    await expect(page.locator('#beta-fail')).toContainText("That didn't send. Please try again, or email info@sparkwing.com.au.");
+  });
+
+  test('announcement text and link are centred on the same line', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'compact', 'The two items wrap onto separate lines at 390.');
+    await page.goto('/');
+    const [text, link] = await Promise.all([
+      page.locator('.sw-announce span').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; }),
+      page.locator('.sw-announce a').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; }),
+    ]);
+    expect(Math.abs(text - link)).toBeLessThanOrEqual(1);
+  });
+
+  for (const route of [...motionPages, '/']) {
+    test(`pause icon is visible, decorative and clear of the name: ${route}`, async ({ browser }) => {
+      const context = await browser.newContext({ reducedMotion: 'no-preference' });
+      const page = await context.newPage();
+      await page.goto(route);
+      const icon = page.locator('[data-motion-trigger] .sw-motion-icon').first();
+      await expect(icon).toBeVisible();
+      await expect(icon).toHaveAttribute('aria-hidden', 'true');
+      await expect(page.locator('[data-motion-trigger]').first()).toHaveAttribute('aria-label', 'Pause animation');
+      await expect(icon.locator('.sw-motion-icon-pause')).toBeVisible();
+      await expect(icon.locator('.sw-motion-icon-play')).toBeHidden();
+      await page.locator('[data-motion-trigger]').first().click();
+      await page.getByRole('button', { name: /^Yes/ }).click();
+      await expect(icon.locator('.sw-motion-icon-play')).toBeVisible();
+      await expect(icon.locator('.sw-motion-icon-pause')).toBeHidden();
+      await context.close();
+    });
+  }
+
+  test('pause icon is not shown under reduced motion', async ({ page }) => {
+    await page.goto('/spark-studio');
+    await expect(page.locator('.sw-motion-icon').first()).toBeHidden();
+  });
+
+  test('pause icon glyph has at least 3:1 contrast against its circle', async ({ page }) => {
+    await page.goto('/spark-studio');
+    const ratio = await page.evaluate(() => {
+      const el = document.querySelector('.sw-motion-icon') as HTMLElement;
+      const s = getComputedStyle(el);
+      const lum = (c: string) => {
+        const [r, g, b] = (c.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number).map((v) => { const x = v / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; });
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      };
+      const a = lum(s.color), b = lum(s.backgroundColor);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    });
+    expect(ratio).toBeGreaterThanOrEqual(3);
   });
 });
