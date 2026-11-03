@@ -77,3 +77,25 @@ Blank page renders in DM Sans on Morning Silk using tokens. Skip link is first f
 | Rose | 1 (commit 9e14d91 plus working tree) | PASS WITH NOTES | No Critical or High. Fixed M1 (skip link must be in the viewport, proven by breaking the focus rule), M2 (one route list in tests/routes.json), M4 (named colour attributes, `color(`, more file types), L1 to L4, L7, L8. M3: Elly approved branch protection. Both main and feature/website-build now require a PR and the CI check, with no force pushes or deletions. Admins can still bypass. L5 and L6 deferred |
 | Senior Reviewer | n/a | | Tier 2 |
 | Judge | | | |
+
+## Steps 2 to 4 (branch website/02-shell-legal, Tier 2)
+
+User intent: "keep going until I can view an entire page". Header, footer, buttons, badges and the enquiry modal (step 2), Privacy and Terms (step 3) and Home (step 4).
+
+Acceptance criteria covered:
+- FR-101 to FR-108 on Home: two doors, stats with sources and disclaimer, Ask/Upload/Create tabs with aria-pressed, marquee with Pause, story animation with Pause, three equal team cards, placeholder hidden behind PUBLIC_SHOW_PLACEHOLDERS, whole-band Spark Studio link.
+- Animations are applied only under prefers-reduced-motion: no-preference and when html has no data-paused. The base styles are the static end state.
+- Marquee static state wraps one set of items. The duplicate set is hidden from assistive tech and from view when static.
+- Legal text is machine-copied from the canvas and checked word for word (npm run test:legal).
+
+UX notes and deviations to flag to Elly:
+- Pause button label changes to "Play animations" and also sets aria-pressed, as on the canvas. A screen reader may announce both. Candidate for a keep-one-label decision.
+- Token mapping: h1 uses --sw-text-h1 (78px max, canvas 76px). Gold heading is h2 x 1.15. Door titles are h3 x 0.85. 28px radius maps to 24px. Hero animation durations (5s, 3.6s, 3.2s, 1.6s) have no token.
+- Spark Studio logo on the Home band is the shared SVG asset.
+- Without JavaScript the Pause buttons and tabs do nothing. The first tab shows by default.
+
+Files: src/pages/index.astro, src/components/PauseButton.astro, src/styles/home.css, tests/home.spec.ts (plus the step 2 and 3 files from the previous commit).
+
+Regression risks: header or footer changes affect every page. home.css is only imported by Home. Lighthouse must use its own port (4323), because a running dev server on 4321 made SEO fail.
+
+Gates run locally: lint, build, test:legal, test:links, Playwright (wide and compact, axe) and Lighthouse all pass.
