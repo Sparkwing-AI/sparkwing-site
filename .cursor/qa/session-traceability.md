@@ -165,3 +165,7 @@ Gates run locally: lint, build and check-dist, test:legal, test:links, Playwrigh
 - FR-010 in REQUIREMENTS.md still says "Pause button". Elly's click-to-pause replaces it, so the wording needs her update.
 
 Gates after fixes: lint, build, check-dist, test:legal, Playwright (211 pass).
+
+### Rose run 4 (static re-run): PASS WITH NOTES
+
+All six earlier findings confirmed fixed. Applied after the run: L1 (no-JS language blocks use display flex, so the gap is kept) and L5 (`method="post"` on the Beta form as a defence). Left for later: L3 (a `<style>` inside `<noscript>`, the CSP in step 8 will need to allow it or we switch to showing both blocks and letting JS hide one), L4 (no-JS sentence is the FR-910 wording, Elly to confirm), L6 (CLS of the Beta form unmeasured, Lighthouse passes), L7, L8, L9, and a keyboard test that tabs through the sub-nav.
