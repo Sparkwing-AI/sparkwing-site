@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bring AI into your business</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+:root {
+  
+  --sw-brand-lagoon: #1F8476;
+  --sw-brand-glade: #217A6F;
+  --sw-brand-night-fern: #285A5A;
+  --sw-brand-lagoon-900: #0C352F;
+  --sw-brand-lagoon-800: #114941;
+  --sw-brand-lagoon-700: #165C53;
+  --sw-brand-lagoon-100: #D7E9E6;
+  --sw-brand-lagoon-50: #EDF5F4;
+  --sw-brand-wing-violet: #55459B;
+  --sw-brand-wing-50: #F1F0F7;
+  --sw-brand-spark-gold: #FEB938;
+  --sw-brand-ember: #E07B00;
+  --sw-brand-morning-silk: #FFF8E7;
+  --sw-brand-inkwell: #1E2B2A;
+  --sw-brand-white: #FFFFFF;
+  --sw-brand-navy-900: #14263D;
+  --sw-brand-navy-800: #1F3450;
+  --sw-brand-navy-700: #3A4C66;
+
+  
+  --sw-color-page: var(--sw-brand-morning-silk);
+  --sw-color-surface: var(--sw-brand-white);
+  --sw-color-deep: var(--sw-brand-lagoon-900);
+  --sw-color-deep-raised: var(--sw-brand-lagoon-800);
+  --sw-color-navy: var(--sw-brand-navy-900);
+  --sw-color-navy-raised: var(--sw-brand-navy-800);
+  --sw-color-border-on-navy: var(--sw-brand-navy-700);
+  --sw-color-tint: var(--sw-brand-lagoon-50);
+  --sw-color-announce: var(--sw-brand-night-fern);
+  --sw-color-accent: var(--sw-brand-spark-gold);
+  --sw-color-accent-tint: #FDF1D8;
+  --sw-color-violet-tint: var(--sw-brand-wing-50);
+  --sw-color-success-tint: var(--sw-brand-lagoon-100);
+  --sw-color-neutral-tint: #F1ECE0;
+
+  
+  --sw-color-ink: var(--sw-brand-lagoon-900);
+  --sw-color-text: var(--sw-brand-inkwell);
+  --sw-color-text-muted: var(--sw-brand-lagoon-700);
+  --sw-color-on-deep: var(--sw-brand-white);
+  --sw-color-on-deep-soft: var(--sw-brand-lagoon-50);
+  --sw-color-on-deep-muted: var(--sw-brand-lagoon-100);
+  --sw-color-link: var(--sw-brand-glade);
+  --sw-color-accent-text: #6E4A00;
+  --sw-color-violet: var(--sw-brand-wing-violet);
+  --sw-color-success-text: var(--sw-brand-lagoon-800);
+  --sw-color-spark: #A85A00;
+
+  
+  --sw-color-action: var(--sw-brand-lagoon);
+  --sw-color-on-action: var(--sw-brand-white);
+  --sw-color-error: #A3261B;
+  --sw-color-focus: var(--sw-brand-lagoon-900);
+  --sw-color-focus-on-deep: var(--sw-brand-spark-gold);
+
+  
+  --sw-color-border: #E6E0D2;
+  --sw-color-border-soft: #ECE6D8;
+  --sw-color-border-strong: #DAD3C2;
+  --sw-color-border-dashed: #8E8470;
+  --sw-color-rule: #CFC8B6;
+  --sw-color-border-on-deep: var(--sw-brand-lagoon-700);
+
+  
+  --sw-mock-ink: #1D2B27;
+  --sw-mock-ink-deep: var(--sw-brand-inkwell);
+  --sw-mock-muted: #3D5B54;
+  --sw-mock-primary: #17725C;
+  --sw-mock-primary-deep: #0F5444;
+  --sw-mock-primary-tint: #E9F3EF;
+  --sw-mock-paper: #FFFDF7;
+  --sw-mock-paper-warm: #F4E7C8;
+  --sw-mock-paper-cool: #E3EADF;
+  --sw-mock-canvas: #F5F1E8;
+  --sw-mock-canvas-alt: #F4F0E6;
+  --sw-mock-highlight: #FBF0D6;
+  --sw-mock-rail: #1E3832;
+
+  
+  --sw-shadow-md: 0 14px 32px rgba(12, 53, 47, 0.14);
+  --sw-shadow-lg: 0 24px 48px rgba(12, 53, 47, 0.14);
+  --sw-shadow-color-12: rgba(12, 53, 47, 0.12);
+  --sw-shadow-color-14: rgba(12, 53, 47, 0.14);
+
+  
+  --sw-font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sw-weight-regular: 400;
+  --sw-weight-medium: 500;
+  --sw-weight-semibold: 600;
+  --sw-weight-bold: 700;
+  --sw-weight-extrabold: 800;
+  --sw-text-display: clamp(46px, 6vw, 82px);
+  --sw-text-h1: clamp(44px, 5.8vw, 78px);
+  --sw-text-h2: clamp(34px, 4vw, 54px);
+  --sw-text-h3: clamp(24px, 2.4vw, 32px);
+  --sw-text-lead: 21px;
+  --sw-text-body-lg: 18px;
+  --sw-text-body: 17px;
+  --sw-text-small: 15px;
+  --sw-text-caption: 13px;
+  --sw-leading-tight: 1.05;
+  --sw-leading-snug: 1.2;
+  --sw-leading-body: 1.5;
+  --sw-tracking-display: -0.035em;
+  --sw-tracking-heading: -0.025em;
+
+  
+  --sw-space-1: 4px;
+  --sw-space-2: 8px;
+  --sw-space-3: 12px;
+  --sw-space-4: 16px;
+  --sw-space-5: 24px;
+  --sw-space-6: 32px;
+  --sw-space-7: 40px;
+  --sw-space-8: 48px;
+  --sw-space-9: 64px;
+  --sw-space-10: 80px;
+  --sw-space-11: 96px;
+  --sw-gutter: clamp(16px, 5vw, 64px);
+  --sw-section-y: clamp(56px, 7vw, 96px);
+  --sw-container: 1312px;
+
+  
+  --sw-radius-sm: 8px;
+  --sw-radius-md: 12px;
+  --sw-radius-lg: 16px;
+  --sw-radius-xl: 20px;
+  --sw-radius-2xl: 24px;
+  --sw-radius-pill: 999px;
+
+  
+  --sw-target-min: 44px;
+  --sw-button-height: 52px;
+  --sw-focus-ring: 3px solid var(--sw-color-focus);
+  --sw-focus-offset: 2px;
+
+  
+  --sw-duration-fast: 200ms;
+  --sw-ease-standard: ease;
+  --sw-marquee-duration: 42s;
+  --sw-story-duration: 9s;
+
+  
+  --sw-bp-medium: 600px;
+  --sw-bp-large: 1024px;
+  --sw-bp-wide: 1200px;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--sw-color-page)}
+a{color:var(--sw-color-link)}a:hover{color:var(--sw-color-deep)}
+
+.sw-h-a{animation:sw-h-pop 9s ease-in-out infinite both}
+@keyframes sw-h-pop{0%,6%{opacity:0;transform:translateY(12px) scale(.94)}13%,88%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+.sw-h-swap-from{animation:sw-h-from 9s ease-in-out infinite both;opacity:0}
+@keyframes sw-h-from{0%,6%{opacity:0}12%,42%{opacity:1}50%,100%{opacity:0}}
+.sw-h-swap-to{animation:sw-h-to 9s ease-in-out infinite both}
+@keyframes sw-h-to{0%,46%{opacity:0}54%,90%{opacity:1}97%,100%{opacity:0}}
+.sw-h-fly{animation:sw-h-fly 9s ease-in infinite both}
+@keyframes sw-h-fly{0%{opacity:0;transform:translate(0,0) rotate(-6deg)}8%{opacity:1}34%{opacity:1;transform:translate(0,0) rotate(3deg)}50%,100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.25) rotate(14deg)}}
+.sw-h-glow{animation:sw-h-glow 9s ease-in-out infinite}
+@keyframes sw-h-glow{0%,40%{transform:scale(1)}52%{transform:scale(1.14)}62%,100%{transform:scale(1)}}
+.sw-h-ring{animation:sw-h-ring 3.6s ease-out infinite both;opacity:.35;transform:translate(-50%,-50%)}
+@keyframes sw-h-ring{0%{opacity:.55;transform:translate(-50%,-50%) scale(.35)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
+.sw-h-twinkle{animation:sw-h-twinkle 3.2s ease-in-out infinite}
+@keyframes sw-h-twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.sw-h-march{animation:sw-h-march 1.6s linear infinite}
+@keyframes sw-h-march{to{stroke-dashoffset:-26}}
+.sw-h-bar{animation:sw-h-bar 9s ease-in-out infinite both;transform-origin:left}
+@keyframes sw-h-bar{0%,10%{transform:scaleX(0)}60%,90%{transform:scaleX(1)}97%,100%{transform:scaleX(0)}}
+.sw-h-underline{background-image:linear-gradient(var(--sw-color-accent),var(--sw-color-accent));background-repeat:no-repeat;background-position:0 94%;background-size:100% .11em;-webkit-box-decoration-break:clone;box-decoration-break:clone;animation:sw-h-underline 9s ease-in-out infinite both}
+@keyframes sw-h-underline{0%,10%{background-size:0 .11em}34%,90%{background-size:100% .11em}98%,100%{background-size:0 .11em}}
+.sw-h-paper{position:absolute;width:46px;height:60px;padding:8px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-evenly;border-radius:4px;background:var(--sw-brand-white);border:1px solid var(--sw-color-border);box-shadow:0 6px 14px var(--sw-shadow-color-14);opacity:0;animation:sw-h-paper 9s ease-in-out infinite both;pointer-events:none}
+.sw-h-paper i{display:block;height:2px;border-radius:2px;background:var(--sw-color-deep);opacity:.3}
+@keyframes sw-h-paper{0%{left:0;top:46px;opacity:0;transform:rotate(-8deg)}5%{opacity:1}16%{left:30%;top:38px;transform:rotate(-3deg)}30%{left:60%;top:20px;opacity:1;transform:rotate(4deg)}44%,100%{left:calc(100% - 92px);top:12px;opacity:0;transform:scale(.3) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.sw-h-a,.sw-h-swap-from,.sw-h-swap-to,.sw-h-fly,.sw-h-glow,.sw-h-ring,.sw-h-twinkle,.sw-h-march,.sw-h-bar,.sw-h-underline,.sw-h-paper{animation:none}}
+.sw-paused .sw-h-a,.sw-paused .sw-h-swap-from,.sw-paused .sw-h-swap-to,.sw-paused .sw-h-fly,.sw-paused .sw-h-glow,.sw-paused .sw-h-ring,.sw-paused .sw-h-twinkle,.sw-paused .sw-h-march,.sw-paused .sw-h-bar,.sw-paused .sw-h-underline,.sw-paused .sw-h-paper{animation:none}
+button.sw-h-pause:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: var(--sw-font-sans); color: var(--sw-color-deep); background: var(--sw-color-page); overflow-x: clip">
+  <dc-import name="Nav" hint-size="100%,112px"></dc-import>
+  <main id="main" tabindex="-1" style="outline: none">
+
+  <section aria-labelledby="st-title" style="padding: 80px clamp(16px, 5vw, 64px)">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr)); gap: 48px 64px; align-items: center; max-width: 1312px; margin: 0 auto"><div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start; min-width: 0">
+      <span style="font-size: 16px; font-weight: 700; color: var(--sw-color-text-muted)">I want to bring AI into my business</span>
+      <h1 id="st-title" style="margin: 0; font-size: clamp(44px, 5vw, 68px); font-weight: 800; line-height: 1; letter-spacing: -0.035em">Less paperwork, starting with one app.</h1>
+      <p style="margin: 0; max-width: 680px; font-size: 21px; line-height: 1.45; color: var(--sw-color-text)">For growing businesses in Australia and the Philippines. You don't need an IT team or a big plan. Start with the job that eats the most hours, and we run the rest for you.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px">
+        <a href="mailto:info@sparkwing.com.au" data-enquiry="call" style="display: flex; align-items: center; min-height: 54px; padding: 0 28px; border-radius: 999px; background: var(--sw-color-action); color: var(--sw-brand-white); font-size: 17px; font-weight: 700; text-decoration: none">Book a discovery call</a>
+        <a href="https://sparkkeeper.moxie-strife.workers.dev/" style="display: flex; align-items: center; min-height: 54px; padding: 0 28px; border-radius: 999px; border: 1.5px solid var(--sw-color-deep); color: var(--sw-color-deep); font-size: 17px; font-weight: 700; text-decoration: none; box-sizing: border-box">Try Sparkkeeper</a>
+      </div>
+    <button class="sw-h-pause" type="button" onClick="{{togglePause}}" aria-pressed="{{pausedLabel}}" style="min-height: 44px; padding: 0 16px; border: 1.5px solid var(--sw-color-deep); border-radius: 999px; background: transparent; color: var(--sw-color-deep); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">{{pauseText}}</button></div><div style="min-width: 0"><div role="img" aria-label="Animation: a pile of paperwork goes into Sparkkeeper, and hours come back." style="position: relative; min-height: 340px; width: 100%; overflow: hidden; border-radius: 24px; background: var(--sw-color-deep); color: var(--sw-brand-white)"><span class="sw-h-fly" style="animation-delay: 0s; --x: 230px; --y: 70px; position: absolute; left: 6%; top: 8%; width: 62px; height: 80px; padding: 9px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-evenly; border-radius: 6px; background: var(--sw-brand-white)"><i style="display: block; width: 60%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 90%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 70%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i></span><span class="sw-h-fly" style="animation-delay: 0.35s; --x: 170px; --y: 50px; position: absolute; left: 20%; top: 14%; width: 62px; height: 80px; padding: 9px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-evenly; border-radius: 6px; background: var(--sw-color-accent-tint)"><i style="display: block; width: 60%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 90%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 70%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i></span><span class="sw-h-fly" style="animation-delay: 0.7s; --x: 220px; --y: 0px; position: absolute; left: 9%; top: 42%; width: 62px; height: 80px; padding: 9px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-evenly; border-radius: 6px; background: var(--sw-color-on-deep-muted)"><i style="display: block; width: 60%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 90%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 70%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i></span><span class="sw-h-fly" style="animation-delay: 1.05s; --x: 150px; --y: -20px; position: absolute; left: 25%; top: 50%; width: 62px; height: 80px; padding: 9px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-evenly; border-radius: 6px; background: var(--sw-brand-white)"><i style="display: block; width: 60%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 90%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 70%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i></span><span class="sw-h-fly" style="animation-delay: 1.4s; --x: 200px; --y: -70px; position: absolute; left: 12%; top: 70%; width: 62px; height: 80px; padding: 9px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-evenly; border-radius: 6px; background: var(--sw-color-accent-tint)"><i style="display: block; width: 60%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 90%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 100%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i><i style="display: block; width: 70%; height: 3px; border-radius: 2px; background: var(--sw-color-deep); opacity: .3"></i></span><span class="sw-h-ring" style="animation-delay: 0s; position: absolute; left: 70%; top: 48%; width: 180px; height: 180px; border: 2px solid var(--sw-color-accent); border-radius: 50%; box-sizing: border-box"></span><span class="sw-h-ring" style="animation-delay: 1.8s; position: absolute; left: 70%; top: 48%; width: 180px; height: 180px; border: 2px solid var(--sw-color-accent); border-radius: 50%; box-sizing: border-box"></span><img class="sw-h-glow" src="/_blob/23fce1b37bd3ccc91199c30d41a45457" alt="" style="position: absolute; left: calc(70% - 44px); top: calc(48% - 44px); width: 88px; height: 88px"><span class="sw-h-a" style="animation-delay: 4.4s; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--sw-color-accent); color: var(--sw-color-deep); font-size: 14px; font-weight: 700; white-space: nowrap; position: absolute; left: 70%; bottom: 10%; margin-left: -50px;">Hours back</span><svg aria-hidden="true" class="sw-h-twinkle" viewBox="-12 -12 24 24" width="18" height="18" style="position: absolute; top: 12%; right: 10%; fill: var(--sw-color-accent)"><path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path></svg></div></div></div>
+  </section>
+
+  <section aria-labelledby="st-apps" style="padding: 80px clamp(16px, 5vw, 64px); background: var(--sw-brand-white)">
+    <div style="display: flex; flex-direction: column; gap: 32px; max-width: 1312px; margin: 0 auto">
+      <h2 id="st-apps" style="margin: 0; font-size: clamp(34px, 4vw, 54px); font-weight: 700; line-height: 1.06; letter-spacing: -0.025em">Where most businesses start</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 16px">
+        <a href="Sparkkeeper.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 32px; border-radius: 22px; background: var(--sw-color-deep); color: var(--sw-brand-white); text-decoration: none">
+          <span style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span style="display: flex; align-items: center; gap: 10px"><img src="/_blob/23fce1b37bd3ccc91199c30d41a45457" alt="" style="width: 44px; height: 44px; flex: none"><b style="font-size: 32px; letter-spacing: -0.02em">Sparkkeeper</b></span><span style="padding: 3px 10px; border-radius: 999px; background: var(--sw-color-success-tint); color: var(--sw-color-success-text); font-size: 13px; font-weight: 700">Beta</span></span>
+          <span style="font-size: 18px; line-height: 1.5; color: var(--sw-color-tint)">If bookkeeping and slow reports are taking your hours. Start from your Excel files, receipts and invoices, and keep your numbers and clients in one place.</span>
+        </a>
+        <a href="Apps.dc.html#magnet" style="display: flex; flex-direction: column; gap: 12px; padding: 32px; border: 1px solid var(--sw-color-border); border-radius: 22px; color: var(--sw-color-deep); text-decoration: none">
+          <span style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span style="display: flex; align-items: center; gap: 10px"><img src="/_blob/4a1ddae520be3180df4fe1a7ab926688" alt="" style="width: 44px; height: 44px; flex: none"><b style="font-size: 32px; letter-spacing: -0.02em">Magnet</b></span><span style="padding: 3px 10px; border-radius: 999px; background: var(--sw-color-neutral-tint); color: var(--sw-color-text-muted); font-size: 13px; font-weight: 700">Coming soon</span></span>
+          <span style="font-size: 18px; line-height: 1.5; color: var(--sw-color-text)">If follow-ups and renewals keep slipping, or new clients are hard to find.</span>
+        </a>
+        <a href="Studio.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 32px; border: 1px solid var(--sw-color-border); border-radius: 22px; color: var(--sw-color-deep); text-decoration: none; background: var(--sw-brand-white)"><span style="display: flex; align-items: center; gap: 10px"><img src="/_blob/26a328f2f1d364a6e845247ec238d2b1" alt="" style="width: 44px; height: 44px; flex: none"><b style="font-size: 32px; letter-spacing: -0.02em">Spark Studio</b></span><span style="font-size: 18px; line-height: 1.5; color: var(--sw-color-text)">If you need AI set up for you, or an app or AI agent built around how you work.</span></a>
+        <a href="mailto:info@sparkwing.com.au" data-enquiry="call" style="display: flex; flex-direction: column; gap: 12px; padding: 32px; border: 1px solid var(--sw-color-border); border-radius: 22px; color: var(--sw-color-deep); text-decoration: none">
+          <b style="font-size: 32px; letter-spacing: -0.02em">Accounting firms</b>
+          <span style="font-size: 18px; line-height: 1.5; color: var(--sw-color-text)">If you keep records for many clients and want AI your whole firm can trust. Let's talk about what would help most.</span>
+        </a>
+      </div>
+      <p style="margin: 0; max-width: 800px; font-size: 18px; line-height: 1.5; color: var(--sw-color-text)">Sparkkeeper sits alongside your registered books and invoicing. <a href="Sparkkeeper.dc.html#scope" style="font-weight: 700">See what it covers today</a></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="st-how" style="padding: 80px clamp(16px, 5vw, 64px); background: var(--sw-color-page)">
+    <div style="display: flex; flex-direction: column; gap: 32px; max-width: 1312px; margin: 0 auto">
+      <h2 id="st-how" style="margin: 0; font-size: clamp(34px, 4vw, 54px); font-weight: 700; line-height: 1.06; letter-spacing: -0.025em">How we get you off the ground</h2>
+      <ol style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none">
+        <li style="display: flex; flex-direction: column; gap: 8px; padding: 24px; border: 1px solid var(--sw-color-border); border-radius: 18px; background: var(--sw-brand-white)"><b style="font-size: 30px; color: var(--sw-color-spark)">1</b><b style="font-size: 21px">We listen</b><span style="font-size: 16px; line-height: 1.5; color: var(--sw-color-text)">A discovery call about your goals and what's in the way. Show and tell comes later.</span></li>
+        <li style="display: flex; flex-direction: column; gap: 8px; padding: 24px; border: 1px solid var(--sw-color-border); border-radius: 18px; background: var(--sw-brand-white)"><b style="font-size: 30px; color: var(--sw-color-spark)">2</b><b style="font-size: 21px">We recommend</b><span style="font-size: 16px; line-height: 1.5; color: var(--sw-color-text)">A recommendation and quote made for your business, in Australian dollars or pesos.</span></li>
+        <li style="display: flex; flex-direction: column; gap: 8px; padding: 24px; border: 1px solid var(--sw-color-border); border-radius: 18px; background: var(--sw-brand-white)"><b style="font-size: 30px; color: var(--sw-color-spark)">3</b><b style="font-size: 21px">We set you up</b><span style="font-size: 16px; line-height: 1.5; color: var(--sw-color-text)">Your space, your users and your documents, ready for a small team to test first.</span></li>
+        <li style="display: flex; flex-direction: column; gap: 8px; padding: 24px; border: 1px solid var(--sw-color-border); border-radius: 18px; background: var(--sw-brand-white)"><b style="font-size: 30px; color: var(--sw-color-spark)">4</b><b style="font-size: 21px">You grow</b><span style="font-size: 16px; line-height: 1.5; color: var(--sw-color-text)">Roll out to everyone, then switch on more apps whenever you're ready.</span></li>
+      </ol>
+    </div>
+  </section>
+  </main>
+
+  <dc-import name="Footer" hint-size="100%,560px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2180}}'>
+class Component extends DCLogic {
+  renderVals() { return { rootClass: this.state && this.state.paused ? 'sw-paused' : '', pausedLabel: this.state && this.state.paused ? 'true' : 'false', pauseText: this.state && this.state.paused ? 'Play animation' : 'Pause animation', togglePause: () => this.setState({ paused: !(this.state && this.state.paused) }) }; }
+}
+</script>
+</body>
+</html>
