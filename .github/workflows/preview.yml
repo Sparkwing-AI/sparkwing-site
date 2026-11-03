@@ -62,6 +62,8 @@ jobs:
 
       - name: Build
         if: steps.secrets.outputs.ready == 'true'
+        env:
+          PUBLIC_FORM_ENDPOINT: ${{ vars.PUBLIC_FORM_ENDPOINT }}
         run: npm run build
 
       - name: Create the Pages project if missing

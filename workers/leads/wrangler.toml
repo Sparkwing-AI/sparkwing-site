@@ -1,0 +1,19 @@
+name = "sparkwing-leads"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+# Cloudflare Access must cover ALL traffic to this Worker (see docs/website/FORMS-SETUP.md).
+# Turn off the public workers.dev and preview URLs once Access is on the Worker's own hostname.
+[observability]
+enabled = true
+
+# Not secrets. Copy them from the Zero Trust dashboard (Access, Applications).
+[vars]
+ACCESS_TEAM_DOMAIN = "REPLACE_WITH_TEAM_DOMAIN"
+ACCESS_AUD = "REPLACE_WITH_APPLICATION_AUD_TAG"
+
+# Same database as the forms Worker. Paste the same database_id.
+[[d1_databases]]
+binding = "DB"
+database_name = "sparkwing-leads"
+database_id = "REPLACE_WITH_DATABASE_ID"

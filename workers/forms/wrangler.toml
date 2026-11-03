@@ -1,0 +1,29 @@
+name = "sparkwing-forms"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+[observability]
+enabled = true
+
+# Pages allowed to post to this Worker (FR-906). Comma separated, no trailing slashes.
+# Add the preview origin here while testing, and take it out again before launch.
+[vars]
+ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
+MAIL_FROM = "info@sparkwing.com.au"
+MAIL_TO = "info@sparkwing.com.au"
+
+# Run `npx wrangler d1 create sparkwing-leads` and paste the database_id it prints.
+[[d1_databases]]
+binding = "DB"
+database_name = "sparkwing-leads"
+database_id = "REPLACE_WITH_DATABASE_ID"
+migrations_dir = "migrations"
+
+# Rate limit per IP (FR-909): 5 submissions a minute.
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "1001"
+simple = { limit = 5, period = 60 }
+
+# Secrets, set with `npx wrangler secret put <NAME>`. Never put these in this file:
+#   GRAPH_TENANT_ID, GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET
