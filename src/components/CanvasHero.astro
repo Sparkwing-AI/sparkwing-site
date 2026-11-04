@@ -37,27 +37,37 @@ const { scene, ground = 'deep', titleId, label, seen = false } = Astro.props;
 </section>
 
 <script>
-  import { startScene } from '../scripts/motion-engine.js';
-
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const runs: { pause: (paused: boolean) => void }[] = [];
 
-  document.querySelectorAll<HTMLElement>('[data-motion-scene]').forEach((root) => {
-    const run = startScene(root, root.dataset.motionScene || 'flow', {
-      seen: root.dataset.motionSeen === 'true',
+  function wire(startScene: (root: HTMLElement, kind: string, opts: { seen?: boolean }) => { pause?: (paused: boolean) => void }) {
+    document.querySelectorAll<HTMLElement>('[data-motion-scene]').forEach((root) => {
+      const run = startScene(root, root.dataset.motionScene || 'flow', {
+        seen: root.dataset.motionSeen === 'true',
+      });
+      if (typeof run?.pause === 'function') runs.push({ pause: run.pause });
     });
-    if (run && typeof run.pause === 'function') runs.push(run);
-  });
+    const sync = () => {
+      const paused = document.documentElement.hasAttribute('data-paused') || reduce.matches;
+      runs.forEach((run) => run.pause(paused));
+    };
+    new MutationObserver(sync).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-paused'],
+    });
+    reduce.addEventListener('change', sync);
+    sync();
+  }
 
-  const sync = () => {
-    const paused = document.documentElement.hasAttribute('data-paused') || reduce.matches;
-    runs.forEach((run) => run.pause(paused));
-  };
+  function boot() {
+    void import('../scripts/motion-engine.js').then(({ startScene }) => wire(startScene));
+  }
 
-  new MutationObserver(sync).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-paused'],
-  });
-  reduce.addEventListener('change', sync);
-  sync();
+  function whenIdle() {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(() => boot(), { timeout: 2000 });
+    else setTimeout(boot, 1);
+  }
+
+  if (document.readyState === 'complete') whenIdle();
+  else window.addEventListener('load', whenIdle, { once: true });
 </script>

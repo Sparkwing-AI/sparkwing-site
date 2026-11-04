@@ -9,6 +9,15 @@ export function startScene(root, kind, opts = {}) {
       return { pause() {}, stop() {}, seek() {}, fairy() { return null; } };
     }
     const ctx = c.getContext('2d');
+    const cores = navigator.hardwareConcurrency || 8;
+    const memory = typeof navigator.deviceMemory === 'number' ? navigator.deviceMemory : 8;
+    const phone = window.matchMedia('(max-width: 700px)').matches;
+    const lowPower = phone || cores <= 4 || memory <= 4;
+    let quality = lowPower ? 0.45 : 1;
+    let dprCap = lowPower ? 1.5 : 2;
+    let frameGap = lowPower ? 1000 / 30 : 0;
+    let slowFrames = 0;
+    const scaled = (full, compact) => Math.max(8, Math.round((W < 700 ? compact : full) * quality));
     const RGB = { gold: [254, 185, 56], ember: [240, 130, 30], teal: [95, 214, 196], white: [235, 250, 247], violet: [150, 132, 232] };
     const rnd = (a, b) => a + Math.random() * (b - a);
     const pick = (a) => a[Math.floor(Math.random() * a.length)];
@@ -36,16 +45,18 @@ export function startScene(root, kind, opts = {}) {
     const burst = (x, y, col = 'gold', size = 1) => bursts.push({ x, y, age: 0, col, size });
     const lit = (el, ms = 1500) => { if (!el) return; el.setAttribute('data-on', '1'); clearTimeout(el._t); el._t = setTimeout(() => el.removeAttribute('data-on'), ms); };
     function buildStars() {
-      const n = W < 700 ? 80 : 190; stars = [];
+      const n = scaled(190, 80); stars = [];
       const pal = kind === 'trust' ? ['white', 'white', 'teal', 'gold'] : ['teal', 'teal', 'white', 'gold', 'teal', 'gold'];
       for (let i = 0; i < n; i++) {
         const z = Math.pow(Math.random(), 1.7) * 0.85 + 0.15;
         stars.push({ x: rnd(W * (W < 700 ? 0 : 0.25), W * 1.03), y: rnd(-20, H + 20), z, vx: rnd(-4, 4) * z, vy: rnd(-3, 3) * z, ph: rnd(0, 6.28), col: Math.random() < 0.035 ? 'violet' : pick(pal), big: Math.random() < 0.07 });
       }
     }
+    let drawCut = false;
     function drawStars() {
+      const started = performance.now();
       const L = W < 700 ? 74 : 112, buckets = [[], [], []];
-      for (let i = 0; i < stars.length; i++) { const a = stars[i]; for (let j = i + 1; j < stars.length; j++) { const b = stars[j]; const dx = a.x - b.x, dy = a.y - b.y; if (Math.abs(dx) > L || Math.abs(dy) > L) continue; const d = Math.hypot(dx, dy); if (d < L) { const q = 1 - d / L; buckets[q > 0.66 ? 2 : q > 0.33 ? 1 : 0].push(a.x, a.y, b.x, b.y); } } }
+      for (let i = 0; i < stars.length; i++) { if ((i & 7) === 0 && performance.now() - started > 8) { drawCut = true; break; } const a = stars[i]; for (let j = i + 1; j < stars.length; j++) { const b = stars[j]; const dx = a.x - b.x, dy = a.y - b.y; if (Math.abs(dx) > L || Math.abs(dy) > L) continue; const d = Math.hypot(dx, dy); if (d < L) { const q = 1 - d / L; buckets[q > 0.66 ? 2 : q > 0.33 ? 1 : 0].push(a.x, a.y, b.x, b.y); } } }
       const line = kind === 'trust' ? '190,215,245' : '130,225,208';
       buckets.forEach((seg, k) => { ctx.globalAlpha = 1; ctx.strokeStyle = `rgba(${line},${[0.05, 0.11, 0.2][k]})`; ctx.lineWidth = 0.7; ctx.beginPath(); for (let i = 0; i < seg.length; i += 4) { ctx.moveTo(seg[i], seg[i + 1]); ctx.lineTo(seg[i + 2], seg[i + 3]); } ctx.stroke(); });
       stars.forEach((s) => { const tw = 0.6 + 0.4 * Math.sin(T * 0.9 + s.ph); if (s.big) spark(s.x, s.y, 46 + 40 * s.z, 0.13 * tw, s.col); spark(s.x, s.y, (6 + 19 * s.z) * (0.85 + 0.15 * tw), (0.3 + 0.7 * s.z) * tw, s.col); });
@@ -74,7 +85,7 @@ export function startScene(root, kind, opts = {}) {
         }
       },
       magnet: {
-        init() { X.R = Math.min(F.r * 1.5, W * 0.48); X.parts = []; for (let i = 0; i < (W < 700 ? 300 : 640); i++) X.parts.push({ a: rnd(0, 6.28), r: Math.pow(Math.random(), 0.6) * X.R, col: Math.random() < 0.5 ? 'gold' : Math.random() < 0.7 ? 'teal' : 'white', s: rnd(0.65, 1.2) }); X.chips = [...root.querySelectorAll('[data-in]')]; X.out = root.querySelector('[data-out]'); X.tile = root.querySelector('[data-tile]'); X.n = 0; X.next = 0.3; },
+        init() { X.R = Math.min(F.r * 1.5, W * 0.48); X.parts = []; for (let i = 0; i < scaled(640, 300); i++) X.parts.push({ a: rnd(0, 6.28), r: Math.pow(Math.random(), 0.6) * X.R, col: Math.random() < 0.5 ? 'gold' : Math.random() < 0.7 ? 'teal' : 'white', s: rnd(0.65, 1.2) }); X.chips = [...root.querySelectorAll('[data-in]')]; X.out = root.querySelector('[data-out]'); X.tile = root.querySelector('[data-tile]'); X.n = 0; X.next = 0.3; },
         step(dt) {
           X.parts.forEach((p) => { const near = 1 - p.r / X.R; p.pa = p.a; p.pr = p.r; p.a += dt * (0.14 + 0.95 * near * near) * p.s; p.r -= dt * (9 + 34 * near) * p.s; if (p.r < 26) { p.r = X.R * rnd(0.82, 1); p.a = rnd(0, 6.28); p.pa = p.a; p.pr = p.r; } });
           X.next -= dt; if (X.next <= 0) { X.next = rnd(1.1, 1.7); const ch = X.chips[X.n % X.chips.length]; X.n++; const r = relRect(ch); const n = X.n; lit(ch, 1400); pulse(curve({ x: r.cx, y: r.cy }, { x: F.cx, y: F.cy }, 0.2), { v: 0.5, done: () => { burst(F.cx, F.cy, 'gold', 1); lit(X.tile, 900); if (n % 3 === 0) { const o = relRect(X.out); pulse(curve({ x: F.cx, y: F.cy }, { x: o.cx, y: o.cy }, -0.18), { v: 0.5, size: 20, col: 'white', col2: 'gold', flip: 0.1, done: () => { burst(o.cx, o.cy, 'gold', 0.9); lit(X.out, 2400); } }); } } }); }
@@ -88,7 +99,7 @@ export function startScene(root, kind, opts = {}) {
         }
       },
       academy: {
-        init() { const P = [[0.05, 0.82], [0.33, 0.52], [0.59, 0.68], [0.9, 0.16]]; const pts = P.map(([a, b]) => ({ x: F.x0 + a * F.w, y: F.y0 + b * F.h })); X.nodes = pts; const out = []; const cr = (a, b, c2, d, t) => 0.5 * (2 * b + (c2 - a) * t + (2 * a - 5 * b + 4 * c2 - d) * t * t + (3 * b - a - 3 * c2 + d) * t * t * t); for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)]; for (let t = 0; t < 1; t += 0.02) out.push({ x: cr(p0.x, p1.x, p2.x, p3.x, t), y: cr(p0.y, p1.y, p2.y, p3.y, t) }); } X.path = out; X.nodeAt = pts.map((_, i) => i / (pts.length - 1)); X.flow = []; for (let i = 0; i < (W < 700 ? 110 : 210); i++) X.flow.push({ t: Math.random(), off: rnd(-26, 26), v: rnd(0.035, 0.07), col: Math.random() < 0.5 ? 'teal' : 'white' }); X.p = 0; X.hold = 0; X.hit = -1; X.labels = [...root.querySelectorAll('[data-step]')]; X.end = [...root.querySelectorAll('[data-end]')]; },
+        init() { const P = [[0.05, 0.82], [0.33, 0.52], [0.59, 0.68], [0.9, 0.16]]; const pts = P.map(([a, b]) => ({ x: F.x0 + a * F.w, y: F.y0 + b * F.h })); X.nodes = pts; const out = []; const cr = (a, b, c2, d, t) => 0.5 * (2 * b + (c2 - a) * t + (2 * a - 5 * b + 4 * c2 - d) * t * t + (3 * b - a - 3 * c2 + d) * t * t * t); for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)]; for (let t = 0; t < 1; t += 0.02) out.push({ x: cr(p0.x, p1.x, p2.x, p3.x, t), y: cr(p0.y, p1.y, p2.y, p3.y, t) }); } X.path = out; X.nodeAt = pts.map((_, i) => i / (pts.length - 1)); X.flow = []; for (let i = 0; i < scaled(210, 110); i++) X.flow.push({ t: Math.random(), off: rnd(-26, 26), v: rnd(0.035, 0.07), col: Math.random() < 0.5 ? 'teal' : 'white' }); X.p = 0; X.hold = 0; X.hit = -1; X.labels = [...root.querySelectorAll('[data-step]')]; X.end = [...root.querySelectorAll('[data-end]')]; },
         step(dt) { X.flow.forEach((f) => { f.t += f.v * dt; if (f.t > 1) f.t = 0; }); if (X.hold > 0) { X.hold -= dt; if (X.hold <= 0) { X.p = 0; X.hit = -1; X.labels.forEach((l) => l.removeAttribute('data-on')); X.end.forEach((el) => el.removeAttribute('data-on')); } return; } X.p += dt / 9; X.nodeAt.forEach((v, i) => { if (X.p >= v - 0.002 && i > X.hit) { X.hit = i; const n = X.nodes[i]; burst(n.x, n.y, 'gold', i === 3 ? 1.8 : 1); if (X.labels[i]) X.labels[i].setAttribute('data-on', '1'); if (i === 3) X.end.forEach((el) => el.setAttribute('data-on', '1')); } }); if (X.p >= 1) { X.p = 1; X.hold = 3.4; } },
         draw() {
           const pt = (t) => X.path[clamp(Math.floor(t * (X.path.length - 1)), 0, X.path.length - 1)];
@@ -100,7 +111,7 @@ export function startScene(root, kind, opts = {}) {
         }
       },
       nest: {
-        init() { X.R = Math.min(F.r * 0.98, W * 0.42); X.strands = []; const n = W < 700 ? 15 : 22; for (let i = 0; i < n; i++) X.strands.push({ a0: (i / n) * 6.283, tw: rnd(1.7, 3), rr: rnd(0.14, 0.26), k: pick([2, 3, 3, 4]), ph: rnd(0, 6.28), col: i % 3 === 0 ? 'gold' : i % 3 === 1 ? 'teal' : 'white' }); X.chips = [...root.querySelectorAll('[data-in]')]; X.tile = root.querySelector('[data-tile]'); X.n = 0; X.next = 0.2; },
+        init() { X.R = Math.min(F.r * 0.98, W * 0.42); X.strands = []; const n = scaled(22, 15); for (let i = 0; i < n; i++) X.strands.push({ a0: (i / n) * 6.283, tw: rnd(1.7, 3), rr: rnd(0.14, 0.26), k: pick([2, 3, 3, 4]), ph: rnd(0, 6.28), col: i % 3 === 0 ? 'gold' : i % 3 === 1 ? 'teal' : 'white' }); X.chips = [...root.querySelectorAll('[data-in]')]; X.tile = root.querySelector('[data-tile]'); X.n = 0; X.next = 0.2; },
         step(dt) { X.next -= dt; if (X.next <= 0) { X.next = rnd(1.1, 1.6); const ch = X.chips[X.n++ % X.chips.length]; const r = relRect(ch); lit(ch, 1300); pulse(curve({ x: r.cx, y: r.cy }, { x: F.cx, y: F.cy + X.R * 0.1 }, rnd(-0.2, 0.2)), { v: 0.48, size: 17, done: () => { burst(F.cx, F.cy + X.R * 0.1, 'gold', 1.3); lit(X.tile, 900); } }); } },
         draw() {
           const tilt = 1.22, ct = Math.cos(tilt), st = Math.sin(tilt), rot = T * 0.17, cr = Math.cos(rot), sr = Math.sin(rot), f = X.R * 4.2;
@@ -111,7 +122,7 @@ export function startScene(root, kind, opts = {}) {
         }
       },
       home: {
-        init() { X.L = Math.min(F.r * 1.42, W * 0.46); X.sheds = []; X.next = 0; X.fe = []; const n = W < 700 ? 13 : 18; for (let i = 0; i < n; i++) { const u = i / (n - 1); X.fe.push({ ang: -0.42 + u * 1.75, len: X.L * (0.46 + 0.62 * Math.sin(0.25 + u * 2.75)), bend: 0.2 + u * 0.14, ph: rnd(0, 6.28) }); } },
+        init() { X.L = Math.min(F.r * 1.42, W * 0.46); X.sheds = []; X.next = 0; X.fe = []; const n = scaled(18, 13); for (let i = 0; i < n; i++) { const u = i / (n - 1); X.fe.push({ ang: -0.42 + u * 1.75, len: X.L * (0.46 + 0.62 * Math.sin(0.25 + u * 2.75)), bend: 0.2 + u * 0.14, ph: rnd(0, 6.28) }); } },
         pt(fe, t, side) { const flap = 0.16 + Math.sin(T * 0.62) * 0.14; const a = fe.ang + Math.sin(T * 0.62 + fe.ang) * 0.025; const b = fe.bend * Math.sin(t * 3.14) * fe.len; const x0 = Math.cos(a) * fe.len * t + Math.sin(a) * b * 0.55, y0 = -Math.sin(a) * fe.len * t + Math.cos(a) * b * 0.55; const fold = (side > 0 ? 0.32 : 0.92) + flap; const x = x0 * Math.cos(fold) * side, z = x0 * Math.sin(fold) * (side > 0 ? -0.55 : 0.55), y = y0; const f = 900 / (900 + z); return [F.cx + x * f, F.cy + F.r * 0.32 + y * f, f]; },
         step(dt) { X.next -= dt; if (X.next <= 0) { X.next = 0.11; const fe = pick(X.fe), side = Math.random() < 0.74 ? 1 : -1; const p = this.pt(fe, 1, side); X.sheds.push({ x: p[0], y: p[1], vx: rnd(-20, 4), vy: rnd(10, 34), age: 0, life: rnd(1.8, 3.2), col: Math.random() < 0.8 ? 'gold' : 'white' }); } for (let i = X.sheds.length - 1; i >= 0; i--) { const s = X.sheds[i]; s.age += dt; s.x += s.vx * dt; s.y += s.vy * dt; if (s.age > s.life) X.sheds.splice(i, 1); } },
         draw() {
@@ -187,15 +198,48 @@ export function startScene(root, kind, opts = {}) {
     function fairyLayout() { fc.width = W * dpr; fc.height = H * dpr; B.size = W < 700 ? 0.72 : 0.92; }
     const sc = scenes[kind] || scenes.flow;
     function layout() {
-      const b = c.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, 2); W = Math.round(b.width); H = Math.round(b.height); if (!W || !H) return false; c.width = W * dpr; c.height = H * dpr; const r = relRect(stageEl); F = { x0: r.x, y0: r.y, w: r.w, h: r.h, cx: r.cx, cy: r.cy, r: Math.min(r.w, r.h) / 2 }; pulses = []; bursts = []; X = {}; fairyLayout(); buildStars(); sc.init(); if (B.mode === 'fly') B.path = flightPath(); if (B.mode === 'hop') { B.mode = 'perch'; } if (B.seen) { B.mode = 'perch'; B.dust = []; } return true;
+      const b = c.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, dprCap); W = Math.round(b.width); H = Math.round(b.height); if (!W || !H) return false; c.width = W * dpr; c.height = H * dpr; const r = relRect(stageEl); F = { x0: r.x, y0: r.y, w: r.w, h: r.h, cx: r.cx, cy: r.cy, r: Math.min(r.w, r.h) / 2 }; pulses = []; bursts = []; X = {}; fairyLayout(); buildStars(); sc.init(); if (B.mode === 'fly') B.path = flightPath(); if (B.mode === 'hop') { B.mode = 'perch'; } if (B.seen) { B.mode = 'perch'; B.dust = []; } return true;
     }
     function nebula() { const m = Math.max(F.w, F.h); const a = kind === 'trust' ? ['teal', 'violet', 'gold'] : ['teal', 'ember', 'violet']; spark(F.cx + Math.sin(T * 0.07) * m * 0.22, F.cy - m * 0.2 + Math.cos(T * 0.05) * m * 0.1, m * 2.1, 0.13, a[0]); spark(F.cx + m * 0.36 + Math.cos(T * 0.06) * m * 0.12, F.cy + m * 0.26, m * 1.5, 0.09, a[1]); spark(F.cx - m * 0.3, F.cy + m * 0.3 + Math.sin(T * 0.05) * m * 0.12, m * 1.2, 0.07, a[2]); }
     function draw() { fairyDraw(); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter'; nebula(); drawStars(); sc.draw(); drawPulses(); ctx.globalAlpha = 1; }
     function step(dt) { T += dt; stepCommon(dt); sc.step(dt); if (!settling) fairyStep(dt); }
     const still = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let raf = 0, last = 0, paused = false, onScreen = true, settling = false;
-    const tick = (now) => { raf = requestAnimationFrame(tick); const dt = Math.min((now - last) / 1000, 0.05); last = now; step(dt); draw(); };
-    const settle = () => { settling = true; for (let i = 0; i < 300; i++) step(1 / 30); settling = false; draw(); };
+    let raf = 0, last = 0, paused = false, onScreen = true, settling = false, settleId = 0;
+    function degrade() {
+      if (quality <= 0.3 && dprCap <= 1 && frameGap >= 1000 / 24) return;
+      quality = Math.max(0.3, quality * 0.7);
+      dprCap = 1;
+      frameGap = Math.max(frameGap, 1000 / 30);
+      layout();
+    }
+    const tick = (now) => {
+      raf = requestAnimationFrame(tick);
+      if (!last) { last = now; return; }
+      const elapsed = now - last;
+      if (frameGap && elapsed < frameGap - 1.5) return;
+      const dt = Math.min(elapsed / 1000, 0.05);
+      last = now;
+      const budget = frameGap || 16.7;
+      if (elapsed > budget * 2) slowFrames += 1;
+      else slowFrames = Math.max(0, slowFrames - 1);
+      if (slowFrames >= 10 || drawCut) { slowFrames = 0; drawCut = false; degrade(); }
+      step(dt);
+      draw();
+    };
+    const settle = () => {
+      const id = ++settleId;
+      let i = 0;
+      const chunk = () => {
+        if (id !== settleId) return;
+        const start = performance.now();
+        settling = true;
+        while (i < 300 && performance.now() - start < 12) { step(1 / 30); i += 1; }
+        settling = false;
+        if (i < 300) setTimeout(chunk, 0);
+        else draw();
+      };
+      chunk();
+    };
     const sync = () => { cancelAnimationFrame(raf); raf = 0; if (!paused && onScreen && !still.matches && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(tick); } };
     if (!layout()) return { pause() {}, stop() {}, seek() {}, fairy() { return null; } };
     settle();

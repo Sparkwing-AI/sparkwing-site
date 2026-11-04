@@ -98,6 +98,9 @@ const next = [
           </p>
           <Button variant="deep" size="lg" type="submit" class="sw-form-submit">Send my application</Button>
         </form>
+        <script is:inline>
+          document.getElementById('beta-form')?.removeAttribute('hidden');
+        </script>
 
         <noscript>
           <p class="sw-form-error">
@@ -187,8 +190,7 @@ const next = [
   const fail = document.getElementById('beta-fail');
 
   if (root && form && done && doneEmail && fail) {
-    // The form needs JavaScript to send, so it stays hidden until the script runs. Without it the page shows the email address.
-    form.hidden = false;
+    // The form is shown by a tiny inline script during parsing. Without JavaScript it stays hidden and the email address is offered.
     const CONSENT_WORDING_VERSION = 'beta-v1';
     const messages = {
       name: 'Please enter your name.',
