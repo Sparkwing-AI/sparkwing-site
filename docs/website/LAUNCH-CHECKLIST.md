@@ -13,3 +13,17 @@ Launch is CORE-183 and is Elly's only. Each item names who supplies or does it.
 ## After the production deploy
 
 - [ ] **Google Search Console.** Click Verify in Search Console, then submit `https://sparkwing.com.au/sitemap.xml` under Sitemaps. Check that it reads with no errors.
+
+## Publish and roll back
+
+`.github/workflows/publish.yml` builds the site and publishes the `dist` folder to GitHub Pages. The Astro build copies `CNAME` into `dist`, so `sparkwing.com.au` stays attached. The workflow has no push trigger. It runs only when someone starts **Publish** by hand from the Actions tab.
+
+GitHub Pages is still set to serve the root of `main`. That root is the holding page. This checklist does not change that setting. Before the first run, switch the Pages source to GitHub Actions. That switch is a live setting, so it waits for Elly.
+
+Ask Sparky stays off. The workflow does not set `PUBLIC_CHAT_ENABLED`.
+
+Rollback, after a publish has gone live:
+
+1. Open the repository, then Actions, then Publish.
+2. Open the last good run and choose Re-run all jobs. That run builds the commit it originally used and publishes it again.
+3. To return to the holding page, set Pages back to Deploy from a branch, branch `main`, folder `/ (root)`. That serves the root `index.html` again. Do that only when the Actions deployment should stop.
