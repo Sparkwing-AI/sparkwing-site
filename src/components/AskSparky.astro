@@ -211,7 +211,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     }
     if (/demo|log ?in|sign in|have a play/.test(text)) {
       return {
-        text: `There isn't a public demo or a Sparkkeeper login on the site. You can apply for the beta, and the team can walk you through it on a discovery call.${hook}`,
+        text: `There isn't a public trial on the site. You can apply for the beta, and the team can walk you through it on a discovery call.${hook}`,
         src: 'Beta page',
         href: '/sparkkeeper/beta',
         beta: true,
