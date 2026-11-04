@@ -158,7 +158,7 @@ test.describe('Review fixes', () => {
   for (const route of ['/spark-studio', '/scale-ai']) {
     test(`hero button focus ring is visible on the dark band: ${route}`, async ({ page }) => {
       await page.goto(route);
-      const button = page.locator('.ph .sw-btn').first();
+      const button = page.locator('.mx-hero .sw-btn').first();
       await button.focus();
       await page.keyboard.press('Shift+Tab');
       await page.keyboard.press('Tab');
@@ -212,7 +212,7 @@ test.describe('Review fixes', () => {
       '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.'],
       '/spark-studio': ['Spark Studio: AI consulting, automation and custom AI agents', 'AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more.'],
       '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in.'],
-      '/bring-ai-in': ['AI for business: start with one app, Sparkwing', 'AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed.'],
+      '/bring-ai-in': ['AI for business: start with our bookkeeping app, Sparkwing', 'AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed.'],
       '/scale-ai': ['AI strategy and governance for your team, Sparkwing', 'Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply.'],
     };
@@ -239,6 +239,7 @@ test.describe('Review fixes', () => {
   });
   test('links on the new pages match the requirements link table', async ({ page }) => {
     const checks: Array<[string, string, string]> = [
+      ['/sparkkeeper', 'Join the beta', '/sparkkeeper/beta'],
       ['/sparkkeeper', 'Apply for the beta', '/sparkkeeper/beta'],
       ['/bring-ai-in', 'See what it covers today', '/sparkkeeper#scope'],
       ['/scale-ai', 'Control Tower Governance and guardrails', '/trust#control-tower'],
@@ -346,4 +347,25 @@ test.describe('Decisions of 4 Nov', () => {
     });
     expect(ratio).toBeGreaterThanOrEqual(3);
   });
+});
+
+test.describe('medium width', () => {
+  for (const width of [390, 1440]) {
+    test(`no horizontal scroll on Sparkkeeper at ${width}`, async ({ page }, info) => {
+      test.skip(info.project.name !== 'wide', 'The viewport is set inside the test.');
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/sparkkeeper');
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(0);
+    });
+  }
+
+  for (const route of ['/sparkkeeper', '/apps/magnet', '/apps/academy', '/apps/nest', '/spark-studio', '/trust', '/bring-ai-in', '/scale-ai']) {
+    test(`no horizontal scroll at 768: ${route}`, async ({ page }) => {
+      await page.setViewportSize({ width: 768, height: 900 });
+      await page.goto(route);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow, route).toBeLessThanOrEqual(0);
+    });
+  }
 });

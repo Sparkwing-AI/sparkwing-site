@@ -20,6 +20,8 @@
     "build:og": "node scripts/make-og.mjs",
     "lint:workers": "tsc -p workers/tsconfig.json",
     "test:legal": "node scripts/check-legal.mjs",
+    "chat:dev": "npx wrangler dev --config workers/chat/wrangler.toml",
+    "test:chat": "node --experimental-strip-types workers/chat/test/model-checks.ts",
     "test:links": "linkinator dist --config linkinator.config.json",
     "test:a11y": "playwright test",
     "test:lighthouse": "lhci autorun --config=lighthouserc.cjs"

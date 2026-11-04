@@ -242,17 +242,6 @@
   transform: rotate(180deg);
 }
 
-.sw-nav-login {
-  display: flex;
-  align-items: center;
-  min-height: var(--sw-target-min);
-  padding: 0 var(--sw-space-4);
-  color: var(--sw-color-ink);
-  font-size: var(--sw-text-body);
-  font-weight: var(--sw-weight-semibold);
-  text-decoration: none;
-}
-
 .sw-menu-btn {
   display: none;
 }
@@ -399,8 +388,7 @@
 }
 
 @media (max-width: 1199px) {
-  .sw-nav-links,
-  .sw-nav-login {
+  .sw-nav-links {
     display: none;
   }
 

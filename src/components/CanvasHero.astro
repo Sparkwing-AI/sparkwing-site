@@ -1,0 +1,63 @@
+---
+import '../styles/hero-motion.css';
+import MotionTrigger from './MotionTrigger.astro';
+
+interface Props {
+  scene: string;
+  ground?: 'deep' | 'navy';
+  titleId: string;
+  label: string;
+  /** Butterfly is already perched. Used when an app scene restarts. */
+  seen?: boolean;
+}
+
+const { scene, ground = 'deep', titleId, label, seen = false } = Astro.props;
+---
+
+<section
+  class="mx-hero"
+  data-ground={ground}
+  data-motion-scene={scene}
+  data-motion-seen={seen ? 'true' : undefined}
+  aria-labelledby={titleId}
+>
+  <canvas class="mx-canvas" aria-hidden="true"></canvas>
+  <div class="mx-veil"></div>
+  <div class="mx-grid">
+    <slot name="copy" />
+    <div class="mx-stage" role="img" aria-label={label}>
+      <div aria-hidden="true">
+        <slot name="stage" />
+      </div>
+    </div>
+    <slot name="paths" />
+  </div>
+  <canvas class="mx-fairy" aria-hidden="true"></canvas>
+  <MotionTrigger class="home-hero-hit" corner="bottom-right" />
+</section>
+
+<script>
+  import { startScene } from '../scripts/motion-engine.js';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const runs: { pause: (paused: boolean) => void }[] = [];
+
+  document.querySelectorAll<HTMLElement>('[data-motion-scene]').forEach((root) => {
+    const run = startScene(root, root.dataset.motionScene || 'flow', {
+      seen: root.dataset.motionSeen === 'true',
+    });
+    if (run && typeof run.pause === 'function') runs.push(run);
+  });
+
+  const sync = () => {
+    const paused = document.documentElement.hasAttribute('data-paused') || reduce.matches;
+    runs.forEach((run) => run.pause(paused));
+  };
+
+  new MutationObserver(sync).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-paused'],
+  });
+  reduce.addEventListener('change', sync);
+  sync();
+</script>

@@ -139,6 +139,14 @@
   --sw-focus-ring: 3px solid var(--sw-color-focus);
   --sw-focus-offset: 2px;
 
+  /* Canvas hero grounds. From design/motion. These darks have no brand token. */
+  --sw-hero-deep-2: #051C19;
+  --sw-hero-navy-2: #0B1626;
+  --sw-hero-chip: #092924;
+  --sw-hero-card: #072520;
+  --sw-hero-navy-chip: #0C182C;
+  --sw-hero-path: #114941;
+
   /* Motion */
   --sw-duration-fast: 200ms;
   --sw-ease-standard: ease;

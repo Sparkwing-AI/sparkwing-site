@@ -1,13 +1,12 @@
 ---
 import '../styles/page.css';
-import '../styles/motion.css';
 import '../styles/inner.css';
 import '../styles/start.css';
 import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
-import MotionTrigger from '../components/MotionTrigger.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import FlowStage from '../components/FlowStage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../config/site';
 
 const steps = [
   { title: 'We listen', body: "A discovery call about your goals and what's in the way. Show and tell comes later." },
@@ -15,71 +14,35 @@ const steps = [
   { title: 'We set you up', body: 'Your space, your users and your documents, ready for a small team to test first.' },
   { title: 'You grow', body: "Roll out to everyone, then switch on more apps whenever you're ready." },
 ];
-
-const papers = [
-  { tone: '', delay: 0 },
-  { tone: 'tint', delay: 2 },
-  { tone: 'muted', delay: 3 },
-  { tone: '', delay: 5 },
-  { tone: 'tint', delay: 7 },
-];
 ---
 
 <BaseLayout
-  title="AI for business: start with one app, Sparkwing"
+  title="AI for business: start with our bookkeeping app, Sparkwing"
   description="AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed."
 >
-  <section class="ph" aria-labelledby="st-title">
-    <div class="ph-grid">
-      <div class="ph-copy">
-        <span class="ph-eyebrow">I want to bring AI into my business</span>
-        <h1 class="ph-h1" id="st-title">Less paperwork, starting with one app.</h1>
-        <p class="ph-lead">
-          For growing businesses in Australia and the Philippines. You don't need an IT team or a big plan. Start with the job that eats the most hours, and we run the rest for you.
-        </p>
-        <div class="ph-actions">
-          <Button variant="primary" size="lg" enquiry="call">Book a discovery call</Button>
-          <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
-        </div>
-      </div>
-
-      <div class="ph-scene-wrap">
-        <div
-          class="ph-scene"
-          role="img"
-          aria-label="Animation: a pile of paperwork goes into Sparkkeeper, and hours come back."
-        >
-          {
-            papers.map((paper, index) => (
-              <span
-                class:list={[
-                  'mv-fly',
-                  'st-paper',
-                  `st-paper--${index + 1}`,
-                  paper.tone && `st-paper--${paper.tone}`,
-                  paper.delay > 0 && `mv-d${paper.delay}`,
-                ]}
-              >
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-            ))
-          }
-          <span class="mv-ring st-ring"></span>
-          <span class="mv-ring st-ring mv-d9"></span>
-          <img class="mv-glow st-glow" src="/assets/logos/sparkkeeper-on-dark.svg" alt="" width="88" height="88" />
-          <span class="mv-pop mv-chip st-hours mv-d22">Hours back</span>
-          <svg class="mv-twinkle ph-star st-star" viewBox="-12 -12 24 24" aria-hidden="true" focusable="false">
-            <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
-          </svg>
-        </div>
-        <MotionTrigger />
+  <CanvasHero
+    scene="flow"
+    titleId="st-title"
+    label="Animation: invoices, receipts and spreadsheets flow into Sparkkeeper and come out as records, reports and reminders."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-eyebrow">I want to save hours on manual admin</span>
+      <h1 class="mx-h1" id="st-title">Less paperwork, starting with our bookkeeping app.</h1>
+      <p class="mx-p">
+        For growing businesses in Australia and the Philippines. You don't need an IT team or a big plan. Start with Sparkkeeper, add more apps when you're ready, and we run the rest for you.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
+        <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
       </div>
     </div>
-  </section>
+    <FlowStage
+      slot="stage"
+      logo="/assets/logos/sparkkeeper.png"
+      inputs={['Invoices', 'Receipts', 'Spreadsheets']}
+      outputs={['Records', 'Reports', 'Reminders']}
+    />
+  </CanvasHero>
 
   <section class="sw-band sw-band--surface" aria-labelledby="st-apps">
     <div class="sw-band-inner sw-stack">

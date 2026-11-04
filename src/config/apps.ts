@@ -29,7 +29,8 @@ export const apps: Record<AppId, AppInfo> = {
     title: 'Magnet: fewer missed follow-ups, Sparkwing',
     description:
       'Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon.',
-    sceneLabel: 'Animation: enquiries are drawn to Magnet, and a lead who says yes becomes a client in Sparkkeeper.',
+    sceneLabel:
+      'Animation: enquiries, reminders and campaigns are drawn into Magnet, and a lead who says yes becomes a client in Sparkkeeper.',
   },
   academy: {
     id: 'academy',
@@ -45,7 +46,7 @@ export const apps: Record<AppId, AppInfo> = {
     title: 'Academy: AI training for your team, Sparkwing',
     description:
       'Short online courses that teach your team to use AI safely in their own work. Coming soon.',
-    sceneLabel: 'Animation: a course fills up step by step, then unlocks access to an app.',
+    sceneLabel: 'Animation: a learning path lights up step by step, and finishing it unlocks access to other apps.',
   },
   nest: {
     id: 'nest',
@@ -57,6 +58,6 @@ export const apps: Record<AppId, AppInfo> = {
     title: "Nest: your team's AI home page, Sparkwing",
     description:
       "One place for your team's AI news, announcements, training links and app access requests. Coming soon.",
-    sceneLabel: 'Animation: AI news, announcements and training links land in one place for the team.',
+    sceneLabel: 'Animation: AI news, announcements and training links settle into one woven nest for the team.',
   },
 };

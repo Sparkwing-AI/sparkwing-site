@@ -3,6 +3,7 @@ import '../styles/page.css';
 import '../styles/home.css';
 import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
 import MotionTrigger from '../components/MotionTrigger.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
@@ -10,9 +11,17 @@ import { site } from '../config/site';
 const logo = (name: string) => `/assets/logos/${name}.svg`;
 
 const tabs = [
+  {
+    id: 'upload',
+    title: 'Upload anything',
+    body: 'Invoices, receipts, spreadsheets or notepad lists, however they arrive. Sparkkeeper reads them into records, and they save only after you check them.',
+  },
   { id: 'ask', title: 'Ask Sparky', body: 'Ask about your books in plain words and get answers based on your records.' },
-  { id: 'upload', title: 'Upload anything', body: 'Scanned invoices, Excel files or notepad lists turn into new records.' },
-  { id: 'create', title: 'Create in one click', body: 'Reports, client analyses, inventory reports and proposals, ready for your review.' },
+  {
+    id: 'create',
+    title: 'Create in one click',
+    body: 'Reports, client analyses, inventory reports and proposals, ready for your review. Email reminders go out from templates you switch on.',
+  },
 ];
 
 const apps = [
@@ -76,30 +85,6 @@ const team = [
     bio: "Eric is a lead UX developer on AI platforms and multi-client management apps used in regulated professions. With 10+ years across user interface, front-end development and visual design, he knows how to build software right. Now he's shaping the experience and development of Sparkwing's platforms.",
   },
 ];
-
-const options = [
-  {
-    tag: 'Recommended',
-    name: 'Cloud',
-    where: 'Hosted by Sparkwing',
-    body: 'Fastest to start, with no hardware to buy. Your data is kept separate from every other client.',
-    pick: true,
-  },
-  {
-    tag: 'Middle ground',
-    name: 'Hybrid',
-    where: 'Records on your own server',
-    body: 'Your records stay on your own server. Only questions go out to the AI.',
-    pick: false,
-  },
-  {
-    tag: 'Strictest option · Coming soon',
-    name: 'On-prem',
-    where: 'Your own server',
-    body: 'Everything runs on your own server, including the AI. Nothing leaves your network.',
-    pick: false,
-  },
-];
 ---
 
 <BaseLayout
@@ -107,109 +92,78 @@ const options = [
   title="Sparkwing: AI automation for less paperwork, more business"
   description="Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI."
 >
-  <section class="home-hero" aria-labelledby="hero-title">
-    <div class="home-hero-grid">
-      <div class="home-hero-copy">
-        <p class="home-tagline">Take flight with AI you can trust.</p>
-        <h1 class="home-h1" id="hero-title">Less paperwork, <span class="home-underline">more business.</span></h1>
-        <p class="home-hero-lead">
-          Hand your manual admin to AI you can check. Get your hours back, cut what admin costs you, and put the time into earning more.
-        </p>
-        <div class="sw-actions">
-          <Button variant="primary" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
-          <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
-        </div>
+  <CanvasHero
+    scene="home"
+    titleId="hero-title"
+    label="Animation: a wing of light beats slowly, shedding gold sparks."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-eyebrow">Take flight with AI you can trust.</span>
+      <h1 class="mx-h1" id="hero-title">Less paperwork, more business.</h1>
+      <p class="mx-p">
+        Hand your manual admin to AI you can check. Get your hours back, cut what admin costs you, and put the time into earning more.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+        <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
       </div>
-
-      <div class="home-doors">
-        <div class="home-hero-art" aria-hidden="true">
-          <svg class="home-trail" viewBox="0 0 600 120" preserveAspectRatio="none" focusable="false">
-            <path
-              d="M0 110C120 112 250 100 360 74S500 26 548 44"
-              vector-effect="non-scaling-stroke"></path>
-          </svg>
-          <span class="home-ring"></span>
-          <span class="home-ring home-ring--late"></span>
-          <span class="home-paper"><i></i><i></i><i></i><i></i></span>
-          <span class="home-paper home-paper--2"><i></i><i></i><i></i><i></i></span>
-          <span class="home-paper home-paper--3"><i></i><i></i><i></i><i></i></span>
-          <svg class="home-star home-star--big" viewBox="-12 -12 24 24" focusable="false">
-            <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
-          </svg>
-          <svg class="home-star home-star--small" viewBox="-12 -12 24 24" focusable="false">
-            <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
-          </svg>
-          <img
-            class="home-float"
-            src="/assets/brand/sparkwing-logo-mark-transparent.png"
-            alt=""
-            width="112"
-            height="112"
-          />
-        </div>
-        <MotionTrigger class="home-hero-hit" corner="bottom-right" />
-        <p class="home-doors-label">Where are you starting from?</p>
-        <a class="home-door" href="/bring-ai-in">
-          <span class="home-door-text">
-            <span class="home-door-title">I want to bring AI into my business</span>
-            <span class="home-door-body">Cut the paperwork first. Begin with one app.</span>
+    </div>
+    <div class="mx-paths" slot="paths">
+      <p>Where are you starting from?</p>
+      <div class="mx-path-row">
+        <a class="mx-path" href="/bring-ai-in">
+          <span>
+            <b>I want to save hours on manual admin</b>
+            <small>Cut the paperwork, starting with our bookkeeping app, Sparkkeeper.</small>
           </span>
-          <svg class="home-door-arrow" aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" focusable="false">
-            <path d="M5 14h18M16 7l7 7-7 7"></path>
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
           </svg>
         </a>
-        <a class="home-door" href="/scale-ai">
-          <span class="home-door-text">
-            <span class="home-door-title">I want to scale AI responsibly</span>
-            <span class="home-door-body">Get more from AI across your team, with rules and records in place.</span>
+        <a class="mx-path" href="/scale-ai">
+          <span>
+            <b>I want my whole team using AI safely</b>
+            <small>Get more from AI across your team, with rules and records in place.</small>
           </span>
-          <svg class="home-door-arrow" aria-hidden="true" width="28" height="28" viewBox="0 0 28 28" focusable="false">
-            <path d="M5 14h18M16 7l7 7-7 7"></path>
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
           </svg>
         </a>
       </div>
     </div>
-  </section>
+  </CanvasHero>
 
   <section class="sw-band home-stats" aria-label="What you get">
     <div class="sw-band-inner">
       <div class="home-stats-grid">
         <div class="home-stat">
-          <h2>Get back up to 3 hours a week*</h2>
+          <h2>Get back about 3 hours a week*</h2>
           <p>
-            What AI could save the average worker in the Philippines. Sparkkeeper starts with the re-typing: invoices, receipts and spreadsheets become records.
+            What the typical person using AI at work reports saving. Sparkkeeper starts with the re-typing: invoices, receipts and spreadsheets become records.
           </p>
         </div>
         <div class="home-stat">
-          <h2>Cut costs by an estimated 10% of revenue**</h2>
-          <p>US small business owners' average estimate of what AI saves them on outside help.</p>
+          <h2>Keep more: 86% see better margins**</h2>
+          <p>Reported by small and mid-sized businesses already using AI.</p>
         </div>
         <div class="home-stat">
-          <h2>Earn more: 41% say AI lifted their revenue***</h2>
-          <p>From a survey of US small businesses. Put your hours into clients, follow-ups and new business.</p>
+          <h2>Earn more: 91% say AI boosts revenue**</h2>
+          <p>From the same businesses. Put your hours into clients, follow-ups and new business.</p>
         </div>
       </div>
       <p class="home-sources">
-        Industry research, not Sparkkeeper results.
+        Industry research, not Sparkkeeper results. All figures are self-reported.
         <a
-          href="https://mb.com.ph/2025/09/05/philippines-could-unlock-18-trillion-in-growth-through-ai"
+          href="https://www.ecb.europa.eu/press/blog/date/2026/html/ecb.blog20260826~e1c1a89999.en.html"
           target="_blank"
           rel="noopener"
-          >*Public First, Turbocharging Growth: The Philippines' AI Opportunity, 2025, reported by Manila Bulletin.<span class="sw-visually-hidden">
-            (opens in a new tab)</span
-          ></a
-        >{' '}
-        <a
-          href="https://www.pymnts.com/report/study/ai-goes-to-work-how-smbs-grow-without-growing-payroll/"
-          target="_blank"
-          rel="noopener"
-          >**PYMNTS Intelligence, AI Goes to Work, October 2026: 533 US small and mid-sized businesses, owner estimates.<span
+          >*European Central Bank, AI adoption and the productivity promise, August 2026: median among AI users, from a survey of about 20,000 people across 11 euro area countries.<span
             class="sw-visually-hidden"> (opens in a new tab)</span
           ></a
         >{' '}
-        <a href="https://quickbooks.intuit.com/r/small-business-data/april-2025-survey/" target="_blank" rel="noopener"
-          >***QuickBooks, April 2025: more than 2,200 US businesses with up to 100 employees.<span class="sw-visually-hidden">
-            (opens in a new tab)</span
+        <a href="https://www.salesforce.com/news/stories/smbs-ai-trends-2025/" target="_blank" rel="noopener"
+          >**Salesforce, SMB Trends, December 2024: 3,350 leaders of businesses with up to 200 staff across North America, Latin America, Asia-Pacific and Europe. Businesses using AI only.<span
+            class="sw-visually-hidden"> (opens in a new tab)</span
           ></a
         >
       </p>
@@ -219,7 +173,7 @@ const options = [
   <section class="sw-band home-products" aria-labelledby="products-title">
     <div class="sw-band-inner">
       <div class="sw-section-head">
-        <h2 class="sw-h2" id="products-title">Start with one app. Add more when you're ready.</h2>
+        <h2 class="sw-h2" id="products-title">Start with our bookkeeping app, Sparkkeeper. Add more apps when you're ready.</h2>
         <p class="sw-lead">
           Sparkkeeper is first off the runway. It keeps your books and your client list together, with AI that answers from your own records.
         </p>
@@ -232,6 +186,7 @@ const options = [
             <span>Sparkkeeper</span>
             <Badge tone="success">Beta</Badge>
           </div>
+          <h3 class="home-showcase-promise">Your paperwork goes in. Tidy records come out, ready for you to check.</h3>
           {
             tabs.map((tab, index) => (
               <button class="home-tab" type="button" aria-pressed={index === 0 ? 'true' : 'false'} data-tab={tab.id}>
@@ -241,12 +196,15 @@ const options = [
             ))
           }
           <a class="sw-link home-showcase-link" href="/sparkkeeper">See everything Sparkkeeper does</a>
+          <div class="home-showcase-pause">
+            <MotionTrigger />
+          </div>
         </div>
 
         <div class="mock" aria-hidden="true">
           <div class="mock-rail"><span></span><span></span><span></span><span></span></div>
           <div class="mock-main">
-            <div class="mock-panel" data-panel="ask">
+            <div class="mock-panel" data-panel="ask" hidden>
               <div class="mock-bar"><span>Ask Sparky</span><span>Sample data</span></div>
               <div class="mock-bubble-user">Who needs a follow-up this week?</div>
               <div class="mock-card">
@@ -259,7 +217,66 @@ const options = [
                 <span class="mock-chip">Based on your books</span>
               </div>
             </div>
-            <div class="mock-panel" data-panel="upload" hidden>
+            <div class="mock-panel" data-panel="upload">
+        <div class="home-story-wrap">
+        <div
+          class="home-story"
+          role="img"
+          aria-label="Animation: paper documents fly into the Sparkwing spark and come out as records, reports and email reminders."
+        >
+          <div class="story-doc story-doc--1">
+            <div class="story-lines">
+              <i class="story-line story-line--title story-line--w55"></i>
+              <i class="story-line story-line--w100"></i>
+              <i class="story-line story-line--w92"></i>
+              <i class="story-line story-line--w100"></i>
+              <i class="story-line story-line--w70"></i>
+              <i class="story-line story-line--w100"></i>
+              <i class="story-line story-line--w45"></i>
+            </div>
+          </div>
+          <div class="story-doc story-doc--2">
+            <div class="story-lines">
+              <i class="story-line story-line--title story-line--w45"></i>
+              {
+                [0, 1, 2, 3].map(() => (
+                  <div class="story-cells">
+                    <i class="story-line"></i>
+                    <i class="story-line"></i>
+                    <i class="story-line"></i>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <div class="story-doc story-doc--3">
+            <div class="story-lines">
+              <i class="story-line story-line--title story-line--w40"></i>
+              {
+                [0, 1, 2, 3].map(() => (
+                  <div class="story-cells story-cells--pair">
+                    <i class="story-line"></i>
+                    <i class="story-line"></i>
+                  </div>
+                ))
+              }
+              <i class="story-line story-line--w100"></i>
+              <div class="story-cells story-cells--pair">
+                <i class="story-line"></i>
+                <i class="story-line"></i>
+              </div>
+            </div>
+          </div>
+          <img class="story-spark" src="/assets/brand/sparkwing-logo-mark-transparent.png" alt="" width="120" height="120" loading="lazy" decoding="async" />
+          <div class="story-out">
+            <div class="story-row"><span>Records</span><span>✓</span></div>
+            <div class="story-row story-row--2"><span>Reports</span><span>✓</span></div>
+            <div class="story-row story-row--3"><span>Reminders</span><span>✓</span></div>
+          </div>
+          <span class="story-caption story-caption--first">Your paperwork, however it arrives.</span>
+          <span class="story-caption story-caption--second">Records, reports and email reminders. You stay in charge.</span>
+        </div>
+        </div>
               <div class="mock-bar"><span>Upload</span><span>Sample data</span></div>
               <div class="mock-upload">
                 <div class="mock-invoice">
@@ -321,15 +338,35 @@ const options = [
           ))
         }
       </div>
+    </div>
+  </section>
 
-      <a class="home-studio" href="/spark-studio">
-        <img src={logo('spark-studio')} alt="" width="56" height="56" loading="lazy" decoding="async" />
-        <span class="home-studio-text">
-          <b>Need something built around your business?</b>
-          <span>Spark Studio is our AI consulting team. We set you up and can build custom apps or AI agents for you.</span>
-        </span>
-        <span class="home-studio-cta">Meet Spark Studio</span>
-      </a>
+  <section class="sw-band home-try" aria-labelledby="try-title">
+    <div class="sw-band-inner">
+      <div class="home-try-copy">
+        <h2 id="try-title">Be one of the first to try Sparkkeeper.</h2>
+        <p>
+          Ask Sparky about your books, upload a stack of paperwork and create reports in one click. Beta places are limited, so apply now and we'll be in touch.
+        </p>
+      </div>
+      <div class="sw-actions">
+        <Button variant="deep" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+        <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band home-need" aria-labelledby="need-title">
+    <div class="sw-band-inner">
+      <div class="home-need-copy">
+        <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
+        <h2 class="sw-h2" id="need-title">Not seeing the apps you need?<br />Talk to us.</h2>
+        <p>Spark Studio is our AI consulting team. We set you up and can build custom apps or AI agents around your business.</p>
+      </div>
+      <div class="sw-actions">
+        <Button variant="accent" size="lg" enquiry="studio">Talk to us</Button>
+        <Button variant="outline" size="lg" href="/spark-studio">Meet Spark Studio</Button>
+      </div>
     </div>
   </section>
 
@@ -348,26 +385,54 @@ const options = [
     </div>
   </section>
 
-  <section class="sw-band home-trust" aria-labelledby="trust-title">
+  <section class="sw-band home-context" aria-labelledby="context-title">
     <div class="sw-band-inner">
-      <h2 class="sw-h2" id="trust-title">Trust comes built into every app.</h2>
-      <div class="home-trust-grid">
-        {
-          trust.map((item) => (
-            <div class="home-trust-item">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </div>
-          ))
-        }
+      <div class="sw-section-head home-context-head">
+        <h2 class="sw-h2" id="context-title">Your business context is what makes AI smarter.</h2>
+        <p>
+          AI wouldn't know how to write or create for your business until you give it the context it needs. Sparkwing's Hive does exactly that, and structures it so your AI can easily understand and use it.
+        </p>
       </div>
-      <a class="sw-link home-trust-link" href="/trust">See how trust is built in</a>
+      <div class="home-context-answers">
+        <div class="home-context-card">
+          <span class="home-context-card-head">
+            <b>Without your business context</b>
+          </span>
+          <p class="home-context-user">Who should I follow up this week?</p>
+          <p class="home-context-bot">I can't see your client list. If you paste it in, I can help you work through it.</p>
+        </div>
+        <div class="home-context-card home-context-card--fit">
+          <span class="home-context-card-head">
+            <b>With your business context</b>
+            <span>Sample data</span>
+          </span>
+          <p class="home-context-user">Who should I follow up this week?</p>
+          <p class="home-context-bot">
+            I suggest following up with Reyes Trading, who's been waiting 21 days, and Marlow Studio, who's waited 12. Reyes comes first. Want me to draft the email?
+          </p>
+        </div>
+      </div>
+      <div class="home-context-points">
+        <div>
+          <h3>Knows your business</h3>
+          <p>It can tell you about actual clients, invoices, and due dates.</p>
+        </div>
+        <div>
+          <h3>You shape how it replies</h3>
+          <p>Hive also stores the rules you define, so they can govern the AI's answers and how it uses context.</p>
+        </div>
+        <div>
+          <h3>Knows more as you go</h3>
+          <p>Every record and document you add gives the AI more of your business to work from.</p>
+        </div>
+      </div>
+      <a class="home-context-link" href="/trust">See how Hive works</a>
     </div>
   </section>
 
   <section class="sw-band home-team" aria-labelledby="team-title">
     <div class="sw-band-inner">
-      <h2 class="sw-h2" id="team-title">Built by people who know the work.</h2>
+      <h2 class="sw-h2" id="team-title">Built by a team who live and breathe AI, bookkeeping and great products.</h2>
       <div class="home-team-grid">
         {
           team.map((person) => (
@@ -391,116 +456,20 @@ const options = [
     </div>
   </section>
 
-  <section class="sw-band home-try" aria-labelledby="try-title">
+  <section class="sw-band home-trust" aria-labelledby="trust-title">
     <div class="sw-band-inner">
-      <div class="home-try-copy">
-        <h2 id="try-title">Have a play with Sparkkeeper.</h2>
-        <p>
-          Ask Sparky a question, upload a stack of paperwork, create a report. The demo runs on made-up data, so nothing you try can hurt.
-        </p>
-      </div>
-      <div class="sw-actions">
-        <Button variant="deep" size="lg" href={site.demoUrl}>Try the demo</Button>
-        <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
-      </div>
-    </div>
-  </section>
-
-  <section class="sw-band home-watch" aria-labelledby="watch-title">
-    <div class="sw-band-inner">
-      <h2 class="sw-h2" id="watch-title">See it take flight.</h2>
-      <div class="home-watch-grid">
-        <div class="home-story-wrap">
-        <div
-          class="home-story"
-          role="img"
-          aria-label="Animation: paper documents fly into the Sparkwing spark and come out as records, reports and email reminders."
-        >
-          <div class="story-doc story-doc--1">
-            <div class="story-lines">
-              <i class="story-line story-line--title story-line--w55"></i>
-              <i class="story-line story-line--w100"></i>
-              <i class="story-line story-line--w92"></i>
-              <i class="story-line story-line--w100"></i>
-              <i class="story-line story-line--w70"></i>
-              <i class="story-line story-line--w100"></i>
-              <i class="story-line story-line--w45"></i>
-            </div>
-          </div>
-          <div class="story-doc story-doc--2">
-            <div class="story-lines">
-              <i class="story-line story-line--title story-line--w45"></i>
-              {
-                [0, 1, 2, 3].map(() => (
-                  <div class="story-cells">
-                    <i class="story-line"></i>
-                    <i class="story-line"></i>
-                    <i class="story-line"></i>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-          <div class="story-doc story-doc--3">
-            <div class="story-lines">
-              <i class="story-line story-line--title story-line--w40"></i>
-              {
-                [0, 1, 2, 3].map(() => (
-                  <div class="story-cells story-cells--pair">
-                    <i class="story-line"></i>
-                    <i class="story-line"></i>
-                  </div>
-                ))
-              }
-              <i class="story-line story-line--w100"></i>
-              <div class="story-cells story-cells--pair">
-                <i class="story-line"></i>
-                <i class="story-line"></i>
-              </div>
-            </div>
-          </div>
-          <img class="story-spark" src="/assets/brand/sparkwing-logo-mark-transparent.png" alt="" width="120" height="120" loading="lazy" decoding="async" />
-          <div class="story-out">
-            <div class="story-row"><span>Records</span><span>✓</span></div>
-            <div class="story-row story-row--2"><span>Reports</span><span>✓</span></div>
-            <div class="story-row story-row--3"><span>Reminders</span><span>✓</span></div>
-          </div>
-          <span class="story-caption story-caption--first">Your paperwork, however it arrives.</span>
-          <span class="story-caption story-caption--second">Records, reports and email reminders. You stay in charge.</span>
-        </div>
-        <MotionTrigger />
-        </div>
-        <div class="home-watch-copy">
-          <p class="big">Your paperwork goes in. Tidy records come out, ready for you to check.</p>
-          <p class="sw-lead">
-            Upload your invoices, receipts and spreadsheets. Sparkkeeper reads them into records, and they save only after you check them. From there, create reports and send email reminders.
-          </p>
-          <Button variant="primary" size="md" href={site.demoUrl}>Try the demo</Button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sw-band home-where" aria-labelledby="where-title">
-    <div class="sw-band-inner">
-      <div class="sw-section-head">
-        <h2 class="sw-h2" id="where-title">Where will the apps and data live?</h2>
-        <p class="sw-lead">
-          Every option runs the same apps with the same safety rules. Not sure? Start in the cloud. You can move later without changing the apps your team uses.
-        </p>
-      </div>
-      <div class="home-where-grid">
+      <h2 class="sw-h2" id="trust-title">Trust comes built into every app.</h2>
+      <div class="home-trust-grid">
         {
-          options.map((option) => (
-            <div class:list={['home-option', option.pick && 'home-option--pick']}>
-              <span class="tag">{option.tag}</span>
-              <h3>{option.name}</h3>
-              <p class="where">{option.where}</p>
-              <p>{option.body}</p>
+          trust.map((item) => (
+            <div class="home-trust-item">
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
             </div>
           ))
         }
       </div>
+      <a class="sw-link home-trust-link" href="/trust">See how trust is built in</a>
     </div>
   </section>
 </BaseLayout>

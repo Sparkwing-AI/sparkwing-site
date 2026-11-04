@@ -1,9 +1,8 @@
 ---
 import '../styles/page.css';
 import '../styles/sparkkeeper.css';
-import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
-import MotionTrigger from '../components/MotionTrigger.astro';
+import CanvasHero from '../components/CanvasHero.astro';
 import ProductNav from '../components/ProductNav.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
@@ -85,47 +84,39 @@ const schema = [
     ]}
   />
 
-  <section class="sk-hero" aria-labelledby="sk-title">
-    <div class="sk-hero-grid">
-      <div class="sk-hero-copy">
-        <span class="sk-hero-mark">
-          <img src="/assets/logos/sparkkeeper.png" alt="" width="64" height="64" />
-          <Badge tone="success" size="lg">Beta</Badge>
-        </span>
-        <h1 class="sk-h1" id="sk-title">Less time on your books, more on your business.</h1>
-        <p class="sk-hero-lead">
-          Your numbers and your clients in one place, handled by AI you can trust. Sparkkeeper is a records and insights tool that sits alongside your registered books and invoicing.
-        </p>
-        <div class="sw-actions">
-          <Button variant="primary" size="lg" href={site.demoUrl}>Try the demo</Button>
-          <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
-        </div>
-      </div>
-
-      <div class="sk-screen-wrap">
-        <div class="sk-screen" aria-hidden="true">
-          <div class="mock-rail"><span></span><span></span><span></span><span></span></div>
-          <div class="sk-screen-body">
-            <div class="sk-screen-head"><b>Today</b><span>Sample data</span></div>
-            <div class="sk-pills"><span>Ask Sparky</span><span>Upload</span><span>Create</span></div>
-            <div class="sk-attention">
-              <b>Needs your attention</b>
-              <div class="sk-pop sk-pop--1"><span>Reyes Trading: follow-up due</span><b>21 days</b></div>
-              <div class="sk-pop sk-pop--2"><span>Marlow Studio: report to review</span><b>Draft</b></div>
-              <div class="sk-pop sk-pop--3"><span>Harbour Supplies: new upload</span><b>12,750</b></div>
-            </div>
-            <div class="sk-stats">
-              <div><span>Clients</span><b>128</b></div>
-              <div><span>Due soon</span><b>14</b></div>
-              <div><span>Follow-ups</span><b>3</b></div>
-            </div>
-            <span class="sk-sparky sk-pop sk-pop--4">Sparky: Reyes Trading is due for a follow-up. Draft the email?</span>
-          </div>
-        </div>
-        <MotionTrigger corner="bottom-right" />
+  <CanvasHero
+    scene="sparkkeeper"
+    titleId="sk-title"
+    label="Animation: loose paperwork turns into sparks that flow into Sparkkeeper, and each record lights up. Sample data."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-mark">
+        <img src="/assets/logos/sparkkeeper.png" alt="" width="56" height="56" />
+        <span class="mx-badge">Beta</span>
+      </span>
+      <h1 class="mx-h1" id="sk-title">Less time on your books, more on your business.</h1>
+      <p class="mx-p">
+        Your numbers and your clients in one place, handled by AI you can trust. Sparkkeeper is a records and insights tool that sits alongside your registered books and invoicing.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+        <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
       </div>
     </div>
-  </section>
+    <div class="mx-card" slot="stage">
+      <div class="mx-card-head"><b>Today</b><span>Sample data</span></div>
+      <div class="mx-card-kicker">Needs your attention</div>
+      <div class="mx-row" data-row data-first><span>Reyes Trading: follow-up due</span><b>21 days</b></div>
+      <div class="mx-row" data-row><span>Marlow Studio: report to review</span><b>Draft</b></div>
+      <div class="mx-row" data-row><span>Harbour Supplies: new upload</span><b>12,750</b></div>
+      <div class="mx-bubble" data-bubble>Sparky: Reyes Trading is due for a follow-up. Draft the email?</div>
+      <div class="mx-card-stats">
+        <div class="mx-tile-stat"><span>Clients</span><b>128</b></div>
+        <div class="mx-tile-stat"><span>Due soon</span><b>14</b></div>
+        <div class="mx-tile-stat"><span>Follow-ups</span><b>3</b></div>
+      </div>
+    </div>
+  </CanvasHero>
 
   {
     site.showPlaceholders && (

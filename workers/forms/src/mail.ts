@@ -15,6 +15,7 @@ const topicLabel = (s: Submission) => topics[s.topic as keyof typeof topics];
 
 export function subjectFor(s: Submission): string {
   if (s.type === 'beta') return oneLine(`[Beta application] ${s.business}, ${s.country}`);
+  if (s.type === 'chat') return oneLine(`[Website chat] ${s.name}`);
   return oneLine(`[Website enquiry] ${topicLabel(s)}: ${s.name}`);
 }
 
@@ -29,13 +30,15 @@ export function bodyFor(s: Submission, id: string): string {
           `What the business does: ${s.business_type}`,
           `First admin task: ${s.first_task ?? '(not given)'}`,
         ]
-      : [
-          `Name: ${s.name}`,
-          `Email: ${s.email}`,
-          `Business: ${s.business ?? '(not given)'}`,
-          `Topic: ${topicLabel(s)}`,
-          `Message: ${s.message}`,
-        ];
+      : s.type === 'chat'
+        ? [`Name: ${s.name}`, `Email: ${s.email}`, `Message: ${s.message ?? '(not given)'}`]
+        : [
+            `Name: ${s.name}`,
+            `Email: ${s.email}`,
+            `Business: ${s.business ?? '(not given)'}`,
+            `Topic: ${topicLabel(s)}`,
+            `Message: ${s.message}`,
+          ];
   lines.push(
     `Marketing emails OK: ${s.marketing_consent ? 'yes' : 'no'}`,
     `From page: ${s.source_page ?? '(unknown)'}`,

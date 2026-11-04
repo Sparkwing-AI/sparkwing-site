@@ -2,7 +2,7 @@
 import Badge from './Badge.astro';
 import Button from './Button.astro';
 import { menuPageLinks, pageLinks, productGroups } from '../config/nav';
-import { mailto, site } from '../config/site';
+import { mailto } from '../config/site';
 
 interface Props {
   /** Current path, used to mark the current page link. */
@@ -44,7 +44,6 @@ const current = (href: string) => (path === href ? 'page' : undefined);
       </nav>
     </div>
     <div class="sw-nav-right">
-      <a class="sw-nav-login" href={site.appUrl}>Sparkkeeper login</a>
       <Button class="sw-nav-book" size="sm" enquiry="call">Book a call</Button>
       <button
         class="sw-menu-btn"
@@ -60,7 +59,6 @@ const current = (href: string) => (path === href ? 'page' : undefined);
     <div class="sw-menu-grid">
       <div class="sw-compact-only sw-menu-pages">
         {menuPageLinks.map((link) => <a href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
-        <a class="sw-menu-pages-action" href={site.appUrl}>Sparkkeeper login</a>
         <a class="sw-menu-pages-action" href={mailto} data-enquiry="call">Book a call</a>
       </div>
       {

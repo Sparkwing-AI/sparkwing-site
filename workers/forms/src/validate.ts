@@ -7,7 +7,7 @@ export const topics = {
 } as const;
 
 export interface Submission {
-  type: 'beta' | 'enquiry';
+  type: 'beta' | 'enquiry' | 'chat';
   name: string;
   email: string;
   business: string | null;
@@ -43,7 +43,7 @@ export function validate(body: unknown): Result {
   if (typeof raw.company_site === 'string' && raw.company_site.trim() !== '') return { ok: 'spam' };
 
   const type = raw.type;
-  if (type !== 'beta' && type !== 'enquiry') return { ok: false, errors: ['type'] };
+  if (type !== 'beta' && type !== 'enquiry' && type !== 'chat') return { ok: false, errors: ['type'] };
 
   const errors: string[] = [];
   const name = text(raw.name, 200);
@@ -66,6 +66,9 @@ export function validate(body: unknown): Result {
     businessType = text(raw.business_type, 2000, true);
     if (!businessType) errors.push('business_type');
     firstTask = text(raw.first_task, 2000, true) || null;
+  } else if (type === 'chat') {
+    topic = 'Website chat';
+    message = text(raw.message, 500, true) || null;
   } else {
     topic = text(raw.topic, 20);
     if (!Object.hasOwn(topics, topic)) errors.push('topic');

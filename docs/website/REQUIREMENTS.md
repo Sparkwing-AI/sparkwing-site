@@ -9,6 +9,7 @@ Drafted by Sunny 🤖 · ai-assisted · 3 Nov 2026.
 - **Build the deep teal design.** The canvas also holds a navy Home, Nav and Footer, on boards titled "Archive". Don't build those. Don't build the "Archive: colour options" board or the "Marquee options" board either: Home already uses option A.
 - **Copy is final.** Use the words on the canvas as they are. Privacy and Terms must never be reworded.
 - **Tokens only.** No raw colours, fonts or spacing values in components. See section 8.
+- **Public AI chat.** Ask Sparky follows `docs/website/CHATBOT.md`. Security rules there outrank convenience.
 - **Two forms only.** The beta application and the enquiry modal (section 5, Forms). The "Keep me posted" form is parked. Don't rebuild it.
 - **Don't add trackers.** Cloudflare Web Analytics is the only analytics allowed. Don't add other trackers or pixels without updating the Privacy page first.
 - **Sparkkeeper's public programme is a beta.** Use "beta" everywhere on the site. Client pilots run under their own agreements and aren't part of this build. Don't change the word "pilot" in Privacy or Terms.
@@ -28,18 +29,18 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Sparkwing: AI automation for less paperwork, more business | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
-| `/sparkkeeper` | Sparkkeeper: AI for bookkeeping and client records | Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports. |
+| `/` | Home | Main, MainMedium, MainCompact | `Main-*.png` | Lead with less paperwork, and send people down one of two paths |
+| `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
 | `/apps/magnet` | Magnet | Apps (Magnet tab) | `Apps-*.png` | Coming soon app |
 | `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
 | `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
-| `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
-| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in. |
-| `/bring-ai-in` | AI for business: start with one app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
-| `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
+| `/spark-studio` | Spark Studio | Studio, StudioMedium, StudioCompact | `Studio-*.png` | AI consulting, setup, custom apps and AI agents |
+| `/trust` | Trust and base platform | Platform, PlatformMedium, PlatformCompact | `Platform-*.png` | Hive, AI Crew, Control Tower, masking, who manages |
+| `/bring-ai-in` | Path: bring AI in | Start, StartMedium, StartCompact | `Start-*.png` | For growing businesses |
+| `/scale-ai` | Path: scale responsibly | Scale, ScaleMedium, ScaleCompact | `Scale-*.png` | For teams that need rules and records |
 | `/privacy` | Privacy policy | Privacy, PrivacyMedium, PrivacyCompact | `Privacy-*.png` | Legal. Don't reword |
 | `/terms` | Terms of use | Terms, TermsMedium, TermsCompact | `Terms-*.png` | Legal. Don't reword |
-| `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
+| `/sparkkeeper/beta` | Beta application | Beta, BetaMedium, BetaCompact | `Beta-*.png` | Form on the left, what to expect on the right, FAQ below |
 | `/404` | Not found | None. Use header, footer and tokens | None | "We couldn't find that page." with links to Home and Sparkkeeper |
 
 Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (review it on the "Enquiry modal: form and confirmation" board).
@@ -58,18 +59,19 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | Products menu: Magnet, Academy, Nest | Header | `/apps/magnet`, `/apps/academy`, `/apps/nest` |
 | Products menu: Hive, AI Crew, Control Tower | Header | `/trust#hive`, `/trust#ai-crew`, `/trust#control-tower` |
 | Products menu: Spark Studio | Header | `/spark-studio` |
-| Nav: Bring AI in, Scale responsibly, Spark Studio, Trust | Header | `/bring-ai-in`, `/scale-ai`, `/spark-studio`, `/trust` |
-| "Sparkkeeper login" | Header and small-screen menu | `PUBLIC_APP_URL`, default `https://sparkkeeper.com.au/` (section 10) |
+| Nav: Save hours, Use AI safely, Spark Studio, Trust | Header | `/bring-ai-in`, `/scale-ai`, `/spark-studio`, `/trust` |
+| "Sparkkeeper login" | Header plain link, and the menu below 1200px | `PUBLIC_APP_URL`, `https://sparkkeeper.com.au/` once live (section 10) |
 | "Join the beta" | Home and Bring AI in heroes | `/sparkkeeper/beta` |
 | "Try the demo" | Home, Sparkkeeper | `PUBLIC_DEMO_URL` (section 10) |
-| Door: "I want to bring AI into my business" | Home hero | `/bring-ai-in` |
-| Door: "I want to scale AI responsibly" | Home hero | `/scale-ai` |
+| Door: "I want to save hours on manual admin" | Home hero | `/bring-ai-in` |
+| Door: "I want my whole team using AI safely" | Home hero | `/scale-ai` |
 | "See everything Sparkkeeper does" | Home products | `/sparkkeeper` |
 | Magnet, Academy, Nest cards | Home | Each app's route |
-| "Meet Spark Studio" band | Home | `/spark-studio` |
+| "Talk to us" and "Meet Spark Studio" | Home, "Not seeing the apps you need?" | Enquiry modal (topic `studio`) and `/spark-studio` |
+| "See how Hive works" | Home business context | `/trust` |
 | "See how trust is built in" | Home trust | `/trust` |
 | "Join the beta" | Home gold section, Sparkkeeper hero | `/sparkkeeper/beta` |
-| Stat footnotes | Home stats band | Public First via Manila Bulletin, PYMNTS, QuickBooks (URLs on canvas). New tab, `rel="noopener"` |
+| Stat footnotes | Home stats band | European Central Bank and Salesforce (URLs on canvas). New tab, `rel="noopener"` |
 | Sub-nav: Sparkkeeper, Magnet, Academy, Nest, Base platform | Sparkkeeper, Apps | Each route, and `/trust` |
 | Sub-nav: Features, What it covers, Beta | Sparkkeeper | `#features`, `#scope`, `#beta` |
 | "See what it covers today" | Bring AI in | `/sparkkeeper#scope` |
@@ -86,7 +88,7 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
-| FR-001 | Header on every page: announcement bar, logo, nav, Book a call, Sparkkeeper login | Matches Nav board |
+| FR-001 | Header on every page: announcement bar, logo, nav, Sparkkeeper login, Book a call | Matches Nav board. Book a call is the green main action and stays visible at every width. Sparkkeeper login is a plain link, and it moves into the menu below 1200px |
 | FR-002 | Products menu opens from the Products button with three groups and a discovery call panel | `aria-expanded` updates. Esc and clicking outside close it, and focus returns to the button |
 | FR-003 | Below 1200px, nav links collapse into a Menu button that reads "Menu" or "Close" | Panel shows page links first, then the Products groups, and scrolls inside itself. Matches Compact and Medium boards |
 | FR-004 | Skip link is the first focusable element and jumps to `<main id="main">` | Visible on focus |
@@ -94,22 +96,25 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | FR-006 | Company details come from one config file | Changing it updates footer and metadata. ABN is 90 703 825 370. Privacy and Terms show it as on the canvas |
 | FR-007 | Every link in section 4 works | Automated link check passes with no broken internal links |
 | FR-008 | Temporary app marks are used as on the canvas, from one folder | Replacing an SVG updates it everywhere |
-| FR-009 | Each hero has its own looping animation as on the canvas: Home, Sparkkeeper, Apps (one per app), Spark Studio, Trust, Bring AI in, Scale. Privacy, Terms and the beta page have none | CSS only. A loop lasts about 9 seconds. No flashing. Logos are never rotated or recoloured |
-| FR-010 | Click-to-pause replaces the Pause buttons. A transparent button sits over each animation. Clicking or pressing it asks "Pause animation?" (or "Resume animation?" when paused) with Yes and No. A small pause icon, always visible in a corner of the animation, shows that it can be paused. The base styles show the finished state | The trigger is a keyboard-operable button with the accessible name "Pause animation" or "Resume animation". Yes pauses every animation on the page. Esc and No close the question and return focus. Reduced motion shows the finished state and hides the trigger. Animated stages have `role="img"` and an `aria-label`, or are hidden from screen readers if decorative. The icon is decorative (`aria-hidden`), because the button carries the name, and meets 3:1 contrast on every background |
-| FR-011 | Navy is for trust and governance sections only: Home trust band, Trust hero, Scale hero | Teal stays the colour for product and action. No Wing Violet text on navy. Lagoon Teal on navy is for large text and icons only |
+| FR-009 | Each hero has its canvas animation and the butterfly as on the canvas: Home, Sparkkeeper, Apps (one per app), Spark Studio, Trust, Bring AI in, Scale. Privacy, Terms and the beta page have none. Engine is `design/motion/motion-engine.js`, styles are `design/motion/motion.css` | One shared module with no dependencies, loaded only on pages with a hero. Stops when off screen or the tab is hidden. Butterfly flies in on load, then perches. No flashing. Logos are never rotated or recoloured |
+| FR-010 | Every hero animation has a round Pause button in the hero corner, and the hero text and CTAs show without JavaScript | Pause stops every animation on the page. Reduced motion shows the finished state. Animated stages have `role="img"` and an `aria-label`, or are hidden from screen readers if decorative |
+| FR-011 | Navy is for trust and governance sections only: Home business context section, Trust hero, Scale hero | Teal stays the colour for product and action. No Wing Violet text on navy. Lagoon Teal on navy is for large text and icons only |
 
 ### Home
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
 | FR-101 | Hero with two doors and two CTAs | Matches Main board |
-| FR-102 | Stats band with three stats and footnote sources, including "Industry research, not Sparkkeeper results." | Sources link out. Disclaimer stays visible |
-| FR-103 | Sparkkeeper showcase with Ask, Upload and Create tabs that swap the sample screen | `aria-pressed` updates. "Sample data" label always shows. Mock is hidden from screen readers |
-| FR-104 | Marquee of manual admin work, with click-to-pause (FR-010) | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
-| FR-105 | "See it take flight" story animation: lined papers go in, then Records, Reports and Reminders come out, with caption changes | Runs in CSS. Has click-to-pause (FR-010). Shows the end state when paused or with reduced motion |
+| FR-102 | Stats band on a light ground straight below the dark hero, with three stats and footnote sources, including "Industry research, not Sparkkeeper results." | Sources link out. Disclaimer stays visible |
+| FR-103 | "Start with our bookkeeping app, Sparkkeeper. Add more apps when you're ready." Combined showcase with Upload (default), Ask and Create tabs that swap the sample screen, then the Magnet, Academy and Nest cards | `aria-pressed` updates. "Sample data" label always shows. Mock is hidden from screen readers |
+| FR-104 | Marquee of manual admin work with a Pause button | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
+| FR-105 | Story animation inside the Upload tab: lined papers go in, then Records, Reports and Reminders come out, with caption changes. There is no separate "See it take flight" section | Runs in CSS. Has a Pause button. Shows the end state when paused or with reduced motion |
 | FR-106 | Team section: three equal cards with photo, name, role, bio | Equal widths at wide. Bios exactly as on canvas |
 | FR-107 | Bracketed placeholders must not ship: "[First client story]" and "[Beta client quote...]" | Hide each behind a flag until the real content is supplied. A CI check fails the production build if any bracketed placeholder is rendered |
-| FR-108 | Spark Studio band after the app cards | Whole band is one link |
+| FR-108 | "Not seeing the apps you need? Talk to us." section straight after the gold "Have a play with Sparkkeeper." section | "Talk to us" opens the enquiry modal. "Meet Spark Studio" links to the page |
+| FR-109 | Home order: hero, stats, Sparkkeeper and apps, gold demo section, Not seeing the apps, marquee, business context, team, trust, closing CTA | Matches Main board |
+| FR-110 | "Your business context is what makes AI useful." section on navy, with the same question answered without and with context, and three points | Answers are marked "Sample data". Links to `/trust` |
+| FR-111 | "Trust comes built into every app." sits on cream after the team. "Where will the apps and data live?" is not on Home | Trust link stays |
 
 ### Sparkkeeper
 
@@ -155,19 +160,36 @@ The site is static, so it can't receive a form on its own. Both forms post to on
 | FR-903 | Beta confirmation: "Thanks, we've got it. We'll email [address] to tell you if the beta is a fit." | Replaces the form. Focus moves to the message |
 | FR-904 | Enquiry modal uses native `<dialog>` with `showModal()`. Fields: name, email, optional business name, topic, message, contact consent tickbox, optional marketing tickbox. Topics: Book a discovery call, Ask about an app, Spark Studio, Something else | Topic follows the button that opened it. Esc and the Close button close it, and focus returns to that button. Fits at 320px and scrolls inside itself |
 | FR-905 | Enquiry confirmation: "Thanks, we received your message. We'll get back to you real soon." | Announced to screen readers. Exact wording |
-| FR-906 | Worker endpoint `POST /api/leads` saves each submission to a Cloudflare D1 `leads` table: id, type (`beta`, `enquiry`), created_at, name, email, business, country, topic, message, business_type, first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version, status, notes | `business_type` ("What does your business do?") and `first_task` ("What admin would you hand over first?") are separate columns that only Beta rows fill. Enquiries use `message`. A row exists for every accepted submission. Allowed origin is `sparkwing.com.au` only. Secrets stay out of the repo |
-| FR-907 | Each saved submission emails `info@sparkwing.com.au`. Subjects: `[Beta application] {business}, {country}` and `[Website enquiry] {topic}: {name}`. Reply-To is the submitter. Send through the Microsoft 365 `info@` mailbox using Microsoft Graph, with credentials held as Worker secrets | The row is saved even if the email fails, and the failure is logged. Subject values have line breaks stripped |
-| FR-908 | Private lead list with **Beta** and **Enquiries** tabs, behind Cloudflare Access for the Sparkwing team. Status: New, Contacted, Accepted, Declined. The Beta tab shows `business_type` and `first_task`. Notes and CSV export | Not reachable without sign-in. `noindex`. This is the first version of Magnet's lead list, so keep the table free of site-specific names |
+| FR-906 | Worker endpoint `POST /api/leads` saves each submission to a Cloudflare D1 `leads` table: id, type (`beta`, `enquiry`, `chat`), created_at, name, email, business, country, topic, message, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version, status, notes | A row exists for every accepted submission. Allowed origin is `sparkwing.com.au` only. Secrets stay out of the repo |
+| FR-907 | Each saved submission emails `info@sparkwing.com.au`. Subjects: `[Beta application] {business}, {country}` and `[Website enquiry] {topic}: {name}`, and `[Website chat] {name}`. Reply-To is the submitter. Send through the Microsoft 365 `info@` mailbox using Microsoft Graph, with credentials held as Worker secrets. Limit sending to that mailbox using Exchange RBAC for Applications, with no tenant-wide Mail.Send consent in Entra | The row is saved even if the email fails, and the failure is logged. Subject values have line breaks stripped |
+| FR-908 | Private lead list with **Beta**, **Enquiries** and **Chat** tabs, on its own Worker behind Cloudflare Access for the Sparkwing team, so the public form endpoint stays open. Status: New, Contacted, Accepted, Declined, Flagged. Notes and CSV export | Not reachable without sign-in. `noindex`. This is the first version of Magnet's lead list, so keep the table free of site-specific names |
 | FR-909 | Spam protection: hidden `company_site` field, server validation, rate limit per IP | Filled hidden field is dropped without a row or an email. Turnstile only if spam gets through, and only after checking the Privacy page covers it |
 | FR-911 | Two separate, unticked tickboxes on both forms, worded as on the canvas. Contact consent is required. Marketing is optional and never blocks sending | Marketing choice and timestamp are stored. No marketing email goes out until the Privacy page covers it and a working unsubscribe exists. The lead list can filter on marketing consent |
-| FR-910 | If sending fails, the form stays filled and shows: "That didn't send. Please try again, or email info@sparkwing.com.au." | Tested with the endpoint down. Without JavaScript the beta form is hidden and the page shows: "This form needs JavaScript to send. Please email info@sparkwing.com.au." |
+| FR-910 | If sending fails, the form stays filled and shows: "That didn't send. Please try again, or email info@sparkwing.com.au." | Tested with the endpoint down |
+
+### Ask Sparky website assistant
+
+Full security rules, limits and attack tests are in `docs/website/CHATBOT.md`. Read it before starting. The chat ships behind `PUBLIC_CHAT_ENABLED`, off by default.
+
+| ID | Requirement | Acceptance |
+| --- | --- | --- |
+| FR-1001 | "Ask Sparky" opens from a button in the bottom-right corner of every page. It never opens by itself | Matches the Ask and AskStates boards. Full-screen at 480px and below |
+| FR-1002 | Answers only from an approved knowledge pack built from site copy, with a source link and one of two fixed actions | Lead card or beta page only. The model can't output links |
+| FR-1010 | Sparky follows a sales playbook: answer, ask, recommend one offer, then ask for details. Off-topic chat gets a friendly line and a steer back twice, then the chat ends | Rules and steps in CHATBOT.md section 2b. Hard stop at 12 visitor messages |
+| FR-1009 | Visitors can leave their details in the chat through a code-driven card that posts to the forms Worker | Saved to the Chat tab and emailed to `info@`. The model never sees the name or email. No automatic email to the visitor. Rules in CHATBOT.md section 2a |
+| FR-1003 | Separate chat Worker with no tools and no access to leads or forms | No shared bindings or secrets. Code review confirms |
+| FR-1004 | Limits, budgets, Turnstile, server-held history and checks on every message | As in CHATBOT.md sections 3 to 5 |
+| FR-1005 | Offline and limit states with the team still reachable | Kill switch works without a deploy |
+| FR-1006 | The AI notice and privacy link are always visible while chatting | Exact wording as on the canvas |
+| FR-1007 | Nothing extra loads until the chat opens | Turnstile and chat code load on open. Home page weight stays within NFR-04 |
+| FR-1008 | All attack tests in CHATBOT.md section 8 pass before the flag goes on | Results attached to CORE-192 |
 
 ### Analytics
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
 | FR-601 | Add Cloudflare Web Analytics before launch. The site is on GitHub Pages, so add the JS snippet to every page | Visits show in Cloudflare. No cookies set by analytics |
-| FR-602 | No other trackers or pixels | Network check shows only the allowed third parties: Google Fonts, Cloudflare analytics and the outbound links the visitor clicks |
+| FR-602 | No other trackers or pixels | Network check shows only the allowed third parties: Google Fonts, Cloudflare analytics, Turnstile once the chat is opened, and the outbound links the visitor clicks |
 
 ## 6. SEO
 
@@ -188,20 +210,32 @@ The site is static, so it can't receive a form on its own. Both forms post to on
 
 | Route | Title | Description |
 | --- | --- | --- |
-| `/` | Sparkwing: less paperwork, more business with AI | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
-| `/sparkkeeper` | Sparkkeeper: AI bookkeeping you can check, Sparkwing | Your numbers and clients in one place. Ask Sparky, upload your paperwork and create reports. Beta applications are open. |
+| `/` | Sparkwing: AI automation for less paperwork, more business | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
+| `/sparkkeeper` | Sparkkeeper: AI for bookkeeping and client records | Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports. |
 | `/apps/magnet` | Magnet: fewer missed follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
 | `/apps/academy` | Academy: AI training for your team, Sparkwing | Short online courses that teach your team to use AI safely in their own work. Coming soon. |
 | `/apps/nest` | Nest: your team's AI home page, Sparkwing | One place for your team's AI news, announcements, training links and app access requests. Coming soon. |
-| `/spark-studio` | Spark Studio: AI consulting, custom apps and agents | Sparkwing's AI consulting team. We set AI up around your business and build custom apps or AI agents when you need more. |
-| `/trust` | How Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in. |
-| `/bring-ai-in` | Bring AI into your business, Sparkwing | Start with the job that eats the most hours. No IT team or big plan needed. For growing businesses in Australia and the Philippines. |
-| `/scale-ai` | Scale AI responsibly, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
-| `/sparkkeeper/beta` | Apply for the Sparkkeeper beta, Sparkwing | Full Sparkkeeper features for one month, with AI credits to start and top-ups on request. See what to expect and apply. |
+| `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
+| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in. |
+| `/bring-ai-in` | AI for business: start with our bookkeeping app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
+| `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
+| `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
 | `/privacy` | Privacy policy, Sparkwing | How Sparkwing Pty Ltd collects, uses, shares and protects personal information. |
 | `/terms` | Terms of use, Sparkwing | The terms for using the Sparkwing website. |
 
-**Proposed** search themes, for Elly to confirm. No search volume data was checked: AI bookkeeping Philippines, reduce paperwork small business Philippines, AI for accounting firms, AI consulting Sydney, responsible AI consulting Australia, custom AI agents for business. Don't target banking, financial services or legal terms.
+**Search research, 3 Nov 2026.** Google Trends, past 12 months. These figures show relative interest within each comparison, so they can't be compared across rows and aren't search counts. Replace them with Search Console data after launch.
+
+| Market | Average interest in the comparison | What it means |
+| --- | --- | --- |
+| Philippines | bookkeeping 73, accounting software 27, BIR books of accounts 4, AI bookkeeping 0, bookkeeping software 0 | "AI bookkeeping" has no measurable demand. "Bookkeeping" is strong, but its rising related searches are mostly jobs |
+| Philippines | AI for business 32, accounting software 27, accounting system 24, AI accounting 11, AI consulting 6 | Use "AI for business" language for this market |
+| Philippines | AI automation 50, AI for business 43, AI strategy 25, AI governance 19, AI for small business 3 | "AI automation" and "AI for business" both work here. "AI for small business" is weak, and some "AI automation" searches are about creator tools |
+| Australia | AI automation 43, AI agency 25, AI consulting 15, AI for small business 9, AI consultant 8 | "AI automation" leads. "AI consulting" is still the clearest description of Spark Studio |
+| Australia | AI training 52, AI strategy 27, AI governance 20, AI consulting 11, responsible AI 7 | Use "strategy" and "governance" for Scale. "ISO 42001" is a rising search next to governance, so it's a content idea. Don't claim certification |
+| Australia | AI agents 43, custom AI 22, AI consulting 9, AI agent development 2, custom AI agents 0 | "AI agents" is broad and news-led. Use "custom AI agents" as a description only |
+| Australia | accounting software 45, AI accounting 12, bookkeeping software 4, AI bookkeeping 0, bookkeeping app 0 | Same result as the Philippines for "AI bookkeeping" |
+
+**Target terms:** AI automation, AI for business, AI consulting, AI strategy, AI governance, AI training (Academy), bookkeeping. "Accounting software" appears only as something Sparkkeeper works alongside, as it doesn't replace registered systems. Don't target banking, financial services or legal terms. These change metadata only. Page copy stays final.
 
 ## 7. Non-functional requirements
 
@@ -224,7 +258,7 @@ The site is static, so it can't receive a form on its own. Both forms post to on
 
 **Design check on 3 Nov 2026:** axe-core 4.10.2 with WCAG 2.0, 2.1 and 2.2 A and AA rules plus best practices, on the 10 canvas pages at 1440 and 390 wide, plus the enquiry modal, with animations at their finished state: no violations. Automated tools only catch part of WCAG, and this was run on the canvas, so the build needs its own checks.
 
-Fixes already in the design: skip link, `<main>` landmark, click-to-pause on every animation, Menu button for small screens, darker spark colour for contrast, 44px controls, focus outlines.
+Fixes already in the design: skip link, `<main>` landmark, Pause buttons for the marquee and animation, Menu button for small screens, darker spark colour for contrast, 44px controls, focus outlines.
 
 **Required on the build:**
 
@@ -272,10 +306,12 @@ Use `@storybook-astro/framework`, the community framework for Astro. It isn't an
 
 | Item | Tag | Note |
 | --- | --- | --- |
-| Sparkkeeper login address | Pending | `PUBLIC_APP_URL` defaults to `https://sparkkeeper.com.au/`. Launch is blocked until Elly confirms it |
-| Analytics token | Pending | `PUBLIC_CF_ANALYTICS_TOKEN` is blank. Launch is blocked until Elly supplies it |
-| Demo link | Pending | `PUBLIC_DEMO_URL` is `https://sparkkeeper.moxie-strife.workers.dev/` today. Elly will confirm whether the demo stays. Launch is blocked until it has a Sparkwing address or is removed, as this one shows a personal name |
+| Sparkkeeper login address | Pending, launch blocker | The app must be live at `https://sparkkeeper.com.au/` before launch. Set `PUBLIC_APP_URL` to it |
+| Demo link | Pending, launch blocker | `PUBLIC_DEMO_URL` is `https://sparkkeeper.moxie-strife.workers.dev/` today. Elly to decide if a public demo stays. If so, use a Sparkwing address. If not, remove the demo buttons |
+| Analytics | Pending, launch blocker | Code is ready. Needs the Cloudflare Web Analytics token set in production |
 | Booking | Proposed | Book a call uses the enquiry modal for now. A booking tool would need a Privacy update |
+| Philippines search reach | Pending | One English site serves both countries. `.com.au` signals Australia to Google, so check Philippine rankings in Search Console after launch before deciding on any Philippine domain or page |
+| Ask Sparky | Proposed | Elly to approve scope, limits and budget, set up the Anthropic workspace and Turnstile, and update Privacy. Doesn't block site launch |
 | Beta budget | Pending | The beta and top-ups are free to users. Sparkwing funds them, so top-ups are given at the team's discretion within the beta AI budget |
 | Beta FAQ promises | Proposed | Elly to confirm: accounts are planned to stay after the beta, view and export without a plan, a data reset is possible with early notice, we ask before opening a beta user's records, and real records are allowed |
 | In-app needs | Pending | Confirmed: AI stops at the credit limit and the rest of the app keeps working. Masking will be live before anyone uses the beta. Feedback and feature requests will be live for the beta. Still to confirm: record export, which the FAQ promises |
@@ -285,4 +321,4 @@ Use `@storybook-astro/framework`, the community framework for Astro. It isn't an
 | App marks | Pending | Temporary until trademark checks finish. Replacing the SVGs is all it should take |
 | Team bios | Pending | Tim and Eric to approve their bios. Director titles before contracts are signed. Tim's firm is named, so Lucent should see it |
 | Taglish | Pending | Tim to review the Taglish scope copy |
-| Stat sources | Pending | Check the Public First original behind the Manila Bulletin report |
+| Stat sources | Done | Claims carry no country. Footnotes name the real source and survey scope. Do not swap in a single-country figure or strip the footnotes |

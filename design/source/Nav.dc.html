@@ -166,8 +166,9 @@
 .sw-menu-btn{display:none!important}
 .sw-compact-only{display:none!important}
 a:focus-visible,button:focus-visible{outline:3px solid var(--sw-color-deep);outline-offset:2px}
-@media (max-width:1199px){.sw-nav-links{display:none!important}.sw-nav-call{display:none!important}.sw-menu-btn{display:flex!important}.sw-compact-only{display:flex!important}}
-@media (max-width:480px){.sw-nav-try{display:none!important}.sw-nav-row{flex-wrap:nowrap!important;gap:8px!important}}
+@media (max-width:1199px){.sw-nav-links{display:none!important}.sw-nav-login{display:none!important}.sw-menu-btn{display:flex!important}.sw-compact-only{display:flex!important}}
+@media (max-width:480px){.sw-nav-row{flex-wrap:nowrap!important;gap:6px!important}.sw-nav-right{flex-wrap:nowrap!important;gap:6px!important;flex:none}.sw-nav-tag{display:none!important}.sw-nav-mark{width:32px!important;height:32px!important}.sw-nav-word{font-size:18px!important}.sw-nav-book{padding:0 12px!important;font-size:14px!important}.sw-menu-btn{padding:0 10px!important;font-size:14px!important}}
+@media (max-width:360px){.sw-nav-word{font-size:16px!important}.sw-nav-book{padding:0 10px!important}.sw-menu-btn{padding:0 8px!important}}
 </style>
 </helmet>
 <header style="position: relative; z-index: 20; font-family: var(--sw-font-sans); color: var(--sw-color-deep); background: var(--sw-color-page)">
@@ -179,10 +180,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sw-color-deep);outl
   <div class="sw-nav-row" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 32px; max-width: 1312px; margin: 0 auto; padding: 12px clamp(16px, 5vw, 64px); box-sizing: content-box; border-bottom: 1px solid var(--sw-color-border)">
     <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px">
       <a href="Main.dc.html" aria-label="Sparkwing home" style="display: flex; align-items: center; gap: 8px; color: var(--sw-color-deep); text-decoration: none; min-height: 44px">
-        <img src="/_blob/746bc47b7c0f9c153ecd8592dc045748" alt="" style="width: 40px; height: 40px; object-fit: contain">
+        <img class="sw-nav-mark" src="/_blob/746bc47b7c0f9c153ecd8592dc045748" alt="" style="width: 40px; height: 40px; object-fit: contain">
         <span style="display: flex; flex-direction: column; gap: 3px; line-height: 1.2">
-          <span style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em">Sparkwing</span>
-          <span style="font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: var(--sw-color-text-muted)">AN AI TRANSFORMATION COMPANY</span>
+          <span class="sw-nav-word" style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em">Sparkwing</span>
+          <span class="sw-nav-tag" style="font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: var(--sw-color-text-muted)">AN AI TRANSFORMATION COMPANY</span>
         </span>
       </a>
       <nav class="sw-nav-links" aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; font-size: 16px; font-weight: 600">
@@ -190,15 +191,15 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sw-color-deep);outl
           Products
           <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l4 4 4-4"></path></svg>
         </button>
-        <a href="Start.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Bring AI in</a>
-        <a href="Scale.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Scale responsibly</a>
+        <a href="Start.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Save hours</a>
+        <a href="Scale.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Use AI safely</a>
         <a href="Studio.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Spark Studio</a>
         <a href="Platform.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--sw-color-deep); text-decoration: none">Trust</a>
       </nav>
     </div>
-    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
-      <a class="sw-nav-call" href="mailto:info@sparkwing.com.au" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; font-size: 16px; font-weight: 600; color: var(--sw-color-deep); text-decoration: none">Book a call</a>
-      <a class="sw-nav-try" href="https://sparkkeeper.moxie-strife.workers.dev/" style="display: flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: var(--sw-color-action); color: var(--sw-brand-white); font-size: 16px; font-weight: 700; text-decoration: none">Try Sparkkeeper</a>
+    <div class="sw-nav-right" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+      <a class="sw-nav-login" href="https://sparkkeeper.com.au/" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; font-size: 16px; font-weight: 600; color: var(--sw-color-deep); text-decoration: none">Sparkkeeper login</a>
+      <a class="sw-nav-book" href="mailto:info@sparkwing.com.au" data-enquiry="call" style="display: flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: var(--sw-color-action); color: var(--sw-brand-white); font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap">Book a call</a>
       <button class="sw-menu-btn" type="button" onClick="{{toggle}}" aria-expanded="{{openLabel}}" aria-controls="sw-menu" style="align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1.5px solid var(--sw-color-deep); border-radius: 999px; background: transparent; color: var(--sw-color-deep); font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{menuLabel}}</button>
     </div>
   </div>
@@ -206,10 +207,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--sw-color-deep);outl
     <div id="sw-menu" style="position: absolute; left: 0; right: 0; top: 100%; max-height: calc(100vh - 120px); overflow-y: auto; background: var(--sw-brand-white); border-bottom: 1px solid var(--sw-color-border); box-shadow: 0 24px 48px var(--sw-shadow-color-14)">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 32px 56px; max-width: 1312px; margin: 0 auto; padding: 32px clamp(16px, 5vw, 64px); box-sizing: content-box">
         <div class="sw-compact-only" style="flex-direction: column; gap: 4px; font-size: 18px; font-weight: 700">
-          <a href="Start.dc.html" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-deep); text-decoration: none">Bring AI in</a>
-          <a href="Scale.dc.html" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-deep); text-decoration: none">Scale responsibly</a>
+          <a href="Start.dc.html" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-deep); text-decoration: none">Save hours</a>
+          <a href="Scale.dc.html" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-deep); text-decoration: none">Use AI safely</a>
           <a href="Platform.dc.html" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-deep); text-decoration: none">Trust</a>
-          <a href="https://sparkkeeper.moxie-strife.workers.dev/" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-link)">Try Sparkkeeper</a>
+          <a href="https://sparkkeeper.com.au/" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-link)">Sparkkeeper login</a>
           <a href="mailto:info@sparkwing.com.au" data-enquiry="call" style="display: flex; align-items: center; min-height: 44px; color: var(--sw-color-link)">Book a call</a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px">

@@ -1,10 +1,9 @@
 ---
 import '../styles/page.css';
-import '../styles/motion.css';
 import '../styles/apps.css';
 import Badge from './Badge.astro';
 import Button from './Button.astro';
-import MotionTrigger from './MotionTrigger.astro';
+import CanvasHero from './CanvasHero.astro';
 import ProductNav from './ProductNav.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { apps, type AppId } from '../config/apps';
@@ -19,89 +18,55 @@ const app = apps[Astro.props.id];
 <BaseLayout title={app.title} description={app.description}>
   <ProductNav current={app.id} />
 
-  <section class="app-hero" aria-labelledby="app-title">
-    <div class="app-hero-grid">
-      <div class="app-hero-copy">
-        <span class="app-hero-mark">
-          <img src={app.logo} alt="" width="64" height="64" />
-          <Badge size="lg">Coming soon</Badge>
-        </span>
-        <h1 class="app-h1" id="app-title">{app.name}</h1>
-        <p class="app-promise">{app.promise}</p>
-        <p class="app-body">{app.body}</p>
-        <Button variant="primary" size="lg" enquiry="app">Ask us about this app</Button>
-      </div>
-
-      <div class="app-right">
-        <div class="app-scene-wrap">
-          <div class="app-scene" role="img" aria-label={app.sceneLabel}>
-            {
-              app.id === 'magnet' && (
-                <>
-                  <span class="mv-fly mv-chip app-chip app-chip--m1">New enquiry</span>
-                  <span class="mv-fly mv-chip app-chip app-chip--m2 mv-d2">New enquiry</span>
-                  <span class="mv-fly mv-chip app-chip app-chip--m3 mv-d4">New enquiry</span>
-                  <span class="mv-ring app-ring app-ring--magnet" />
-                  <span class="mv-ring app-ring app-ring--magnet mv-d9" />
-                  <img class="mv-glow app-glow app-glow--magnet" src={app.logo} alt="" width="80" height="80" />
-                  <span class="mv-pop mv-chip app-now mv-d21">Now a client</span>
-                </>
-              )
-            }
-            {
-              app.id === 'academy' && (
-                <div class="app-bars">
-                  <div class="app-bar-row">
-                    <span>Safe AI habits</span>
-                    <span class="app-track"><span class="mv-bar app-fill" /></span>
-                  </div>
-                  <div class="app-bar-row">
-                    <span>Your real work</span>
-                    <span class="app-track"><span class="mv-bar app-fill mv-d4" /></span>
-                  </div>
-                  <div class="app-bar-row">
-                    <span>Checking answers</span>
-                    <span class="app-track"><span class="mv-bar app-fill mv-d7" /></span>
-                  </div>
-                  <span class="mv-pop mv-chip app-done mv-d18">
-                    <img src={app.logo} alt="" width="26" height="26" />
-                    Course finished, access unlocked
-                  </span>
-                </div>
-              )
-            }
-            {
-              app.id === 'nest' && (
-                <>
-                  <span class="mv-fly mv-chip app-chip app-chip--n1">AI news</span>
-                  <span class="mv-fly mv-chip app-chip app-chip--n2 mv-d2">Announcements</span>
-                  <span class="mv-fly mv-chip app-chip app-chip--n3 mv-d4">Training</span>
-                  <span class="mv-ring app-ring app-ring--nest" />
-                  <span class="mv-ring app-ring app-ring--nest mv-d9" />
-                  <img class="mv-glow app-glow app-glow--nest" src={app.logo} alt="" width="88" height="88" />
-                </>
-              )
-            }
-          </div>
-          <MotionTrigger />
-        </div>
-
-        <div class="app-points">
-          <p class="app-points-label">What it will do</p>
-          {
-            app.points.map((point) => (
-              <div class="app-point">
-                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" focusable="false">
-                  <path d="M10 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" />
-                </svg>
-                <span>{point}</span>
-              </div>
-            ))
-          }
-        </div>
+  <CanvasHero scene={app.id} titleId="app-title" label={app.sceneLabel}>
+    <div class="mx-text" slot="copy">
+      <span class="mx-mark">
+        <img src={app.logo} alt="" width="56" height="56" />
+        <Badge size="lg">Coming soon</Badge>
+      </span>
+      <h1 class="mx-h1" id="app-title">{app.name}</h1>
+      <p class="mx-lead">{app.promise}</p>
+      <p class="mx-p">{app.body}</p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="app">Ask us about this app</Button>
       </div>
     </div>
-  </section>
+    <Fragment slot="stage">
+      {
+        app.id === 'magnet' && (
+          <>
+            <span class="mx-tile mx-tile--mid" data-tile><img src={app.logo} alt="" width="60" height="60" /></span>
+            <span class="mx-chip mx-at-l6-t14" data-in>Enquiries</span>
+            <span class="mx-chip mx-at-l2-t74" data-in>Reminders</span>
+            <span class="mx-chip mx-at-l68-t6" data-in>Campaigns</span>
+            <span class="mx-chip mx-at-r0-t82" data-out>New client in Sparkkeeper</span>
+          </>
+        )
+      }
+      {
+        app.id === 'academy' && (
+          <>
+            <span class="mx-chip mx-at-l0-t88" data-step>Short courses</span>
+            <span class="mx-chip mx-at-l22-t37" data-step>Safe AI habits</span>
+            <span class="mx-chip mx-at-l48-t75" data-step>Everyday work</span>
+            <span class="mx-tile mx-tile--academy" data-tile data-end><img src={app.logo} alt="" width="60" height="60" /></span>
+            <span class="mx-chip mx-at-r0-t30" data-end>Unlocks other apps</span>
+          </>
+        )
+      }
+      {
+        app.id === 'nest' && (
+          <>
+            <span class="mx-tile mx-tile--nest" data-tile><img src={app.logo} alt="" width="60" height="60" /></span>
+            <span class="mx-chip mx-at-l6-t6" data-in>AI news</span>
+            <span class="mx-chip mx-at-l38-t0" data-in>Announcements</span>
+            <span class="mx-chip mx-at-r4-t8" data-in>Training</span>
+            <span class="mx-chip mx-at-r0-t88" data-in>App access</span>
+          </>
+        )
+      }
+    </Fragment>
+  </CanvasHero>
 
   <section class="sw-band sw-band--surface sw-base" aria-labelledby="fit-title">
     <div class="sw-base-grid">

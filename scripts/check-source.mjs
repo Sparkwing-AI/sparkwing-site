@@ -5,7 +5,11 @@ import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const rootPath = fileURLToPath(new URL('../src/', import.meta.url));
-const allowed = new Set(['styles/tokens.css']);
+const allowed = new Set([
+  'styles/tokens.css',
+  // Canvas 2D drawing colours from design/motion/motion-engine.js. They are pixels, not CSS.
+  'scripts/motion-engine.js',
+]);
 const extensions = ['.astro', '.ts', '.js', '.mjs', '.css', '.svg', '.md', '.mdx', '.json'];
 
 const hexColour = /(?<![\w&/])#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})(?![\w-])/gi;

@@ -61,7 +61,7 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
 </article>`;
 }
 
-export function page(leads: Lead[], tab: 'beta' | 'enquiries', marketing: boolean, user: string): string {
+export function page(leads: Lead[], tab: 'beta' | 'enquiries' | 'chat', marketing: boolean, user: string): string {
   const q = (t: string, m: boolean) => `/?tab=${t}${m ? '&amp;marketing=1' : ''}`;
   const current = (t: string) => (t === tab ? ' aria-current="page"' : '');
   return `<!doctype html>
@@ -73,6 +73,7 @@ export function page(leads: Lead[], tab: 'beta' | 'enquiries', marketing: boolea
 <nav aria-label="Lead list">
 <a href="${q('beta', marketing)}"${current('beta')}>Beta</a>
 <a href="${q('enquiries', marketing)}"${current('enquiries')}>Enquiries</a>
+<a href="${q('chat', marketing)}"${current('chat')}>Chat</a>
 <a href="/?tab=${tab}${marketing ? '' : '&amp;marketing=1'}">${marketing ? 'Show everyone' : 'Marketing OK only'}</a>
 <a href="/export.csv?tab=${tab}${marketing ? '&amp;marketing=1' : ''}">Export CSV</a>
 </nav>

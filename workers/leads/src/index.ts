@@ -19,7 +19,7 @@ const security = {
 const html = (body: string, status = 200) =>
   new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...security } });
 
-const tabs = { beta: 'beta', enquiries: 'enquiry' } as const;
+const tabs = { beta: 'beta', enquiries: 'enquiry', chat: 'chat' } as const;
 
 async function load(env: Env, type: Lead['type'], marketing: boolean): Promise<Lead[]> {
   const sql = `SELECT * FROM leads WHERE type = ?${marketing ? ' AND marketing_consent = 1' : ''} ORDER BY created_at DESC LIMIT 1000`;

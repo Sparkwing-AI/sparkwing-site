@@ -1,9 +1,8 @@
 ---
 import '../styles/page.css';
-import '../styles/motion.css';
 import '../styles/inner.css';
 import '../styles/platform.css';
-import MotionTrigger from '../components/MotionTrigger.astro';
+import CanvasHero from '../components/CanvasHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const steps = [
@@ -21,40 +20,28 @@ const steps = [
   title="AI governance built in: how Sparkwing keeps AI trustworthy"
   description="Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in."
 >
-  <section class="ph ph--navy" aria-labelledby="pf-title">
-    <div class="ph-grid">
-      <div class="ph-copy">
-        <h1 class="ph-h1" id="pf-title">The part you don't see is why you can trust it.</h1>
-        <p class="ph-lead">
-          Every Sparkwing app runs on the same base platform. It comes with every plan, so there is nothing extra to buy.
-        </p>
-      </div>
-
-      <div class="ph-scene-wrap">
-        <div
-          class="ph-scene"
-          role="img"
-          aria-label="Animation: sample personal details pass through Control Tower and become placeholders before reaching the AI."
-        >
-          <span class="pf-label pf-label--left">Sample details</span>
-          <span class="pf-label pf-label--right">What the AI sees</span>
-          <span class="mv-ring pf-ring"></span>
-          <span class="mv-ring pf-ring mv-d9"></span>
-          <img class="mv-glow pf-glow" src="/assets/logos/control-tower.svg" alt="" width="64" height="64" />
-          <span class="pf-row pf-row--1">
-            <span class="mv-swap-from mv-chip pf-chip pf-chip--from">Maria Reyes</span>
-            <span class="mv-swap-to mv-chip pf-chip pf-chip--to">[CUSTOMER 1]</span>
-          </span>
-          <span class="pf-row pf-row--2">
-            <span class="mv-swap-from mv-chip pf-chip pf-chip--from mv-d3">maria@email.test</span>
-            <span class="mv-swap-to mv-chip pf-chip pf-chip--to mv-d3">[EMAIL 1]</span>
-          </span>
-          <span class="mv-pop mv-chip pf-record mv-d22">Record kept</span>
-        </div>
-        <MotionTrigger corner="bottom-right" />
-      </div>
+  <CanvasHero
+    scene="trust"
+    ground="navy"
+    titleId="pf-title"
+    label="Animation: sample personal details pass through Control Tower and come out as placeholders before reaching the AI."
+  >
+    <div class="mx-text" slot="copy">
+      <h1 class="mx-h1" id="pf-title">The part you don't see is why you can trust it.</h1>
+      <p class="mx-p">
+        Every Sparkwing app runs on the same base platform. It comes with every plan, so there is nothing extra to buy.
+      </p>
     </div>
-  </section>
+    <Fragment slot="stage">
+      <span class="mx-tile mx-tile--mid" data-tile><img src="/assets/logos/control-tower.svg" alt="" width="60" height="60" /></span>
+      <span class="mx-chip mx-at-l0-t18" data-from>Maria Reyes</span>
+      <span class="mx-chip mx-at-l0-t48" data-from>maria@email.test</span>
+      <span class="mx-chip mx-at-l0-t78" data-from>+63 900 000 0000</span>
+      <span class="mx-chip mx-at-r0-t18" data-to>[CUSTOMER 1]</span>
+      <span class="mx-chip mx-at-r0-t48" data-to>[EMAIL 1]</span>
+      <span class="mx-chip mx-at-r0-t78" data-to>[PHONE 1]</span>
+    </Fragment>
+  </CanvasHero>
 
   <section class="sw-band sw-band--surface" aria-label="Base platform">
     <div class="pf-panels">

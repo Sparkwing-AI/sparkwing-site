@@ -4,6 +4,53 @@
 
 ## Task summary
 
+Remove Sparkkeeper login and the public demo from the site. Home gold section now invites people to the beta or a discovery call. Ask Sparky's knowledge pack says there is no demo and no login. Latest earlier pass: design handoff of 4 Nov 2026 on branch `website/08-design-handoff`.
+
+## Acceptance criteria (login and demo removal)
+
+- [x] No Sparkkeeper login link in the header, phone menu or footer. Book a call stays.
+- [x] No Try the demo button. PUBLIC_DEMO_URL stays unused. No link to workers.dev.
+- [x] Home gold section uses the new heading, text, Join the beta, and Book a discovery call.
+- [x] Sparkkeeper hero keeps Join the beta and adds Book a discovery call.
+- [x] Ask Sparky knowledge pack and system prompt do not offer a demo or login.
+- [x] Privacy and Terms unchanged. Other demo wording listed for Elly.
+- [x] Link test passes. No overflow at 1440, 768 and 390.
+- [x] Rose: PASS WITH NOTES ([review](a74ac0e1-e21a-47bd-a67c-ccc980246f6f)). Preview replies now check demo and login before the generic "book a call" reply.
+
+## Work type
+
+[x] Other: marketing website design update, multi-file UI
+
+## QA tier
+
+**Tier:** 2. Multi-file UI change. Not NAB platform work.
+
+## User intent (verbatim, abridged)
+
+Unpack sparkwing-site-handoff.zip, read DESIGN-CHANGES, REQUIREMENTS and CHATBOT, and update the site to match design/source and design/screens. Shared canvas hero module, new Home order, new stats footnotes, header labels Save hours and Use AI safely, Sparky off-topic rules and chat note. Do not merge /preview/home. Do not deploy. Review at http://127.0.0.1:4321/.
+
+## Acceptance criteria (this pass)
+
+- [x] Heroes use one shared module from design/motion, with pause and reduced motion
+- [x] Home order matches DESIGN-CHANGES. Where-will-the-apps and See-it-take-flight sections removed
+- [x] Stats figures and full footnotes
+- [x] Nav and footer path labels. Routes unchanged
+- [x] Ask Sparky legal note and off-topic lines match the canvas and CHATBOT.md. Off unless PUBLIC_CHAT_ENABLED=true. The review server turns it on
+- [x] Lint, build, legal diff, Playwright axe and overflow at 390, 768 and 1440
+- [x] Rose review: PASS. Chat leads save as type `chat`. An attack, homework, code or dating request wins over small talk, including when the same message mentions dogs or a joke.
+
+## Files touched
+
+src/scripts/motion-engine.js, src/styles/hero-motion.css, src/styles/home.css, src/styles/ask.css, src/styles/tokens.css, src/components/CanvasHero.astro, FlowStage.astro, AskSparky.astro, AppPage.astro, Home and inner pages, nav.ts, tests.
+
+## Regression risks
+
+Canvas pause is wired to the existing confirm control. Story animation stays CSS inside the Upload tab. Chat posts only when PUBLIC_FORM_ENDPOINT is set. Previous WIP is in git stash, including /preview/home.
+
+---
+
+## Earlier task summary
+
 Build the Sparkwing marketing website (CORE-173) as static Astro on GitHub Pages. Current steps: 2 to 4, shell, legal pages and Home (see the Steps 2 to 4 section). Step 1 shipped in PR #3.
 
 ## Work type

@@ -4,7 +4,7 @@ export type Status = (typeof statuses)[number];
 
 export interface Lead {
   id: string;
-  type: 'beta' | 'enquiry';
+  type: 'beta' | 'enquiry' | 'chat';
   created_at: string;
   name: string;
   email: string;

@@ -1,10 +1,10 @@
 ---
 import '../styles/page.css';
-import '../styles/motion.css';
 import '../styles/inner.css';
 import '../styles/studio.css';
 import Button from '../components/Button.astro';
-import MotionTrigger from '../components/MotionTrigger.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import FlowStage from '../components/FlowStage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 
@@ -56,46 +56,31 @@ const schema = [
   title="Spark Studio: AI consulting, automation and custom AI agents"
   description={description}
 >
-  <section class="ph ph--deep" aria-labelledby="ss-title">
-    <div class="ph-grid">
-      <div class="ph-copy">
-        <span class="ph-eyebrow">
-          <img src="/assets/logos/spark-studio.svg" alt="" width="44" height="44" />
-          Spark Studio · AI consulting
-        </span>
-        <h1 class="ph-h1" id="ss-title">AI set up around your business, and built for it when you need more.</h1>
-        <p class="ph-lead">
-          Spark Studio is Sparkwing's AI consulting team. We work out where AI will help, set it up properly, and build custom apps or AI agents when the ready-made apps don't cover what you need.
-        </p>
+  <CanvasHero
+    scene="flow"
+    titleId="ss-title"
+    label="Animation: your workflows, rules and tools flow into Spark Studio and come out as a custom app, an AI agent and a team that is set up."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-mark">
+        <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
+        <span class="mx-eyebrow">Spark Studio · AI consulting</span>
+      </span>
+      <h1 class="mx-h1 mx-h1--compact" id="ss-title">AI set up around your business, and built for it when you need more.</h1>
+      <p class="mx-p">
+        Spark Studio is Sparkwing's AI consulting team. We work out where AI will help, set it up properly, and build custom apps or AI agents when the ready-made apps don't cover what you need.
+      </p>
+      <div class="mx-cta">
         <Button variant="accent" size="lg" enquiry="studio">Book a discovery call</Button>
       </div>
-
-      <div class="ph-scene-wrap">
-        <div
-          class="ph-scene"
-          role="img"
-          aria-label="Animation: a custom app is built piece by piece, then an AI agent joins it."
-        >
-          <div class="ss-app">
-            <span class="mv-pop ss-piece ss-piece--bar"></span>
-            <span class="mv-pop ss-piece ss-piece--side mv-d3"></span>
-            <span class="mv-pop ss-piece ss-piece--a mv-d5"></span>
-            <span class="mv-pop ss-piece ss-piece--b mv-d8"></span>
-            <span class="mv-pop ss-piece ss-piece--c mv-d10"></span>
-          </div>
-          <span class="mv-pop mv-chip ss-tag ss-tag--app mv-d13">Custom app</span>
-          <span class="mv-pop mv-chip ss-tag ss-tag--agent mv-d17">
-            <img src="/assets/logos/ai-crew.svg" alt="" width="22" height="22" />
-            AI agent
-          </span>
-          <svg class="mv-twinkle ph-star" viewBox="-12 -12 24 24" aria-hidden="true" focusable="false">
-            <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
-          </svg>
-        </div>
-        <MotionTrigger corner="top-left" />
-      </div>
     </div>
-  </section>
+    <FlowStage
+      slot="stage"
+      logo="/assets/logos/spark-studio.svg"
+      inputs={['Your workflows', 'Your rules', 'Your tools']}
+      outputs={['Custom app', 'AI agent', 'Team set up']}
+    />
+  </CanvasHero>
 
   <section class="sw-band sw-band--surface" aria-labelledby="ss-do">
     <div class="sw-band-inner sw-stack">

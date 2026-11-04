@@ -36,7 +36,7 @@ test.describe('header menu', () => {
     const close = page.getByRole('button', { name: 'Close', exact: true }).first();
     await expect(close).toHaveAttribute('aria-expanded', 'true');
     const first = page.locator('#sw-menu a').first();
-    await expect(first).toHaveText('Bring AI in');
+    await expect(first).toHaveText('Save hours');
     await page.keyboard.press('Escape');
     await expect(page.locator('.sw-menu-btn')).toBeFocused();
   });

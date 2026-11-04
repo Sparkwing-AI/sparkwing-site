@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 async function pauseViaStory(page: Page) {
-  await page.locator('.home-story-wrap [data-motion-trigger]').click();
+  await page.locator('.home-showcase-pause [data-motion-trigger]').click();
   await page.getByRole('button', { name: /^Yes/ }).click();
 }
 
@@ -9,15 +9,15 @@ test.describe('Home', () => {
   test('has one h1 and the two doors', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Less paperwork, more business.');
-    await expect(page.getByRole('link', { name: /I want to bring AI into my business/ })).toHaveAttribute('href', '/bring-ai-in');
-    await expect(page.getByRole('link', { name: /I want to scale AI responsibly/ })).toHaveAttribute('href', '/scale-ai');
+    await expect(page.getByRole('link', { name: /I want to save hours on manual admin/ })).toHaveAttribute('href', '/bring-ai-in');
+    await expect(page.getByRole('link', { name: /I want my whole team using AI safely/ })).toHaveAttribute('href', '/scale-ai');
   });
 
   test('stats sources open in a new tab and keep the disclaimer visible', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByText('Industry research, not Sparkkeeper results.')).toBeVisible();
     const sources = page.locator('.home-sources a');
-    await expect(sources).toHaveCount(3);
+    await expect(sources).toHaveCount(2);
     for (const link of await sources.all()) {
       await expect(link).toHaveAttribute('target', '_blank');
       await expect(link).toHaveAttribute('rel', /noopener/);
@@ -26,14 +26,14 @@ test.describe('Home', () => {
 
   test('showcase tabs swap the sample screen and update aria-pressed', async ({ page }) => {
     await page.goto('/');
-    const ask = page.getByRole('button', { name: /^Ask Sparky/ });
     const upload = page.getByRole('button', { name: /^Upload anything/ });
-    await expect(ask).toHaveAttribute('aria-pressed', 'true');
-    await upload.click();
+    const ask = page.getByRole('button', { name: /^Ask Sparky/ });
     await expect(upload).toHaveAttribute('aria-pressed', 'true');
-    await expect(ask).toHaveAttribute('aria-pressed', 'false');
-    await expect(page.locator('[data-panel="upload"]')).toBeVisible();
-    await expect(page.locator('[data-panel="ask"]')).toBeHidden();
+    await ask.click();
+    await expect(ask).toHaveAttribute('aria-pressed', 'true');
+    await expect(upload).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.locator('[data-panel="ask"]')).toBeVisible();
+    await expect(page.locator('[data-panel="upload"]')).toBeHidden();
     await page.getByRole('button', { name: /^Create in one click/ }).click();
     await expect(page.locator('[data-panel="create"]')).toBeVisible();
   });
@@ -41,7 +41,7 @@ test.describe('Home', () => {
   test('sample screen is hidden from assistive technology and labelled as sample data', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('.mock')).toHaveAttribute('aria-hidden', 'true');
-    await expect(page.locator('.mock').getByText('Sample data').first()).toBeVisible();
+    await expect(page.locator('[data-panel="upload"]').getByText('Sample data').first()).toBeVisible();
   });
 
   test('clicking an animation asks first, and Yes and No behave', async ({ browser }) => {
@@ -65,7 +65,7 @@ test.describe('Home', () => {
     await expect(page.locator('html')).toHaveAttribute('data-paused', '');
     for (const trigger of await triggers.all()) await expect(trigger).toHaveAccessibleName('Resume animation');
 
-    const story = page.locator('.home-story-wrap [data-motion-trigger]');
+    const story = page.locator('.home-showcase-pause [data-motion-trigger]');
     await story.click();
     await expect(page.getByRole('dialog', { name: 'Resume animation?' })).toBeVisible();
     await page.getByRole('button', { name: /^Yes/ }).click();
@@ -122,7 +122,7 @@ test.describe('Home', () => {
     const context = await browser.newContext({ reducedMotion: 'no-preference' });
     const page = await context.newPage();
     await page.goto('/');
-    const loops = ['.home-marquee-track', '.home-float', '.home-underline', '.story-doc--1', '.story-spark', '.story-row'];
+    const loops = ['.home-marquee-track', '.story-doc--1', '.story-spark', '.story-row'];
     const name = (selector: string) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
     for (const selector of loops) await expect.poll(() => name(selector), { message: selector }).not.toBe('none');
     await pauseViaStory(page);
@@ -166,24 +166,28 @@ test.describe('Home', () => {
     expect(await href(/Meet Spark Studio/)).toBe('/spark-studio');
     expect(await href(/See how trust is built in/)).toBe('/trust');
     expect(await href('Join the beta')).toBe('/sparkkeeper/beta');
-    expect(await page.locator('a', { hasText: 'Sparkkeeper login' }).first().getAttribute('href')).toBe('https://sparkkeeper.com.au/');
+    await expect(page.locator('a', { hasText: 'Sparkkeeper login' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Try the demo' })).toHaveCount(0);
+    await expect(page.locator('a[href*="workers.dev"]')).toHaveCount(0);
+    await expect(page.locator('.home-try').getByRole('link', { name: 'Join the beta' })).toHaveAttribute('href', '/sparkkeeper/beta');
+    await expect(page.locator('.home-try').getByRole('link', { name: 'Book a discovery call' })).toHaveAttribute('data-enquiry', 'call');
     await expect(page.getByRole('link', { name: 'Book a discovery call' }).first()).toHaveAttribute('data-enquiry', 'call');
   });
 
-  test('focus ring on the Spark Studio band uses the deep focus colour', async ({ page }) => {
+  test('focus ring on Meet Spark Studio uses the gold focus colour', async ({ page }) => {
     await page.goto('/');
     const band = page.getByRole('link', { name: /Meet Spark Studio/ });
     await band.focus();
     const colour = await band.evaluate((el) => getComputedStyle(el).outlineColor);
-    const deep = await page.evaluate(() => {
+    const gold = await page.evaluate(() => {
       const probe = document.createElement('i');
-      probe.style.color = 'var(--sw-color-focus)';
+      probe.style.color = 'var(--sw-color-focus-on-deep)';
       document.body.append(probe);
       const value = getComputedStyle(probe).color;
       probe.remove();
       return value;
     });
-    expect(colour).toBe(deep);
+    expect(colour).toBe(gold);
   });
   test('placeholders do not render by default', async ({ page }) => {
     await page.goto('/');

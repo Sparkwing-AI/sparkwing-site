@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/components.css';
+import AskSparky from '../components/AskSparky.astro';
 import EnquiryModal from '../components/EnquiryModal.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -85,6 +86,7 @@ const jsonLd = JSON.stringify(graph).replace(/</g, '\\u003c');
     </main>
     <Footer />
     <EnquiryModal />
+    {site.chatEnabled && <AskSparky />}
     {
       integrations.cloudflareAnalyticsToken && (
         <script

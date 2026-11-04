@@ -1,0 +1,15 @@
+---
+interface Props {
+  logo: string;
+  inputs: string[];
+  outputs: string[];
+}
+
+const { logo, inputs, outputs } = Astro.props;
+const inputAt = ['mx-at-l0-t10', 'mx-at-l4-t44', 'mx-at-l0-t78'];
+const outputAt = ['mx-at-r0-t10', 'mx-at-r4-t44', 'mx-at-r0-t78'];
+---
+
+<span class="mx-tile mx-tile--mid" data-tile><img src={logo} alt="" width="60" height="60" /></span>
+{inputs.map((label, index) => <span class:list={['mx-chip', inputAt[index]]} data-in>{label}</span>)}
+{outputs.map((label, index) => <span class:list={['mx-chip', outputAt[index]]} data-out>{label}</span>)}

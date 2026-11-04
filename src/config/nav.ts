@@ -1,5 +1,3 @@
-import { site } from './site';
-
 /** Enquiry topics. The value is what the modal sends and what a button's data-enquiry attribute names. */
 export const enquiryTopics = [
   { value: 'call', label: 'Book a discovery call' },
@@ -83,16 +81,16 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
 
 /** Page links shown inline at 1200px and wider. */
 export const pageLinks = [
-  { label: 'Bring AI in', href: '/bring-ai-in' },
-  { label: 'Scale responsibly', href: '/scale-ai' },
+  { label: 'Save hours', href: '/bring-ai-in' },
+  { label: 'Use AI safely', href: '/scale-ai' },
   { label: 'Spark Studio', href: '/spark-studio' },
   { label: 'Trust', href: '/trust' },
 ] as const;
 
 /** Page links shown first in the Menu panel below 1200px. Spark Studio sits in the Products groups. */
 export const menuPageLinks = [
-  { label: 'Bring AI in', href: '/bring-ai-in' },
-  { label: 'Scale responsibly', href: '/scale-ai' },
+  { label: 'Save hours', href: '/bring-ai-in' },
+  { label: 'Use AI safely', href: '/scale-ai' },
   { label: 'Trust', href: '/trust' },
 ] as const;
 
@@ -109,8 +107,8 @@ export const footerColumns = [
   {
     heading: 'PATHS',
     links: [
-      { label: 'Bring AI into my business', href: '/bring-ai-in' },
-      { label: 'Scale AI responsibly', href: '/scale-ai' },
+      { label: 'Save hours on admin', href: '/bring-ai-in' },
+      { label: 'Use AI safely', href: '/scale-ai' },
       { label: 'Spark Studio: AI consulting', href: '/spark-studio' },
     ],
   },
@@ -123,5 +121,3 @@ export const footerColumns = [
     ],
   },
 ] as const;
-
-export const demoUrl = site.demoUrl;
