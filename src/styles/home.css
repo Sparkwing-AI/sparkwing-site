@@ -585,6 +585,19 @@
   outline-color: var(--sw-color-focus);
 }
 
+/* Steps between the navy context band and the team */
+.home-steps {
+  background: var(--sw-color-page);
+}
+
+.home-steps .sw-band-inner {
+  gap: calc(var(--sw-space-8) - var(--sw-space-1));
+}
+
+.home-steps .home-app-head {
+  flex-wrap: wrap;
+}
+
 /* Team */
 .home-team {
   background: var(--sw-color-surface);
