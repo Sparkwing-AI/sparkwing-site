@@ -113,7 +113,7 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | FR-107 | Bracketed placeholders must not ship: "[First client story]" and "[Beta client quote...]" | Hide each behind a flag until the real content is supplied. A CI check fails the production build if any bracketed placeholder is rendered |
 | FR-108 | "Not seeing the apps you need? Talk to us." section straight after the gold "Have a play with Sparkkeeper." section | "Talk to us" opens the enquiry modal. "Meet Spark Studio" links to the page |
 | FR-109 | Home order: hero, stats, Sparkkeeper and apps, gold demo section, Not seeing the apps, marquee, business context, team, trust, closing CTA | Matches Main board |
-| FR-110 | "Your business context is what makes AI useful." section on navy, with the same question answered without and with context, and three points | Answers are marked "Sample data". Links to `/trust` |
+| FR-110 | "Your business context is what makes AI useful." section on navy, with the same question answered without and with context, and three points | Links to `/trust` |
 | FR-111 | "Trust comes built into every app." sits on cream after the team. "Where will the apps and data live?" is not on Home | Trust link stays |
 
 ### Sparkkeeper

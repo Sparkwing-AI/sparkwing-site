@@ -889,11 +889,6 @@
   gap: var(--sw-space-2);
 }
 
-.home-context-card-head span {
-  font-size: var(--sw-text-caption);
-  color: var(--sw-color-tint);
-}
-
 .home-context-points h3 {
   margin: 0;
   padding-top: 18px;
