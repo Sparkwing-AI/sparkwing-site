@@ -26,12 +26,19 @@ assert.equal(signedOut.status, 403);
 assert.equal(await signedOut.text(), 'Sign in required');
 
 const wrongOrigin = await worker.fetch(
-  new Request(`${origin}/leads/${drop}/delete`, { method: 'POST', headers: { Origin: 'https://evil.example' } }),
+  new Request(`${origin}/leads/${drop}/delete`, { method: 'POST', headers: { Origin: 'https://evil.example', 'Sec-Fetch-Site': 'cross-site' } }),
   { DB: closedDb() } as never,
   user,
 );
 assert.equal(wrongOrigin.status, 403);
 assert.equal(await wrongOrigin.text(), 'Bad origin');
+
+const blankOrigin = await worker.fetch(
+  new Request(`${origin}/leads/${drop}/delete`, { method: 'POST', headers: { Origin: 'null', 'Sec-Fetch-Site': 'cross-site' } }),
+  { DB: closedDb() } as never,
+  user,
+);
+assert.equal(blankOrigin.status, 403);
 
 const badId = await worker.fetch(
   new Request(`${origin}/leads/not-a-uuid/delete`, { method: 'POST', headers: { Origin: origin } }),
@@ -101,5 +108,35 @@ assert.equal(audits[0][2], 'beta');
 assert.equal(audits[0][3], 'elly@sparkwing.com.au');
 assert.equal(JSON.stringify(audits[0]).includes('ann@'), false);
 assert.equal(JSON.stringify(audits[0]).includes('message'), false);
+
+const sameTab = await worker.fetch(
+  new Request(`${origin}/leads/${keep}/delete`, {
+    method: 'POST',
+    headers: { Origin: 'null', 'Sec-Fetch-Site': 'same-origin', 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'tab=all',
+  }),
+  {
+    DB: {
+      prepare(sql: string) {
+        return {
+          bind(...args: unknown[]) {
+            return {
+              sql,
+              args,
+              async first() {
+                const row = leads.get(String(args[0]));
+                return row ? { type: row.type } : null;
+              },
+            };
+          },
+        };
+      },
+      batch: db.batch,
+    },
+  } as never,
+  user,
+);
+assert.equal(sameTab.status, 303);
+assert.equal(leads.has(keep), false);
 
 console.log('leads delete tests passed');

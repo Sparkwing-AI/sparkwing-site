@@ -27,6 +27,23 @@ function asTab(value: string | null): ListTab {
 
 const readableId = /^L-[0-9]+$/;
 
+/** The page sends Referrer-Policy: no-referrer, so a same-origin form can arrive with Origin: null. */
+function formIsSameOrigin(request: Request, url: URL): boolean {
+  const origin = request.headers.get('Origin');
+  if (origin === url.origin) return true;
+  const host = request.headers.get('Host');
+  if (origin && origin !== 'null' && host) {
+    try {
+      const sent = new URL(origin);
+      if (sent.host === host) return true;
+    } catch {
+      return false;
+    }
+  }
+  const site = request.headers.get('Sec-Fetch-Site');
+  return (origin === null || origin === 'null') && (site === 'same-origin' || site === 'none');
+}
+
 /** Drops the scrambled source before anything is rendered or exported. */
 function forDisplay(rows: Array<Lead & { ip_hash?: string | null; same_source_ids?: string | null }>): Lead[] {
   return rows.map((row) => {
@@ -95,7 +112,7 @@ export default {
     if (deletion) {
       if (request.method === 'GET') return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST', ...security } });
       if (request.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: security });
-      if (request.headers.get('Origin') !== url.origin) return new Response('Bad origin', { status: 403, headers: security });
+      if (!formIsSameOrigin(request, url)) return new Response('Bad origin', { status: 403, headers: security });
       const id = deletion[1];
       if (!leadId.test(id)) return new Response('Bad id', { status: 400, headers: security });
       const existing = await env.DB.prepare('SELECT type FROM leads WHERE id = ?').bind(id).first<{ type: string }>();
@@ -117,7 +134,7 @@ export default {
 
     if (request.method === 'POST') {
       // Same-origin only, as a second guard on top of Access.
-      if (request.headers.get('Origin') !== url.origin) return new Response('Bad origin', { status: 403, headers: security });
+      if (!formIsSameOrigin(request, url)) return new Response('Bad origin', { status: 403, headers: security });
       const match = url.pathname.match(/^\/leads\/([0-9a-f-]{36})$/);
       if (!match) return new Response('Not found', { status: 404, headers: security });
       const form = await request.formData();
