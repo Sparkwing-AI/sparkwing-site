@@ -612,17 +612,28 @@ textarea.sw-input {
   resize: vertical;
 }
 
+.sw-select {
+  position: relative;
+  display: block;
+}
+
+.sw-select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: var(--sw-space-4);
+  width: var(--sw-space-2);
+  height: var(--sw-space-2);
+  border-right: 1.5px solid var(--sw-color-ink);
+  border-bottom: 1.5px solid var(--sw-color-ink);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
 select.sw-input {
   appearance: none;
   padding-right: var(--sw-space-7);
-  background-image:
-    linear-gradient(135deg, transparent 46%, var(--sw-color-ink) 46% 54%, transparent 54%),
-    linear-gradient(45deg, transparent 46%, var(--sw-color-ink) 46% 54%, transparent 54%);
-  background-repeat: no-repeat;
-  background-position:
-    right calc(var(--sw-space-4) + var(--sw-space-2)) center,
-    right var(--sw-space-4) center;
-  background-size: var(--sw-space-2) var(--sw-space-2);
+  background-image: none;
 }
 
 .sw-input[aria-invalid='true'] {
