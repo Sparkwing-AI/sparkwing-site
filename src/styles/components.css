@@ -416,12 +416,15 @@
 
 @media (max-width: 480px) {
   .sw-announce {
-    row-gap: 0;
-    padding-bottom: 0;
+    display: block;
   }
 
+  /* Inline padding widens the tap area without pushing the page down. */
   .sw-announce a {
-    min-height: var(--sw-target-min);
+    display: inline;
+    min-height: 0;
+    margin-left: var(--sw-space-1);
+    padding-block: calc(var(--sw-space-3) + 1px);
   }
 
   .sw-nav-book {
