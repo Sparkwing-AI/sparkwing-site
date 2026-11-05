@@ -1,3 +1,4 @@
+import { allocateLeadId } from './ids';
 import { sendMail, type MailEnv } from './mail';
 import { visitorSource } from './source';
 import { validate } from './validate';
@@ -79,15 +80,17 @@ export default {
     const now = new Date().toISOString();
     // A missing secret or a missing location leaves those columns empty. The lead still saves.
     const source = await visitorSource(request, env.IP_HASH_SECRET);
+    let publicId = '';
     try {
+      publicId = await allocateLeadId(env.DB);
       await env.DB.prepare(
-        `INSERT INTO leads (id, type, created_at, name, email, business, country, topic, message, business_type,
+        `INSERT INTO leads (id, public_id, type, created_at, name, email, business, country, topic, message, business_type,
            first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version,
            ip_hash, detected_country, detected_region)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(
-          id, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
+          id, publicId, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
           s.first_task, s.source_page, now, s.marketing_consent ? 1 : 0, s.marketing_consent ? now : null,
           s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region,
         )
@@ -100,7 +103,7 @@ export default {
     // The row is saved. Mail gets the form fields only. The scrambled source and location stay in the database.
     // A mail failure is logged and never fails the form (FR-907).
     ctx.waitUntil(
-      sendMail(env, s, id)
+      sendMail(env, s, id, publicId)
         .then((outcome) => {
           if (outcome === 'skipped') console.warn('lead email skipped: Graph secrets are not set', id);
         })

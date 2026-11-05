@@ -13,3 +13,4 @@ enabled = true
 binding = "DB"
 database_name = "sparkwing-leads"
 database_id = "bb3edd0c-0de7-4ab7-88e9-a6c625723585"
+migrations_dir = "../forms/migrations"
