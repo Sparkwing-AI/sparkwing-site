@@ -34,11 +34,9 @@ import { company, mailto, site } from '../config/site';
       </div>
       <div class="sw-field">
         <label for="enq-topic">What is it about?</label>
-        <span class="sw-select">
-          <select class="sw-input" id="enq-topic" name="topic">
-            {enquiryTopics.map((topic) => <option value={topic.value}>{topic.label}</option>)}
-          </select>
-        </span>
+        <select class="sw-input" id="enq-topic" name="topic">
+          {enquiryTopics.map((topic) => <option value={topic.value}>{topic.label}</option>)}
+        </select>
       </div>
       <div class="sw-field">
         <label for="enq-message">Your message</label>

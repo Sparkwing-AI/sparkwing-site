@@ -24,7 +24,9 @@ dt { font-weight: 600; }
 dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 form.edit { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
 label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
-select, textarea { font: inherit; color: inherit; background: var(--bg); border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; }
+select, textarea { font: inherit; color: inherit; background-color: var(--bg); border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; }
+select { appearance: none; padding-right: 44px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230d3b36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px 16px; }
+@media (prefers-color-scheme: dark) { select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%23f4efe0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); } }
 textarea { min-width: min(100%, 420px); min-height: 44px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 600px) { dl { grid-template-columns: 1fr; } }
