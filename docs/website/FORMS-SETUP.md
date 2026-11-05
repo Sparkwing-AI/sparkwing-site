@@ -78,14 +78,11 @@ cd workers/leads
 npx wrangler deploy
 ```
 
-Then in the Cloudflare dashboard:
+Then in the Cloudflare dashboard, open Workers & Pages, `sparkwing-leads`, Access. Turn Access on for the Worker so it covers every route, including the `workers.dev` hostname. Allow only Sparkwing team emails. Worker-level Access does not give an AUD tag or a team domain to paste into the config. The Worker reads the signed-in person from `ctx.access` and `await ctx.access.getIdentity()`.
 
-1. Open Workers & Pages, `sparkwing-leads`, Settings, Domains & Routes. On the `workers.dev` row, turn on Cloudflare Access.
-2. In Zero Trust, Access, Applications, open the application it created. Allow only Sparkwing team emails.
-3. Copy the application's AUD tag and your team domain (`<team>.cloudflareaccess.com`) into `ACCESS_AUD` and `ACCESS_TEAM_DOMAIN` in `workers/leads/wrangler.toml`. They are not secrets.
-4. Turn off Preview URLs for the Worker, then redeploy with `npx wrangler deploy`.
+If Access did not run, or the identity has no email, the Worker answers 403 and shows no lead data. Do not set `DEV_BYPASS_ACCESS` in production, and do not put it in `wrangler.toml`.
 
-The Worker also checks the Access token itself. If Access is off or misconfigured, it answers 403 and shows no data.
+Turn off Preview URLs for the Worker if they are still on.
 
 ## 6. Test both forms end to end
 
@@ -104,7 +101,19 @@ npx wrangler d1 migrations apply sparkwing-leads --local --persist-to ../.state
 npx wrangler dev --port 8787 --persist-to ../.state
 ```
 
-Build the site with `PUBLIC_FORM_ENDPOINT=http://localhost:8787`. For the lead list locally, put `DEV_BYPASS_ACCESS=yes` in `workers/leads/.dev.vars`. Never set that in production.
+Build the site with `PUBLIC_FORM_ENDPOINT=http://localhost:8787`.
+
+For the lead list locally, `wrangler dev` can pretend someone is signed in. Add this to `workers/leads/wrangler.toml` only while you are testing, then take it out before you deploy:
+
+```toml
+[access.dev]
+aud = "local"
+
+  [access.dev.identity]
+  email = "you@sparkwing.com.au"
+```
+
+`ctx.access` is then set, and `getIdentity()` returns that email. Remove the block to try a request with no sign-in: `ctx.access` is undefined and the Worker returns 403. Do not set `DEV_BYPASS_ACCESS` in production.
 
 ## Still waiting on Elly
 

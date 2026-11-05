@@ -1,11 +1,9 @@
 import { statuses, type Lead, type Status } from '../../shared/types';
-import { accessUser, type AccessEnv } from './access';
+import { accessUser } from './access';
 import { csvFor, page } from './render';
 
-interface Env extends AccessEnv {
+interface Env {
   DB: D1Database;
-  /** Local testing only. Never set this in production: it skips the Access check. */
-  DEV_BYPASS_ACCESS?: string;
 }
 
 const security = {
@@ -28,9 +26,9 @@ async function load(env: Env, type: Lead['type'], marketing: boolean): Promise<L
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const user = env.DEV_BYPASS_ACCESS === 'yes' ? 'dev' : await accessUser(request, env);
-    // Fails closed: no token, wrong token, or Access not configured all end here.
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    // Fails closed: no Access context, or a signed-in identity with no email.
+    const user = await accessUser(ctx);
     if (!user) return new Response('Sign in required', { status: 403, headers: security });
 
     const url = new URL(request.url);

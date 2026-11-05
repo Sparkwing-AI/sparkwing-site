@@ -8,12 +8,7 @@ compatibility_date = "2026-11-01"
 [observability]
 enabled = true
 
-# Not secrets. Copy them from the Zero Trust dashboard (Access, Applications).
-[vars]
-ACCESS_TEAM_DOMAIN = "REPLACE_WITH_TEAM_DOMAIN"
-ACCESS_AUD = "REPLACE_WITH_APPLICATION_AUD_TAG"
-
-# Same database as the forms Worker. Paste the same database_id.
+# Same database as the forms Worker.
 [[d1_databases]]
 binding = "DB"
 database_name = "sparkwing-leads"
