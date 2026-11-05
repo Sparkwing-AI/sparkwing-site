@@ -591,6 +591,11 @@
   font-weight: var(--sw-weight-bold);
 }
 
+.sw-field label.sw-check {
+  font-size: var(--sw-text-small);
+  font-weight: var(--sw-weight-regular);
+}
+
 .sw-optional {
   font-weight: var(--sw-weight-medium);
   color: var(--sw-color-text-muted);

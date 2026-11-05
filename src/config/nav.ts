@@ -2,7 +2,7 @@
 export const enquiryTopics = [
   { value: 'call', label: 'Book a discovery call' },
   { value: 'app', label: 'Ask about an app' },
-  { value: 'studio', label: 'Spark Studio' },
+  { value: 'studio', label: 'Customising AI for my business' },
   { value: 'other', label: 'Something else' },
 ] as const;
 

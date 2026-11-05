@@ -51,7 +51,7 @@ test.describe('enquiry modal', () => {
     const dialog = page.getByRole('dialog', { name: 'Talk to us' });
     await expect(dialog).toBeVisible();
     await expect(page.getByLabel('Your name')).toBeFocused();
-    await expect(page.getByLabel('What is it about?')).toHaveValue('call');
+    await expect(page.getByLabel("What you're after")).toHaveValue('call');
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
     await expect(button).toBeFocused();
