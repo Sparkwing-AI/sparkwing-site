@@ -60,7 +60,6 @@ export function validate(body: unknown): Result {
   let firstTask: string | null = null;
 
   if (type === 'beta') {
-    if (!business) errors.push('business');
     country = text(raw.country, 50);
     if (!(countries as readonly string[]).includes(country)) errors.push('country');
     businessType = text(raw.business_type, 2000, true);

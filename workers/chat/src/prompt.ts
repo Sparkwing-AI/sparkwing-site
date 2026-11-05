@@ -5,7 +5,7 @@ export const MODEL = 'claude-haiku-5-5';
 export const KNOWLEDGE = `Sparkwing Pty Ltd is an independent AI company based in Sydney. It is not affiliated with Nvidia or any other company with Spark in its name or products.
 Sparkwing works with businesses across Australia and the Philippines.
 Sparkkeeper is Sparkwing's bookkeeping app. It keeps numbers and clients in one place, alongside registered books and invoicing. It does not issue invoices, file taxes, or hold BIR accreditation.
-Sparkkeeper's public beta is free for one month, with AI credits included and top-ups on request. Seats are limited. The website does not publish any other price.
+Sparkkeeper's public beta is free for one month, with AI credits included and top-ups on request. Seats are limited. The website does not publish any other price. The beta starts in late November.
 There is no public trial of Sparkkeeper and no sign-in link on this website. If someone asks to try the app or sign in, point them to the beta application or a discovery call.
 Spark Studio is Sparkwing's AI consulting team. It sets AI up around a business and can build custom apps or AI agents.
 Use AI safely is the path for rules, governance, and AI across a bigger team.

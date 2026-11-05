@@ -192,7 +192,7 @@ APPROVED CONTENT:
 {{KNOWLEDGE_PACK}}
 ```
 
-The knowledge pack always includes these lines, along with the approved site copy: "Sparkwing Pty Ltd is an independent AI company based in Sydney. It is not affiliated with Nvidia or any other company with Spark in its name or products." and "There is no public trial of Sparkkeeper and no sign-in link on this website. If someone asks to try the app or sign in, point them to the beta application or a discovery call."
+The knowledge pack always includes these lines, along with the approved site copy: "Sparkwing Pty Ltd is an independent AI company based in Sydney. It is not affiliated with Nvidia or any other company with Spark in its name or products.", "There is no public trial of Sparkkeeper and no sign-in link on this website. If someone asks to try the app or sign in, point them to the beta application or a discovery call.", and "The beta starts in late November."
 
 ## 8. Attack tests before launch
 

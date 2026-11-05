@@ -98,7 +98,7 @@ test.describe('Beta application', () => {
   test('shows an error under each empty required field and focuses the first', async ({ page }) => {
     await page.goto('/sparkkeeper/beta');
     await page.getByRole('button', { name: 'Send my application' }).click();
-    for (const field of ['name', 'email', 'business', 'country', 'work', 'consent']) {
+    for (const field of ['name', 'email', 'country', 'work', 'consent']) {
       await expect(page.locator(`#${field}-err`)).toBeVisible();
       await expect(page.locator(`#${field}`)).toHaveAttribute('aria-invalid', 'true');
       await expect(page.locator(`#${field}`)).toHaveAttribute('aria-describedby', `${field}-err`);
@@ -139,7 +139,7 @@ test.describe('Beta application', () => {
     await page.locator('#consent').check();
     await page.getByRole('button', { name: 'Send my application' }).click();
     await expect(page.locator('#beta-done')).toBeFocused();
-    await expect(page.locator('#beta-done')).toContainText("We'll email test@example.com to tell you if the beta is a fit.");
+    await expect(page.locator('#beta-done')).toContainText("Thanks, we've got your details! Spots are limited so we'll get in touch asap.");
     await expect(page.locator('#beta-form')).toBeHidden();
   });
 });

@@ -37,7 +37,7 @@ const next = [
             Sparkkeeper beta
           </span>
           <h1 class="bt-h1" id="pa-title">Apply for the beta.</h1>
-          <p class="bt-lead">Tell us about your business and we'll tell you if it's a fit.</p>
+          <p class="bt-lead">Ready to transform your workflows? Leave your details and we'll reach out soon!</p>
         </div>
 
         <form class="sw-form" id="beta-form" method="post" novalidate hidden>
@@ -52,9 +52,8 @@ const next = [
             <span class="sw-error" id="email-err" hidden></span>
           </div>
           <div class="sw-field">
-            <label for="business">Business name</label>
-            <input class="sw-input" id="business" name="business" type="text" autocomplete="organization" required aria-required="true" />
-            <span class="sw-error" id="business-err" hidden></span>
+            <label for="business">Business name <span class="sw-optional">(optional)</span></label>
+            <input class="sw-input" id="business" name="business" type="text" autocomplete="organization" />
           </div>
           <div class="sw-field">
             <label for="country">Where is your business?</label>
@@ -109,8 +108,7 @@ const next = [
         </noscript>
 
         <div class="bt-done" id="beta-done" tabindex="-1" role="status" hidden>
-          <h2>Thanks, we've got it.</h2>
-          <p>We'll email <span id="beta-done-email"></span> to tell you if the beta is a fit.</p>
+          <h2>Thanks, we've got your details! Spots are limited so we'll get in touch asap.</h2>
           <a class="sw-link" href="/sparkkeeper">Back to Sparkkeeper</a>
         </div>
       </div>
@@ -186,16 +184,14 @@ const next = [
   const root = document.getElementById('beta-main');
   const form = document.getElementById('beta-form') as HTMLFormElement | null;
   const done = document.getElementById('beta-done');
-  const doneEmail = document.getElementById('beta-done-email');
   const fail = document.getElementById('beta-fail');
 
-  if (root && form && done && doneEmail && fail) {
+  if (root && form && done && fail) {
     // The form is shown by a tiny inline script during parsing. Without JavaScript it stays hidden and the email address is offered.
     const CONSENT_WORDING_VERSION = 'beta-v1';
     const messages = {
       name: 'Please enter your name.',
       email: 'Please enter a valid email, like you@business.com.',
-      business: 'Please enter your business name.',
       country: 'Please choose where your business is.',
       work: 'Please tell us what your business does.',
       consent: 'Please tick this box so we can contact you.',
@@ -232,7 +228,6 @@ const next = [
       const invalid: Field[] = [];
       if (!text('name')) invalid.push('name');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text('email'))) invalid.push('email');
-      if (!text('business')) invalid.push('business');
       if (!text('country')) invalid.push('country');
       if (!text('work')) invalid.push('work');
       if (!input('consent').checked) invalid.push('consent');
@@ -272,7 +267,6 @@ const next = [
         } else {
           throw new Error('No form endpoint configured');
         }
-        doneEmail.textContent = text('email');
         form.hidden = true;
         done.hidden = false;
         done.focus();

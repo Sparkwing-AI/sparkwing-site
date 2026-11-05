@@ -14,7 +14,7 @@ const oneLine = (value: string) => value.replace(/\s+/g, ' ').trim();
 const topicLabel = (s: Submission) => topics[s.topic as keyof typeof topics];
 
 export function subjectFor(s: Submission): string {
-  if (s.type === 'beta') return oneLine(`[Beta application] ${s.business}, ${s.country}`);
+  if (s.type === 'beta') return oneLine(`[Beta application] ${s.business ?? '(not given)'}, ${s.country}`);
   if (s.type === 'chat') return oneLine(`[Website chat] ${s.name}`);
   return oneLine(`[Website enquiry] ${topicLabel(s)}: ${s.name}`);
 }
@@ -25,7 +25,7 @@ export function bodyFor(s: Submission, id: string): string {
       ? [
           `Name: ${s.name}`,
           `Email: ${s.email}`,
-          `Business: ${s.business}`,
+          `Business: ${s.business ?? '(not given)'}`,
           `Country: ${s.country}`,
           `What the business does: ${s.business_type}`,
           `First admin task: ${s.first_task ?? '(not given)'}`,
