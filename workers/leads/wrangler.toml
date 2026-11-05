@@ -1,4 +1,5 @@
 name = "sparkwing-leads"
+account_id = "9d662527c737f4da3e868a52641e3d09"
 main = "src/index.ts"
 compatibility_date = "2026-11-01"
 
@@ -16,4 +17,4 @@ ACCESS_AUD = "REPLACE_WITH_APPLICATION_AUD_TAG"
 [[d1_databases]]
 binding = "DB"
 database_name = "sparkwing-leads"
-database_id = "REPLACE_WITH_DATABASE_ID"
+database_id = "bb3edd0c-0de7-4ab7-88e9-a6c625723585"
