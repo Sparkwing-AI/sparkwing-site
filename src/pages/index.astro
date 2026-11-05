@@ -398,18 +398,28 @@ const team = [
           <span class="home-context-card-head">
             <b>Without your business context</b>
           </span>
-          <p class="home-context-user">Who should I follow up this week?</p>
-          <p class="home-context-bot">I can't see your client list. If you paste it in, I can help you work through it.</p>
+          <div class="home-context-msg home-context-msg--me">
+            <p class="home-context-user"><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img class="home-context-avatar" src="/assets/chat/avatar-person.svg" width="44" height="44" alt="" loading="lazy" />
+          </div>
+          <div class="home-context-msg">
+            <img class="home-context-avatar" src="/assets/chat/avatar-ai.svg" width="44" height="44" alt="" loading="lazy" />
+            <p class="home-context-bot"><span class="sw-visually-hidden">AI replied: </span>I can't see your client list. If you paste it in, I can help you work through it.</p>
+          </div>
         </div>
         <div class="home-context-card home-context-card--fit">
           <span class="home-context-card-head">
             <b>With your business context</b>
             <span>Sample data</span>
           </span>
-          <p class="home-context-user">Who should I follow up this week?</p>
-          <p class="home-context-bot">
-            I suggest following up with Reyes Trading, who's been waiting 21 days, and Marlow Studio, who's waited 12. Reyes comes first. Want me to draft the email?
-          </p>
+          <div class="home-context-msg home-context-msg--me">
+            <p class="home-context-user"><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img class="home-context-avatar" src="/assets/chat/avatar-person.svg" width="44" height="44" alt="" loading="lazy" />
+          </div>
+          <div class="home-context-msg">
+            <img class="home-context-avatar" src="/assets/chat/avatar-ai-sparkwing.svg" width="44" height="44" alt="" loading="lazy" />
+            <p class="home-context-bot"><span class="sw-visually-hidden">AI with Sparkwing replied: </span>I suggest following up with Reyes Trading, who's been waiting 21 days, and Marlow Studio, who's waited 12. Reyes comes first. Want me to draft the email?</p>
+          </div>
         </div>
       </div>
       <div class="home-context-points">
