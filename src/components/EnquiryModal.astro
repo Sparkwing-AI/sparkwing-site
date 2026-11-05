@@ -34,9 +34,12 @@ import { company, mailto, site } from '../config/site';
       </div>
       <div class="sw-field">
         <label for="enq-topic">What you're after</label>
-        <select class="sw-input" id="enq-topic" name="topic">
-          {enquiryTopics.map((topic) => <option value={topic.value}>{topic.label}</option>)}
-        </select>
+        <div class="sw-select-wrap">
+          <select class="sw-input" id="enq-topic" name="topic">
+            {enquiryTopics.map((topic) => <option value={topic.value}>{topic.label}</option>)}
+          </select>
+          <span class="sw-select-face" aria-hidden="true">{enquiryTopics[0].label}</span>
+        </div>
       </div>
       <div class="sw-field">
         <label for="enq-message">Your message</label>
@@ -87,6 +90,16 @@ import { company, mailto, site } from '../config/site';
     const input = (field: Field) => form.elements.namedItem(field) as HTMLInputElement;
     const errorEl = (field: Field) => document.getElementById(`enq-${field}-err`) as HTMLElement;
     let returnTo: HTMLElement | null = null;
+    const topicFace = dialog.querySelector('.sw-select-face');
+
+    function showTopic(topic: HTMLSelectElement) {
+      if (topicFace) topicFace.textContent = topic.selectedOptions[0]?.text ?? '';
+    }
+
+    showTopic(form.elements.namedItem('topic') as HTMLSelectElement);
+    (form.elements.namedItem('topic') as HTMLSelectElement).addEventListener('change', (event) => {
+      showTopic(event.currentTarget as HTMLSelectElement);
+    });
 
     function clearErrors() {
       (Object.keys(messages) as Field[]).forEach((field) => {
@@ -124,7 +137,9 @@ import { company, mailto, site } from '../config/site';
         done.hidden = true;
       }
       clearErrors();
-      (form.elements.namedItem('topic') as HTMLSelectElement).value = anchor.dataset.enquiry ?? 'call';
+      const topic = form.elements.namedItem('topic') as HTMLSelectElement;
+      topic.value = anchor.dataset.enquiry ?? 'call';
+      showTopic(topic);
       dialog.showModal();
       input('name').focus();
     });

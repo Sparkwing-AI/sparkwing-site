@@ -529,6 +529,13 @@
   background: color-mix(in srgb, var(--sw-color-deep) 60%, transparent);
 }
 
+.sw-dialog-body,
+.sw-form,
+.sw-field {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .sw-dialog-body {
   display: flex;
   flex-direction: column;
@@ -619,11 +626,58 @@ textarea.sw-input {
 
 select.sw-input {
   appearance: none;
+  max-width: 100%;
+  min-width: 0;
   padding-right: 44px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230C352F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   background-size: 16px 16px;
+}
+
+/* The closed enquiry select wraps a long choice inside the modal. The native control stays on top for keyboard and the menu. */
+.sw-select-wrap {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sw-select-face {
+  display: flex;
+  align-items: center;
+  min-height: var(--sw-button-height);
+  padding: var(--sw-space-3);
+  padding-right: 44px;
+  border: 1.5px solid var(--sw-color-text-muted);
+  border-radius: var(--sw-radius-md);
+  background-color: var(--sw-color-surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230C352F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+  color: var(--sw-color-ink);
+  font-size: var(--sw-text-body);
+  line-height: var(--sw-leading-body);
+}
+
+.sw-select-wrap select.sw-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  background-image: none;
+}
+
+.sw-select-wrap select.sw-input:focus-visible {
+  outline: none;
+}
+
+.sw-select-wrap:focus-within .sw-select-face {
+  outline: var(--sw-focus-ring);
+  outline-offset: var(--sw-focus-offset);
 }
 
 select.sw-input.on-deep,
