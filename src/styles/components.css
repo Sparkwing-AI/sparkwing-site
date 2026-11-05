@@ -122,6 +122,7 @@
   color: var(--sw-color-on-deep);
   font-size: var(--sw-text-small);
   font-weight: var(--sw-weight-medium);
+  text-align: center;
 }
 
 .sw-announce a {
@@ -414,6 +415,15 @@
 }
 
 @media (max-width: 480px) {
+  .sw-announce {
+    row-gap: 0;
+    padding-bottom: 0;
+  }
+
+  .sw-announce a {
+    min-height: var(--sw-target-min);
+  }
+
   .sw-nav-book {
     display: none;
   }
