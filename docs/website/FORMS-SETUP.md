@@ -5,7 +5,7 @@ Two Workers share one D1 database.
 | Worker | Folder | Public? | What it does |
 | --- | --- | --- | --- |
 | `sparkwing-forms` | `workers/forms` | Yes, with allowed-origin checks | `POST /api/leads`. Validates, saves to D1, emails `info@` |
-| `sparkwing-leads` | `workers/leads` | No. Cloudflare Access covers all traffic | Lead list with Beta and Enquiries tabs, status, notes, marketing filter, CSV export |
+| `sparkwing-leads` | `workers/leads` | No. Cloudflare Access covers all traffic | Lead list. All is the default, then Beta, Enquiries and Chat. Status, notes, marketing filter, CSV export |
 
 Secrets go in through wrangler's prompt only. Never paste them into chat, a file or the repo. `.dev.vars` is git-ignored and only used for local testing.
 
@@ -114,6 +114,27 @@ aud = "local"
 ```
 
 `ctx.access` is then set, and `getIdentity()` returns that email. Remove the block to try a request with no sign-in: `ctx.access` is undefined and the Worker returns 403. Do not set `DEV_BYPASS_ACCESS` in production.
+
+## 7. Scrambled source and approximate location
+
+The forms Worker reads `CF-Connecting-IP` only to store an HMAC-SHA-256 hash, and stores `request.cf.country` and `request.cf.region`. It does not store the raw IP, the city, or coordinates, and it does not put them in the email. The lead list can say when other leads share a hash. It never shows the hash.
+
+Set the key with wrangler's prompt. Do not paste it into chat, a file or the repo:
+
+```powershell
+cd workers/forms
+$env:CLOUDFLARE_ACCOUNT_ID = "9d662527c737f4da3e868a52641e3d09"
+npx wrangler secret put IP_HASH_SECRET
+```
+
+Then apply the migration and deploy the forms Worker:
+
+```powershell
+npx wrangler d1 migrations apply sparkwing-leads --remote
+npx wrangler deploy
+```
+
+If the secret is missing, new leads still save. Their source hash stays empty, so the list cannot match them to later leads.
 
 ## Still waiting on Elly
 

@@ -10,5 +10,5 @@
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["chat/test/**", "leads/test/**"]
+  "exclude": ["chat/test/**", "leads/test/**", "forms/test/**"]
 }

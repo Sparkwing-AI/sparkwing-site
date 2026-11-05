@@ -22,7 +22,8 @@
     "test:legal": "node scripts/check-legal.mjs",
     "chat:dev": "npx wrangler dev --config workers/chat/wrangler.toml",
     "test:chat": "node --experimental-strip-types workers/chat/test/model-checks.ts",
-    "test:leads": "node --experimental-strip-types --import ./workers/leads/test/register.mjs workers/leads/test/access.test.ts",
+    "test:leads": "node --experimental-strip-types --import ./workers/leads/test/register.mjs workers/leads/test/access.test.ts && node --experimental-strip-types --import ./workers/leads/test/register.mjs workers/leads/test/list.test.ts",
+    "test:forms": "node --experimental-strip-types --import ./workers/leads/test/register.mjs workers/forms/test/source.test.ts",
     "test:links": "linkinator dist --config linkinator.config.json",
     "test:a11y": "playwright test",
     "test:lighthouse": "lhci autorun --config=lighthouserc.cjs"

@@ -217,6 +217,19 @@ Gates after fixes: lint, build, check-dist, test:legal, Playwright (211 pass).
 
 All six earlier findings confirmed fixed. Applied after the run: L1 (no-JS language blocks use display flex, so the gap is kept) and L5 (`method="post"` on the Beta form as a defence). Left for later: L3 (a `<style>` inside `<noscript>`, the CSP in step 8 will need to allow it or we switch to showing both blocks and letting JS hide one), L4 (no-JS sentence is the FR-910 wording, Elly to confirm), L6 (CLS of the Beta form unmeasured, Lighthouse passes), L7, L8, L9, and a keyboard test that tabs through the sub-nav.
 
+## Lead list, scrambled source, approximate location
+
+Tier 2. Workers and the private lead list. Not the public site pages.
+
+User intent: All tab first and default. Type tag on every card. Enquiry topic tag from the saved value. Marketing filter and CSV work on All, and CSV includes type, topic, detected country and region. Notes and Save on their own rows. Access still fails closed. Escape lead data. HMAC-SHA-256 of the IP with IP_HASH_SECRET, never the raw IP, never in email or CSV. "Same source as N other leads" without showing the hash. Save request.cf.country and request.cf.region. "Detected: region, country". "Location differs" is a hint when the dropdown country does not match. Missing location stays empty. Do not block submissions. Do not edit Privacy until the drafted line is approved. Deploy only to account 9d662527c737f4da3e868a52641e3d09, and stop if IP_HASH_SECRET is not set.
+
+- [x] All tab, tags, notes row, Save row, CSV columns, hash stripped before render
+- [x] Forms Worker stores hash, country and region. Migration 0003
+- [x] Tests: test:leads and test:forms pass. Worker typecheck passes
+- [ ] IP_HASH_SECRET was not set (`wrangler secret list` returned none). Migration and both deploys stopped
+- [ ] Privacy page not edited. Wording is in the reply for approval
+- [x] Rose: PASS WITH NOTES ([review](575f759b-f4a5-4fc2-943c-008f4bc7b38f)). No Critical or High findings. Low notes left: chat cards still show a Topic row, enquiry cards show the saved key as well as the pill, and a failed insert could log a database error that mentions bound values.
+
 ## SEO metadata update and Trust anchors
 
 Tier 1 (config and metadata change, no copy change). User intent: replace the page metadata table for seven routes, use the same title and description in Open Graph and Twitter tags, and fix Trust anchors that landed mid-card.

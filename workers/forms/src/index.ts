@@ -1,10 +1,13 @@
 import { sendMail, type MailEnv } from './mail';
+import { visitorSource } from './source';
 import { validate } from './validate';
 
 interface Env extends MailEnv {
   DB: D1Database;
   LIMITER?: { limit(options: { key: string }): Promise<{ success: boolean }> };
   ALLOWED_ORIGINS: string;
+  /** HMAC key for the scrambled source. Set with `wrangler secret put`. Never log it. */
+  IP_HASH_SECRET?: string;
 }
 
 const maxBody = 20_000;
@@ -74,16 +77,19 @@ export default {
     const s = result.value;
     const id = crypto.randomUUID();
     const now = new Date().toISOString();
+    // A missing secret or a missing location leaves those columns empty. The lead still saves.
+    const source = await visitorSource(request, env.IP_HASH_SECRET);
     try {
       await env.DB.prepare(
         `INSERT INTO leads (id, type, created_at, name, email, business, country, topic, message, business_type,
-           first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version,
+           ip_hash, detected_country, detected_region)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(
           id, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
           s.first_task, s.source_page, now, s.marketing_consent ? 1 : 0, s.marketing_consent ? now : null,
-          s.consent_wording_version,
+          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region,
         )
         .run();
     } catch (error) {
@@ -91,7 +97,8 @@ export default {
       return reply(500, { error: 'save' }, origin);
     }
 
-    // The row is saved. A mail failure is logged and never fails the form (FR-907).
+    // The row is saved. Mail gets the form fields only. The scrambled source and location stay in the database.
+    // A mail failure is logged and never fails the form (FR-907).
     ctx.waitUntil(
       sendMail(env, s, id)
         .then((outcome) => {

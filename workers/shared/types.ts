@@ -21,4 +21,8 @@ export interface Lead {
   consent_wording_version: string | null;
   status: Status;
   notes: string;
+  detected_country: string | null;
+  detected_region: string | null;
+  /** Other saved leads with the same scrambled source. The hash itself is never sent to the page. */
+  same_source?: number;
 }

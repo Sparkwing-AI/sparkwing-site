@@ -1,6 +1,6 @@
 import { statuses, type Lead, type Status } from '../../shared/types';
 import { accessUser } from './access';
-import { csvFor, page } from './render';
+import { csvFor, listTabs, page, type ListTab } from './render';
 
 interface Env {
   DB: D1Database;
@@ -17,12 +17,33 @@ const security = {
 const html = (body: string, status = 200) =>
   new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=utf-8', ...security } });
 
-const tabs = { beta: 'beta', enquiries: 'enquiry', chat: 'chat' } as const;
+const typeOf = { beta: 'beta', enquiries: 'enquiry', chat: 'chat' } as const;
 
-async function load(env: Env, type: Lead['type'], marketing: boolean): Promise<Lead[]> {
-  const sql = `SELECT * FROM leads WHERE type = ?${marketing ? ' AND marketing_consent = 1' : ''} ORDER BY created_at DESC LIMIT 1000`;
-  const { results } = await env.DB.prepare(sql).bind(type).all<Lead>();
-  return results;
+function asTab(value: string | null): ListTab {
+  return value && (listTabs as readonly string[]).includes(value) ? (value as ListTab) : 'all';
+}
+
+/** Drops the scrambled source before anything is rendered or exported. */
+function forDisplay(rows: Array<Lead & { ip_hash?: string | null }>): Lead[] {
+  return rows.map((row) => {
+    const shown = { ...row, same_source: Number(row.same_source ?? 0) };
+    delete shown.ip_hash;
+    return shown;
+  });
+}
+
+async function load(env: Env, tab: ListTab, marketing: boolean): Promise<Lead[]> {
+  const filters: string[] = [];
+  const binds: string[] = [];
+  if (tab !== 'all') {
+    filters.push('type = ?');
+    binds.push(typeOf[tab]);
+  }
+  if (marketing) filters.push('marketing_consent = 1');
+  const where = filters.length ? `WHERE ${filters.join(' AND ')}` : '';
+  const sql = `SELECT leads.*, CASE WHEN leads.ip_hash IS NULL OR leads.ip_hash = '' THEN 0 ELSE (SELECT COUNT(*) FROM leads AS same WHERE same.ip_hash = leads.ip_hash) - 1 END AS same_source FROM leads ${where} ORDER BY created_at DESC LIMIT 1000`;
+  const { results } = await env.DB.prepare(sql).bind(...binds).all<Lead & { ip_hash?: string | null }>();
+  return forDisplay(results);
 }
 
 export default {
@@ -44,21 +65,19 @@ export default {
       const notes = String(form.get('notes') ?? '').slice(0, 5000);
       await env.DB.prepare('UPDATE leads SET status = ?, notes = ? WHERE id = ?').bind(status as Status, notes, match[1]).run();
       const back = new URL('/', url.origin);
-      const tab = String(form.get('tab') ?? 'beta');
-      back.searchParams.set('tab', tab in tabs ? tab : 'beta');
+      back.searchParams.set('tab', asTab(String(form.get('tab') ?? 'all')));
       if (form.get('marketing') === '1') back.searchParams.set('marketing', '1');
       return new Response(null, { status: 303, headers: { Location: `${back.pathname}${back.search}`, ...security } });
     }
 
     if (request.method !== 'GET') return new Response('Method not allowed', { status: 405, headers: security });
 
-    const tabParam = url.searchParams.get('tab') ?? 'beta';
-    const tab = tabParam in tabs ? (tabParam as keyof typeof tabs) : 'beta';
+    const tab = asTab(url.searchParams.get('tab'));
     const marketing = url.searchParams.get('marketing') === '1';
 
     if (url.pathname === '/export.csv') {
-      const leads = await load(env, tabs[tab], marketing);
-      return new Response(csvFor(leads, tabs[tab]), {
+      const leads = await load(env, tab, marketing);
+      return new Response(csvFor(leads), {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
           'Content-Disposition': `attachment; filename="leads-${tab}.csv"`,
@@ -68,6 +87,6 @@ export default {
     }
 
     if (url.pathname !== '/') return new Response('Not found', { status: 404, headers: security });
-    return html(page(await load(env, tabs[tab], marketing), tab, marketing, user));
+    return html(page(await load(env, tab, marketing), tab, marketing, user));
   },
 } satisfies ExportedHandler<Env>;

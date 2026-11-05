@@ -17,12 +17,20 @@ nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bott
 nav a, button { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; }
 nav a[aria-current='page'] { background: var(--ink); color: var(--bg); }
 .card { margin: 0 0 16px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
-.card h2 { margin: 0; font-size: 1.1rem; }
+.card h2 { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 1.1rem; }
+.tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; line-height: 1; }
+.tag-beta { background: var(--ink); color: var(--bg); }
+.tag-enquiry { border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
+.tag-chat { border: 1.5px dashed var(--ink); background: transparent; color: var(--ink); }
+.tag-topic { border: 1.5px solid var(--accent); background: transparent; color: var(--ink); }
+.tag-hint { border: 1.5px dotted var(--ink); background: transparent; color: var(--ink); font-weight: 600; }
 .meta { margin: 0 0 12px; opacity: .8; font-size: .9rem; }
 dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0 0 12px; }
 dt { font-weight: 600; }
 dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-form.edit { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
+form.edit { display: grid; gap: 12px; }
+form.edit label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
+form.edit textarea { width: 100%; }
 label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
 select, textarea { font: inherit; color: inherit; background-color: var(--bg); border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; }
 select { appearance: none; padding-right: 44px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230d3b36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px 16px; }
@@ -31,6 +39,40 @@ textarea { min-width: min(100%, 420px); min-height: 44px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 600px) { dl { grid-template-columns: 1fr; } }
 `;
+
+const typeTag = { beta: ['tag-beta', 'Beta'], enquiry: ['tag-enquiry', 'Enquiry'], chat: ['tag-chat', 'Chat'] } as const;
+
+/** Short labels for the topic value already saved on an enquiry. */
+const topicTags: Record<string, string> = {
+  call: 'Book a call',
+  app: 'App enquiry',
+  studio: 'Spark Studio',
+  other: 'Something else',
+};
+
+const chosenCountry: Record<string, string> = { Australia: 'AU', Philippines: 'PH' };
+
+export function topicTag(lead: Lead): string | null {
+  if (lead.type !== 'enquiry' || !lead.topic) return null;
+  return topicTags[lead.topic] ?? null;
+}
+
+/** Hint only. No chosen country, or no detected country, means no comparison. */
+export function locationDiffers(lead: Lead): boolean {
+  const detected = lead.detected_country?.toUpperCase() ?? '';
+  const chosen = lead.country ?? '';
+  if (!detected || !chosen) return false;
+  const code = chosenCountry[chosen];
+  if (code) return code !== detected;
+  if (chosen === 'Somewhere else') return detected === 'AU' || detected === 'PH';
+  return false;
+}
+
+function detectedLine(lead: Lead): string {
+  const parts = [lead.detected_region, lead.detected_country].filter((part) => part && part.trim());
+  if (!parts.length) return '';
+  return `Detected: ${parts.map((part) => esc(part)).join(', ')}`;
+}
 
 function card(lead: Lead, tab: string, marketing: boolean): string {
   const rows: [string, string | number | null][] =
@@ -49,21 +91,30 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
           ['Message', lead.message],
         ];
   rows.push(['Marketing emails OK', lead.marketing_consent ? `Yes, ${lead.marketing_consent_at?.slice(0, 10)}` : 'No']);
+  const [typeClass, typeLabel] = typeTag[lead.type];
+  const topic = topicTag(lead);
   const options = statuses.map((s) => `<option${s === lead.status ? ' selected' : ''}>${s}</option>`).join('');
+  const detected = detectedLine(lead);
+  const others = lead.same_source ?? 0;
+  const same = others > 0 ? `Same source as ${others} other ${others === 1 ? 'lead' : 'leads'}` : '';
+  const extra = [detected, same].filter(Boolean).join(' · ');
   return `<article class="card">
-<h2>${esc(lead.name)}</h2>
-<p class="meta">${when(lead.created_at)} · from ${esc(lead.source_page)} · ${esc(lead.status)}</p>
+<h2><span>${esc(lead.name)}</span> <span class="tag ${typeClass}">${typeLabel}</span>${topic ? ` <span class="tag tag-topic">${esc(topic)}</span>` : ''}${locationDiffers(lead) ? ' <span class="tag tag-hint">Location differs</span>' : ''}</h2>
+<p class="meta">${when(lead.created_at)} · from ${esc(lead.source_page)} · ${esc(lead.status)}${extra ? `<br>${extra}` : ''}</p>
 <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v) || '-'}</dd>`).join('')}</dl>
 <form class="edit" method="post" action="/leads/${esc(lead.id)}">
-<input type="hidden" name="tab" value="${tab}">${marketing ? '<input type="hidden" name="marketing" value="1">' : ''}
+<input type="hidden" name="tab" value="${esc(tab)}">${marketing ? '<input type="hidden" name="marketing" value="1">' : ''}
 <label>Status<select name="status">${options}</select></label>
 <label>Notes<textarea name="notes" rows="2">${esc(lead.notes)}</textarea></label>
-<button type="submit">Save</button>
+<div><button type="submit">Save</button></div>
 </form>
 </article>`;
 }
 
-export function page(leads: Lead[], tab: 'beta' | 'enquiries' | 'chat', marketing: boolean, user: string): string {
+export const listTabs = ['all', 'beta', 'enquiries', 'chat'] as const;
+export type ListTab = (typeof listTabs)[number];
+
+export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: string): string {
   const q = (t: string, m: boolean) => `/?tab=${t}${m ? '&amp;marketing=1' : ''}`;
   const current = (t: string) => (t === tab ? ' aria-current="page"' : '');
   return `<!doctype html>
@@ -73,6 +124,7 @@ export function page(leads: Lead[], tab: 'beta' | 'enquiries' | 'chat', marketin
 <h1>Lead list</h1>
 <p class="who">Signed in as ${esc(user)}</p>
 <nav aria-label="Lead list">
+<a href="${q('all', marketing)}"${current('all')}>All</a>
 <a href="${q('beta', marketing)}"${current('beta')}>Beta</a>
 <a href="${q('enquiries', marketing)}"${current('enquiries')}>Enquiries</a>
 <a href="${q('chat', marketing)}"${current('chat')}>Chat</a>
@@ -90,12 +142,31 @@ const cell = (value: string | number | null) => {
   return `"${text.replace(/"/g, '""')}"`;
 };
 
-export function csvFor(leads: Lead[], type: Lead['type']): string {
-  const columns: (keyof Lead)[] =
-    type === 'beta'
-      ? ['created_at', 'status', 'name', 'email', 'business', 'country', 'business_type', 'first_task', 'marketing_consent', 'marketing_consent_at', 'contact_consent_at', 'consent_wording_version', 'source_page', 'notes', 'id']
-      : ['created_at', 'status', 'name', 'email', 'business', 'topic', 'message', 'marketing_consent', 'marketing_consent_at', 'contact_consent_at', 'consent_wording_version', 'source_page', 'notes', 'id'];
-  const lines = [columns.map((c) => cell(c)).join(',')];
-  for (const lead of leads) lines.push(columns.map((c) => cell(lead[c])).join(','));
+const csvColumns = [
+  'created_at',
+  'type',
+  'status',
+  'name',
+  'email',
+  'business',
+  'country',
+  'topic',
+  'message',
+  'business_type',
+  'first_task',
+  'detected_country',
+  'detected_region',
+  'marketing_consent',
+  'marketing_consent_at',
+  'contact_consent_at',
+  'consent_wording_version',
+  'source_page',
+  'notes',
+  'id',
+] as const satisfies readonly (keyof Lead)[];
+
+export function csvFor(leads: Lead[]): string {
+  const lines = [csvColumns.map((c) => cell(c)).join(',')];
+  for (const lead of leads) lines.push(csvColumns.map((c) => cell(lead[c] ?? null)).join(','));
   return lines.join('\r\n') + '\r\n';
 }
