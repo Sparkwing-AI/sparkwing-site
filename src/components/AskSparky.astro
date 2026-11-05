@@ -42,7 +42,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
         <p class="sw-ask-legal">
           Sparky is AI and can make mistakes. Please keep personal, client and payment details out of your messages.
         </p>
-        <p class="sw-ask-legal"><a href="/privacy">Privacy policy</a></p>
+        <p class="sw-ask-legal"><a href="/privacy" target="_blank" rel="noopener">Privacy policy<span class="sw-visually-hidden"> (opens in a new tab)</span></a></p>
       </div>
     </div>
   </div>
@@ -276,7 +276,13 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       text.append(before ?? '');
       const link = document.createElement('a');
       link.href = privacy;
+      link.target = '_blank';
+      link.rel = 'noopener';
       link.textContent = 'Privacy policy';
+      const hint = document.createElement('span');
+      hint.className = 'sw-visually-hidden';
+      hint.textContent = ' (opens in a new tab)';
+      link.append(hint);
       text.append(link, after ?? '');
     } else {
       text.textContent = label;

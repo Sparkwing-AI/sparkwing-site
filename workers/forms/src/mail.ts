@@ -19,7 +19,7 @@ export function subjectFor(s: Submission): string {
   return oneLine(`[Website enquiry] ${topicLabel(s)}: ${s.name}`);
 }
 
-export function bodyFor(s: Submission, id: string): string {
+export function bodyFor(s: Submission, id: string, publicId: string): string {
   const lines =
     s.type === 'beta'
       ? [
@@ -42,7 +42,8 @@ export function bodyFor(s: Submission, id: string): string {
   lines.push(
     `Marketing emails OK: ${s.marketing_consent ? 'yes' : 'no'}`,
     `From page: ${s.source_page ?? '(unknown)'}`,
-    `Lead id: ${id}`,
+    `Lead ID: ${publicId}`,
+    `Record: ${id}`,
   );
   return lines.join('\n');
 }
@@ -51,7 +52,7 @@ export function bodyFor(s: Submission, id: string): string {
  * Sends through Microsoft Graph as the app, from the info@ mailbox. Exchange RBAC for Applications limits
  * the app to that one mailbox, so no tenant-wide Mail.Send consent is needed.
  */
-export async function sendMail(env: MailEnv, s: Submission, id: string): Promise<'sent' | 'skipped'> {
+export async function sendMail(env: MailEnv, s: Submission, id: string, publicId: string): Promise<'sent' | 'skipped'> {
   if (!env.GRAPH_TENANT_ID || !env.GRAPH_CLIENT_ID || !env.GRAPH_CLIENT_SECRET) return 'skipped';
 
   const tokenResponse = await fetch(
@@ -76,7 +77,7 @@ export async function sendMail(env: MailEnv, s: Submission, id: string): Promise
     body: JSON.stringify({
       message: {
         subject: subjectFor(s),
-        body: { contentType: 'Text', content: bodyFor(s, id) },
+        body: { contentType: 'Text', content: bodyFor(s, id, publicId) },
         toRecipients: [{ emailAddress: { address: env.MAIL_TO } }],
         replyTo: [{ emailAddress: { address: s.email, name: oneLine(s.name) } }],
       },

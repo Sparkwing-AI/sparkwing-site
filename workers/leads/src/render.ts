@@ -16,7 +16,15 @@ h1 { margin: 0 0 4px; font-size: 1.5rem; }
 nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
 nav a, button { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; }
 nav a[aria-current='page'] { background: var(--ink); color: var(--bg); }
-.card { margin: 0 0 16px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.card { margin: 0 0 16px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); scroll-margin-top: 16px; }
+.card:target { animation: lead-mark 2s ease-out 1; }
+@keyframes lead-mark { from { box-shadow: 0 0 0 3px var(--accent); } to { box-shadow: 0 0 0 3px transparent; } }
+@media (prefers-reduced-motion: reduce) { .card:target { animation: none; box-shadow: 0 0 0 3px var(--accent); } }
+.ref { margin: 0 0 8px; font-weight: 700; letter-spacing: .04em; }
+.find { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin: 0 0 16px; }
+.find input { min-height: 44px; min-width: min(100%, 280px); padding: 8px 12px; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; }
+.hint { display: block; margin-top: 4px; font-size: .85rem; }
+.notice { margin: 0 0 16px; }
 .card h2 { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 1.1rem; }
 .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; line-height: 1; }
 .tag-beta { background: var(--ink); color: var(--bg); }
@@ -38,6 +46,12 @@ select { appearance: none; padding-right: 44px; background-image: url("data:imag
 textarea { min-width: min(100%, 420px); min-height: 44px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 600px) { dl { grid-template-columns: 1fr; } }
+.danger { margin-top: 20px; }
+.danger summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font-weight: 500; cursor: pointer; }
+.danger p { margin: 12px 0; max-width: 62ch; }
+.danger-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.danger button, .danger a { min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font-weight: 500; text-decoration: none; }
+.danger a { display: inline-flex; align-items: center; }
 `;
 
 const typeTag = { beta: ['tag-beta', 'Beta'], enquiry: ['tag-enquiry', 'Enquiry'], chat: ['tag-chat', 'Chat'] } as const;
@@ -95,10 +109,11 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
   const topic = topicTag(lead);
   const options = statuses.map((s) => `<option${s === lead.status ? ' selected' : ''}>${s}</option>`).join('');
   const detected = detectedLine(lead);
-  const others = lead.same_source ?? 0;
-  const same = others > 0 ? `Same source as ${others} other ${others === 1 ? 'lead' : 'leads'}` : '';
-  const extra = [detected, same].filter(Boolean).join(' · ');
-  return `<article class="card">
+  const same = sameSource(lead);
+  const extra = [detected, same].filter(Boolean).join('<br>');
+  const back = `/?tab=${encodeURIComponent(tab)}${marketing ? '&marketing=1' : ''}`;
+  return `<article class="card" id="lead-${esc(lead.public_id)}">
+<p class="ref">${esc(lead.public_id)}</p>
 <h2><span>${esc(lead.name)}</span> <span class="tag ${typeClass}">${typeLabel}</span>${topic ? ` <span class="tag tag-topic">${esc(topic)}</span>` : ''}${locationDiffers(lead) ? ' <span class="tag tag-hint">Location differs</span>' : ''}</h2>
 <p class="meta">${when(lead.created_at)} · from ${esc(lead.source_page)} · ${esc(lead.status)}${extra ? `<br>${extra}` : ''}</p>
 <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v) || '-'}</dd>`).join('')}</dl>
@@ -108,15 +123,41 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
 <label>Notes<textarea name="notes" rows="2">${esc(lead.notes)}</textarea></label>
 <div><button type="submit">Save</button></div>
 </form>
+<details class="danger">
+<summary>Delete</summary>
+<form method="post" action="/leads/${esc(lead.id)}/delete">
+<input type="hidden" name="tab" value="${esc(tab)}">${marketing ? '<input type="hidden" name="marketing" value="1">' : ''}
+<p>Delete ${esc(lead.name)} (${esc(lead.email)})? This can't be undone.</p>
+<div class="danger-actions"><button type="submit">Delete this lead</button><a href="${esc(back)}">Cancel</a></div>
+</form>
+</details>
 </article>`;
 }
 
 export const listTabs = ['all', 'beta', 'enquiries', 'chat'] as const;
 export type ListTab = (typeof listTabs)[number];
 
-export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: string): string {
-  const q = (t: string, m: boolean) => `/?tab=${t}${m ? '&amp;marketing=1' : ''}`;
+function sameSource(lead: Lead): string {
+  const ids = lead.same_ids ?? [];
+  if (!ids.length || !lead.public_id) return '';
+  const shown = ids.slice(0, 3).map((id) => `<a href="/?tab=all#lead-${esc(id)}">${esc(id)}</a>`).join(', ');
+  const rest = ids.length - 3;
+  const more = rest > 0 ? ` and <a href="/?tab=all&amp;source=${esc(lead.public_id)}">${rest} more</a>` : '';
+  return `<a href="/?tab=all&amp;source=${esc(lead.public_id)}">Same source</a> as ${shown}${more}. <span class="hint">Same internet connection. This may or may not be the same person.</span>`;
+}
+
+export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: string, q = '', source: string | null = null): string {
+  const query = (t: string, m: boolean) => {
+    const params = new URLSearchParams({ tab: t });
+    if (m) params.set('marketing', '1');
+    if (q.trim()) params.set('q', q.trim());
+    return `/?${params.toString().replace(/&/g, '&amp;')}`;
+  };
   const current = (t: string) => (t === tab ? ' aria-current="page"' : '');
+  const exportParams = new URLSearchParams({ tab });
+  if (marketing) exportParams.set('marketing', '1');
+  if (q.trim()) exportParams.set('q', q.trim());
+  if (source) exportParams.set('source', source);
   return `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>Lead list</title><style>${style}</style></head>
@@ -124,14 +165,20 @@ export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: stri
 <h1>Lead list</h1>
 <p class="who">Signed in as ${esc(user)}</p>
 <nav aria-label="Lead list">
-<a href="${q('all', marketing)}"${current('all')}>All</a>
-<a href="${q('beta', marketing)}"${current('beta')}>Beta</a>
-<a href="${q('enquiries', marketing)}"${current('enquiries')}>Enquiries</a>
-<a href="${q('chat', marketing)}"${current('chat')}>Chat</a>
-<a href="/?tab=${tab}${marketing ? '' : '&amp;marketing=1'}">${marketing ? 'Show everyone' : 'Marketing OK only'}</a>
-<a href="/export.csv?tab=${tab}${marketing ? '&amp;marketing=1' : ''}">Export CSV</a>
+<a href="${query('all', marketing)}"${current('all')}>All</a>
+<a href="${query('beta', marketing)}"${current('beta')}>Beta</a>
+<a href="${query('enquiries', marketing)}"${current('enquiries')}>Enquiries</a>
+<a href="${query('chat', marketing)}"${current('chat')}>Chat</a>
+<a href="${query(tab, !marketing)}">${marketing ? 'Show everyone' : 'Marketing OK only'}</a>
+<a href="/export.csv?${exportParams.toString().replace(/&/g, '&amp;')}">Export CSV</a>
 </nav>
-${leads.length ? leads.map((l) => card(l, tab, marketing)).join('\n') : '<p>Nothing here yet.</p>'}
+<form class="find" method="get" action="/">
+<input type="hidden" name="tab" value="${esc(tab)}">${marketing ? '<input type="hidden" name="marketing" value="1">' : ''}${source ? `<input type="hidden" name="source" value="${esc(source)}">` : ''}
+<label>Search<input name="q" value="${esc(q)}" autocomplete="off"></label>
+<button type="submit">Search</button>
+</form>
+${source ? `<p class="notice">Showing the same connection as ${esc(source)}. <a href="${query('all', marketing)}">Show all leads</a><span class="hint">Same internet connection. This may or may not be the same person.</span></p>` : ''}
+${leads.length ? leads.map((l) => card(l, tab, marketing)).join('\n') : `<p>${q.trim() || source ? 'No matches.' : 'Nothing here yet.'}</p>`}
 </main></body></html>`;
 }
 
@@ -143,6 +190,7 @@ const cell = (value: string | number | null) => {
 };
 
 const csvColumns = [
+  'public_id',
   'created_at',
   'type',
   'status',

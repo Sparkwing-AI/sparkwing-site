@@ -147,6 +147,48 @@ test.describe('enquiry modal', () => {
   });
 });
 
+test.describe('legal links inside forms', () => {
+  test('privacy links open in a new tab and the typed answers stay', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/sparkkeeper/beta');
+    const beta = page.locator('#beta-form');
+    await beta.getByLabel('Your name').fill('Ada Lovelace');
+    await beta.getByLabel('Work email').fill('ada@example.com');
+    await beta.getByLabel('Business name (optional)').fill('Analytical Engines');
+    const formLink = page.locator('#beta-form').getByRole('link', { name: /Privacy policy/ });
+    await expect(formLink).toHaveAttribute('target', '_blank');
+    await expect(formLink).toHaveAttribute('rel', 'noopener');
+    await expect(formLink).toHaveAccessibleName(/opens in a new tab/);
+    const [policy] = await Promise.all([page.waitForEvent('popup'), formLink.click()]);
+    await expect(policy).toHaveURL(/\/privacy$/);
+    await expect(beta.getByLabel('Your name')).toHaveValue('Ada Lovelace');
+    await expect(beta.getByLabel('Work email')).toHaveValue('ada@example.com');
+    await expect(beta.getByLabel('Business name (optional)')).toHaveValue('Analytical Engines');
+    await policy.close();
+    await expect(page.locator('main a[href="/privacy"]').nth(1)).not.toHaveAttribute('target', '_blank');
+
+    await page.goto('/');
+    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Talk to us' });
+    await dialog.getByLabel('Your name').fill('Grace');
+    await dialog.getByLabel('Email', { exact: true }).fill('grace@example.com');
+    await dialog.getByLabel('Your message').fill('A longer note that should stay put');
+    const modalLink = dialog.getByRole('link', { name: /Privacy policy/ });
+    await expect(modalLink).toHaveAttribute('target', '_blank');
+    await expect(modalLink).toHaveAttribute('rel', 'noopener');
+    await expect(modalLink).toHaveAccessibleName(/opens in a new tab/);
+    const [again] = await Promise.all([page.waitForEvent('popup'), modalLink.click()]);
+    await expect(dialog.getByLabel('Your name')).toHaveValue('Grace');
+    await expect(dialog.getByLabel('Email', { exact: true })).toHaveValue('grace@example.com');
+    await expect(dialog.getByLabel('Your message')).toHaveValue('A longer note that should stay put');
+    await again.close();
+
+    const footerPrivacy = page.locator('footer').getByRole('link', { name: 'Privacy' });
+    await expect(footerPrivacy).not.toHaveAttribute('target', /_blank/);
+    await expect(page.locator('footer').getByRole('link', { name: 'Terms' })).not.toHaveAttribute('target', /_blank/);
+  });
+});
+
 test.describe('footer', () => {
   test('company line reads as required and ACN is absent', async ({ page }) => {
     await page.goto('/');

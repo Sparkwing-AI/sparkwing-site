@@ -23,6 +23,8 @@ export interface Lead {
   notes: string;
   detected_country: string | null;
   detected_region: string | null;
-  /** Other saved leads with the same scrambled source. The hash itself is never sent to the page. */
-  same_source?: number;
+  /** Readable id such as L-0001. The internal id stays the database key. */
+  public_id: string;
+  /** Other readable ids that share a scrambled source. The hash itself is never sent to the page. */
+  same_ids?: string[];
 }
