@@ -9,7 +9,7 @@ enabled = true
 # Pages allowed to post to this Worker (FR-906). Comma separated, no trailing slashes.
 # Add the preview origin here while testing, and take it out again before launch.
 [vars]
-ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
+ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au,http://127.0.0.1:4321"
 MAIL_FROM = "info@sparkwing.com.au"
 MAIL_TO = "info@sparkwing.com.au"
 

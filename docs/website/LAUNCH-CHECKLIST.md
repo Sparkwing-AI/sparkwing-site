@@ -8,6 +8,7 @@ Launch is CORE-183 and is Elly's only. Each item names who supplies or does it.
 - [ ] **Google Search Console.** Elly adds `sparkwing.com.au` as a property and chooses the HTML tag method. Set the code from the tag as `PUBLIC_GOOGLE_SITE_VERIFICATION` for the production build. The meta tag renders in production builds only and adds no script.
 - [ ] **Sparkkeeper login address (blocker).** Confirm `PUBLIC_APP_URL` (default `https://sparkkeeper.com.au/`) is live and correct.
 - [ ] **Forms (CORE-189).** Work through `docs/website/FORMS-SETUP.md`: D1 database, Exchange RBAC and Graph secrets, both Workers deployed, Access on the lead list, `PUBLIC_FORM_ENDPOINT` set for the production build, preview origin removed from `ALLOWED_ORIGINS`.
+- [ ] **Local form origin (blocker before launch).** Remove `http://127.0.0.1:4321` from `ALLOWED_ORIGINS` in `workers/forms/wrangler.toml`, then redeploy `sparkwing-forms`. Keep `https://sparkwing.com.au` and `https://www.sparkwing.com.au`.
 - [ ] **Demo link (blocker).** Elly confirms whether the demo stays. If it does, replace `PUBLIC_DEMO_URL` with a Sparkwing domain. If not, remove the "Try the demo" buttons.
 
 ## After the production deploy
