@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.astro/
+.lighthouseci/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+
+# Local working copies, kept out of the repo
+assets/site handoff/
+assets/reference/
+sparkwing-site-handoff.zip
+.shots/
+workers/.state/

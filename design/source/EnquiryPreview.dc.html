@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enquiry modal preview</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+:root {
+  
+  --sw-brand-lagoon: #1F8476;
+  --sw-brand-glade: #217A6F;
+  --sw-brand-night-fern: #285A5A;
+  --sw-brand-lagoon-900: #0C352F;
+  --sw-brand-lagoon-800: #114941;
+  --sw-brand-lagoon-700: #165C53;
+  --sw-brand-lagoon-100: #D7E9E6;
+  --sw-brand-lagoon-50: #EDF5F4;
+  --sw-brand-wing-violet: #55459B;
+  --sw-brand-wing-50: #F1F0F7;
+  --sw-brand-spark-gold: #FEB938;
+  --sw-brand-ember: #E07B00;
+  --sw-brand-morning-silk: #FFF8E7;
+  --sw-brand-inkwell: #1E2B2A;
+  --sw-brand-white: #FFFFFF;
+  --sw-brand-navy-900: #14263D;
+  --sw-brand-navy-800: #1F3450;
+  --sw-brand-navy-700: #3A4C66;
+
+  
+  --sw-color-page: var(--sw-brand-morning-silk);
+  --sw-color-surface: var(--sw-brand-white);
+  --sw-color-deep: var(--sw-brand-lagoon-900);
+  --sw-color-deep-raised: var(--sw-brand-lagoon-800);
+  --sw-color-navy: var(--sw-brand-navy-900);
+  --sw-color-navy-raised: var(--sw-brand-navy-800);
+  --sw-color-border-on-navy: var(--sw-brand-navy-700);
+  --sw-color-tint: var(--sw-brand-lagoon-50);
+  --sw-color-announce: var(--sw-brand-night-fern);
+  --sw-color-accent: var(--sw-brand-spark-gold);
+  --sw-color-accent-tint: #FDF1D8;
+  --sw-color-violet-tint: var(--sw-brand-wing-50);
+  --sw-color-success-tint: var(--sw-brand-lagoon-100);
+  --sw-color-neutral-tint: #F1ECE0;
+
+  
+  --sw-color-ink: var(--sw-brand-lagoon-900);
+  --sw-color-text: var(--sw-brand-inkwell);
+  --sw-color-text-muted: var(--sw-brand-lagoon-700);
+  --sw-color-on-deep: var(--sw-brand-white);
+  --sw-color-on-deep-soft: var(--sw-brand-lagoon-50);
+  --sw-color-on-deep-muted: var(--sw-brand-lagoon-100);
+  --sw-color-link: var(--sw-brand-glade);
+  --sw-color-accent-text: #6E4A00;
+  --sw-color-violet: var(--sw-brand-wing-violet);
+  --sw-color-success-text: var(--sw-brand-lagoon-800);
+  --sw-color-spark: #A85A00;
+
+  
+  --sw-color-action: var(--sw-brand-lagoon);
+  --sw-color-on-action: var(--sw-brand-white);
+  --sw-color-error: #A3261B;
+  --sw-color-focus: var(--sw-brand-lagoon-900);
+  --sw-color-focus-on-deep: var(--sw-brand-spark-gold);
+
+  
+  --sw-color-border: #E6E0D2;
+  --sw-color-border-soft: #ECE6D8;
+  --sw-color-border-strong: #DAD3C2;
+  --sw-color-border-dashed: #8E8470;
+  --sw-color-rule: #CFC8B6;
+  --sw-color-border-on-deep: var(--sw-brand-lagoon-700);
+
+  
+  --sw-mock-ink: #1D2B27;
+  --sw-mock-ink-deep: var(--sw-brand-inkwell);
+  --sw-mock-muted: #3D5B54;
+  --sw-mock-primary: #17725C;
+  --sw-mock-primary-deep: #0F5444;
+  --sw-mock-primary-tint: #E9F3EF;
+  --sw-mock-paper: #FFFDF7;
+  --sw-mock-paper-warm: #F4E7C8;
+  --sw-mock-paper-cool: #E3EADF;
+  --sw-mock-canvas: #F5F1E8;
+  --sw-mock-canvas-alt: #F4F0E6;
+  --sw-mock-highlight: #FBF0D6;
+  --sw-mock-rail: #1E3832;
+
+  
+  --sw-shadow-md: 0 14px 32px rgba(12, 53, 47, 0.14);
+  --sw-shadow-lg: 0 24px 48px rgba(12, 53, 47, 0.14);
+  --sw-shadow-color-12: rgba(12, 53, 47, 0.12);
+  --sw-shadow-color-14: rgba(12, 53, 47, 0.14);
+
+  
+  --sw-font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --sw-weight-regular: 400;
+  --sw-weight-medium: 500;
+  --sw-weight-semibold: 600;
+  --sw-weight-bold: 700;
+  --sw-weight-extrabold: 800;
+  --sw-text-display: clamp(46px, 6vw, 82px);
+  --sw-text-h1: clamp(44px, 5.8vw, 78px);
+  --sw-text-h2: clamp(34px, 4vw, 54px);
+  --sw-text-h3: clamp(24px, 2.4vw, 32px);
+  --sw-text-lead: 21px;
+  --sw-text-body-lg: 18px;
+  --sw-text-body: 17px;
+  --sw-text-small: 15px;
+  --sw-text-caption: 13px;
+  --sw-leading-tight: 1.05;
+  --sw-leading-snug: 1.2;
+  --sw-leading-body: 1.5;
+  --sw-tracking-display: -0.035em;
+  --sw-tracking-heading: -0.025em;
+
+  
+  --sw-space-1: 4px;
+  --sw-space-2: 8px;
+  --sw-space-3: 12px;
+  --sw-space-4: 16px;
+  --sw-space-5: 24px;
+  --sw-space-6: 32px;
+  --sw-space-7: 40px;
+  --sw-space-8: 48px;
+  --sw-space-9: 64px;
+  --sw-space-10: 80px;
+  --sw-space-11: 96px;
+  --sw-gutter: clamp(16px, 5vw, 64px);
+  --sw-section-y: clamp(56px, 7vw, 96px);
+  --sw-container: 1312px;
+
+  
+  --sw-radius-sm: 8px;
+  --sw-radius-md: 12px;
+  --sw-radius-lg: 16px;
+  --sw-radius-xl: 20px;
+  --sw-radius-2xl: 24px;
+  --sw-radius-pill: 999px;
+
+  
+  --sw-target-min: 44px;
+  --sw-button-height: 52px;
+  --sw-focus-ring: 3px solid var(--sw-color-focus);
+  --sw-focus-offset: 2px;
+
+  
+  --sw-duration-fast: 200ms;
+  --sw-ease-standard: ease;
+  --sw-marquee-duration: 42s;
+  --sw-story-duration: 9s;
+
+  
+  --sw-bp-medium: 600px;
+  --sw-bp-large: 1024px;
+  --sw-bp-wide: 1200px;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}a{color:var(--sw-color-link)}</style></helmet>
+<main style="display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; align-items: flex-start; padding: 32px; background: rgba(12,53,47,.6); min-height: 100vh; box-sizing: border-box">
+  <h1 style="position: absolute; left: -9999px">Enquiry modal</h1>
+  <div style="width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 24px; border: none; border-radius: 20px; background: var(--sw-brand-white); color: var(--sw-color-deep); font-family: var(--sw-font-sans)"><div style="display: flex; flex-direction: column; gap: 16px"><div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="enq-title" style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Talk to us</h2><button type="button" aria-label="Close" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; background: var(--sw-color-tint); color: var(--sw-color-deep); font: inherit; font-size: 24px; line-height: 1; cursor: pointer">&times;</button></div><form novalidate style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-name" style="font-size: 16px; font-weight: 700">Your name</label><input class="sw-e" id="enq-name" name="enq-name" type="text" autocomplete="name" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-email" style="font-size: 16px; font-weight: 700">Email</label><input class="sw-e" id="enq-email" name="enq-email" type="email" autocomplete="email" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-business" style="font-size: 16px; font-weight: 700">Business name <span style="font-weight: 500; color: var(--sw-color-text-muted)">(optional)</span></label><input class="sw-e" id="enq-business" name="enq-business" type="text" autocomplete="organization" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-topic" style="font-size: 16px; font-weight: 700">What you're after</label><select class="sw-e" id="enq-topic" name="enq-topic" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px"><option value="call">Book a discovery call</option><option value="app">Ask about an app</option><option value="studio">Customising AI for my business</option><option value="other">Something else</option></select></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="enq-message" style="font-size: 16px; font-weight: 700">Your message</label><textarea class="sw-e" id="enq-message" name="enq-message" rows="3" required aria-required="true" style="width: 100%; min-height: 48px; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid var(--sw-color-text-muted); border-radius: 12px; background: var(--sw-brand-white); color: var(--sw-color-deep); font: inherit; font-size: 17px; resize: vertical"></textarea></div>
+        <div aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden"><label for="enq-site">Leave this empty</label><input id="enq-site" name="company_site" type="text" tabindex="-1" autocomplete="off"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-consent" name="enq-consent" type="checkbox" aria-required="true" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>Sparkwing staff can contact me about this enquiry. My details will only be used for this enquiry, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our <a href="Privacy.dc.html">Privacy policy</a> explains.</span></label>
+          </div>
+          <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-size: 16px; line-height: 1.45"><input class="sw-c" id="enq-marketing" name="enq-marketing" type="checkbox" style="flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--sw-color-deep)"><span>I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. <span style="color: var(--sw-color-text-muted)">(optional)</span></span></label>
+        </div>
+        <button type="submit" style="align-self: flex-start; min-height: 54px; padding: 0 28px; border: none; border-radius: 999px; background: var(--sw-color-deep); color: var(--sw-brand-white); font: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Send</button>
+      </form></div></div>
+  <div style="width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); box-sizing: border-box; padding: 24px; border: none; border-radius: 20px; background: var(--sw-brand-white); color: var(--sw-color-deep); font-family: var(--sw-font-sans)"><div style="display: flex; flex-direction: column; gap: 16px"><div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Talk to us</h2><button type="button" aria-label="Close" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; background: var(--sw-color-tint); color: var(--sw-color-deep); font: inherit; font-size: 24px; line-height: 1; cursor: pointer">&times;</button></div><div style="display: flex; flex-direction: column; gap: 10px; padding: 8px 0 12px; outline: none"><p style="margin: 0; font-size: 19px; line-height: 1.5; color: var(--sw-color-text)">Thanks, we received your message. We'll get back to you real soon.</p></div></div></div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars in this same folder:
+#   workers/chat/.dev.vars
+# Wrangler reads .dev.vars when you run npm run chat:dev. That file is gitignored.
+# Put the Anthropic API key after the equals sign. Do not commit it, and do not paste it into chat.
+ANTHROPIC_API_KEY=

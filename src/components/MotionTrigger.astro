@@ -1,0 +1,132 @@
+---
+// A transparent button laid over a looping animation. Click or press it to be asked
+// "Pause animation?" (or "Resume animation?"). Yes and No sit in a small popover. The choice applies to
+// every loop on the page, kept on <html data-paused> (WCAG 2.2.2).
+// Loops start only once this script has run (html[data-motion]), so a visitor without JavaScript sees
+// the static page. The triggers stay hidden until then, and when the visitor asks for reduced motion.
+interface Props {
+  class?: string;
+  /** Where the pause icon sits, so it stays clear of the scene's own content. */
+  corner?: 'top-right' | 'top-left' | 'bottom-right';
+}
+
+const { class: className, corner = 'top-right' } = Astro.props;
+---
+
+<button
+  class:list={['sw-motion-hit', `sw-motion-hit--${corner}`, className]}
+  type="button"
+  aria-label="Pause animation"
+  aria-haspopup="dialog"
+  aria-expanded="false"
+  data-motion-trigger
+  hidden
+>
+  <span class="sw-motion-icon" aria-hidden="true">
+    <svg class="sw-motion-icon-pause" viewBox="0 0 24 24" width="14" height="14" focusable="false">
+      <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"></path>
+    </svg>
+    <svg class="sw-motion-icon-play" viewBox="0 0 24 24" width="14" height="14" focusable="false">
+      <path d="M8 5.5v13l11-6.5z"></path>
+    </svg>
+  </span>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-motion-trigger]'));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let pop: HTMLDivElement | null = null;
+  let opener: HTMLButtonElement | null = null;
+
+  const isPaused = () => root.hasAttribute('data-paused');
+  const verb = () => (isPaused() ? 'Resume' : 'Pause');
+
+  function sync() {
+    triggers.forEach((trigger) => {
+      trigger.hidden = reduce.matches;
+      trigger.setAttribute('aria-label', `${verb()} animation`);
+      trigger.setAttribute('aria-expanded', String(Boolean(pop && opener === trigger)));
+    });
+  }
+
+  function close(returnFocus: boolean) {
+    if (!pop) return;
+    const from = opener;
+    pop.remove();
+    pop = null;
+    opener = null;
+    sync();
+    if (returnFocus) from?.focus();
+  }
+
+  function place(trigger: HTMLElement, box: HTMLElement) {
+    const rect = trigger.getBoundingClientRect();
+    const top = Math.max(rect.top, 0);
+    const bottom = Math.min(rect.bottom, window.innerHeight);
+    const centreY = (top + bottom) / 2 + window.scrollY;
+    const centreX = rect.left + rect.width / 2 + window.scrollX;
+    const maxLeft = document.documentElement.clientWidth - box.offsetWidth - 8;
+    box.style.left = `${Math.max(8, Math.min(centreX - box.offsetWidth / 2, maxLeft))}px`;
+    box.style.top = `${Math.max(8, centreY - box.offsetHeight / 2)}px`;
+  }
+
+  function open(trigger: HTMLButtonElement) {
+    close(false);
+    opener = trigger;
+    const action = verb();
+    const box = document.createElement('div');
+    box.className = 'sw-motion-pop';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-labelledby', 'sw-motion-q');
+
+    const question = document.createElement('p');
+    question.id = 'sw-motion-q';
+    question.textContent = `${action} animation?`;
+
+    const actions = document.createElement('div');
+    actions.className = 'sw-motion-pop-actions';
+    const yes = document.createElement('button');
+    yes.type = 'button';
+    yes.className = 'sw-btn sw-btn--primary sw-btn--sm';
+    yes.textContent = 'Yes';
+    yes.setAttribute('aria-label', `Yes, ${action.toLowerCase()} animation`);
+    const no = document.createElement('button');
+    no.type = 'button';
+    no.className = 'sw-btn sw-btn--outline sw-btn--sm';
+    no.textContent = 'No';
+
+    yes.addEventListener('click', () => {
+      root.toggleAttribute('data-paused');
+      close(true);
+    });
+    no.addEventListener('click', () => close(true));
+    box.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.stopPropagation();
+        close(true);
+      }
+    });
+    box.addEventListener('focusout', (event) => {
+      const next = event.relatedTarget as Node | null;
+      if (next && !box.contains(next)) close(false);
+    });
+
+    actions.append(yes, no);
+    box.append(question, actions);
+    document.body.append(box);
+    pop = box;
+    place(trigger, box);
+    sync();
+    yes.focus();
+  }
+
+  document.addEventListener('pointerdown', (event) => {
+    if (pop && !pop.contains(event.target as Node) && event.target !== opener) close(false);
+  });
+
+  root.setAttribute('data-motion', '');
+  triggers.forEach((trigger) => trigger.addEventListener('click', () => (pop && opener === trigger ? close(true) : open(trigger))));
+  reduce.addEventListener('change', sync);
+  sync();
+</script>

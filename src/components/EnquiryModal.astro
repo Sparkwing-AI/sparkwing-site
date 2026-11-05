@@ -1,0 +1,205 @@
+---
+import Button from './Button.astro';
+import { enquiryTopics } from '../config/nav';
+import { company, mailto, site } from '../config/site';
+---
+
+<dialog
+  id="sw-enquiry"
+  class="sw-dialog"
+  aria-labelledby="enq-title"
+  data-endpoint={site.formEndpoint}
+  data-fail-email={company.email}
+  data-fail-mailto={mailto}
+>
+  <div class="sw-dialog-body">
+    <div class="sw-dialog-head">
+      <h2 id="enq-title">Talk to us</h2>
+      <button type="button" class="sw-dialog-close" aria-label="Close" data-enquiry-close>&times;</button>
+    </div>
+    <form class="sw-form" id="enq-form" novalidate>
+      <div class="sw-field">
+        <label for="enq-name">Your name</label>
+        <input class="sw-input" id="enq-name" name="name" type="text" autocomplete="name" required aria-required="true" />
+        <span class="sw-error" id="enq-name-err" hidden></span>
+      </div>
+      <div class="sw-field">
+        <label for="enq-email">Email</label>
+        <input class="sw-input" id="enq-email" name="email" type="email" autocomplete="email" required aria-required="true" />
+        <span class="sw-error" id="enq-email-err" hidden></span>
+      </div>
+      <div class="sw-field">
+        <label for="enq-business">Business name <span class="sw-optional">(optional)</span></label>
+        <input class="sw-input" id="enq-business" name="business" type="text" autocomplete="organization" />
+      </div>
+      <div class="sw-field">
+        <label for="enq-topic">What you're after</label>
+        <div class="sw-select-wrap">
+          <select class="sw-input" id="enq-topic" name="topic">
+            {enquiryTopics.map((topic) => <option value={topic.value}>{topic.label}</option>)}
+          </select>
+          <span class="sw-select-face" aria-hidden="true">{enquiryTopics[0].label}</span>
+        </div>
+      </div>
+      <div class="sw-field">
+        <label for="enq-message">Your message</label>
+        <textarea class="sw-input" id="enq-message" name="message" rows="3" required aria-required="true"></textarea>
+        <span class="sw-error" id="enq-message-err" hidden></span>
+      </div>
+      <div class="sw-trap" aria-hidden="true">
+        <label for="enq-site">Leave this empty</label>
+        <input id="enq-site" name="company_site" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="sw-field">
+        <label class="sw-check">
+          <input id="enq-consent" name="consent" type="checkbox" aria-required="true" />
+          <span>Sparkwing staff can contact me about this enquiry. My details will only be used for this enquiry, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our <a href="/privacy">Privacy policy</a> explains.</span>
+        </label>
+        <span class="sw-error" id="enq-consent-err" hidden></span>
+      </div>
+      <label class="sw-check">
+        <input id="enq-marketing" name="marketing" type="checkbox" />
+        <span>I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. <span class="sw-optional">(optional)</span></span>
+      </label>
+      <p class="sw-form-error" id="enq-fail" role="alert" hidden>
+        That didn't send. Please try again, or email <a href={mailto}>{company.email}</a>.
+      </p>
+      <Button variant="deep" size="lg" type="submit" class="sw-form-submit">Send</Button>
+    </form>
+    <div class="sw-dialog-done" id="enq-done" tabindex="-1" role="status" hidden>
+      <p>Thanks, we received your message. We'll get back to you real soon.</p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('sw-enquiry') as HTMLDialogElement | null;
+  const form = document.getElementById('enq-form') as HTMLFormElement | null;
+  const done = document.getElementById('enq-done');
+  const fail = document.getElementById('enq-fail');
+
+  if (dialog && form && done && fail && typeof dialog.showModal === 'function') {
+    const CONSENT_WORDING_VERSION = 'enquiry-v1';
+    const messages = {
+      name: 'Please enter your name.',
+      email: 'Please enter a valid email, like you@business.com.',
+      message: 'Please tell us what you need.',
+      consent: 'Please tick this box so we can contact you.',
+    } as const;
+    type Field = keyof typeof messages;
+    const input = (field: Field) => form.elements.namedItem(field) as HTMLInputElement;
+    const errorEl = (field: Field) => document.getElementById(`enq-${field}-err`) as HTMLElement;
+    let returnTo: HTMLElement | null = null;
+    const topicFace = dialog.querySelector('.sw-select-face');
+
+    function showTopic(topic: HTMLSelectElement) {
+      if (topicFace) topicFace.textContent = topic.selectedOptions[0]?.text ?? '';
+    }
+
+    showTopic(form.elements.namedItem('topic') as HTMLSelectElement);
+    (form.elements.namedItem('topic') as HTMLSelectElement).addEventListener('change', (event) => {
+      showTopic(event.currentTarget as HTMLSelectElement);
+    });
+
+    function clearErrors() {
+      (Object.keys(messages) as Field[]).forEach((field) => {
+        const el = errorEl(field);
+        el.hidden = true;
+        el.textContent = '';
+        input(field).removeAttribute('aria-invalid');
+        input(field).removeAttribute('aria-describedby');
+      });
+      fail!.hidden = true;
+    }
+
+    function showError(field: Field) {
+      const el = errorEl(field);
+      el.textContent = messages[field];
+      el.hidden = false;
+      input(field).setAttribute('aria-invalid', 'true');
+      input(field).setAttribute('aria-describedby', el.id);
+    }
+
+    function visibleMenuButton() {
+      return Array.from(document.querySelectorAll<HTMLElement>('[data-menu-toggle]')).find((el) => el.offsetParent !== null) ?? null;
+    }
+
+    document.addEventListener('click', (event) => {
+      const anchor = (event.target as Element).closest?.<HTMLAnchorElement>('a[data-enquiry]');
+      if (!anchor) return;
+      event.preventDefault();
+      const fromMenu = anchor.closest('#sw-menu') !== null;
+      document.dispatchEvent(new CustomEvent('sw:enquiry-open'));
+      returnTo = fromMenu ? visibleMenuButton() : anchor;
+      if (form.hidden) {
+        form.reset();
+        form.hidden = false;
+        done.hidden = true;
+      }
+      clearErrors();
+      const topic = form.elements.namedItem('topic') as HTMLSelectElement;
+      topic.value = anchor.dataset.enquiry ?? 'call';
+      showTopic(topic);
+      dialog.showModal();
+      input('name').focus();
+    });
+
+    dialog.querySelector('[data-enquiry-close]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => returnTo?.focus());
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearErrors();
+      const data = new FormData(form);
+      const text = (key: string) => String(data.get(key) ?? '').trim();
+      const invalid: Field[] = [];
+      if (!text('name')) invalid.push('name');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text('email'))) invalid.push('email');
+      if (!text('message')) invalid.push('message');
+      if (!input('consent').checked) invalid.push('consent');
+      invalid.forEach(showError);
+      if (invalid.length) {
+        input(invalid[0]).focus();
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      submit.disabled = true;
+      try {
+        const endpoint = dialog.dataset.endpoint;
+        if (endpoint) {
+          const response = await fetch(`${endpoint}/api/leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'enquiry',
+              name: text('name'),
+              email: text('email'),
+              business: text('business'),
+              topic: text('topic'),
+              message: text('message'),
+              source_page: location.pathname,
+              contact_consent: true,
+              marketing_consent: (form.elements.namedItem('marketing') as HTMLInputElement).checked,
+              consent_wording_version: CONSENT_WORDING_VERSION,
+              company_site: text('company_site'),
+            }),
+          });
+          if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`);
+        } else if (import.meta.env.DEV) {
+          console.info('Enquiry form: no PUBLIC_FORM_ENDPOINT set, so this submission was not sent (dev only).');
+        } else {
+          throw new Error('No form endpoint configured');
+        }
+        form.hidden = true;
+        done.hidden = false;
+        done.focus();
+      } catch (error) {
+        console.error(error);
+        fail.hidden = false;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+</script>

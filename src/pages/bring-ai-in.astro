@@ -1,0 +1,109 @@
+---
+import '../styles/page.css';
+import '../styles/inner.css';
+import '../styles/start.css';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import FlowStage from '../components/FlowStage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  { title: 'We listen', body: "A discovery call about your goals and what's in the way. Show and tell comes later." },
+  { title: 'We recommend', body: 'A recommendation and quote made for your business, in Australian dollars or pesos.' },
+  { title: 'We set you up', body: 'Your space, your users and your documents, ready for a small team to test first.' },
+  { title: 'You grow', body: "Roll out to everyone, then switch on more apps whenever you're ready." },
+];
+---
+
+<BaseLayout
+  title="AI for business: start with our bookkeeping app, Sparkwing"
+  description="AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed."
+>
+  <CanvasHero
+    scene="flow"
+    titleId="st-title"
+    label="Animation: invoices, receipts and spreadsheets flow into Sparkkeeper and come out as records, reports and reminders."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-eyebrow">I want to save hours on manual admin</span>
+      <h1 class="mx-h1" id="st-title">Less paperwork, starting with our bookkeeping app.</h1>
+      <p class="mx-p">
+        AI automation for small and growing businesses in Australia and the Philippines. You don't need an IT team or a big plan. Start with Sparkkeeper, add more apps when you're ready, and we run the rest for you.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
+        <Button variant="outline" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+      </div>
+    </div>
+    <FlowStage
+      slot="stage"
+      logo="/assets/logos/sparkkeeper.png"
+      inputs={['Invoices', 'Receipts', 'Spreadsheets']}
+      outputs={['Records', 'Reports', 'Reminders']}
+    />
+  </CanvasHero>
+
+  <section class="sw-band sw-band--surface" aria-labelledby="st-apps">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="st-apps">Where most businesses start</h2>
+      <div class="st-cards">
+        <a class="st-card st-card--deep" href="/sparkkeeper">
+          <span class="st-card-head">
+            <span class="st-card-name">
+              <img src="/assets/logos/sparkkeeper-on-dark.svg" alt="" width="44" height="44" />
+              Sparkkeeper
+            </span>
+            <Badge tone="success">Beta</Badge>
+          </span>
+          <p>
+            If bookkeeping and slow reports are taking your hours. Start from your Excel files, receipts and invoices, and keep your numbers and clients in one place.
+          </p>
+        </a>
+        <a class="st-card" href="/apps/magnet">
+          <span class="st-card-head">
+            <span class="st-card-name">
+              <img src="/assets/logos/magnet.svg" alt="" width="44" height="44" />
+              Magnet
+            </span>
+            <Badge>Coming soon</Badge>
+          </span>
+          <p>If follow-ups and renewals keep slipping, or new clients are hard to find.</p>
+        </a>
+        <a class="st-card" href="/spark-studio">
+          <span class="st-card-name">
+            <img src="/assets/logos/spark-studio.svg" alt="" width="44" height="44" />
+            Spark Studio
+          </span>
+          <p>If you need AI set up for you, or an app or AI agent built around how you work.</p>
+        </a>
+        <a class="st-card" href="mailto:info@sparkwing.com.au" data-enquiry="call">
+          <span class="st-card-name">Accounting firms</span>
+          <p>
+            If you keep records for many clients and want AI your whole firm can trust. Let's talk about what would help most.
+          </p>
+        </a>
+      </div>
+      <p class="sw-lead">
+        Sparkkeeper sits alongside your registered books and invoicing. <a class="sw-link" href="/sparkkeeper#scope">See what it covers today</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-labelledby="st-how">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="st-how">How we get you off the ground</h2>
+      <ol class="sw-steps sw-steps--num">
+        {
+          steps.map((step, index) => (
+            <li>
+              <b class="sw-step-n" aria-hidden="true">{index + 1}</b>
+              <b>{step.title}</b>
+              <span>{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

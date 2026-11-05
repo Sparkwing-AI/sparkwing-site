@@ -1,0 +1,38 @@
+---
+import '../styles/subnav.css';
+// Sticky sub-nav shared by Sparkkeeper and the app pages (FR-201, FR-301). Scrolls sideways on small screens.
+interface Props {
+  current: 'sparkkeeper' | 'magnet' | 'academy' | 'nest' | 'trust';
+  /** In-page links shown on the right, such as Features and Beta. */
+  anchors?: { label: string; href: string }[];
+}
+
+const { current, anchors = [] } = Astro.props;
+
+const items = [
+  { id: 'sparkkeeper', label: 'Sparkkeeper', href: '/sparkkeeper' },
+  { id: 'magnet', label: 'Magnet', href: '/apps/magnet' },
+  { id: 'academy', label: 'Academy', href: '/apps/academy' },
+  { id: 'nest', label: 'Nest', href: '/apps/nest' },
+  { id: 'trust', label: 'Base platform', href: '/trust' },
+];
+---
+
+<nav class="sw-subnav" aria-label="Products">
+  <div class="sw-subnav-row">
+    {
+      items.map((item) => (
+        <a href={item.href} aria-current={item.id === current ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+    {
+      anchors.map((anchor, index) => (
+        <a class:list={['sw-subnav-anchor', index === 0 && 'sw-subnav-anchor--first']} href={anchor.href}>
+          {anchor.label}
+        </a>
+      ))
+    }
+  </div>
+</nav>

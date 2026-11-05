@@ -1,0 +1,128 @@
+---
+import '../styles/page.css';
+import '../styles/inner.css';
+import '../styles/studio.css';
+import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import FlowStage from '../components/FlowStage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+const services = [
+  { title: 'AI consulting', body: 'Find the jobs where AI will save the most time, and agree the rules for using it safely.' },
+  {
+    title: 'AI setup',
+    body: 'Get your documents, your people and your first apps ready, so your team can start using AI on real work.',
+  },
+  { title: 'Custom apps', body: "Build an app around how your business works, when the ready-made ones don't fit." },
+  {
+    title: 'AI agents',
+    body: 'Build AI helpers for the repeat work in your team, like an inbox sorter or a report writer.',
+  },
+];
+
+const steps = [
+  { title: 'We listen', body: 'A discovery call about your goals, your rules and how the work gets done today.' },
+  {
+    title: 'We recommend',
+    body: 'A plan and quote made for your business. It might be a ready-made app, a custom build or both.',
+  },
+  {
+    title: 'We build and set up',
+    body: 'A small team tries it first, so we can fix what needs fixing before everyone starts.',
+  },
+  { title: 'You grow', body: "We train your people and stay close, and you add more whenever you're ready." },
+];
+
+const description = "AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more.";
+const schema = [
+  {
+    '@type': 'Service',
+    name: 'Spark Studio',
+    url: new URL('/spark-studio', site.url).href,
+    description,
+    serviceType: 'AI consulting',
+    areaServed: [
+      { '@type': 'Country', name: 'Australia' },
+      { '@type': 'Country', name: 'Philippines' },
+    ],
+    provider: { '@id': new URL('/#organization', site.url).href },
+  },
+];
+---
+
+<BaseLayout
+  schema={schema}
+  title="Spark Studio: AI consulting, automation and custom AI agents"
+  description={description}
+>
+  <CanvasHero
+    scene="flow"
+    titleId="ss-title"
+    label="Animation: your workflows, rules and tools flow into Spark Studio and come out as a custom app, an AI agent and a team that is set up."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-mark">
+        <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
+        <span class="mx-eyebrow">Spark Studio · AI consulting</span>
+      </span>
+      <h1 class="mx-h1 mx-h1--compact" id="ss-title">AI set up around your business, and built for it when you need more.</h1>
+      <p class="mx-p">
+        Spark Studio is Sparkwing's AI consulting team. We work out where AI will help, set it up properly, and build custom apps or AI agents when the ready-made apps don't cover what you need.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="studio">Book a discovery call</Button>
+      </div>
+    </div>
+    <FlowStage
+      slot="stage"
+      logo="/assets/logos/spark-studio.svg"
+      inputs={['Your workflows', 'Your rules', 'Your tools']}
+      outputs={['Custom app', 'AI agent', 'Team set up']}
+    />
+  </CanvasHero>
+
+  <section class="sw-band sw-band--surface" aria-labelledby="ss-do">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="ss-do">What we can do for you</h2>
+      <div class="sw-cards">
+        {
+          services.map((service) => (
+            <div class="sw-card">
+              <h3>{service.title}</h3>
+              <p>{service.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-labelledby="ss-how">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="ss-how">How we work with you</h2>
+      <ol class="sw-steps">
+        {
+          steps.map((step) => (
+            <li>
+              <b>{step.title}</b>
+              <span>{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface sw-base" aria-labelledby="ss-trust">
+    <div class="sw-base-grid">
+      <h2 class="sw-base-title" id="ss-trust">Custom work, on the same trusted base.</h2>
+      <div class="sw-base-copy">
+        <p>
+          What we build is designed to run on the same base platform as every Sparkwing app. Hive knows your business, and Control Tower decides what's allowed and keeps a record of what the AI did. We don't use your data to train AI models.
+        </p>
+        <a class="sw-link" href="/trust">How the base platform works</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

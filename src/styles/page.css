@@ -1,0 +1,390 @@
+/* Shared page pieces: bands, headings, the Sparkkeeper sample screen. Tokens only. */
+.sw-band {
+  padding: var(--sw-section-y) var(--sw-gutter);
+}
+
+.sw-band-inner {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.sw-h2 {
+  margin: 0;
+  font-size: var(--sw-text-h2);
+  font-weight: var(--sw-weight-bold);
+  line-height: var(--sw-leading-tight);
+  letter-spacing: var(--sw-tracking-heading);
+}
+
+.sw-lead {
+  margin: 0;
+  font-size: var(--sw-text-body-lg);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.sw-link {
+  font-size: var(--sw-text-body);
+  font-weight: var(--sw-weight-bold);
+}
+
+.sw-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  max-width: 760px;
+}
+
+.sw-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sw-space-3);
+}
+
+/* Sample Sparkkeeper screen. Colours come from the --sw-mock-* tokens. */
+.mock {
+  display: flex;
+  min-height: 400px;
+  overflow: hidden;
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-lg);
+  background: var(--sw-mock-canvas);
+  box-shadow: var(--sw-shadow-lg);
+}
+
+.mock-rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sw-space-3);
+  width: 56px;
+  padding: var(--sw-space-4) 0;
+  background: var(--sw-mock-rail);
+}
+
+.mock-rail span {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--sw-mock-muted);
+}
+
+.mock-rail span:first-child {
+  background: var(--sw-color-accent);
+}
+
+.mock-main {
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--sw-space-5) - 2px);
+  color: var(--sw-mock-ink);
+  font-size: var(--sw-text-small);
+}
+
+.mock-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+}
+
+.mock-panel[hidden] {
+  display: none;
+}
+
+.mock-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sw-space-3);
+  font-size: var(--sw-text-caption);
+  font-weight: var(--sw-weight-semibold);
+  color: var(--sw-mock-muted);
+}
+
+.mock-bubble-user {
+  align-self: flex-end;
+  max-width: 85%;
+  padding: var(--sw-space-3) var(--sw-space-4);
+  border-radius: var(--sw-radius-lg) var(--sw-radius-lg) 4px var(--sw-radius-lg);
+  background: var(--sw-mock-primary);
+  color: var(--sw-color-on-action);
+  line-height: 1.4;
+}
+
+.mock-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  padding: var(--sw-space-4);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-lg) var(--sw-radius-lg) var(--sw-radius-lg) 4px;
+  background: var(--sw-color-surface);
+  line-height: 1.45;
+}
+
+.mock-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--sw-color-border-soft);
+}
+
+.mock-rows div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sw-space-3);
+  padding: var(--sw-space-2) 0;
+  border-bottom: 1px solid var(--sw-color-border-soft);
+}
+
+.mock-rows div:last-child {
+  border-bottom: 0;
+}
+
+.mock-rows b {
+  flex: none;
+  white-space: nowrap;
+}
+
+.mock-chip {
+  align-self: flex-start;
+  padding: var(--sw-space-1) calc(var(--sw-space-3) - 2px);
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-mock-primary-tint);
+  color: var(--sw-mock-primary-deep);
+  font-size: var(--sw-text-caption);
+  font-weight: var(--sw-weight-semibold);
+}
+
+.mock-chip--draft {
+  background: var(--sw-mock-highlight);
+  color: var(--sw-color-accent-text);
+  font-weight: var(--sw-weight-bold);
+}
+
+.mock-upload {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
+  gap: var(--sw-space-3);
+}
+
+.mock-invoice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-2);
+  min-height: 240px;
+  padding: calc(var(--sw-space-4) + 2px);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: 6px;
+  background: var(--sw-mock-paper);
+  transform: rotate(-1.2deg);
+}
+
+.mock-invoice b {
+  font-size: var(--sw-text-caption);
+}
+
+.mock-bar-line {
+  display: block;
+  height: 8px;
+  background: var(--sw-color-border);
+}
+
+.mock-bar-line--w80 {
+  width: 80%;
+}
+
+.mock-bar-line--w55 {
+  width: 55%;
+}
+
+.mock-bar-line--w70 {
+  width: 70%;
+}
+
+.mock-bar-line--w90 {
+  width: 90%;
+}
+
+.mock-bar-line--w60 {
+  width: 60%;
+}
+
+.mock-bar-line--w92 {
+  width: 92%;
+}
+
+.mock-bar-line--w86 {
+  width: 86%;
+}
+
+.mock-bar-line--soft {
+  background: var(--sw-color-border-soft);
+}
+
+.mock-rule {
+  height: 1px;
+  margin: var(--sw-space-2) 0;
+  background: var(--sw-color-rule);
+}
+
+.mock-total {
+  align-self: flex-end;
+  margin-top: auto;
+  font-size: var(--sw-text-caption);
+  font-weight: var(--sw-weight-bold);
+}
+
+.mock-record {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-1);
+  padding: var(--sw-space-4);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-md);
+  background: var(--sw-color-surface);
+}
+
+.mock-label {
+  margin-top: var(--sw-space-2);
+  font-size: var(--sw-text-caption);
+  color: var(--sw-mock-muted);
+}
+
+.mock-value {
+  font-weight: var(--sw-weight-semibold);
+}
+
+.mock-save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin-top: auto;
+  border-radius: 10px;
+  background: var(--sw-mock-primary);
+  color: var(--sw-color-on-action);
+  font-weight: var(--sw-weight-semibold);
+}
+
+.mock-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr));
+  gap: var(--sw-space-2);
+}
+
+.mock-type {
+  padding: var(--sw-space-3);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-md);
+  background: var(--sw-color-surface);
+  font-weight: var(--sw-weight-semibold);
+}
+
+.mock-type--on {
+  border: 2px solid var(--sw-mock-primary);
+  background: var(--sw-mock-primary-tint);
+  font-weight: var(--sw-weight-bold);
+}
+
+.mock-report {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-2);
+  padding: var(--sw-space-5);
+  border: 1px solid var(--sw-color-border-strong);
+  border-radius: var(--sw-radius-md);
+  background: var(--sw-color-surface);
+}
+
+.mock-report-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sw-space-2);
+}
+
+.mock-report-head b {
+  font-size: var(--sw-text-body-lg);
+}
+
+
+.sw-band--surface {
+  background: var(--sw-color-surface);
+}
+
+/* Gold call-to-action band. Home has its own copy under .home-try. */
+.sw-band--gold {
+  background: var(--sw-color-accent);
+  color: var(--sw-color-deep);
+}
+
+.sw-band-inner--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sw-space-6);
+}
+
+.sw-gold-copy {
+  flex: 1 1 520px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+}
+
+.sw-gold-copy h2 {
+  margin: 0;
+  font-size: calc(var(--sw-text-h2) * 1.15);
+  font-weight: var(--sw-weight-extrabold);
+  line-height: var(--sw-leading-tight);
+  letter-spacing: -0.03em;
+}
+
+.sw-gold-copy p {
+  max-width: 620px;
+  margin: 0;
+  font-size: var(--sw-text-body-lg);
+  line-height: var(--sw-leading-body);
+}
+
+/* Trusted-base strip used at the foot of the app and Studio pages */
+.sw-base {
+  padding-block: calc(var(--sw-space-9) + var(--sw-space-2));
+}
+
+.sw-base-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+  gap: var(--sw-space-5) var(--sw-space-9);
+  align-items: start;
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.sw-base-title {
+  margin: 0;
+  font-size: calc(var(--sw-text-h2) * 0.8);
+  font-weight: var(--sw-weight-bold);
+  line-height: var(--sw-leading-tight);
+  letter-spacing: -0.02em;
+}
+
+.sw-base-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--sw-space-3) + 2px);
+}
+
+.sw-base-copy p {
+  margin: 0;
+  font-size: var(--sw-text-lead);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+

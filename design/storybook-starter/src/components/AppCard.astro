@@ -1,0 +1,4 @@
+---
+const { name = 'Magnet', status = 'Coming soon', logo = '/logos/magnet.svg' } = Astro.props;
+---
+<a class="sw-card" href="#"><span class="sw-card__head"><span class="sw-card__name"><img src={logo} alt="" width="36" height="36" />{name}</span><span class="sw-badge">{status}</span></span><span><slot>Catch enquiries and follow them up.</slot></span></a>

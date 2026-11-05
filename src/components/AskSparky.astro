@@ -1,0 +1,623 @@
+---
+import '../styles/ask.css';
+import { site } from '../config/site';
+
+const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
+---
+
+<div class="sw-ask-root" data-endpoint={site.formEndpoint} data-chat-endpoint={site.chatEndpoint || undefined}>
+  <button class="sw-ask-launch" id="sw-ask-open" type="button">
+    <svg aria-hidden="true" width="20" height="20" viewBox="-12 -12 24 24" fill="currentColor">
+      <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
+    </svg>
+    Ask Sparky
+  </button>
+  <div class="sw-ask" id="sw-ask" role="dialog" aria-labelledby="sw-ask-title" hidden>
+    <div class="sw-ask-panel">
+      <div class="sw-ask-head">
+        <svg aria-hidden="true" width="20" height="20" viewBox="-12 -12 24 24" fill="currentColor">
+          <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
+        </svg>
+        <div class="sw-ask-id">
+          <b id="sw-ask-title">Ask Sparky</b>
+          <span>{previewReplies ? 'Preview replies, not the real Sparky' : "Sparkwing's AI assistant"}</span>
+        </div>
+        <div class="sw-ask-head-actions">
+          <button class="sw-ask-end" type="button" hidden>End chat</button>
+          <button class="sw-ask-x" type="button" aria-label="Close chat">&times;</button>
+        </div>
+      </div>
+      <div class="sw-ask-log" id="sw-ask-log" role="log" aria-live="polite" aria-label="Chat messages" tabindex="0"></div>
+      <div class="sw-ask-foot">
+        <form class="sw-ask-form" id="sw-ask-form">
+          <label class="sw-ask-trap" for="sw-ask-input">Your question</label>
+          <textarea id="sw-ask-input" name="q" rows="1" maxlength="500" placeholder="Ask about Sparkwing"></textarea>
+          <button class="sw-ask-send" type="submit" aria-label="Send">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+              <path d="M2.5 11.2 21.5 2.4 14.2 21.5l-2.6-7.4-9.1-2.9z"></path>
+            </svg>
+          </button>
+        </form>
+        <button class="sw-ask-restart" type="button" hidden>Start a new chat</button>
+        <p class="sw-ask-legal">
+          Sparky is AI and can make mistakes. Please keep personal, client and payment details out of your messages.
+        </p>
+        <p class="sw-ask-legal"><a href="/privacy">Privacy policy</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function must<T extends Element>(value: T | null): T {
+    if (!value) throw new Error('Ask Sparky markup is incomplete');
+    return value;
+  }
+
+  const root = must(document.querySelector<HTMLElement>('.sw-ask-root'));
+  const openButton = must(document.querySelector<HTMLButtonElement>('#sw-ask-open'));
+  const dialog = must(document.querySelector<HTMLElement>('#sw-ask'));
+  const log = must(document.querySelector<HTMLElement>('#sw-ask-log'));
+  const form = must(document.querySelector<HTMLFormElement>('#sw-ask-form'));
+  const input = must(document.querySelector<HTMLTextAreaElement>('#sw-ask-input'));
+  const closeButton = must(dialog.querySelector<HTMLButtonElement>('.sw-ask-x'));
+  const endButton = must(dialog.querySelector<HTMLButtonElement>('.sw-ask-end'));
+  const restartButton = must(dialog.querySelector<HTMLButtonElement>('.sw-ask-restart'));
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const chips = ['What is Sparkkeeper?', 'Is the beta free?', 'Is my data used to train AI?', 'Book a call'];
+  let n = 0;
+  let strikes = 0;
+  let ended = false;
+  let typing = false;
+  let leadShown = false;
+  let sessionId = '';
+  let timer = 0;
+
+  type PreviewReply = {
+    text: string;
+    note?: string;
+    src?: string;
+    href?: string;
+    beta?: boolean;
+    call?: boolean;
+    lead?: boolean;
+    end?: boolean;
+  };
+
+  function scroll() {
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function addMessage(text: string, mine = false, extra?: { note?: string; src?: string; href?: string; beta?: boolean; call?: boolean }) {
+    const box = document.createElement('div');
+    box.className = mine ? 'sw-ask-m me' : 'sw-ask-m';
+    const body = document.createElement('span');
+    body.textContent = text;
+    box.append(body);
+    if (extra?.note) {
+      const note = document.createElement('span');
+      note.className = 'sw-ask-note';
+      note.textContent = extra.note;
+      box.append(note);
+    }
+    if (extra?.src && extra.href) {
+      const src = document.createElement('span');
+      src.className = 'sw-ask-src';
+      src.append('Source: ');
+      const link = document.createElement('a');
+      link.href = extra.href;
+      link.textContent = extra.src;
+      src.append(link);
+      box.append(src);
+    }
+    if (extra?.beta) {
+      const link = document.createElement('a');
+      link.className = 'sw-ask-act';
+      link.href = '/sparkkeeper/beta';
+      link.textContent = 'Apply for the beta';
+      box.append(link);
+    }
+    if (extra?.call) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sw-ask-act';
+      button.textContent = 'Talk to the team';
+      button.addEventListener('click', () => showLead(text));
+      box.append(button);
+    }
+    log.append(box);
+    scroll();
+    return box;
+  }
+
+  function mask(value: string) {
+    let hit = false;
+    let emails = 0;
+    let phones = 0;
+    let numbers = 0;
+    let out = value.replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, () => {
+      hit = true;
+      emails += 1;
+      return `[EMAIL ${emails}]`;
+    });
+    out = out.replace(/(?:\d[ -]?){13,19}/g, () => {
+      hit = true;
+      numbers += 1;
+      return `[NUMBER ${numbers}]`;
+    });
+    out = out.replace(/\+?\d[\d ()-]{7,}\d/g, () => {
+      hit = true;
+      phones += 1;
+      return `[PHONE ${phones}]`;
+    });
+    return { out, hit };
+  }
+
+  function reply(question: string, count: number): PreviewReply {
+    const text = question.toLowerCase();
+    const hook = count === 1 ? " What kind of business do you run, and what's eating up the most time?" : '';
+    const ended = {
+      text: "I'll leave that one with you. If AI for your business is ever on your mind, the team would love to hear from you.",
+      call: true,
+      end: true,
+    };
+    const smallTalk = /\b(dogs?|puppy|puppies|cats?|kittens?|pets?|favou?rite|how are you|coffee|footy|weather|joke)\b/.test(text);
+    const dating = /dating|girlfriend|boyfriend|relationship|romance|love life/.test(text);
+    const otherOff =
+      dating ||
+      /poem|recipe|essay|homework|ignore|system prompt|instruction|jailbreak|pretend|write code/.test(text) ||
+      /\bdate\b/.test(text);
+    // An attack, homework, code or dating request wins even when the same message also mentions dogs or a joke.
+    if (otherOff) {
+      strikes += 1;
+      if (strikes >= 3) return ended;
+      if (dating) return { text: "Ha, I'm flattered you asked, but I'm much better with paperwork than romance. What's eating up the most time in your business?" };
+      return { text: "I can only help with Sparkwing and its apps. What's eating up the most time in your business?" };
+    }
+    if (smallTalk) {
+      strikes += 1;
+      if (strikes >= 3) return ended;
+      const pets = /\b(dogs?|puppy|puppies)\b/.test(text);
+      if (strikes === 2) {
+        return {
+          text: `${pets ? 'Still team dog!' : 'Fun as this is,'} I'm most useful on the business stuff, though. What's eating up the most time at work?`,
+        };
+      }
+      if (pets) return { text: "Dogs are the best, though I'm more of a butterfly person. What kind of business do you run, and what's eating up the most time?" };
+      return { text: "Ha, good one, but I'm much better with paperwork. What kind of business do you run, and what's eating up the most time?" };
+    }
+    if (count >= 12) return { text: "I've really enjoyed this. The team can take it from here.", call: true, end: true };
+    if (/\b(tax|bir|legal|lawyer|invest|advice)\b/.test(text)) {
+      return {
+        text: "I can't give tax, legal or financial advice. Sparkkeeper sits alongside your registered books and invoicing, and those stay with your registered systems. The team can talk through what you need.",
+        call: true,
+      };
+    }
+    if (/free|cost|price|pay|beta/.test(text)) {
+      return {
+        text: `Good question. The beta is free for one month, with AI credits included. Seats are limited, so we review each application.${hook}`,
+        src: 'Beta page',
+        href: '/sparkkeeper/beta',
+        beta: count > 1,
+      };
+    }
+    if (/train|private|privacy|data|secure/.test(text)) {
+      return {
+        text: `Smart thing to ask first. We don't use client data to train AI models. Sparkkeeper's AI features use Claude models from Anthropic through its commercial service, and those terms bar Anthropic from training on that content.${hook}`,
+        src: 'Privacy policy',
+        href: '/privacy',
+      };
+    }
+    if (/demo|log ?in|sign in|have a play/.test(text)) {
+      return {
+        text: `There isn't a public trial on the site. You can apply for the beta, and the team can walk you through it on a discovery call.${hook}`,
+        src: 'Beta page',
+        href: '/sparkkeeper/beta',
+        beta: true,
+        call: true,
+      };
+    }
+    if (/call|talk|book|contact|person|human/.test(text)) {
+      return { text: "Happy to set that up. Pop your details in below and the team will get back to you.", lead: true };
+    }
+    if (/what is sparkkeeper|what does sparkkeeper/.test(text)) {
+      return {
+        text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your registered books and invoicing.${hook}`,
+        src: 'Sparkkeeper page',
+        href: '/sparkkeeper',
+      };
+    }
+    if (count >= 8) return { text: "I've really enjoyed this. The team can take it from here, so pop your details in and they'll be in touch.", lead: true };
+    if (count >= 3) return { text: "Want the team to show you how this could work for your business? Leave your details and they'll get back to you.", lead: true };
+    if (/custom|agent|build|consult|strategy|govern|whole team/.test(text)) {
+      return {
+        text: "Love that you're thinking ahead on this. Spark Studio sounds like your fit: we set AI up around your business, and build custom apps or AI agents when you need more.",
+        src: 'Spark Studio page',
+        href: '/spark-studio',
+        call: true,
+      };
+    }
+    if (count === 1) return { text: "Great to meet you. What kind of business do you run, and what's eating up the most time?" };
+    return {
+      text: "Sounds like you've got plenty on your plate, and looking for help is a smart move. Sparkkeeper could suit you. It keeps your numbers and clients in one place, and the beta is free for one month.",
+      src: 'Sparkkeeper page',
+      href: '/sparkkeeper',
+      beta: true,
+      call: true,
+    };
+  }
+
+  function fieldBlock(id: string, name: string, label: string, type: string) {
+    const wrap = document.createElement('div');
+    wrap.className = 'sw-ask-f';
+    const lab = document.createElement('label');
+    lab.htmlFor = id;
+    lab.textContent = label;
+    const control = document.createElement('input');
+    control.id = id;
+    control.name = name;
+    control.type = type;
+    control.setAttribute('autocomplete', name);
+    wrap.append(lab, control);
+    return wrap;
+  }
+
+  function tick(id: string, name: string, label: string, privacy?: string) {
+    const wrap = document.createElement('label');
+    wrap.className = 'sw-ask-tick';
+    const box = document.createElement('input');
+    box.id = id;
+    box.name = name;
+    box.type = 'checkbox';
+    const text = document.createElement('span');
+    if (privacy) {
+      const [before, after] = label.split('Privacy policy');
+      text.append(before ?? '');
+      const link = document.createElement('a');
+      link.href = privacy;
+      link.textContent = 'Privacy policy';
+      text.append(link, after ?? '');
+    } else {
+      text.textContent = label;
+    }
+    wrap.append(box, text);
+    return wrap;
+  }
+
+  function showLead(prefill: string) {
+    if (leadShown || log.querySelector('#sw-ask-lead')) return;
+    leadShown = true;
+    const card = document.createElement('form');
+    card.className = 'sw-ask-m sw-ask-lead';
+    card.id = 'sw-ask-lead';
+    card.noValidate = true;
+    card.setAttribute('aria-labelledby', 'sw-ask-lead-t');
+    const title = document.createElement('b');
+    title.id = 'sw-ask-lead-t';
+    title.textContent = 'Leave your details';
+    const name = fieldBlock('ask-name', 'name', 'Your name', 'text');
+    const email = fieldBlock('ask-email', 'email', 'Email', 'email');
+    const noteWrap = document.createElement('div');
+    noteWrap.className = 'sw-ask-f';
+    const noteLabel = document.createElement('label');
+    noteLabel.htmlFor = 'ask-note';
+    noteLabel.textContent = 'What can we help with?';
+    const note = document.createElement('textarea');
+    note.id = 'ask-note';
+    note.name = 'note';
+    note.rows = 2;
+    note.maxLength = 500;
+    note.value = prefill;
+    noteWrap.append(noteLabel, note);
+    const trap = document.createElement('div');
+    trap.className = 'sw-ask-trap';
+    trap.setAttribute('aria-hidden', 'true');
+    const trapLabel = document.createElement('label');
+    trapLabel.htmlFor = 'ask-site';
+    trapLabel.textContent = 'Leave this empty';
+    const trapInput = document.createElement('input');
+    trapInput.id = 'ask-site';
+    trapInput.name = 'company_site';
+    trapInput.type = 'text';
+    trapInput.tabIndex = -1;
+    trapInput.autocomplete = 'off';
+    trap.append(trapLabel, trapInput);
+    const consent = tick('ask-consent', 'consent', "Sparkwing staff can contact me about this enquiry. My details will only be used for this enquiry, and won't be sold or shared with third parties for their own use. The providers that run our systems handle them for us, as our Privacy policy explains.", '/privacy');
+    const marketing = tick('ask-marketing', 'marketing', "I'm also happy to get marketing emails from Sparkwing about future updates, new features, events and more. I can unsubscribe any time. (optional)");
+    const submit = document.createElement('button');
+    submit.className = 'sw-ask-act';
+    submit.type = 'submit';
+    submit.textContent = 'Send to the team';
+    card.append(title, name, email, noteWrap, trap, consent, marketing, submit);
+    card.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void sendLead(card);
+    });
+    log.append(card);
+    scroll();
+    card.querySelector<HTMLInputElement>('#ask-name')?.focus();
+  }
+
+  async function sendLead(card: HTMLFormElement) {
+    card.querySelectorAll('.sw-ask-err').forEach((node) => node.remove());
+    const value = (name: string) => (card.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement).value.trim();
+    const field = (name: string) => card.elements.namedItem(name) as HTMLInputElement;
+    const errors: Record<string, string> = {};
+    if (!value('name')) errors.name = 'Please enter your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value('email'))) errors.email = 'Please enter a valid email, like you@business.com.';
+    if (!field('consent').checked) errors.consent = 'Please tick this box so we can contact you.';
+    const first = Object.keys(errors)[0];
+    if (first) {
+      for (const [key, message] of Object.entries(errors)) {
+        field(key).setAttribute('aria-invalid', 'true');
+        const err = document.createElement('span');
+        err.className = 'sw-ask-err';
+        err.textContent = message;
+        field(key).closest('.sw-ask-f, .sw-ask-tick')?.after(err);
+      }
+      field(first).focus();
+      return;
+    }
+    const endpoint = root.dataset.endpoint;
+    try {
+      if (endpoint) {
+        const response = await fetch(`${endpoint}/api/leads`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'chat',
+            name: value('name'),
+            email: value('email'),
+            message: value('note'),
+            topic: 'Website chat',
+            source_page: location.pathname,
+            contact_consent: true,
+            marketing_consent: field('marketing').checked,
+            consent_wording_version: 'chat-v1',
+            company_site: value('company_site'),
+          }),
+        });
+        if (!response.ok) throw new Error('Form endpoint failed');
+      } else if (!import.meta.env.DEV) {
+        throw new Error('No form endpoint configured');
+      }
+      card.remove();
+      addMessage("Thanks, we received your message. We'll get back to you real soon.");
+      input.focus();
+    } catch {
+      const err = document.createElement('span');
+      err.className = 'sw-ask-err';
+      err.textContent = "That didn't send. Please try again, or email info@sparkwing.com.au.";
+      card.append(err);
+    }
+  }
+
+  const START_KEY = 'sw-ask-starts';
+  const HOUR = 60 * 60 * 1000;
+  const BYE = "Bye for now! Thanks for dropping by. The team's here whenever you're ready.";
+
+  function recentStarts(): number[] {
+    try {
+      const raw = JSON.parse(sessionStorage.getItem(START_KEY) || '[]');
+      const now = Date.now();
+      return (Array.isArray(raw) ? raw : []).filter((stamp) => typeof stamp === 'number' && now - stamp < HOUR);
+    } catch {
+      return [];
+    }
+  }
+
+  /** A new chat, including Start a new chat. The Worker is the real Turnstile and 5-an-hour check when it is configured. */
+  async function beginSession(): Promise<boolean> {
+    const endpoint = root.dataset.chatEndpoint;
+    if (endpoint) {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'start' }),
+      });
+      if (!response.ok) return false;
+      const data = (await response.json()) as { session_id?: string };
+      sessionId = data.session_id || '';
+      return Boolean(sessionId);
+    }
+    if (!import.meta.env.DEV) return false;
+    const starts = recentStarts();
+    if (starts.length >= 5) return false;
+    starts.push(Date.now());
+    sessionStorage.setItem(START_KEY, JSON.stringify(starts));
+    return true;
+  }
+
+  function endSession() {
+    const endpoint = root.dataset.chatEndpoint;
+    if (!endpoint) return;
+    void fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'end', session_id: sessionId }),
+    });
+  }
+
+  function fitInput() {
+    const focused = document.activeElement === input;
+    const empty = input.value.length === 0;
+    if (empty && !focused) {
+      input.rows = 1;
+      input.classList.remove('sw-ask-scroll');
+      return;
+    }
+    input.rows = 1;
+    const style = getComputedStyle(input);
+    const line = parseFloat(style.lineHeight) || 21;
+    const pad = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    const border = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    const needed = Math.max(1, Math.round((input.scrollHeight - pad - border) / line));
+    const rows = empty ? 2 : Math.min(4, Math.max(2, needed));
+    input.rows = rows;
+    input.classList.toggle('sw-ask-scroll', needed > 4);
+  }
+
+  function closeInput(offerNew: boolean) {
+    ended = true;
+    typing = false;
+    window.clearTimeout(timer);
+    form.hidden = true;
+    endButton.hidden = true;
+    restartButton.hidden = !offerNew;
+  }
+
+  function ask(raw: string) {
+    const question = raw.trim();
+    if (!question || typing || ended) return;
+    const masked = mask(question);
+    n += 1;
+    endButton.hidden = false;
+    document.querySelector('.sw-ask-chips')?.remove();
+    addMessage(masked.out, true, { note: masked.hit ? 'Sparky hid the personal details you typed.' : '' });
+    typing = true;
+    const pending = document.createElement('div');
+    pending.className = 'sw-ask-m';
+    pending.textContent = 'Sparky is thinking...';
+    log.append(pending);
+    scroll();
+    const endpoint = root.dataset.chatEndpoint;
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      void (async () => {
+        pending.remove();
+        typing = false;
+        if (endpoint && sessionId) {
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ session_id: sessionId, message: masked.out }),
+            });
+            if (!response.ok) throw new Error('chat');
+            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean };
+            const text = typeof data.answer === 'string' ? data.answer : "I can't help with that one. The team can, though.";
+            addMessage(text, false, {
+              call: data.action === 'talk_to_team' || data.closed,
+              beta: data.action === 'apply_beta',
+            });
+            if (data.action === 'talk_to_team' || data.action === 'apply_beta') showLead(masked.out);
+            if (data.closed) closeInput(false);
+          } catch {
+            addMessage("I can't help with that one. The team can, though.", false, { call: true });
+          }
+          return;
+        }
+        if (import.meta.env.DEV) {
+          const answer = reply(masked.out, n);
+          addMessage(answer.text, false, answer);
+          if (answer.lead) showLead(masked.out);
+          if (answer.end) closeInput(false);
+          return;
+        }
+        addMessage("Sparky is offline. The team can help.", false, { call: true });
+      })();
+    }, endpoint ? 0 : reduce.matches ? 150 : 700);
+  }
+
+  function greet() {
+    if (log.childElementCount) return;
+    addMessage("Hi, I'm Sparky. Great to have you here! Ask me anything about Sparkwing and its apps. I can't see anyone's records or make changes.");
+    const row = document.createElement('div');
+    row.className = 'sw-ask-chips';
+    chips.forEach((label) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sw-ask-chip';
+      button.textContent = label;
+      button.addEventListener('click', () => ask(label));
+      row.append(button);
+    });
+    log.append(row);
+  }
+
+  function open() {
+    dialog.hidden = false;
+    openButton.hidden = true;
+    if (log.childElementCount === 0) {
+      void beginSession().then((ok) => {
+        if (!ok) {
+          addMessage("I can't start another chat right now. The team can still help.", false, { call: true });
+          closeInput(false);
+          log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
+          return;
+        }
+        greet();
+        input.focus();
+      });
+      return;
+    }
+    if (!form.hidden) input.focus();
+  }
+
+  function close() {
+    dialog.hidden = true;
+    openButton.hidden = false;
+    openButton.focus();
+  }
+
+  function endByVisitor() {
+    if (ended || n < 1) return;
+    window.clearTimeout(timer);
+    typing = false;
+    log.querySelectorAll('.sw-ask-m').forEach((node) => {
+      if (node.textContent === 'Sparky is thinking...') node.remove();
+    });
+    endSession();
+    addMessage(BYE, false, { call: true });
+    closeInput(true);
+    restartButton.focus();
+  }
+
+  async function startNew() {
+    const ok = await beginSession();
+    if (!ok) {
+      addMessage("I can't start another chat right now. The team can still help.", false, { call: true });
+      restartButton.focus();
+      return;
+    }
+    log.replaceChildren();
+    n = 0;
+    strikes = 0;
+    ended = false;
+    typing = false;
+    leadShown = false;
+    form.hidden = false;
+    restartButton.hidden = true;
+    endButton.hidden = true;
+    input.value = '';
+    fitInput();
+    greet();
+    input.focus();
+  }
+
+  openButton.addEventListener('click', open);
+  closeButton.addEventListener('click', close);
+  endButton.addEventListener('click', endByVisitor);
+  restartButton.addEventListener('click', () => void startNew());
+  dialog.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = input.value;
+    input.value = '';
+    fitInput();
+    ask(value);
+    if (!ended) input.focus();
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      form.requestSubmit();
+    }
+  });
+  input.addEventListener('input', fitInput);
+  input.addEventListener('focus', fitInput);
+  input.addEventListener('blur', fitInput);
+</script>

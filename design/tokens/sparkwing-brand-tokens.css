@@ -1,0 +1,65 @@
+/* Sparkwing brand tokens v1.2, 3 Nov 2026. Shared by the website and the apps.
+   Source: Sparkwing Brand Colours v1.0, plus the "Additions" block below.
+   Use these values for colour. Each product maps its own UI names onto them. */
+:root {
+  /* Core */
+  --sw-brand-lagoon: #1F8476;       /* Lead colour. Buttons and icons. White text 4.55:1 */
+  --sw-brand-glade: #217A6F;        /* Teal text and links on cream or white */
+  --sw-brand-night-fern: #285A5A;   /* Announcement bars and secondary dark panels */
+  --sw-brand-wing-violet: #55459B;  /* Logo, Sparky and Control Tower */
+  --sw-brand-spark-gold: #FEB938;   /* Logo star, accents, sparks on dark grounds */
+  --sw-brand-firefly: #FFB81C;      /* Tiny highlights only */
+
+  /* Grounds and neutrals */
+  --sw-brand-morning-silk: #FFF8E7; /* Screen and page background */
+  --sw-brand-cocoon-cream: #FAEFDC; /* Cards and print */
+  --sw-brand-white: #FFFFFF;
+  --sw-brand-moonlit-silver: #BEC2C6; /* Foil stand-in. Decorative only */
+  --sw-brand-inkwell: #1E2B2A;      /* Body text */
+
+  /* Lagoon scale */
+  --sw-brand-lagoon-50: #EDF5F4;
+  --sw-brand-lagoon-100: #D7E9E6;
+  --sw-brand-lagoon-200: #AED3CE;
+  --sw-brand-lagoon-300: #7DB8B0;
+  --sw-brand-lagoon-400: #4C9D91;
+  --sw-brand-lagoon-500: #1F8476;
+  --sw-brand-lagoon-600: #1A7064;
+  --sw-brand-lagoon-700: #165C53;   /* Secondary text and button hover */
+  --sw-brand-lagoon-800: #114941;   /* Raised panels on dark grounds */
+  --sw-brand-lagoon-900: #0C352F;   /* Main dark ground and headings */
+
+  /* Navy scale. Addition, for trust and governance sections */
+  --sw-brand-navy-900: #14263D;     /* Dark ground. White text 15.28:1, Spark Gold 8.88:1 */
+  --sw-brand-navy-800: #1F3450;     /* Raised panels on navy */
+  --sw-brand-navy-700: #3A4C66;     /* Lines on navy */
+
+  /* Wing scale */
+  --sw-brand-wing-50: #F1F0F7;
+  --sw-brand-wing-100: #E0DEED;
+  --sw-brand-wing-200: #C2BCDB;
+  --sw-brand-wing-300: #9C93C5;
+  --sw-brand-wing-400: #776AAF;
+  --sw-brand-wing-500: #55459B;
+  --sw-brand-wing-600: #483B84;
+  --sw-brand-wing-700: #3B306C;
+  --sw-brand-wing-800: #2F2655;
+  --sw-brand-wing-900: #221C3E;
+
+  /* Logo gradient. Use the logo file as supplied, and don't rebuild the gradient */
+  --sw-brand-ember-tip: #E07B00;    /* Also the Spark Studio mark. Fails small-text contrast */
+
+  /* Additions, not yet in the brand guide */
+  --sw-brand-spark-text: #A85A00;   /* Orange text and small sparks on light grounds */
+  --sw-brand-gold-tint: #FDF1D8;    /* Soft gold panels */
+  --sw-brand-gold-text: #6E4A00;    /* Text on gold tint */
+  --sw-brand-neutral-tint: #F1ECE0; /* Neutral badges and panels */
+  --sw-brand-border: #E6E0D2;       /* Card borders */
+  --sw-brand-border-soft: #ECE6D8;  /* Row dividers */
+  --sw-brand-border-strong: #DAD3C2;/* Stronger dividers */
+  --sw-brand-rule: #CFC8B6;         /* Rules */
+  --sw-brand-border-dashed: #8E8470;/* Placeholder borders. 3:1 on light grounds */
+
+  /* Type */
+  --sw-brand-font: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}

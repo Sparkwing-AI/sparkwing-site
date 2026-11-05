@@ -1,0 +1,268 @@
+---
+import '../styles/page.css';
+import '../styles/sparkkeeper.css';
+import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import ProductNav from '../components/ProductNav.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+const scope = [
+  {
+    code: 'en',
+    lang: undefined,
+    title: 'What Sparkkeeper covers today',
+    yesTitle: 'Sparkkeeper handles',
+    yes: [
+      'Your client records and everyday bookkeeping in one place',
+      'Reading receipts, invoices and spreadsheets into records',
+      'Answering questions about your books',
+      'Sending client emails on your schedule: reminders, birthdays and follow-ups, from templates you switch on',
+      'Notifications when something in your books needs you',
+      'Drafting reports and proposals for you to review',
+    ],
+    noTitle: 'Stays with your registered systems',
+    no: [
+      'Issuing BIR invoices',
+      'Filing and paying BIR taxes',
+      'Your registered books and invoicing system',
+      'Tax compliance, with your accountant',
+    ],
+    q: 'Does Sparkkeeper file my BIR taxes?',
+    a: 'No. Sparkkeeper doesn’t issue BIR invoices or file taxes today. Those stay with your registered systems and your accountant. Whether e-invoicing or CAS rules apply to your business is one for your accountant or tax adviser.',
+  },
+  {
+    code: 'tl',
+    lang: 'fil',
+    title: 'Saklaw ng Sparkkeeper today',
+    yesTitle: 'Sparkkeeper ang bahala sa',
+    yes: [
+      'Client records at araw-araw na bookkeeping niyo, nasa iisang lugar',
+      'Pagbasa ng resibo, invoices at spreadsheets para maging records',
+      'Pagsagot sa mga tanong tungkol sa books niyo',
+      'Pagpapadala ng emails sa clients sa schedule niyo: reminders, birthdays at follow-ups, mula sa templates na ino-on niyo',
+      'Notifications kapag may kailangang tingnan sa books niyo',
+      'Pag-draft ng reports at proposals para i-review niyo',
+    ],
+    noTitle: 'Nananatili sa registered systems niyo',
+    no: [
+      'Pag-issue ng BIR invoices',
+      'Pag-file at pagbayad ng BIR taxes',
+      'Registered books at invoicing system niyo',
+      'Tax compliance, kasama ang accountant niyo',
+    ],
+    q: 'Nagfa-file ba ng BIR taxes ang Sparkkeeper?',
+    a: 'Hindi. Hindi nag-i-issue ng BIR invoices o nagfa-file ng taxes ang Sparkkeeper today. Nananatili ’yun sa registered systems at accountant niyo. Kung applicable sa negosyo niyo ang e-invoicing o CAS rules, sa accountant o tax adviser niyo ’yun.',
+  },
+];
+
+const description = "Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.";
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Sparkkeeper',
+    url: new URL('/sparkkeeper', site.url).href,
+    description,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    publisher: { '@id': new URL('/#organization', site.url).href },
+  },
+];
+---
+
+<BaseLayout
+  schema={schema}
+  title="Sparkkeeper: AI for bookkeeping and client records"
+  description={description}
+>
+  <ProductNav
+    current="sparkkeeper"
+    anchors={[
+      { label: 'Features', href: '#features' },
+      { label: 'What it covers', href: '#scope' },
+      { label: 'Beta', href: '#beta' },
+    ]}
+  />
+
+  <CanvasHero
+    scene="sparkkeeper"
+    titleId="sk-title"
+    label="Animation: loose paperwork turns into sparks that flow into Sparkkeeper, and each record lights up. Sample data."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-mark">
+        <img src="/assets/logos/sparkkeeper.png" alt="" width="56" height="56" />
+        <span class="mx-badge">Beta</span>
+      </span>
+      <h1 class="mx-h1" id="sk-title">Less time on your books, more on your business.</h1>
+      <p class="mx-p">
+        Your numbers and your clients in one place, handled by AI you can trust. Sparkkeeper is a records and insights tool that sits alongside your accounting software, registered books and invoicing.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+        <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
+      </div>
+    </div>
+    <div class="mx-card" slot="stage">
+      <div class="mx-card-head"><b>Today</b><span>Sample data</span></div>
+      <div class="mx-card-kicker">Needs your attention</div>
+      <div class="mx-row" data-row data-first><span>Reyes Trading: follow-up due</span><b>21 days</b></div>
+      <div class="mx-row" data-row><span>Marlow Studio: report to review</span><b>Draft</b></div>
+      <div class="mx-row" data-row><span>Harbour Supplies: new upload</span><b>12,750</b></div>
+      <div class="mx-bubble" data-bubble>Sparky: Reyes Trading is due for a follow-up. Draft the email?</div>
+      <div class="mx-card-stats">
+        <div class="mx-tile-stat"><span>Clients</span><b>128</b></div>
+        <div class="mx-tile-stat"><span>Due soon</span><b>14</b></div>
+        <div class="mx-tile-stat"><span>Follow-ups</span><b>3</b></div>
+      </div>
+    </div>
+  </CanvasHero>
+
+  {
+    site.showPlaceholders && (
+      <section class="sk-story" aria-label="Client story">
+        <div class="sk-story-inner">
+          <p class="sk-story-quote">[Beta client quote, in their own words, English or Taglish.]</p>
+          <p>[Name, role, business]</p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="sw-band sw-band--surface sk-features" id="features" aria-labelledby="feat-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="feat-title">What it does for you</h2>
+
+      <div class="sk-row">
+        <div class="sk-row-copy">
+          <h3>Ask Sparky <span>anything about your books</span></h3>
+          <p>Who needs a follow-up? What changed this month? Sparky answers in plain words, and every answer is based on your books.</p>
+        </div>
+        <div class="sk-panel" aria-hidden="true">
+          <div class="mock-bubble-user">What changed this month?</div>
+          <div class="mock-card">
+            Expenses went up, mostly from two supplier invoices. Income held steady.
+            <span class="mock-chip">Based on your books</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-row-copy">
+          <h3>Start from <span>the files you already have</span></h3>
+          <p>Scanned invoices, receipts, Excel files, even a list from a notepad. AI reads them into records, and uploads save only after you check them.</p>
+        </div>
+        <div class="sk-files" aria-hidden="true">
+          <span class="sk-file">invoice_0482.pdf</span>
+          <span class="sk-file">receipts.jpg</span>
+          <span class="sk-file">clients.xlsx</span>
+          <span class="sk-file sk-file--done">3 records ready to review</span>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-row-copy">
+          <h3>Create <span>in one click</span></h3>
+          <p>Reports, client analyses, inventory reports and proposals. You get a clean draft to check, change and send under your own name.</p>
+        </div>
+        <div class="sk-panel" aria-hidden="true">
+          <div class="sk-doc"><b>Client report</b><span class="mock-chip mock-chip--draft">Draft for your review</span></div>
+          <div class="sk-doc sk-doc--done"><b>Inventory report</b><span class="mock-chip">Approved</span></div>
+        </div>
+      </div>
+
+      <div class="sk-row">
+        <div class="sk-row-copy">
+          <h3>Trust <span>you can check</span></h3>
+          <p>Answers come from your books, uploads wait for your check, and reports arrive as drafts. Control Tower decides what's allowed and keeps a record of what the AI did.</p>
+          <a class="sw-link" href="/trust">How the base platform works</a>
+        </div>
+        <div class="sk-log" aria-hidden="true">
+          <div><span>Read 1 invoice</span><span>AI</span></div>
+          <div><span>Created record</span><span>AI</span></div>
+          <div><span>Reviewed and saved</span><span>You</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sk-scope" id="scope" aria-labelledby="scope-title-en">
+    <div class="sw-band-inner">
+      <div class="sk-toggle" role="group" aria-label="Language" data-lang-toggle hidden>
+        <button type="button" aria-pressed="true" data-lang-button="en">English</button>
+        <button type="button" aria-pressed="false" data-lang-button="tl">Taglish</button>
+      </div>
+      {
+        scope.map((block) => (
+          <div class="sk-lang" lang={block.lang} data-lang-block={block.code} hidden={block.code !== 'en'}>
+            <h2 class="sw-h2" id={`scope-title-${block.code}`}>{block.title}</h2>
+            <div class="sk-scope-grid">
+              <div class="sk-scope-card">
+                <h3>{block.yesTitle}</h3>
+                {block.yes.map((item) => <p>{item}</p>)}
+              </div>
+              <div class="sk-scope-card sk-scope-card--out">
+                <h3>{block.noTitle}</h3>
+                {block.no.map((item) => <p>{item}</p>)}
+              </div>
+            </div>
+            <div class="sk-answer">
+              <h3>{block.q}</h3>
+              <p>{block.a}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="sw-band sk-next" aria-labelledby="next-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="next-title">Coming next</h2>
+      <div class="sk-next-grid">
+        <a class="sk-next-card" href="/apps/magnet">
+          <b>Works with Magnet</b>
+          <span>When a lead says yes, they become a client in Sparkkeeper.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--gold" id="beta" aria-labelledby="beta-title">
+    <div class="sw-band-inner sw-band-inner--row">
+      <div class="sw-gold-copy">
+        <h2 id="beta-title">Fly with us in the beta.</h2>
+        <p>
+          A small group, one month, set up for your industry. Tell us about your business and we'll tell you if it's a fit. The beta is free, and seats are limited.
+        </p>
+      </div>
+      <Button variant="deep" size="lg" href="/sparkkeeper/beta">Apply for the beta</Button>
+    </div>
+  </section>
+  <noscript>
+    <style>
+      .sk-lang[hidden] {
+        display: flex !important;
+      }
+    </style>
+  </noscript>
+</BaseLayout>
+
+<script>
+  // Language toggle for the scope section. Both blocks are in the HTML, so the page reads fine without JavaScript.
+  const toggle = document.querySelector<HTMLElement>('[data-lang-toggle]');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang-button]');
+  const blocks = document.querySelectorAll<HTMLElement>('[data-lang-block]');
+
+  if (toggle) {
+    toggle.hidden = false;
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+        blocks.forEach((block) => {
+          block.hidden = block.dataset.langBlock !== button.dataset.langButton;
+        });
+      });
+    });
+  }
+</script>

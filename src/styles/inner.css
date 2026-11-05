@@ -1,0 +1,228 @@
+/* Shared by the inner pages: page hero, scene frame, cards and step lists. Tokens only. */
+.ph {
+  padding: calc(var(--sw-space-9) - 8px) var(--sw-gutter);
+}
+
+.ph--deep,
+.ph--navy {
+  padding-block: var(--sw-space-10);
+  color: var(--sw-color-on-deep);
+}
+
+.ph--deep {
+  background: var(--sw-color-deep);
+}
+
+.ph--navy {
+  background: var(--sw-color-navy);
+}
+
+.ph-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+  gap: var(--sw-space-8) var(--sw-space-9);
+  align-items: center;
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.ph-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--sw-space-5) - 2px);
+  min-width: 0;
+}
+
+.ph-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sw-space-3);
+  font-size: var(--sw-text-body);
+  font-weight: var(--sw-weight-bold);
+  color: var(--sw-color-text-muted);
+}
+
+.ph--deep .ph-eyebrow,
+.ph--navy .ph-eyebrow {
+  color: var(--sw-color-accent);
+}
+
+.ph-eyebrow img {
+  width: 44px;
+  height: 44px;
+}
+
+.ph-h1 {
+  margin: 0;
+  font-size: var(--sw-text-h1);
+  font-weight: var(--sw-weight-extrabold);
+  line-height: var(--sw-leading-tight);
+  letter-spacing: var(--sw-tracking-display);
+}
+
+.ph--deep .ph-h1,
+.ph--navy .ph-h1 {
+  color: var(--sw-color-on-deep);
+}
+
+.ph-lead {
+  max-width: 720px;
+  margin: 0;
+  font-size: var(--sw-text-lead);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.ph--deep .ph-lead,
+.ph--navy .ph-lead {
+  color: var(--sw-color-tint);
+}
+
+.ph-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sw-space-3);
+}
+
+.ph-scene-wrap {
+  position: relative;
+  min-width: 0;
+  border-radius: var(--sw-radius-2xl);
+}
+
+.ph-scene-wrap .sw-motion-hit:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
+}
+
+.ph-scene {
+  position: relative;
+  width: 100%;
+  min-height: 340px;
+  overflow: hidden;
+  border-radius: var(--sw-radius-2xl);
+  background: var(--sw-color-deep);
+  color: var(--sw-color-on-deep);
+}
+
+.ph--deep .ph-scene {
+  background: var(--sw-color-deep-raised);
+}
+
+.ph--navy .ph-scene {
+  background: var(--sw-color-navy-raised);
+}
+
+.ph--navy .mv-chip {
+  color: var(--sw-color-navy);
+}
+
+.ph-star {
+  position: absolute;
+  top: 5%;
+  right: 4%;
+  width: 20px;
+  height: 20px;
+  fill: var(--sw-color-accent);
+}
+
+/* Cards and steps */
+.sw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-6);
+}
+
+.sw-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--sw-space-4);
+}
+
+.sw-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-3);
+  padding: calc(var(--sw-space-6) - 2px);
+  border-radius: var(--sw-radius-xl);
+  background: var(--sw-color-tint);
+}
+
+.sw-card h3 {
+  margin: 0;
+  font-size: var(--sw-text-h3);
+  font-weight: var(--sw-weight-bold);
+}
+
+.sw-card p {
+  margin: 0;
+  font-size: var(--sw-text-body);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.sw-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: var(--sw-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sw-steps li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-2);
+  padding: calc(var(--sw-space-5) + 2px);
+  border: 1px solid var(--sw-color-border);
+  border-radius: var(--sw-radius-lg);
+  background: var(--sw-color-surface);
+}
+
+.sw-steps--tint li {
+  border: 0;
+  background: var(--sw-color-tint);
+}
+
+.sw-steps b {
+  font-size: var(--sw-text-h3);
+}
+
+.sw-steps span {
+  font-size: var(--sw-text-body);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-text);
+}
+
+.sw-steps--num li {
+  padding: var(--sw-space-5);
+}
+
+.sw-steps--num .sw-step-n {
+  font-size: calc(var(--sw-text-lead) * 1.43);
+  color: var(--sw-color-spark);
+}
+
+.sw-steps--num b {
+  font-size: var(--sw-text-lead);
+}
+
+.sw-steps--num span {
+  font-size: var(--sw-text-small);
+}
+
+/* 404 */
+.nf {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sw-space-5);
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.ph--deep .sw-btn:focus-visible,
+.ph--navy .sw-btn:focus-visible {
+  outline-color: var(--sw-color-focus-on-deep);
+}
