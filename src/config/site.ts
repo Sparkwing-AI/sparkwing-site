@@ -21,7 +21,7 @@ export const site = {
     path: '/assets/og-image.png',
     width: 1200,
     height: 630,
-    alt: 'Sparkwing: less paperwork, more business.',
+    alt: 'Sparkwing: transform your business with AI. AI strategy, workflows and automation.',
   },
   logoPath: '/assets/sparkwing-mark.png',
   /** Sparkkeeper login. Launch blocker: confirm the address before launch. Override with PUBLIC_APP_URL. */
