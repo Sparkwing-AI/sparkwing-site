@@ -34,7 +34,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--sw-space-3);
-  max-width: 760px;
+  max-width: 1040px;
 }
 
 .sw-actions {
@@ -346,7 +346,7 @@
 }
 
 .sw-gold-copy p {
-  max-width: 620px;
+  max-width: 900px;
   margin: 0;
   font-size: var(--sw-text-body-lg);
   line-height: var(--sw-leading-body);

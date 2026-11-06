@@ -9,10 +9,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 
 const services = [
-  { title: 'AI consulting', body: 'Find the jobs where AI will save the most time, and agree the rules for using it safely.' },
   {
-    title: 'AI setup',
-    body: 'Get your documents, your people and your first apps ready, so your team can start using AI on real work.',
+    title: 'AI strategy',
+    body: 'We check your AI maturity across five areas: strategy, data and context, rules, people and tools. Then we build a plan around your goals and biggest time sinks.',
+  },
+  {
+    title: 'AI setup and training',
+    body: 'Get your data, business context, people and first apps ready, and train your team to use AI on real work.',
   },
   { title: 'Custom apps', body: "Build an app around how your business works, when the ready-made ones don't fit." },
   {
@@ -25,7 +28,7 @@ const steps = [
   { title: 'We listen', body: 'A discovery call about your goals, your rules and how the work gets done today.' },
   {
     title: 'We recommend',
-    body: 'A plan and quote made for your business. It might be a ready-made app, a custom build or both.',
+    body: 'Your AI plan and a quote, made for your business. It might include a ready-made app, a custom build or both.',
   },
   {
     title: 'We build and set up',
@@ -34,14 +37,14 @@ const steps = [
   { title: 'You grow', body: "We train your people and stay close, and you add more whenever you're ready." },
 ];
 
-const description = "AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more.";
+const description = "AI strategy and consulting from Sydney-based Sparkwing. We find where AI will help most, build your plan, set it up and train your people.";
 const schema = [
   {
     '@type': 'Service',
     name: 'Spark Studio',
     url: new URL('/spark-studio', site.url).href,
     description,
-    serviceType: 'AI consulting',
+    serviceType: 'AI strategy and consulting',
     areaServed: [
       { '@type': 'Country', name: 'Australia' },
       { '@type': 'Country', name: 'Philippines' },
@@ -53,7 +56,7 @@ const schema = [
 
 <BaseLayout
   schema={schema}
-  title="Spark Studio: AI consulting, automation and custom AI agents"
+  title="Spark Studio: AI strategy, consulting and custom AI agents"
   description={description}
 >
   <CanvasHero
@@ -64,11 +67,11 @@ const schema = [
     <div class="mx-text" slot="copy">
       <span class="mx-mark">
         <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
-        <span class="mx-eyebrow">Spark Studio · AI consulting</span>
+        <span class="mx-eyebrow">Spark Studio · AI strategy and consulting</span>
       </span>
-      <h1 class="mx-h1 mx-h1--compact" id="ss-title">AI set up around your business, and built for it when you need more.</h1>
+      <h1 class="mx-h1 mx-h1--compact" id="ss-title">Want to bring AI transformation to your company? Talk to us.</h1>
       <p class="mx-p">
-        Spark Studio is Sparkwing's AI consulting team. We work out where AI will help, set it up properly, and build custom apps or AI agents when the ready-made apps don't cover what you need.
+        Spark Studio is Sparkwing's AI strategy and consulting team. We find where AI will help most, build your plan, set it up properly, train your people, and create custom apps or AI agents when you need them.
       </p>
       <div class="mx-cta">
         <Button variant="accent" size="lg" enquiry="studio">Book a discovery call</Button>

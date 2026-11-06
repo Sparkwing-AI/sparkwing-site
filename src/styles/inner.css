@@ -67,7 +67,7 @@
 }
 
 .ph-lead {
-  max-width: 720px;
+  max-width: 900px;
   margin: 0;
   font-size: var(--sw-text-lead);
   line-height: var(--sw-leading-body);
