@@ -9,10 +9,11 @@ import FlowStage from '../components/FlowStage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const method = [
-  { title: 'Discover', body: 'Your goals, your rules, and where AI is already in use.' },
+  { title: 'Discover', body: 'Your goals, your rules, and where AI is already in use, shaped into your AI strategy.' },
   { title: 'Build', body: 'Your knowledge library, your AI specialists and the apps your team needs.' },
   { title: 'Govern', body: 'Permissions, an off switch, cost tracking and a record of what the AI did.' },
   { title: 'Enable', body: 'Training and a home base, so people use it well and keep using it.' },
+  { title: 'Scale', body: "See what's working, then roll it out to more teams." },
 ];
 
 const tools = [
@@ -27,7 +28,7 @@ const tools = [
     name: 'Academy',
     href: '/apps/academy',
     logo: '/assets/logos/academy.svg',
-    body: 'Your team learns safe AI habits before using it with real information.',
+    body: 'Brings your team up to speed and confident with AI, before they use it with real information.',
     soon: true,
   },
   {
@@ -41,14 +42,14 @@ const tools = [
     name: 'Spark Studio',
     href: '/spark-studio',
     logo: '/assets/logos/spark-studio.svg',
-    body: 'AI consulting, setup, and custom apps or AI agents built around how your organisation works.',
+    body: 'AI strategy, setup, and custom apps or AI agents built around how your organisation works.',
   },
 ];
 ---
 
 <BaseLayout
-  title="AI strategy and governance for your team, Sparkwing"
-  description="Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement."
+  title="AI transformation for your whole team, Sparkwing"
+  description="Bring your whole team along with AI: a clear strategy, rules and records, training, and apps people keep using. Built for teams that show their work."
 >
   <CanvasHero
     scene="flow"
@@ -58,9 +59,9 @@ const tools = [
   >
     <div class="mx-text" slot="copy">
       <span class="mx-eyebrow">I want my whole team using AI safely</span>
-      <h1 class="mx-h1 mx-h1--compact" id="sc-title">Get more from AI across your team, with rules and records in place.</h1>
+      <h1 class="mx-h1 mx-h1--compact" id="sc-title">Bring your whole team along, with rules and records in place.</h1>
       <p class="mx-p">
-        Your people are already using AI. We bring AI strategy, AI governance, AI ecosystems and enablement, for organisations that need to show their work.
+        Your people are already using AI. We help you turn that into real change across your organisation, with a clear strategy, your business context, the right tools, training and rules. Built for organisations that need to show their work.
       </p>
       <div class="mx-cta">
         <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
@@ -92,7 +93,7 @@ const tools = [
 
   <section class="sw-band" aria-labelledby="sc-tools">
     <div class="sw-band-inner sw-stack">
-      <h2 class="sw-h2" id="sc-tools">What you get to work with</h2>
+      <h2 class="sw-h2" id="sc-tools">What your team gets to work with</h2>
       <div class="sc-tools">
         {
           tools.map((tool) => (

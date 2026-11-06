@@ -10,7 +10,10 @@ html {
   text-size-adjust: 100%;
 }
 
+/* No lone last words: body text avoids orphans and headings even out their lines. */
 body {
+  text-wrap: pretty;
+
   margin: 0;
   background: var(--sw-color-page);
   color: var(--sw-color-text);
@@ -35,6 +38,7 @@ h1,
 h2,
 h3,
 h4 {
+  text-wrap: balance;
   margin: 0;
   color: var(--sw-color-ink);
   line-height: var(--sw-leading-snug);

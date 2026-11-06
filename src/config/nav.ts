@@ -2,7 +2,7 @@
 export const enquiryTopics = [
   { value: 'call', label: 'Book a discovery call' },
   { value: 'app', label: 'Ask about an app' },
-  { value: 'studio', label: 'Customising AI for my business' },
+  { value: 'studio', label: 'AI strategy or transformation for my business' },
   { value: 'other', label: 'Something else' },
 ] as const;
 
@@ -33,14 +33,14 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
       {
         label: 'Magnet',
         href: '/apps/magnet',
-        summary: 'Fewer missed follow-ups and renewals',
+        summary: 'AI for your leads and follow-ups',
         logo: logo('magnet'),
         badge: { label: 'Coming soon', tone: 'neutral' },
       },
       {
         label: 'Academy',
         href: '/apps/academy',
-        summary: 'Your team learns AI before using it on real work',
+        summary: 'Get your team up to speed and confident with AI',
         logo: logo('academy'),
         badge: { label: 'Coming soon', tone: 'neutral' },
       },
@@ -56,8 +56,8 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
   {
     heading: 'INCLUDED WITH EVERY APP',
     items: [
-      { label: 'Hive', href: '/trust#hive', summary: 'Your business knowledge library', logo: logo('hive') },
-      { label: 'AI Crew', href: '/trust#ai-crew', summary: 'AI specialists and bots you approve', logo: logo('ai-crew') },
+      { label: 'Hive', href: '/trust#hive', summary: 'Your business context layer', logo: logo('hive') },
+      { label: 'AI Crew', href: '/trust#ai-crew', summary: 'AI tooling that does the work, with helpers you approve', logo: logo('ai-crew') },
       {
         label: 'Control Tower',
         href: '/trust#control-tower',
@@ -67,12 +67,12 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
     ],
   },
   {
-    heading: 'AI CONSULTING',
+    heading: 'AI STRATEGY AND CONSULTING',
     items: [
       {
         label: 'Spark Studio',
         href: '/spark-studio',
-        summary: 'AI setup, custom apps and AI agents',
+        summary: 'AI strategy, setup, custom apps and AI agents',
         logo: logo('spark-studio'),
       },
     ],
@@ -81,14 +81,15 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
 
 /** Page links shown inline at 1200px and wider. */
 export const pageLinks = [
+  { label: 'AI strategy', href: '/spark-studio' },
   { label: 'Save hours', href: '/bring-ai-in' },
   { label: 'Use AI safely', href: '/scale-ai' },
-  { label: 'Spark Studio', href: '/spark-studio' },
   { label: 'Trust', href: '/trust' },
 ] as const;
 
-/** Page links shown first in the Menu panel below 1200px. Spark Studio sits in the Products groups. */
+/** Page links shown first in the Menu panel below 1200px. */
 export const menuPageLinks = [
+  { label: 'AI strategy', href: '/spark-studio' },
   { label: 'Save hours', href: '/bring-ai-in' },
   { label: 'Use AI safely', href: '/scale-ai' },
   { label: 'Trust', href: '/trust' },
@@ -107,9 +108,9 @@ export const footerColumns = [
   {
     heading: 'PATHS',
     links: [
-      { label: 'Save hours on admin', href: '/bring-ai-in' },
+      { label: 'Build your AI strategy', href: '/spark-studio' },
+      { label: 'Save hours on manual work', href: '/bring-ai-in' },
       { label: 'Use AI safely', href: '/scale-ai' },
-      { label: 'Spark Studio: AI consulting', href: '/spark-studio' },
     ],
   },
   {

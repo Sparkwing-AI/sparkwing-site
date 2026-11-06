@@ -9,6 +9,8 @@ const allowed = new Set([
   'styles/tokens.css',
   // Canvas 2D drawing colours from design/motion/motion-engine.js. They are pixels, not CSS.
   'scripts/motion-engine.js',
+  // Canvas 2D drawing colours for the Home flight. Also pixels.
+  'scripts/flight.js',
 ]);
 const extensions = ['.astro', '.ts', '.js', '.mjs', '.css', '.svg', '.md', '.mdx', '.json'];
 

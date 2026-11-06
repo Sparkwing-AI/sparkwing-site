@@ -38,3 +38,12 @@ Removed from Home: "See it take flight" as its own section, and "Where will the 
 - ABN 90 703 825 370 in the footer.
 
 The `/preview/home` content mockup isn't part of this design. Don't merge it.
+
+## AI transformation rewrite (6 Nov 2026)
+Sparkwing helps businesses deliver change and transformation through AI, and the site now leads with that. The apps are how it gets done.
+
+- AI maturity is the framework: Strategy, Data and context, Rules, People, Tools and scale. Spark Check will measure it, as a public quiz, in a later build.
+- Home order is in FR-109. The Sparkkeeper tabs, sample screens and story animation are gone from Home. The Sparkkeeper page covers those features.
+- Every section has to make sense if a visitor skips what came before it.
+- Text wrapping: headings and short copy use `text-wrap: balance`, and everything else uses `pretty`, so lines don't end on a lone word. Section intros run up to 1040px wide.
+- Menu: AI strategy, Save hours, Use AI safely, Products, Trust. AI strategy opens Spark Studio.

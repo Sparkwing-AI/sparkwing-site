@@ -1,47 +1,37 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function pauseViaStory(page: Page) {
-  await page.locator('.home-showcase-pause [data-motion-trigger]').click();
+async function pauseViaMarquee(page: Page) {
+  await page.locator('.home-marquee [data-motion-trigger]').click();
   await page.getByRole('button', { name: /^Yes/ }).click();
 }
 
 test.describe('Home', () => {
-  test('has one h1 and the two doors', async ({ page }) => {
+  test('has one h1 and the three doors', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Less paperwork, more business.');
-    await expect(page.getByRole('link', { name: /I want to save hours on manual admin/ })).toHaveAttribute('href', '/bring-ai-in');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Transform how your business works.');
+    await expect(page.getByRole('link', { name: /I want an AI strategy for my business/ })).toHaveAttribute('href', '/spark-studio');
+    await expect(page.getByRole('link', { name: /I want to save hours on manual work/ })).toHaveAttribute('href', '/bring-ai-in');
     await expect(page.getByRole('link', { name: /I want my whole team using AI safely/ })).toHaveAttribute('href', '/scale-ai');
+  });
+
+  test('the transformation steps and the apps map cover all five pillars', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.home-flight-card')).toHaveCount(5);
+    await expect(page.locator('.home-flight-pillar')).toHaveText(['Strategy', 'Data and context', 'Rules', 'People', 'Tools and scale']);
+    await expect(page.locator('.home-map-card')).toHaveCount(8);
+    await expect(page.locator('.home-map-card--live')).toHaveAttribute('href', '/sparkkeeper');
+    await expect(page.locator('.home-map-card', { hasText: 'Coming soon' })).toHaveCount(4);
   });
 
   test('stats sources open in a new tab and keep the disclaimer visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('Industry research, not Sparkkeeper results.')).toBeVisible();
+    await expect(page.getByText("Industry research. These aren't Sparkwing results.")).toBeVisible();
     const sources = page.locator('.home-sources a');
     await expect(sources).toHaveCount(2);
     for (const link of await sources.all()) {
       await expect(link).toHaveAttribute('target', '_blank');
       await expect(link).toHaveAttribute('rel', /noopener/);
     }
-  });
-
-  test('showcase tabs swap the sample screen and update aria-pressed', async ({ page }) => {
-    await page.goto('/');
-    const upload = page.getByRole('button', { name: /^Upload anything/ });
-    const ask = page.getByRole('button', { name: /^Ask Sparky/ });
-    await expect(upload).toHaveAttribute('aria-pressed', 'true');
-    await ask.click();
-    await expect(ask).toHaveAttribute('aria-pressed', 'true');
-    await expect(upload).toHaveAttribute('aria-pressed', 'false');
-    await expect(page.locator('[data-panel="ask"]')).toBeVisible();
-    await expect(page.locator('[data-panel="upload"]')).toBeHidden();
-    await page.getByRole('button', { name: /^Create in one click/ }).click();
-    await expect(page.locator('[data-panel="create"]')).toBeVisible();
-  });
-
-  test('sample screen is hidden from assistive technology and labelled as sample data', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('.mock')).toHaveAttribute('aria-hidden', 'true');
-    await expect(page.locator('[data-panel="upload"]').getByText('Sample data').first()).toBeVisible();
   });
 
   test('clicking an animation asks first, and Yes and No behave', async ({ browser }) => {
@@ -65,12 +55,12 @@ test.describe('Home', () => {
     await expect(page.locator('html')).toHaveAttribute('data-paused', '');
     for (const trigger of await triggers.all()) await expect(trigger).toHaveAccessibleName('Resume animation');
 
-    const story = page.locator('.home-showcase-pause [data-motion-trigger]');
-    await story.click();
+    const other = page.locator('.home-flight-pause [data-motion-trigger]');
+    await other.click();
     await expect(page.getByRole('dialog', { name: 'Resume animation?' })).toBeVisible();
     await page.getByRole('button', { name: /^Yes/ }).click();
     await expect(page.locator('html')).not.toHaveAttribute('data-paused', '');
-    await expect(story).toHaveAccessibleName('Pause animation');
+    await expect(other).toHaveAccessibleName('Pause animation');
     await context.close();
   });
 
@@ -122,24 +112,19 @@ test.describe('Home', () => {
     const context = await browser.newContext({ reducedMotion: 'no-preference' });
     const page = await context.newPage();
     await page.goto('/');
-    const loops = ['.home-marquee-track', '.story-doc--1', '.story-spark', '.story-row'];
+    const loops = ['.home-marquee-track'];
     const name = (selector: string) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
     for (const selector of loops) await expect.poll(() => name(selector), { message: selector }).not.toBe('none');
-    await pauseViaStory(page);
+    await pauseViaMarquee(page);
     for (const selector of loops) expect(await name(selector), selector).toBe('none');
     await context.close();
   });
 
-  test('paused page shows the static end state of the story and the marquee', async ({ browser }) => {
+  test('paused page shows the static marquee', async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: 'no-preference' });
     const page = await context.newPage();
     await page.goto('/');
-    await pauseViaStory(page);
-    const opacity = (selector: string) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).opacity);
-    expect(await opacity('.story-row')).toBe('1');
-    expect(await opacity('.story-doc--1')).toBe('1');
-    expect(await opacity('.story-caption--second')).toBe('1');
-    expect(await opacity('.story-caption--first')).toBe('0');
+    await pauseViaMarquee(page);
     await expect(page.locator('.home-marquee-copy[aria-hidden="true"]')).toBeHidden();
     const fits = await page.locator('.home-marquee-track').evaluate((el) => el.scrollWidth <= el.clientWidth);
     expect(fits).toBe(true);

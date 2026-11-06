@@ -29,15 +29,15 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Home | Main, MainMedium, MainCompact | `Main-*.png` | Lead with less paperwork, and send people down one of two paths |
+| `/` | Sparkwing: AI transformation and strategy for business | We help businesses in Australia and the Philippines transform how they work with AI: a clear strategy, the right tools, a ready team and safe rules. |
 | `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
-| `/apps/magnet` | Magnet | Apps (Magnet tab) | `Apps-*.png` | Coming soon app |
+| `/apps/magnet` | Magnet: AI for leads and follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
 | `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
 | `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
-| `/spark-studio` | Spark Studio | Studio, StudioMedium, StudioCompact | `Studio-*.png` | AI consulting, setup, custom apps and AI agents |
+| `/spark-studio` | Spark Studio: AI strategy, consulting and custom AI agents | AI strategy and consulting from Sydney-based Sparkwing. We find where AI will help most, build your plan, set it up and train your people. |
 | `/trust` | Trust and base platform | Platform, PlatformMedium, PlatformCompact | `Platform-*.png` | Hive, AI Crew, Control Tower, masking, who manages |
-| `/bring-ai-in` | Path: bring AI in | Start, StartMedium, StartCompact | `Start-*.png` | For growing businesses |
-| `/scale-ai` | Path: scale responsibly | Scale, ScaleMedium, ScaleCompact | `Scale-*.png` | For teams that need rules and records |
+| `/bring-ai-in` | AI automation for small business: save hours, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Clear the manual work first, then add more. No IT team needed. |
+| `/scale-ai` | AI transformation for your whole team, Sparkwing | Bring your whole team along with AI: a clear strategy, rules and records, training, and apps people keep using. Built for teams that show their work. |
 | `/privacy` | Privacy policy | Privacy, PrivacyMedium, PrivacyCompact | `Privacy-*.png` | Legal. Don't reword |
 | `/terms` | Terms of use | Terms, TermsMedium, TermsCompact | `Terms-*.png` | Legal. Don't reword |
 | `/sparkkeeper/beta` | Beta application | Beta, BetaMedium, BetaCompact | `Beta-*.png` | Form on the left, what to expect on the right, FAQ below |
@@ -104,16 +104,16 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 
 | ID | Requirement | Acceptance |
 | --- | --- | --- |
-| FR-101 | Hero with two doors and two CTAs | Matches Main board |
-| FR-102 | Stats band on a light ground straight below the dark hero, with three stats and footnote sources, including "Industry research, not Sparkkeeper results." | Sources link out. Disclaimer stays visible |
-| FR-103 | "Start with our bookkeeping app, Sparkkeeper. Add more apps when you're ready." Combined showcase with Upload (default), Ask and Create tabs that swap the sample screen, then the Magnet, Academy and Nest cards | `aria-pressed` updates. "Sample data" label always shows. Mock is hidden from screen readers |
-| FR-104 | Marquee of manual admin work with a Pause button | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
-| FR-105 | Story animation inside the Upload tab: lined papers go in, then Records, Reports and Reminders come out, with caption changes. There is no separate "See it take flight" section | Runs in CSS. Has a Pause button. Shows the end state when paused or with reduced motion |
+| FR-101 | Hero leads with "Transform how your business works.", with three doors (AI strategy, save hours, whole team) and two CTAs (Book a discovery call, See how it works) | "See how it works" jumps to the steps. Doors link to `/spark-studio`, `/bring-ai-in` and `/scale-ai` |
+| FR-102 | "Why businesses are turning to AI." stats band with three stats and footnote sources, including "Industry research. These aren't Sparkwing results." | Sources link out. Disclaimer stays visible |
+| FR-103 | "How Sparkwing covers every part of your AI transformation." Eight cards match each app or service to its pillar: Spark Studio (Strategy), Hive (Data and context), Control Tower (Rules), Academy and Nest (People), Sparkkeeper, Magnet and AI Crew (Tools and scale) | Sparkkeeper is the solid teal card with a Beta badge. Coming soon apps stay labelled. Each card links to its page |
+| FR-104 | "Hand your manual admin to Sparkkeeper" marquee with a Pause button, straight above the beta band | Pauses and resumes. Static with reduced motion. Content isn't cut off when static |
+| FR-105 | "AI transformation, one step at a time." Five step cards, one per AI maturity pillar, revealed by a butterfly that flies in once, traces each outline with sparkles and stays on the last card | Canvas loads only near the section. Has a Pause button. All cards show when paused, on focus, or with reduced motion. Phones wait for each card to scroll into view |
 | FR-106 | Team section: three equal cards with photo, name, role, bio | Equal widths at wide. Bios exactly as on canvas |
 | FR-107 | Bracketed placeholders must not ship: "[First client story]" and "[Beta client quote...]" | Hide each behind a flag until the real content is supplied. A CI check fails the production build if any bracketed placeholder is rendered |
-| FR-108 | "Not seeing the apps you need? Talk to us." section straight after the gold "Have a play with Sparkkeeper." section | "Talk to us" opens the enquiry modal. "Meet Spark Studio" links to the page |
-| FR-109 | Home order: hero, stats, Sparkkeeper and apps, gold demo section, Not seeing the apps, marquee, business context, team, trust, closing CTA | Matches Main board |
-| FR-110 | "Your business context is what makes AI useful." section on navy, with the same question answered without and with context, and three points | Links to `/trust` |
+| FR-108 | "Want to bring AI transformation to your company? Talk to us." Spark Studio band straight after the gold beta band | "Talk to us" opens the enquiry modal. "Meet Spark Studio" links to the page |
+| FR-109 | Home order: hero, transformation steps, business context, stats, apps by pillar, marquee, gold beta band, Spark Studio, team, trust, closing CTA. Each section makes sense on its own | Matches this list |
+| FR-110 | "Your business context is what makes AI smarter." section on navy, with avatars on each chat message, the same question answered without context and with "your business context on Sparkwing Hive", and three points | Links to `/trust` |
 | FR-111 | "Trust comes built into every app." sits on cream after the team. "Where will the apps and data live?" is not on Home | Trust link stays |
 
 ### Sparkkeeper

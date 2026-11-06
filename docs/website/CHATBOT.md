@@ -52,7 +52,7 @@ Sparky writes freely, following a playbook. The steps are guidance for the model
 | They need | Recommend | Button |
 |---|---|---|
 | Less paperwork, records, follow-ups, reports | Sparkkeeper beta | Apply for the beta |
-| Custom apps, AI agents, AI set up for them | Spark Studio | Talk to the team |
+| AI strategy, AI transformation, custom apps, AI agents, AI set up for them | Spark Studio | Talk to the team |
 | Rules, governance and AI across a bigger team | Use AI safely | Talk to the team |
 | Leads and renewals, team training, a team AI home | Magnet, Academy or Nest, clearly labelled coming soon | Talk to the team |
 | Not sure | One question, then Sparkkeeper or the team | Talk to the team |

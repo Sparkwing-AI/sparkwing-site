@@ -3,14 +3,14 @@
 export const MODEL = 'claude-haiku-5-5';
 
 export const KNOWLEDGE = `Sparkwing Pty Ltd is an independent AI company based in Sydney. It is not affiliated with Nvidia or any other company with Spark in its name or products.
-Sparkwing works with businesses across Australia and the Philippines.
+Sparkwing works with businesses across Australia and the Philippines. It helps them transform how they work with AI, across strategy, data and business context, rules, people, and tools.
 Sparkkeeper is Sparkwing's bookkeeping app. It keeps numbers and clients in one place, alongside registered books and invoicing. It does not issue invoices, file taxes, or hold BIR accreditation.
 Sparkkeeper's public beta is free for one month, with AI credits included and top-ups on request. Seats are limited. The website does not publish any other price. The beta starts in late November.
 There is no public trial of Sparkkeeper and no sign-in link on this website. If someone asks to try the app or sign in, point them to the beta application or a discovery call.
-Spark Studio is Sparkwing's AI consulting team. It sets AI up around a business and can build custom apps or AI agents.
+Spark Studio is Sparkwing's AI strategy and consulting team. It finds where AI will help most, builds an AI plan, sets AI up, trains people, and can build custom apps or AI agents.
 Use AI safely is the path for rules, governance, and AI across a bigger team.
 Magnet, Academy, and Nest are coming soon. Magnet is for leads and follow-ups. Academy is short courses on using AI safely. Nest is a team's AI home page.
-Hive holds a business's clients, documents, rules, and records so answers can use that context.`;
+Hive is the business context layer. It holds a business's clients, documents, rules, and records so answers can use that context. AI Crew is the AI tooling that does the work and is coming soon. Control Tower is governance and guardrails.`;
 
 export function buildSystem(messageNumber: number, canary: string): string {
   const step = messageNumber <= 2 ? '1' : messageNumber <= 4 ? '2' : messageNumber <= 6 ? '3' : '4';

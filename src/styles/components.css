@@ -462,7 +462,7 @@
 }
 
 .sw-footer-cta h2 {
-  max-width: 680px;
+  max-width: 920px;
   color: var(--sw-color-on-deep);
   font-size: var(--sw-text-h2);
   font-weight: var(--sw-weight-bold);
@@ -852,4 +852,31 @@ select.sw-input.on-deep,
 .sw-motion-pop-actions {
   display: flex;
   gap: var(--sw-space-2);
+}
+
+/* Short copy in cards and heroes evens out its lines, so nothing dangles. */
+summary,
+.mx-p,
+.mx-lead,
+.pf-panel p,
+.pf-who-card p,
+.sk-scope-card p,
+.mx-path b,
+.mx-path small,
+.bt-lead,
+.role,
+.sw-gold-copy p,
+.sw-card p,
+.sw-steps b,
+.sw-steps span,
+.st-card p,
+.sc-tool p,
+.sk-row-copy p,
+.home-stat p,
+.home-flight-card p,
+.home-map-body,
+.home-context-points p,
+.home-context-bot,
+.home-trust-item p {
+  text-wrap: balance;
 }

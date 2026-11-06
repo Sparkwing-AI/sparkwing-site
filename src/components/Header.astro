@@ -15,7 +15,7 @@ const current = (href: string) => (path === href ? 'page' : undefined);
 
 <header class="sw-header" data-header>
   <div class="sw-announce">
-    <span>Sparkkeeper beta applications are open. Places are limited.</span>
+    <span>Sparkkeeper beta starts late November. Places are limited.</span>
     <a href="/sparkkeeper/beta">Join the beta</a>
   </div>
   <div class="sw-nav">
@@ -30,6 +30,7 @@ const current = (href: string) => (path === href ? 'page' : undefined);
         <span class="sw-visually-hidden"> home</span>
       </a>
       <nav class="sw-nav-links" aria-label="Main">
+        {pageLinks.slice(0, 3).map((link) => <a class="sw-nav-link" href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
         <button
           type="button"
           class="sw-products-btn"
@@ -40,7 +41,7 @@ const current = (href: string) => (path === href ? 'page' : undefined);
           Products
           <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l4 4 4-4"></path></svg>
         </button>
-        {pageLinks.map((link) => <a class="sw-nav-link" href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
+        {pageLinks.slice(3).map((link) => <a class="sw-nav-link" href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
       </nav>
     </div>
     <div class="sw-nav-right">

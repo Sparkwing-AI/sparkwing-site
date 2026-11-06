@@ -93,6 +93,13 @@
   font-size: clamp(38px, 4.2vw, 60px);
 }
 
+/* Two lines at desktop: the headline may run a little past its column. */
+@media (min-width: 1100px) {
+  .mx-h1--wide {
+    margin-inline-end: -96px;
+  }
+}
+
 .mx-lead {
   margin: 0;
   color: var(--sw-color-on-deep);
