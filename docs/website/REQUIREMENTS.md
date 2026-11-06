@@ -29,15 +29,15 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Sparkwing: AI transformation and strategy for business | We help businesses in Australia and the Philippines transform how they work with AI: a clear strategy, the right tools, a ready team and safe rules. |
+| `/` | Sparkwing: AI strategy, workflows and automation | AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call. |
 | `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
 | `/apps/magnet` | Magnet: AI for leads and follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
 | `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
 | `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
-| `/spark-studio` | Spark Studio: AI strategy, consulting and custom AI agents | AI strategy and consulting from Sydney-based Sparkwing. We find where AI will help most, build your plan, set it up and train your people. |
+| `/spark-studio` | AI strategy and consulting, custom AI agents: Spark Studio | AI consulting from Sydney. AI strategy, AI systems, custom AI apps and AI agents, built around your business, for Australia and the Philippines. |
 | `/trust` | Trust and base platform | Platform, PlatformMedium, PlatformCompact | `Platform-*.png` | Hive, AI Crew, Control Tower, masking, who manages |
 | `/bring-ai-in` | AI automation for small business: save hours, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Clear the manual work first, then add more. No IT team needed. |
-| `/scale-ai` | AI transformation for your whole team, Sparkwing | Bring your whole team along with AI: a clear strategy, rules and records, training, and apps people keep using. Built for teams that show their work. |
+| `/scale-ai` | AI governance and training for your team, Sparkwing | AI strategy, AI governance and AI training for your whole team, with rules and records in place. Built for organisations that need to show their work. |
 | `/privacy` | Privacy policy | Privacy, PrivacyMedium, PrivacyCompact | `Privacy-*.png` | Legal. Don't reword |
 | `/terms` | Terms of use | Terms, TermsMedium, TermsCompact | `Terms-*.png` | Legal. Don't reword |
 | `/sparkkeeper/beta` | Beta application | Beta, BetaMedium, BetaCompact | `Beta-*.png` | Form on the left, what to expect on the right, FAQ below |
