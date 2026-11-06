@@ -1,31 +1,9 @@
-import { buildSystem, MODEL } from './prompt';
+import { cleanPage, MAX_BODY, prepareMessage } from './checks';
+import { ChatLimits, ChatSession, type Env } from './state';
 
-interface Env {
-  ANTHROPIC_API_KEY?: string;
-  TURNSTILE_SECRET_KEY?: string;
-  ALLOWED_ORIGINS: string;
-  CHAT_ENABLED?: string;
-}
+export { ChatLimits, ChatSession };
 
-type Role = 'user' | 'assistant';
-
-interface Session {
-  id: string;
-  created: number;
-  turns: { role: Role; content: string }[];
-  count: number;
-  strikes: number;
-  closed: boolean;
-  canary: string;
-}
-
-const sessions = new Map<string, Session>();
-const HOUR = 60 * 60 * 1000;
-const startsByIp = new Map<string, number[]>();
-
-const SAFE = "I can't help with that one. The team can, though.";
-const CLOSED = "I've really enjoyed this. The team can take it from here.";
-const STRIKE_END = "I'll leave that one with you. If AI for your business is ever on your mind, the team would love to hear from you.";
+const SESSION_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function originOf(request: Request, env: Env): string | null {
   const origin = request.headers.get('Origin');
@@ -40,80 +18,23 @@ function reply(status: number, body: unknown, origin: string | null): Response {
   return new Response(JSON.stringify(body), { status, headers });
 }
 
-function mask(value: string): string {
-  return value
-    .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[EMAIL]')
-    .replace(/(?:\d[ -]?){13,19}/g, '[NUMBER]')
-    .replace(/\+?\d[\d ()-]{7,}\d/g, '[PHONE]');
-}
-
-function recentStarts(ip: string): number[] {
-  const now = Date.now();
-  const kept = (startsByIp.get(ip) ?? []).filter((stamp) => now - stamp < HOUR);
-  startsByIp.set(ip, kept);
-  return kept;
-}
-
 function localOrigin(origin: string): boolean {
   return origin.startsWith('http://127.0.0.1:') || origin.startsWith('http://localhost:');
 }
 
-async function turnstileOk(token: unknown, env: Env, origin: string): Promise<boolean> {
+/** Without a secret, only local development passes. Production fails closed. */
+async function turnstileOk(token: unknown, env: Env, origin: string, ip: string): Promise<boolean> {
   if (!env.TURNSTILE_SECRET_KEY) return localOrigin(origin);
-  if (typeof token !== 'string' || !token) return false;
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ secret: env.TURNSTILE_SECRET_KEY, response: token }),
+    body: new URLSearchParams({ secret: env.TURNSTILE_SECRET_KEY, response: token, remoteip: ip }),
   });
   if (!response.ok) return false;
-  const data = (await response.json()) as { success?: boolean };
-  return data.success === true;
-}
-
-function cleanAnswer(text: string, canary: string): { answer: string; action: string; onTopic: boolean } | null {
-  const trimmed = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
-  let parsed: { answer?: unknown; action?: unknown; on_topic?: unknown };
-  try {
-    parsed = JSON.parse(trimmed) as { answer?: unknown; action?: unknown; on_topic?: unknown };
-  } catch {
-    return null;
-  }
-  if (typeof parsed.answer !== 'string') return null;
-  let answer = parsed.answer.replace(/https?:\/\/\S+/gi, '').replace(/<[^>]+>/g, '').trim();
-  if (!answer || answer.includes(canary)) return null;
-  if (/bir accredited|e-invoicing|e-filing/i.test(answer)) return null;
-  const action = parsed.action === 'talk_to_team' || parsed.action === 'apply_beta' ? parsed.action : 'none';
-  return { answer, action, onTopic: parsed.on_topic !== false };
-}
-
-async function callModel(session: Session, message: string, apiKey: string | undefined): Promise<{ answer: string; action: string; onTopic: boolean } | null> {
-  if (!apiKey) return null;
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 300,
-      system: buildSystem(session.count, session.canary),
-      messages: [...session.turns, { role: 'user', content: message }],
-    }),
-  });
-  if (!response.ok) {
-    console.error('model request failed', response.status);
-    return null;
-  }
-  const data = (await response.json()) as { content?: { type: string; text?: string }[] };
-  const text = data.content?.find((block) => block.type === 'text')?.text ?? '';
-  return cleanAnswer(text, session.canary);
-}
-
-function result(session: Session, answer: string, action: string, onTopic: boolean, closed = false) {
-  return { session_id: session.id, answer, sources: [] as string[], action, on_topic: onTopic, closed };
+  const data = (await response.json()) as { success?: boolean; hostname?: string; action?: string };
+  if (data.success !== true || data.action !== 'chat_start') return false;
+  return !env.EXPECTED_HOSTNAME || data.hostname === env.EXPECTED_HOSTNAME;
 }
 
 export default {
@@ -129,6 +50,7 @@ export default {
           'Access-Control-Allow-Origin': origin,
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Max-Age': '86400',
           Vary: 'Origin',
         },
       });
@@ -137,65 +59,51 @@ export default {
     if (!origin) return reply(403, { error: 'origin' }, null);
     if (env.CHAT_ENABLED === 'false') return reply(503, { error: 'offline' }, origin);
 
+    const declared = Number(request.headers.get('Content-Length') ?? '0');
+    if (declared > MAX_BODY) return reply(413, { error: 'size' }, origin);
+    const raw = await request.text();
+    if (raw.length > MAX_BODY) return reply(413, { error: 'size' }, origin);
+
     let body: Record<string, unknown>;
     try {
-      body = (await request.json()) as Record<string, unknown>;
+      body = JSON.parse(raw) as Record<string, unknown>;
     } catch {
       return reply(400, { error: 'json' }, origin);
     }
 
     if (body.action === 'start') {
       const ip = request.headers.get('CF-Connecting-IP') ?? 'local';
-      const starts = recentStarts(ip);
-      if (starts.length >= 5) return reply(429, { error: 'limit' }, origin);
-      if (!(await turnstileOk(body.turnstile, env, origin))) return reply(403, { error: 'turnstile' }, origin);
-      starts.push(Date.now());
-      const session: Session = {
-        id: crypto.randomUUID(),
-        created: Date.now(),
-        turns: [],
-        count: 0,
-        strikes: 0,
-        closed: false,
-        canary: crypto.randomUUID(),
-      };
-      sessions.set(session.id, session);
-      return reply(200, { ok: true, session_id: session.id }, origin);
+      if (!(await turnstileOk(body.turnstile, env, origin, ip))) return reply(403, { error: 'turnstile' }, origin);
+      const limits = env.LIMITS.get(env.LIMITS.idFromName('global'));
+      if (!(await limits.budgetLeft())) return reply(503, { error: 'offline' }, origin);
+      if (!(await limits.allowStart(ip))) return reply(429, { error: 'limit' }, origin);
+      const id = crypto.randomUUID();
+      await env.SESSIONS.get(env.SESSIONS.idFromName(id)).begin();
+      return reply(200, { ok: true, session_id: id }, origin);
     }
 
-    const session = typeof body.session_id === 'string' ? sessions.get(body.session_id) : undefined;
-    if (!session || session.closed) return reply(400, { error: 'session' }, origin);
+    const id = typeof body.session_id === 'string' && SESSION_ID.test(body.session_id) ? body.session_id : '';
+    if (!id) return reply(400, { error: 'session' }, origin);
+    const session = env.SESSIONS.get(env.SESSIONS.idFromName(id));
 
     if (body.action === 'end') {
-      session.closed = true;
+      await session.end();
       return reply(200, { ok: true }, origin);
     }
 
-    if (typeof body.message !== 'string') return reply(400, { error: 'message' }, origin);
-    const message = mask(body.message).slice(0, 500);
-    if (!message.trim()) return reply(400, { error: 'message' }, origin);
-    if (session.count >= 12) {
-      session.closed = true;
-      return reply(200, result(session, CLOSED, 'talk_to_team', true, true), origin);
-    }
+    // Only these fields are read. A forged system, history, model or max_tokens field goes nowhere.
+    const message = prepareMessage(body.message);
+    if (!message) return reply(400, { error: 'message' }, origin);
 
-    session.count += 1;
-    if (session.count === 12) {
-      session.closed = true;
-      session.turns.push({ role: 'user', content: message }, { role: 'assistant', content: CLOSED });
-      return reply(200, result(session, CLOSED, 'talk_to_team', true, true), origin);
-    }
+    const result = await session.send(message, cleanPage(body.page), id);
+    if (result.kind === 'error') return reply(result.status, { error: result.error }, origin);
+    return reply(200, { session_id: id, answer: result.answer, sources: result.sources, action: result.action, on_topic: result.onTopic, closed: result.closed }, origin);
+  },
 
-    const model = await callModel(session, message, env.ANTHROPIC_API_KEY);
-    const spoken = model ?? { answer: SAFE, action: 'talk_to_team', onTopic: true };
-    if (!spoken.onTopic) session.strikes += 1;
-    if (session.strikes >= 3) {
-      session.closed = true;
-      session.turns.push({ role: 'user', content: message }, { role: 'assistant', content: STRIKE_END });
-      return reply(200, result(session, STRIKE_END, 'talk_to_team', false, true), origin);
-    }
-    session.turns.push({ role: 'user', content: message }, { role: 'assistant', content: spoken.answer });
-    if (session.turns.length > 24) session.turns.splice(0, session.turns.length - 24);
-    return reply(200, result(session, spoken.answer, spoken.action, spoken.onTopic, false), origin);
+  /** Daily: masked chats go after 30 days. */
+  async scheduled(_event: ScheduledController, env: Env): Promise<void> {
+    if (!env.DB) return;
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    await env.DB.prepare('DELETE FROM chat_log WHERE created_at < ?').bind(cutoff).run();
   },
 } satisfies ExportedHandler<Env>;

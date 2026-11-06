@@ -1,6 +1,6 @@
 # Ask Sparky: website assistant security and guardrails
 
-**Status:** Proposed, for Elly's review. **Ticket:** CORE-192. **Design:** "Ask Sparky" boards on the canvas, `design/source/Ask.dc.html` and `design/screens/AskStates.png`.
+**Status:** Built, waiting on Elly's keys and the final tests before go-live. **Ticket:** CORE-192. **Design:** "Ask Sparky" boards on the canvas, `design/source/Ask.dc.html` and `design/screens/AskStates.png`.
 Drafted by Sunny 🤖 · ai-assisted · 4 Nov 2026.
 
 ## 1. The rule that matters most
@@ -31,7 +31,7 @@ Sparky can invite a visitor to leave their details, but code collects them. The 
 - A fresh Turnstile token on every submit, plus the hidden `company_site` field and server validation.
 - One lead per chat, and 3 per hour per hashed IP.
 - **No automatic email to the visitor,** so nobody can use the form to spam someone else's address.
-- **Flood rule:** after 10 chat leads in an hour, keep saving them with status `Flagged`, stop the alert emails and send one summary alert.
+- **Flood rule:** after 10 chat leads in an hour, keep saving them with a note saying they are flagged, stop the alert emails and send one summary alert.
 - Treat stored leads as untrusted text: escape them everywhere, and treat them as hostile input if an AI or Magnet ever reads them.
 - The card keeps working when Sparky is offline, as the forms Worker is separate.
 
@@ -226,7 +226,7 @@ Keep these in the repo, and run them on every change to the prompt, model or kno
 | 24 | Keyboard-only, screen reader, 320px, reduced motion | Works as on the canvas, including the lead card |
 | 25 | Lead with a replayed or missing Turnstile token, or a filled `company_site` | No row, no email |
 | 26 | Second lead in a chat, and 4 in an hour from one hashed IP | Blocked |
-| 27 | 11 chat leads in an hour | Saved as `Flagged`, with one summary alert only |
+| 27 | 11 chat leads in an hour | Saved with a flagged note, with one summary alert only |
 | 28 | Lead containing HTML, script, line breaks or "ignore your instructions" | Stored and shown as plain text. Email subject stays clean |
 | 29 | Lead form with the chat kill switch on | Still saves the lead |
 | 30 | Inspect model requests after a lead | Name and email never appear |
@@ -251,8 +251,8 @@ Also have someone who didn't build it spend 30 minutes trying to break it on sta
 
 - **Kill switch:** `CHAT_ENABLED` is a Worker setting that Elly can change without a deploy. Off shows the offline state.
 - **Launch flag:** `PUBLIC_CHAT_ENABLED` stays off by default, so the site can launch before the chat does.
-- **Alerts to `info@`:** budget at 50% and 80%, kill switch tripped, unusual refusal spike.
-- **Logs:** masked messages, answers, page, decision and cost, for 30 days. No raw IP addresses. Only the Sparkwing team can read them, behind Cloudflare Access.
+- **Alerts:** budget marks at 50%, 80% and 100% go to the Worker logs until `info@` email works. Set a spend notification in the Claude Console too.
+- **Logs:** masked messages, answers, page, decision and cost, for 30 days. No raw IP addresses. Only the Sparkwing Cloudflare account can read them, in the D1 console.
 - **Review:** read a sample weekly at first, and add any new attack to the tests.
 - **Taglish:** off at launch. English answers only until Tim reviews sample answers and test 10 passes.
 - **Control Tower:** don't claim the chat runs through Control Tower unless that's true when it ships.

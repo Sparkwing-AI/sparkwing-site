@@ -5,7 +5,7 @@ import { site } from '../config/site';
 const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
 ---
 
-<div class="sw-ask-root" data-endpoint={site.formEndpoint} data-chat-endpoint={site.chatEndpoint || undefined}>
+<div class="sw-ask-root" data-endpoint={site.formEndpoint} data-chat-endpoint={site.chatEndpoint || undefined} data-turnstile={site.turnstileSiteKey || undefined}>
   <button class="sw-ask-launch" id="sw-ask-open" type="button">
     <svg aria-hidden="true" width="20" height="20" viewBox="-12 -12 24 24" fill="currentColor">
       <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
@@ -73,6 +73,20 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   let leadShown = false;
   let sessionId = '';
   let timer = 0;
+
+  /** Links come from this list only. The model can name a page, never write a link. */
+  const sourcePages: Record<string, { label: string; href: string } | undefined> = {
+    home: { label: 'Home', href: '/' },
+    'bring-ai-in': { label: 'Save hours', href: '/bring-ai-in' },
+    'scale-ai': { label: 'Use AI safely', href: '/scale-ai' },
+    'spark-studio': { label: 'Spark Studio', href: '/spark-studio' },
+    trust: { label: 'Trust', href: '/trust' },
+    sparkkeeper: { label: 'Sparkkeeper', href: '/sparkkeeper' },
+    beta: { label: 'Sparkkeeper beta', href: '/sparkkeeper/beta' },
+    magnet: { label: 'Magnet', href: '/apps/magnet' },
+    academy: { label: 'Academy', href: '/apps/academy' },
+    nest: { label: 'Nest', href: '/apps/nest' },
+  };
 
   type PreviewReply = {
     text: string;
@@ -368,6 +382,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     const endpoint = root.dataset.endpoint;
     try {
       if (endpoint) {
+        const turnstile = root.dataset.chatEndpoint ? await turnstileToken('chat_lead') : '';
         const response = await fetch(`${endpoint}/api/leads`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -382,6 +397,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
             marketing_consent: field('marketing').checked,
             consent_wording_version: 'chat-v1',
             company_site: value('company_site'),
+            turnstile,
           }),
         });
         if (!response.ok) throw new Error('Form endpoint failed');
@@ -413,6 +429,57 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     }
   }
 
+  type TurnstileApi = {
+    render(el: HTMLElement, options: Record<string, unknown>): string;
+    remove(id: string): void;
+  };
+
+  let turnstileLoad: Promise<TurnstileApi> | undefined;
+
+  /** Loads only when the chat opens. Nothing here runs for visitors who never open it. */
+  function loadTurnstile(): Promise<TurnstileApi> {
+    turnstileLoad ??= new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.onload = () => {
+        const api = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+        if (api) resolve(api);
+        else reject(new Error('turnstile'));
+      };
+      script.onerror = () => reject(new Error('turnstile'));
+      document.head.append(script);
+    });
+    return turnstileLoad;
+  }
+
+  /** A fresh single-use token. It only shows anything if Cloudflare needs the visitor to do something. */
+  async function turnstileToken(action: 'chat_start' | 'chat_lead'): Promise<string> {
+    const sitekey = root.dataset.turnstile;
+    if (!sitekey) return '';
+    const api = await loadTurnstile();
+    const holder = document.createElement('div');
+    log.append(holder);
+    return new Promise((resolve) => {
+      let widget = '';
+      const finish = (token: string) => {
+        window.clearTimeout(limit);
+        if (widget) api.remove(widget);
+        holder.remove();
+        resolve(token);
+      };
+      const limit = window.setTimeout(() => finish(''), 30_000);
+      widget = api.render(holder, {
+        sitekey,
+        action,
+        appearance: 'interaction-only',
+        callback: (token: string) => finish(token),
+        'error-callback': () => finish(''),
+        'expired-callback': () => finish(''),
+      });
+    });
+  }
+
   /** A new chat, including Start a new chat. The Worker is the real Turnstile and 5-an-hour check when it is configured. */
   async function beginSession(): Promise<boolean> {
     const endpoint = root.dataset.chatEndpoint;
@@ -420,7 +487,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'start' }),
+        body: JSON.stringify({ action: 'start', turnstile: await turnstileToken('chat_start') }),
       });
       if (!response.ok) return false;
       const data = (await response.json()) as { session_id?: string };
@@ -498,14 +565,22 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
             const response = await fetch(endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ session_id: sessionId, message: masked.out }),
+              body: JSON.stringify({ session_id: sessionId, message: masked.out, page: location.pathname }),
             });
+            if (response.status === 503) {
+              addMessage('Sparky is offline right now. The team can still help.', false, { call: true });
+              closeInput(false);
+              return;
+            }
             if (!response.ok) throw new Error('chat');
-            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean };
+            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[] };
+            const source = sourcePages[data.sources?.[0] ?? ''];
             const text = typeof data.answer === 'string' ? data.answer : "I can't help with that one. The team can, though.";
             addMessage(text, false, {
               call: data.action === 'talk_to_team' || data.closed,
               beta: data.action === 'apply_beta',
+              src: source?.label,
+              href: source?.href,
             });
             if (data.action === 'talk_to_team' || data.action === 'apply_beta') showLead(masked.out);
             if (data.closed) closeInput(false);

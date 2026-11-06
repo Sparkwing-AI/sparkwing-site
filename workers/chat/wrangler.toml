@@ -1,8 +1,18 @@
 name = "sparkwing-chat"
+account_id = "9d662527c737f4da3e868a52641e3d09"
 main = "src/index.ts"
 compatibility_date = "2026-11-01"
 
-# Local only. Do not deploy this origin list. Production allows https://sparkwing.com.au only.
+[observability]
+enabled = true
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatSession", "ChatLimits"]
+
+# Local development. Secrets stay in .dev.vars, which is gitignored:
+#   ANTHROPIC_API_KEY
+#   TURNSTILE_SECRET_KEY   optional locally. Without it, only local origins can start a chat.
 [dev]
 port = 8788
 
@@ -10,6 +20,41 @@ port = 8788
 ALLOWED_ORIGINS = "http://127.0.0.1:4321,http://localhost:4321"
 CHAT_ENABLED = "true"
 
-# Secrets stay in .dev.vars, which is gitignored:
-#   ANTHROPIC_API_KEY
-#   TURNSTILE_SECRET_KEY   optional locally. Required before any public origin is allowed.
+[durable_objects]
+bindings = [
+  { name = "SESSIONS", class_name = "ChatSession" },
+  { name = "LIMITS", class_name = "ChatLimits" },
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sparkwing-chat-log"
+database_id = "local-chat-log"
+migrations_dir = "migrations"
+
+# Deploy with: npx wrangler deploy --config workers/chat/wrangler.toml --env production
+# keep_vars means switching CHAT_ENABLED off in the Cloudflare dashboard survives a later deploy.
+[env.production]
+name = "sparkwing-chat"
+keep_vars = true
+
+[env.production.vars]
+ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
+EXPECTED_HOSTNAME = "sparkwing.com.au"
+CHAT_ENABLED = "true"
+DAILY_BUDGET_USD = "1"
+
+[env.production.durable_objects]
+bindings = [
+  { name = "SESSIONS", class_name = "ChatSession" },
+  { name = "LIMITS", class_name = "ChatLimits" },
+]
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "sparkwing-chat-log"
+database_id = "REPLACE_WITH_ID_FROM_D1_CREATE"
+migrations_dir = "migrations"
+
+[env.production.triggers]
+crons = ["17 3 * * *"]

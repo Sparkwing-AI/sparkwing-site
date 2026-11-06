@@ -1,5 +1,6 @@
+import { chatDecision, chatTurnstileOk, CHAT_FLOOD_PER_HOUR, FLAGGED_NOTE, type ChatDecision } from './chatguard';
 import { allocateLeadId } from './ids';
-import { sendMail, type MailEnv } from './mail';
+import { sendFloodAlert, sendMail, type MailEnv } from './mail';
 import { visitorSource } from './source';
 import { validate } from './validate';
 
@@ -9,6 +10,9 @@ interface Env extends MailEnv {
   ALLOWED_ORIGINS: string;
   /** HMAC key for the scrambled source. Set with `wrangler secret put`. Never log it. */
   IP_HASH_SECRET?: string;
+  /** Checks the Turnstile token on chat leads. Set with `wrangler secret put`. Never log it. */
+  TURNSTILE_SECRET_KEY?: string;
+  EXPECTED_HOSTNAME?: string;
 }
 
 const maxBody = 20_000;
@@ -80,19 +84,37 @@ export default {
     const now = new Date().toISOString();
     // A missing secret or a missing location leaves those columns empty. The lead still saves.
     const source = await visitorSource(request, env.IP_HASH_SECRET);
+
+    let chat: ChatDecision = { allow: true, flagged: false, alert: false };
+    if (s.type === 'chat') {
+      const ip = request.headers.get('CF-Connecting-IP') ?? '';
+      const token = (body as { turnstile?: unknown }).turnstile;
+      if (!(await chatTurnstileOk(token, env.TURNSTILE_SECRET_KEY, origin, ip, env.EXPECTED_HOSTNAME))) {
+        return reply(403, { error: 'turnstile' }, origin);
+      }
+      const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const counts = await env.DB.prepare(
+        `SELECT COUNT(*) AS total, COALESCE(SUM(ip_hash = ?), 0) AS mine FROM leads WHERE type = 'chat' AND created_at > ?`,
+      )
+        .bind(source.ip_hash, since)
+        .first<{ total: number; mine: number }>();
+      chat = chatDecision(source.ip_hash ? (counts?.mine ?? 0) : 0, counts?.total ?? 0);
+      if (!chat.allow) return reply(429, { error: 'rate' }, origin);
+    }
+
     let publicId = '';
     try {
       publicId = await allocateLeadId(env.DB);
       await env.DB.prepare(
         `INSERT INTO leads (id, public_id, type, created_at, name, email, business, country, topic, message, business_type,
            first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version,
-           ip_hash, detected_country, detected_region)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           ip_hash, detected_country, detected_region, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(
           id, publicId, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
           s.first_task, s.source_page, now, s.marketing_consent ? 1 : 0, s.marketing_consent ? now : null,
-          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region,
+          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region, chat.flagged ? FLAGGED_NOTE : '',
         )
         .run();
     } catch (error) {
@@ -102,6 +124,15 @@ export default {
 
     // The row is saved. Mail gets the form fields only. The scrambled source and location stay in the database.
     // A mail failure is logged and never fails the form (FR-907).
+    if (chat.alert) {
+      ctx.waitUntil(
+        sendFloodAlert(env, CHAT_FLOOD_PER_HOUR).catch((error) =>
+          console.error('flood alert failed', error instanceof Error ? error.message : 'unknown'),
+        ),
+      );
+    }
+    if (chat.flagged) return reply(200, { ok: true }, origin);
+
     ctx.waitUntil(
       sendMail(env, s, id, publicId)
         .then((outcome) => {
