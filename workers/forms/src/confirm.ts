@@ -35,7 +35,7 @@ const copy: Record<ConfirmType, { subject: string; heading: string; lines: strin
   },
 };
 
-const ignore = "Didn't fill in a form on our website? You can ignore this email. Someone may have typed your address by mistake.";
+const ignore = "Didn't contact us? You can ignore this email.";
 
 export function confirmationText(type: ConfirmType): string {
   const c = copy[type];
