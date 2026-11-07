@@ -30,7 +30,7 @@ const next = [
 >
   <section class="bt-hero" aria-labelledby="pa-title">
     <div class="bt-grid">
-      <div class="bt-main" id="beta-main" data-endpoint={site.formEndpoint}>
+      <div class="bt-main" id="beta-main" data-endpoint={site.formEndpoint} data-turnstile={site.turnstileSiteKey || undefined}>
         <div class="bt-head">
           <span class="bt-eyebrow">
             <img src="/assets/logos/sparkkeeper.png" alt="" width="44" height="44" />
@@ -181,6 +181,7 @@ const next = [
 </BaseLayout>
 
 <script>
+  import { turnstileToken } from '../../scripts/turnstile';
   const root = document.getElementById('beta-main');
   const form = document.getElementById('beta-form') as HTMLFormElement | null;
   const done = document.getElementById('beta-done');
@@ -243,11 +244,13 @@ const next = [
         const endpoint = root.dataset.endpoint;
         if (endpoint) {
           const first = text('first');
+          const turnstile = await turnstileToken(root.dataset.turnstile, 'beta_apply', submit.parentElement ?? form);
           const response = await fetch(`${endpoint}/api/leads`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               type: 'beta',
+              turnstile,
               name: text('name'),
               email: text('email'),
               business: text('business'),

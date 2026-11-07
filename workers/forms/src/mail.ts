@@ -1,3 +1,4 @@
+import { confirmationHtml, confirmationSubject, type ConfirmType } from './confirm';
 import { topics, type Submission } from './validate';
 
 export interface MailEnv {
@@ -53,7 +54,12 @@ export function bodyFor(s: Submission, id: string, publicId: string): string {
  * the app to that one mailbox, so no tenant-wide Mail.Send consent is needed.
  */
 export function sendMail(env: MailEnv, s: Submission, id: string, publicId: string): Promise<'sent' | 'skipped'> {
-  return graphSend(env, subjectFor(s), bodyFor(s, id, publicId), { address: s.email, name: oneLine(s.name) });
+  return graphSend(env, subjectFor(s), bodyFor(s, id, publicId), { replyTo: { address: s.email, name: oneLine(s.name) } });
+}
+
+/** The visitor's confirmation. Replies go to info@. */
+export function sendConfirmation(env: MailEnv, to: string, type: ConfirmType): Promise<'sent' | 'skipped'> {
+  return graphSend(env, confirmationSubject(type), confirmationHtml(type), { to, html: true, replyTo: { address: env.MAIL_FROM, name: 'Sparkwing' } });
 }
 
 /** One summary when website chat leads flood in. Holds no visitor details. */
@@ -65,7 +71,14 @@ export function sendFloodAlert(env: MailEnv, limit: number): Promise<'sent' | 's
   );
 }
 
-async function graphSend(env: MailEnv, subject: string, content: string, replyTo?: { address: string; name: string }): Promise<'sent' | 'skipped'> {
+interface SendOptions {
+  to?: string;
+  html?: boolean;
+  replyTo?: { address: string; name: string };
+}
+
+async function graphSend(env: MailEnv, subject: string, content: string, options: SendOptions = {}): Promise<'sent' | 'skipped'> {
+  const { to = env.MAIL_TO, html = false, replyTo } = options;
   if (!env.GRAPH_TENANT_ID || !env.GRAPH_CLIENT_ID || !env.GRAPH_CLIENT_SECRET) return 'skipped';
 
   const tokenResponse = await fetch(
@@ -90,8 +103,8 @@ async function graphSend(env: MailEnv, subject: string, content: string, replyTo
     body: JSON.stringify({
       message: {
         subject,
-        body: { contentType: 'Text', content },
-        toRecipients: [{ emailAddress: { address: env.MAIL_TO } }],
+        body: { contentType: html ? 'HTML' : 'Text', content },
+        toRecipients: [{ emailAddress: { address: to } }],
         ...(replyTo ? { replyTo: [{ emailAddress: replyTo }] } : {}),
       },
       saveToSentItems: true,

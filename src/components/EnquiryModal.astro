@@ -9,6 +9,7 @@ import { company, mailto, site } from '../config/site';
   class="sw-dialog"
   aria-labelledby="enq-title"
   data-endpoint={site.formEndpoint}
+  data-turnstile={site.turnstileSiteKey || undefined}
   data-fail-email={company.email}
   data-fail-mailto={mailto}
 >
@@ -73,6 +74,7 @@ import { company, mailto, site } from '../config/site';
 </dialog>
 
 <script>
+  import { turnstileToken } from '../scripts/turnstile';
   const dialog = document.getElementById('sw-enquiry') as HTMLDialogElement | null;
   const form = document.getElementById('enq-form') as HTMLFormElement | null;
   const done = document.getElementById('enq-done');
@@ -168,11 +170,13 @@ import { company, mailto, site } from '../config/site';
       try {
         const endpoint = dialog.dataset.endpoint;
         if (endpoint) {
+          const turnstile = await turnstileToken(dialog.dataset.turnstile, 'enquiry', submit.parentElement ?? form);
           const response = await fetch(`${endpoint}/api/leads`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               type: 'enquiry',
+              turnstile,
               name: text('name'),
               email: text('email'),
               business: text('business'),

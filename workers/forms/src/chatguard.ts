@@ -21,7 +21,7 @@ export function chatDecision(fromThisSource: number, inTheLastHour: number): Cha
 }
 
 /** A fresh Turnstile token for every lead. Without a secret, only local development passes. */
-export async function chatTurnstileOk(token: unknown, secret: string | undefined, origin: string, ip: string, expectedHost?: string): Promise<boolean> {
+export async function turnstileOk(token: unknown, secret: string | undefined, origin: string, ip: string, action: string, expectedHost?: string): Promise<boolean> {
   if (!secret) return origin.startsWith('http://127.0.0.1:') || origin.startsWith('http://localhost:');
   if (typeof token !== 'string' || !token || token.length > 2048) return false;
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -31,6 +31,6 @@ export async function chatTurnstileOk(token: unknown, secret: string | undefined
   });
   if (!response.ok) return false;
   const data = (await response.json()) as { success?: boolean; hostname?: string; action?: string };
-  if (data.success !== true || data.action !== 'chat_lead') return false;
+  if (data.success !== true || data.action !== action) return false;
   return !expectedHost || data.hostname === expectedHost;
 }
