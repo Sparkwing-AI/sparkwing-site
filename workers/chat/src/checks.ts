@@ -16,7 +16,7 @@ export const SOURCES: Record<string, string> = {
   nest: '/apps/nest',
 };
 
-export const SAFE = "I can't help with that one. The team can, though.";
+export const SAFE = "That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.";
 
 export interface CleanAnswer {
   answer: string;
@@ -77,7 +77,10 @@ function stripLinksAndMarkup(value: string): string {
 
 /** Accepts the model's reply only if it passes every check. Null means the safe fallback. */
 export function cleanAnswer(text: string, canary: string): CleanAnswer | null {
-  const trimmed = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+  // Take the JSON object even if the model wrapped it in a code fence or a sentence.
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  const trimmed = start >= 0 && end > start ? text.slice(start, end + 1) : text.trim();
   let parsed: { answer?: unknown; sources?: unknown; action?: unknown; on_topic?: unknown };
   try {
     parsed = JSON.parse(trimmed) as typeof parsed;

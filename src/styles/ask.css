@@ -106,6 +106,8 @@
 }
 
 .sw-ask-x {
+  display: grid;
+  place-items: center;
   flex: none;
   width: var(--sw-target-min);
   height: var(--sw-target-min);
@@ -391,5 +393,53 @@
   .sw-ask-chip,
   .sw-ask-act {
     transition: none;
+  }
+}
+
+/* Sparky is typing: three dots that bounce, still dots with reduced motion. */
+.sw-ask-m.sw-ask-typing {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.sw-ask-typing span {
+  margin-right: var(--sw-space-1);
+  color: var(--sw-color-text-muted);
+}
+
+.sw-ask-typing i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sw-color-text-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sw-ask-typing i {
+    animation: sw-ask-dot 1s ease-in-out infinite;
+  }
+
+  .sw-ask-typing i:nth-of-type(2) {
+    animation-delay: 0.15s;
+  }
+
+  .sw-ask-typing i:nth-of-type(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+@keyframes sw-ask-dot {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
   }
 }

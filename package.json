@@ -20,7 +20,7 @@
     "build:og": "node scripts/make-og.mjs",
     "lint:workers": "tsc -p workers/tsconfig.json",
     "test:legal": "node scripts/check-legal.mjs",
-    "chat:dev": "npx wrangler dev --config workers/chat/wrangler.toml",
+    "chat:dev": "npx wrangler d1 migrations apply sparkwing-chat-log --local --config workers/chat/wrangler.toml && npx wrangler dev --config workers/chat/wrangler.toml",
     "test:chat": "node --experimental-strip-types workers/chat/test/model-checks.ts",
     "test:chat:checks": "node --experimental-strip-types workers/chat/test/checks.test.ts",
     "test:chat:local": "node workers/chat/test/local.mjs",

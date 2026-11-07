@@ -139,7 +139,9 @@ export class ChatSession extends DurableObject<Env> {
 
     const finish = async (answer: string, closed: boolean, onTopic: boolean, decision: string, model?: ModelReply): Promise<SendResult> => {
       data.closed = closed;
-      data.turns.push({ role: 'user', content: message }, { role: 'assistant', content: answer });
+      // History keeps the visitor's words in their tags and Sparky's replies as JSON, so later turns keep the same shape.
+      const said = JSON.stringify({ answer, sources: model?.clean?.sources ?? [], action: closed ? 'talk_to_team' : (model?.clean?.action ?? 'talk_to_team'), on_topic: onTopic });
+      data.turns.push({ role: 'user', content: `<visitor_message>${message}</visitor_message>` }, { role: 'assistant', content: said });
       if (data.turns.length > 24) data.turns.splice(0, data.turns.length - 24);
       await this.ctx.storage.put('session', data);
       const action = closed ? 'talk_to_team' : (model?.clean?.action ?? 'talk_to_team');
