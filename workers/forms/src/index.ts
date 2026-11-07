@@ -162,11 +162,11 @@ async function confirm(env: Env, type: 'enquiry' | 'beta', email: string, id: st
     const day = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const hour = new Date(Date.now() - 60 * 60 * 1000).toISOString();
     const counts = await env.DB.prepare(
-      `SELECT COALESCE(SUM(lower(email) = lower(?) AND confirmation_sent_at > ?), 0) AS to_email,
+      `SELECT COALESCE(SUM(lower(email) = lower(?) AND type = ? AND confirmation_sent_at > ?), 0) AS to_email,
               COALESCE(SUM(ip_hash IS NOT NULL AND ip_hash = ? AND confirmation_sent_at > ?), 0) AS from_source
        FROM leads WHERE confirmation_sent_at IS NOT NULL`,
     )
-      .bind(email, day, ipHash, hour)
+      .bind(email, type, day, ipHash, hour)
       .first<{ to_email: number; from_source: number }>();
     if (!shouldConfirm(type, false, counts?.to_email ?? 0, counts?.from_source ?? 0)) {
       console.warn('confirmation skipped: daily or hourly limit', id);
