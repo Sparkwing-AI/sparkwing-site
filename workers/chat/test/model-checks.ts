@@ -52,9 +52,10 @@ const checks: Check[] = [
 
 function readKey(): string {
   try {
-    const text = readFileSync(new URL('../.dev.vars', import.meta.url), 'utf8');
-    const line = text.split(/\r?\n/).find((item) => item.startsWith('ANTHROPIC_API_KEY='));
-    return line ? line.slice('ANTHROPIC_API_KEY='.length).trim() : '';
+    // Windows Notepad can add a byte-order mark, quotes or spaces around the equals sign.
+    const text = readFileSync(new URL('../.dev.vars', import.meta.url), 'utf8').replace(/^\uFEFF/, '');
+    const line = text.split(/\r?\n/).find((item) => /^\s*ANTHROPIC_API_KEY\s*=/.test(item));
+    return line ? line.split('=').slice(1).join('=').trim().replace(/^["']|["']$/g, '') : '';
   } catch {
     return '';
   }
