@@ -3,6 +3,7 @@
  * They hold no text the visitor typed, so the form can't be used to send someone else a message.
  */
 
+/** Per form, so someone who sends an enquiry and applies for the beta gets both. */
 export const CONFIRMATIONS_PER_EMAIL_PER_DAY = 1;
 export const CONFIRMATIONS_PER_SOURCE_PER_HOUR = 3;
 
@@ -18,7 +19,7 @@ export function shouldConfirm(type: string, flagged: boolean, toThisEmailToday: 
 
 const copy: Record<ConfirmType, { subject: string; heading: string; lines: string[] }> = {
   enquiry: {
-    subject: "We've got your message, Sparkwing",
+    subject: 'Thanks for getting in touch with Sparkwing',
     heading: 'Thanks for getting in touch.',
     lines: [
       "We've got your message, and someone from our team will get back to you soon.",

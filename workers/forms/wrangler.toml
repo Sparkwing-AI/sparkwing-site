@@ -13,6 +13,7 @@ ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
 MAIL_FROM = "info@sparkwing.com.au"
 MAIL_TO = "info@sparkwing.com.au"
 EXPECTED_HOSTNAME = "sparkwing.com.au"
+FORMS_TURNSTILE_REQUIRED = "true"
 
 # Run `npx wrangler d1 create sparkwing-leads` and paste the database_id it prints.
 [[d1_databases]]
