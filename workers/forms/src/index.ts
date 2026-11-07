@@ -1,5 +1,7 @@
+import { chatDecision, CHAT_FLOOD_PER_HOUR, FLAGGED_NOTE, turnstileOk, type ChatDecision } from './chatguard';
+import { shouldConfirm } from './confirm';
 import { allocateLeadId } from './ids';
-import { sendMail, type MailEnv } from './mail';
+import { sendConfirmation, sendFloodAlert, sendMail, type MailEnv } from './mail';
 import { visitorSource } from './source';
 import { validate } from './validate';
 
@@ -9,6 +11,11 @@ interface Env extends MailEnv {
   ALLOWED_ORIGINS: string;
   /** HMAC key for the scrambled source. Set with `wrangler secret put`. Never log it. */
   IP_HASH_SECRET?: string;
+  /** Checks the Turnstile token on chat leads. Set with `wrangler secret put`. Never log it. */
+  TURNSTILE_SECRET_KEY?: string;
+  EXPECTED_HOSTNAME?: string;
+  /** "true" once the live site sends Turnstile tokens on the enquiry and beta forms. Chat leads always need one. */
+  FORMS_TURNSTILE_REQUIRED?: string;
 }
 
 const maxBody = 20_000;
@@ -80,19 +87,39 @@ export default {
     const now = new Date().toISOString();
     // A missing secret or a missing location leaves those columns empty. The lead still saves.
     const source = await visitorSource(request, env.IP_HASH_SECRET);
+
+    const ip = request.headers.get('CF-Connecting-IP') ?? '';
+    const token = (body as { turnstile?: unknown }).turnstile;
+    const action = s.type === 'chat' ? 'chat_lead' : s.type === 'beta' ? 'beta_apply' : 'enquiry';
+    const mustCheck = s.type === 'chat' || env.FORMS_TURNSTILE_REQUIRED === 'true';
+    const human = await turnstileOk(token, env.TURNSTILE_SECRET_KEY, origin, ip, action, env.EXPECTED_HOSTNAME);
+    if (mustCheck && !human) return reply(403, { error: 'turnstile' }, origin);
+
+    let chat: ChatDecision = { allow: true, flagged: false, alert: false };
+    if (s.type === 'chat') {
+      const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const counts = await env.DB.prepare(
+        `SELECT COUNT(*) AS total, COALESCE(SUM(ip_hash = ?), 0) AS mine FROM leads WHERE type = 'chat' AND created_at > ?`,
+      )
+        .bind(source.ip_hash, since)
+        .first<{ total: number; mine: number }>();
+      chat = chatDecision(source.ip_hash ? (counts?.mine ?? 0) : 0, counts?.total ?? 0);
+      if (!chat.allow) return reply(429, { error: 'rate' }, origin);
+    }
+
     let publicId = '';
     try {
       publicId = await allocateLeadId(env.DB);
       await env.DB.prepare(
         `INSERT INTO leads (id, public_id, type, created_at, name, email, business, country, topic, message, business_type,
            first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version,
-           ip_hash, detected_country, detected_region)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           ip_hash, detected_country, detected_region, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(
           id, publicId, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
           s.first_task, s.source_page, now, s.marketing_consent ? 1 : 0, s.marketing_consent ? now : null,
-          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region,
+          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region, chat.flagged ? FLAGGED_NOTE : '',
         )
         .run();
     } catch (error) {
@@ -102,6 +129,15 @@ export default {
 
     // The row is saved. Mail gets the form fields only. The scrambled source and location stay in the database.
     // A mail failure is logged and never fails the form (FR-907).
+    if (chat.alert) {
+      ctx.waitUntil(
+        sendFloodAlert(env, CHAT_FLOOD_PER_HOUR).catch((error) =>
+          console.error('flood alert failed', error instanceof Error ? error.message : 'unknown'),
+        ),
+      );
+    }
+    if (chat.flagged) return reply(200, { ok: true }, origin);
+
     ctx.waitUntil(
       sendMail(env, s, id, publicId)
         .then((outcome) => {
@@ -110,6 +146,33 @@ export default {
         .catch((error) => console.error('lead email failed', id, error instanceof Error ? error.message : 'unknown')),
     );
 
+    // CORE-194: a short confirmation to the visitor, with none of their words in it. Only when Turnstile passed,
+    // at most one a day per address, and three an hour per scrambled source.
+    if (human && (s.type === 'enquiry' || s.type === 'beta')) {
+      ctx.waitUntil(confirm(env, s.type, s.email, id, source.ip_hash));
+    }
+
     return reply(200, { ok: true }, origin);
   },
 } satisfies ExportedHandler<Env>;
+
+async function confirm(env: Env, type: 'enquiry' | 'beta', email: string, id: string, ipHash: string | null): Promise<void> {
+  try {
+    const day = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const hour = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const counts = await env.DB.prepare(
+      `SELECT COALESCE(SUM(lower(email) = lower(?) AND confirmation_sent_at > ?), 0) AS to_email,
+              COALESCE(SUM(ip_hash IS NOT NULL AND ip_hash = ? AND confirmation_sent_at > ?), 0) AS from_source
+       FROM leads WHERE confirmation_sent_at IS NOT NULL`,
+    )
+      .bind(email, day, ipHash, hour)
+      .first<{ to_email: number; from_source: number }>();
+    if (!shouldConfirm(type, false, counts?.to_email ?? 0, counts?.from_source ?? 0)) return;
+    const outcome = await sendConfirmation(env, email, type);
+    if (outcome === 'sent') {
+      await env.DB.prepare('UPDATE leads SET confirmation_sent_at = ? WHERE id = ?').bind(new Date().toISOString(), id).run();
+    }
+  } catch (error) {
+    console.error('confirmation email failed', id, error instanceof Error ? error.message : 'unknown');
+  }
+}

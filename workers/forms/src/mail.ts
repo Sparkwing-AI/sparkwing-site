@@ -1,3 +1,4 @@
+import { confirmationHtml, confirmationSubject, type ConfirmType } from './confirm';
 import { topics, type Submission } from './validate';
 
 export interface MailEnv {
@@ -52,7 +53,32 @@ export function bodyFor(s: Submission, id: string, publicId: string): string {
  * Sends through Microsoft Graph as the app, from the info@ mailbox. Exchange RBAC for Applications limits
  * the app to that one mailbox, so no tenant-wide Mail.Send consent is needed.
  */
-export async function sendMail(env: MailEnv, s: Submission, id: string, publicId: string): Promise<'sent' | 'skipped'> {
+export function sendMail(env: MailEnv, s: Submission, id: string, publicId: string): Promise<'sent' | 'skipped'> {
+  return graphSend(env, subjectFor(s), bodyFor(s, id, publicId), { replyTo: { address: s.email, name: oneLine(s.name) } });
+}
+
+/** The visitor's confirmation. Replies go to info@. */
+export function sendConfirmation(env: MailEnv, to: string, type: ConfirmType): Promise<'sent' | 'skipped'> {
+  return graphSend(env, confirmationSubject(type), confirmationHtml(type), { to, html: true, replyTo: { address: env.MAIL_FROM, name: 'Sparkwing' } });
+}
+
+/** One summary when website chat leads flood in. Holds no visitor details. */
+export function sendFloodAlert(env: MailEnv, limit: number): Promise<'sent' | 'skipped'> {
+  return graphSend(
+    env,
+    '[Website chat] Unusual number of leads',
+    `More than ${limit} website chat leads arrived in the last hour. New ones are still saved with a note saying they are flagged, and their alert emails have stopped for now. Check the lead list.`,
+  );
+}
+
+interface SendOptions {
+  to?: string;
+  html?: boolean;
+  replyTo?: { address: string; name: string };
+}
+
+async function graphSend(env: MailEnv, subject: string, content: string, options: SendOptions = {}): Promise<'sent' | 'skipped'> {
+  const { to = env.MAIL_TO, html = false, replyTo } = options;
   if (!env.GRAPH_TENANT_ID || !env.GRAPH_CLIENT_ID || !env.GRAPH_CLIENT_SECRET) return 'skipped';
 
   const tokenResponse = await fetch(
@@ -76,10 +102,10 @@ export async function sendMail(env: MailEnv, s: Submission, id: string, publicId
     headers: { Authorization: `Bearer ${access_token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       message: {
-        subject: subjectFor(s),
-        body: { contentType: 'Text', content: bodyFor(s, id, publicId) },
-        toRecipients: [{ emailAddress: { address: env.MAIL_TO } }],
-        replyTo: [{ emailAddress: { address: s.email, name: oneLine(s.name) } }],
+        subject,
+        body: { contentType: html ? 'HTML' : 'Text', content },
+        toRecipients: [{ emailAddress: { address: to } }],
+        ...(replyTo ? { replyTo: [{ emailAddress: replyTo }] } : {}),
       },
       saveToSentItems: true,
     }),

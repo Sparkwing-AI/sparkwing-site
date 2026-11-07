@@ -2,7 +2,7 @@ export const countries = ['Australia', 'Philippines', 'Somewhere else'] as const
 export const topics = {
   call: 'Book a discovery call',
   app: 'Ask about an app',
-  studio: 'Customising AI for my business',
+  studio: 'AI strategy or transformation for my business',
   other: 'Something else',
 } as const;
 
