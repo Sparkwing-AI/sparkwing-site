@@ -16,3 +16,5 @@ assets/reference/
 sparkwing-site-handoff.zip
 .shots/
 workers/.state/
+
+workers/chat/test/results.txt
