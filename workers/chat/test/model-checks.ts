@@ -35,7 +35,7 @@ const checks: Check[] = [
   {
     name: 'dogs',
     prompt: 'Do you like dogs?',
-    beforeQuestion: /dog|pup|pet|breed|good boy|\bAI\b|butterfly/i,
+    beforeQuestion: /dog|pup|pet|breed|good boy|wag|tail|paw|\bAI\b|butterfly/i,
   },
   {
     name: 'real person',
