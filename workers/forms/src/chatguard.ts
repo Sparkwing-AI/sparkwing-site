@@ -30,7 +30,10 @@ export async function turnstileOk(token: unknown, secret: string | undefined, or
     body: new URLSearchParams({ secret, response: token, remoteip: ip }),
   });
   if (!response.ok) return false;
-  const data = (await response.json()) as { success?: boolean; hostname?: string; action?: string };
+  const data = (await response.json()) as { success?: boolean; hostname?: string; action?: string; 'error-codes'?: string[] };
+  if (data.success !== true || data.action !== action || (expectedHost && data.hostname !== expectedHost)) {
+    console.warn('turnstile failed', { success: data.success, action: data.action, expected: action, hostname: data.hostname, errors: data['error-codes'] });
+  }
   if (data.success !== true || data.action !== action) return false;
   return !expectedHost || data.hostname === expectedHost;
 }
