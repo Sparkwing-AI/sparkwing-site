@@ -24,7 +24,9 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
         </div>
         <div class="sw-ask-head-actions">
           <button class="sw-ask-end" type="button" hidden>End chat</button>
-          <button class="sw-ask-x" type="button" aria-label="Close chat">&times;</button>
+          <button class="sw-ask-x" type="button" aria-label="Minimise chat" title="Minimise">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9h10"></path></svg>
+          </button>
         </div>
       </div>
       <div class="sw-ask-log" id="sw-ask-log" role="log" aria-live="polite" aria-label="Chat messages" tabindex="0"></div>
@@ -49,6 +51,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
 </div>
 
 <script>
+  import { turnstileToken } from '../scripts/turnstile';
   function must<T extends Element>(value: T | null): T {
     if (!value) throw new Error('Ask Sparky markup is incomplete');
     return value;
@@ -71,6 +74,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   let ended = false;
   let typing = false;
   let leadShown = false;
+  let lastQuestion = '';
   let sessionId = '';
   let timer = 0;
 
@@ -132,15 +136,9 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       link.textContent = 'Apply for the beta';
       box.append(link);
     }
-    if (extra?.call) {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'sw-ask-act';
-      button.textContent = 'Talk to the team';
-      button.addEventListener('click', () => showLead(text));
-      box.append(button);
-    }
     log.append(box);
+    // The details form shows straight away. There's no button to click first.
+    if (extra?.call) showLead(lastQuestion);
     scroll();
     return box;
   }
@@ -382,7 +380,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     const endpoint = root.dataset.endpoint;
     try {
       if (endpoint) {
-        const turnstile = root.dataset.chatEndpoint ? await turnstileToken('chat_lead') : '';
+        const turnstile = root.dataset.chatEndpoint ? await turnstileToken(root.dataset.turnstile, 'chat_lead', card) : '';
         const response = await fetch(`${endpoint}/api/leads`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -405,7 +403,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
         throw new Error('No form endpoint configured');
       }
       card.remove();
-      addMessage("Thanks, we received your message. We'll get back to you real soon.");
+      addMessage("Thanks, we've got your details! The team will get back to you within 24 hours.");
       input.focus();
     } catch {
       const err = document.createElement('span');
@@ -429,57 +427,6 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     }
   }
 
-  type TurnstileApi = {
-    render(el: HTMLElement, options: Record<string, unknown>): string;
-    remove(id: string): void;
-  };
-
-  let turnstileLoad: Promise<TurnstileApi> | undefined;
-
-  /** Loads only when the chat opens. Nothing here runs for visitors who never open it. */
-  function loadTurnstile(): Promise<TurnstileApi> {
-    turnstileLoad ??= new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-      script.async = true;
-      script.onload = () => {
-        const api = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
-        if (api) resolve(api);
-        else reject(new Error('turnstile'));
-      };
-      script.onerror = () => reject(new Error('turnstile'));
-      document.head.append(script);
-    });
-    return turnstileLoad;
-  }
-
-  /** A fresh single-use token. It only shows anything if Cloudflare needs the visitor to do something. */
-  async function turnstileToken(action: 'chat_start' | 'chat_lead'): Promise<string> {
-    const sitekey = root.dataset.turnstile;
-    if (!sitekey) return '';
-    const api = await loadTurnstile();
-    const holder = document.createElement('div');
-    log.append(holder);
-    return new Promise((resolve) => {
-      let widget = '';
-      const finish = (token: string) => {
-        window.clearTimeout(limit);
-        if (widget) api.remove(widget);
-        holder.remove();
-        resolve(token);
-      };
-      const limit = window.setTimeout(() => finish(''), 30_000);
-      widget = api.render(holder, {
-        sitekey,
-        action,
-        appearance: 'interaction-only',
-        callback: (token: string) => finish(token),
-        'error-callback': () => finish(''),
-        'expired-callback': () => finish(''),
-      });
-    });
-  }
-
   /** A new chat, including Start a new chat. The Worker is the real Turnstile and 5-an-hour check when it is configured. */
   async function beginSession(): Promise<boolean> {
     const endpoint = root.dataset.chatEndpoint;
@@ -487,7 +434,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'start', turnstile: await turnstileToken('chat_start') }),
+        body: JSON.stringify({ action: 'start', turnstile: await turnstileToken(root.dataset.turnstile, 'chat_start', log) }),
       });
       if (!response.ok) return false;
       const data = (await response.json()) as { session_id?: string };
@@ -548,18 +495,23 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     endButton.hidden = false;
     document.querySelector('.sw-ask-chips')?.remove();
     addMessage(masked.out, true, { note: masked.hit ? 'Sparky hid the personal details you typed.' : '' });
+    lastQuestion = masked.out;
     typing = true;
     const pending = document.createElement('div');
-    pending.className = 'sw-ask-m';
-    pending.textContent = 'Sparky is thinking...';
+    pending.className = 'sw-ask-m sw-ask-typing';
+    pending.dataset.typing = '';
+    pending.setAttribute('aria-label', 'Sparky is typing');
+    pending.innerHTML = '<span>Sparky is typing</span><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>';
     log.append(pending);
     scroll();
     const endpoint = root.dataset.chatEndpoint;
     window.clearTimeout(timer);
     timer = window.setTimeout(() => {
       void (async () => {
-        pending.remove();
-        typing = false;
+        const done = () => {
+          pending.remove();
+          typing = false;
+        };
         if (endpoint && sessionId) {
           try {
             const response = await fetch(endpoint, {
@@ -567,28 +519,31 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ session_id: sessionId, message: masked.out, page: location.pathname }),
             });
+            done();
             if (response.status === 503) {
-              addMessage('Sparky is offline right now. The team can still help.', false, { call: true });
+              addMessage("Sparky is offline right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
               closeInput(false);
               return;
             }
             if (!response.ok) throw new Error('chat');
             const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[] };
             const source = sourcePages[data.sources?.[0] ?? ''];
-            const text = typeof data.answer === 'string' ? data.answer : "I can't help with that one. The team can, though.";
+            const text = typeof data.answer === 'string' ? data.answer : "That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.";
             addMessage(text, false, {
               call: data.action === 'talk_to_team' || data.closed,
               beta: data.action === 'apply_beta',
               src: source?.label,
               href: source?.href,
             });
-            if (data.action === 'talk_to_team' || data.action === 'apply_beta') showLead(masked.out);
+            if (data.action === 'apply_beta') showLead(masked.out);
             if (data.closed) closeInput(false);
           } catch {
-            addMessage("I can't help with that one. The team can, though.", false, { call: true });
+            done();
+            addMessage("That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
           }
           return;
         }
+        done();
         if (import.meta.env.DEV) {
           const answer = reply(masked.out, n);
           addMessage(answer.text, false, answer);
@@ -596,7 +551,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
           if (answer.end) closeInput(false);
           return;
         }
-        addMessage("Sparky is offline. The team can help.", false, { call: true });
+        addMessage("Sparky is offline right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
       })();
     }, endpoint ? 0 : reduce.matches ? 150 : 700);
   }
@@ -623,7 +578,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (log.childElementCount === 0) {
       void beginSession().then((ok) => {
         if (!ok) {
-          addMessage("I can't start another chat right now. The team can still help.", false, { call: true });
+          addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
           closeInput(false);
           log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
           return;
@@ -646,9 +601,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (ended || n < 1) return;
     window.clearTimeout(timer);
     typing = false;
-    log.querySelectorAll('.sw-ask-m').forEach((node) => {
-      if (node.textContent === 'Sparky is thinking...') node.remove();
-    });
+    log.querySelectorAll('[data-typing]').forEach((node) => node.remove());
     endSession();
     addMessage(BYE, false, { call: true });
     closeInput(true);
@@ -658,7 +611,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   async function startNew() {
     const ok = await beginSession();
     if (!ok) {
-      addMessage("I can't start another chat right now. The team can still help.", false, { call: true });
+      addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
       restartButton.focus();
       return;
     }
@@ -668,6 +621,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     ended = false;
     typing = false;
     leadShown = false;
+    lastQuestion = '';
     form.hidden = false;
     restartButton.hidden = true;
     endButton.hidden = true;
