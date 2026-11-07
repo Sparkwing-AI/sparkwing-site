@@ -32,8 +32,8 @@ export const site = {
   formEndpoint: (import.meta.env.PUBLIC_FORM_ENDPOINT || '').replace(/\/$/, ''),
   /** Ask Sparky. Off until Elly turns it on (CHATBOT.md). Production builds stay off unless this is set at build time. */
   chatEnabled: import.meta.env.PUBLIC_CHAT_ENABLED === 'true',
-  /** Public Turnstile site key for the chat. Not a secret. Set at build time. */
-  turnstileSiteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '',
+  /** Public Turnstile site key for the forms and chat. Not a secret. Production builds use the Sparkwing widget. */
+  turnstileSiteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || (import.meta.env.PROD ? '0x4AAAAAAF3fblYFlnCkBSdf' : ''),
   /** Base URL of the chat endpoint, including /api/chat, with no trailing slash. */
   chatEndpoint: (import.meta.env.PUBLIC_CHAT_ENDPOINT || '').replace(/\/$/, ''),
   showPlaceholders: import.meta.env.PUBLIC_SHOW_PLACEHOLDERS === 'true',
