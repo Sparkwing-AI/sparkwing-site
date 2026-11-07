@@ -148,8 +148,9 @@ export default {
 
     // CORE-194: a short confirmation to the visitor, with none of their words in it. Only when Turnstile passed,
     // at most one a day per address, and three an hour per scrambled source.
-    if (human && (s.type === 'enquiry' || s.type === 'beta')) {
-      ctx.waitUntil(confirm(env, s.type, s.email, id, source.ip_hash));
+    if (s.type === 'enquiry' || s.type === 'beta') {
+      if (human) ctx.waitUntil(confirm(env, s.type, s.email, id, source.ip_hash));
+      else console.warn('confirmation skipped: bot check did not pass', id, typeof token === 'string' && token ? 'token sent' : 'no token');
     }
 
     return reply(200, { ok: true }, origin);
@@ -167,8 +168,12 @@ async function confirm(env: Env, type: 'enquiry' | 'beta', email: string, id: st
     )
       .bind(email, day, ipHash, hour)
       .first<{ to_email: number; from_source: number }>();
-    if (!shouldConfirm(type, false, counts?.to_email ?? 0, counts?.from_source ?? 0)) return;
+    if (!shouldConfirm(type, false, counts?.to_email ?? 0, counts?.from_source ?? 0)) {
+      console.warn('confirmation skipped: daily or hourly limit', id);
+      return;
+    }
     const outcome = await sendConfirmation(env, email, type);
+    console.log('confirmation', outcome, id);
     if (outcome === 'sent') {
       await env.DB.prepare('UPDATE leads SET confirmation_sent_at = ? WHERE id = ?').bind(new Date().toISOString(), id).run();
     }
