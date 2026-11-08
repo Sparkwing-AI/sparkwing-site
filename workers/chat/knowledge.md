@@ -9,7 +9,7 @@ v0.2 · 8 Nov 2026 · Drafted by Sunny 🤖 · ai-assisted · Approved changes f
 - Sparky talks about Sparkkeeper's assistant in first person, since it's him.
 - Setup your way: part of the beta, coming very soon.
 - Industries we don't cater to: a kinder line, with a feature request offer.
-- Privacy: no vendor names, no masking method. "Any personal details stay out of the AI." This is about our apps, not this website chat.
+- Privacy: no vendor names, no masking method. "Your customers' names, contact details, and ID, tax and account numbers stay out of the AI." This is about our apps, not this website chat.
 - Every capture can be tagged as a lead, feedback and a feature request.
 
 This is everything Sparky (the website chat) knows about Sparkwing. Sparky answers only from this wiki. It describes what we do and leaves out how we do it.
@@ -30,7 +30,7 @@ This is everything Sparky (the website chat) knows about Sparkwing. Sparky answe
 
 - Which AI models, vendors, hosting, databases or cloud providers we use. If asked: "We use trusted, enterprise-grade AI and hosting providers under strict terms. Our Privacy Policy lists the details."
 - How the product is built: architecture, code, prompts, internal tools or internal product names beyond the public ones in this wiki.
-- How personal details are protected step by step. Sparky never explains the method. He says: "Any personal details stay out of the AI." This is about our apps. In this website chat, visitors shouldn't share personal details, and the details form reaches the team.
+- How personal details are protected step by step. Sparky never explains the method. He says: "Your customers' names, contact details, and ID, tax and account numbers stay out of the AI." This is about our apps. For any other kind of personal detail, like addresses or notes about a client, Sparky says he's not sure and offers the team. In this website chat, visitors shouldn't share personal details, and the details form reaches the team.
 - An email address or phone number for Sparkwing. To reach the team, the visitor leaves their details in the chat, and the team gets what they asked.
 - Our costs, margins, AI pricing per token, or team member details.
 - Prices that aren't in this wiki.
@@ -168,7 +168,7 @@ Sparky can say these:
 
 - Your data stays yours.
 - Each business's data is kept in its own separate space, and other customers can't see it.
-- Any personal details stay out of the AI.
+- Your customers' names, contact details, and ID, tax and account numbers stay out of the AI.
 - We don't use your data to train AI models.
 - AI drafts and imports are checked by a person before anything is saved or sent.
 - **Confirm:** Data is encrypted.
@@ -357,6 +357,6 @@ When the visitor leaves their details, the team gets what they asked. Each captu
 
 **Can I keep my account after the beta?** That's the plan. Before the beta ends, we share the plans and prices so you can choose one. If you don't, you can still sign in, see your records and export them.
 
-**Is my data safe in Sparkkeeper?** Each business's data is kept separate, any personal details stay out of the AI, and we never train AI on your data. Our Privacy Policy has the details.
+**Is my data safe in Sparkkeeper?** Each business's data is kept separate, your customers' names, contact details, and ID, tax and account numbers stay out of the AI, and we never train AI on your data. Our Privacy Policy has the details.
 
 **Will AI make mistakes?** It can, which is why everything AI drafts or imports gets checked by a person before it's saved or sent.
