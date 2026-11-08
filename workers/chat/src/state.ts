@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 import { buildSystem, MODEL } from './prompt';
-import { cleanAnswer, costUsd, SAFE, type CleanAnswer } from './checks';
+import { cleanAnswer, costUsd, rejectReason, SAFE, type CleanAnswer } from './checks';
 
 export interface Env {
   ANTHROPIC_API_KEY?: string;
@@ -217,7 +217,9 @@ async function callModel(env: Env, data: SessionData, message: string): Promise<
     const input = body.usage?.input_tokens ?? 0;
     const output = body.usage?.output_tokens ?? 0;
     const text = body.content?.find((block) => block.type === 'text')?.text ?? '';
-    return { clean: cleanAnswer(text, data.canary), offline: false, input, output, cost: costUsd(input, output) };
+    const clean = cleanAnswer(text, data.canary);
+    if (!clean) console.warn('sparky fallback', rejectReason(text, data.canary));
+    return { clean, offline: false, input, output, cost: costUsd(input, output) };
   } catch (error) {
     console.error('model request error', error instanceof Error ? error.name : 'unknown');
     return none;

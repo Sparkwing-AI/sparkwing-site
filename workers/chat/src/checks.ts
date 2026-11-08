@@ -57,10 +57,33 @@ const PRICE = /[$₱€£]\s?\d|\b\d[\d,.]*\s?(aud|usd|php|pesos?|dollars?)\b/i;
 
 /** A claim we never make is only rejected when the sentence states it. "It doesn't file taxes" is fine. */
 function hasBannedClaim(answer: string): boolean {
-  if (PRICE.test(answer)) return true;
-  return answer
-    .split(/(?<=[.!?])\s+/)
-    .some((sentence) => BANNED.test(sentence) && !NEGATED.test(sentence));
+  return bannedReason(answer) !== '';
+}
+
+/** Which check a rejected answer failed, for the logs. Empty when it passes. */
+export function bannedReason(answer: string): string {
+  const price = answer.match(PRICE);
+  if (price) return `price: ${price[0]}`;
+  const sentence = answer.split(/(?<=[.!?])\s+/).find((item) => BANNED.test(item) && !NEGATED.test(item));
+  return sentence ? `claim: ${sentence.match(BANNED)?.[0] ?? ''}` : '';
+}
+
+/** Why cleanAnswer turned a reply down, for the logs. Never includes the canary. */
+export function rejectReason(text: string, canary: string): string {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  const trimmed = start >= 0 && end > start ? text.slice(start, end + 1) : text.trim();
+  let parsed: { answer?: unknown };
+  try {
+    parsed = JSON.parse(trimmed) as { answer?: unknown };
+  } catch {
+    return 'not JSON';
+  }
+  if (typeof parsed.answer !== 'string') return 'no answer field';
+  if (parsed.answer.includes(canary)) return 'canary';
+  const answer = stripLinksAndMarkup(parsed.answer);
+  if (!answer) return 'empty after removing links';
+  return bannedReason(answer) || 'unknown';
 }
 
 function stripLinksAndMarkup(value: string): string {
