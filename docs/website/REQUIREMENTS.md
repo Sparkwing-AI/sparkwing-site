@@ -216,7 +216,7 @@ Full security rules, limits and attack tests are in `docs/website/CHATBOT.md`. R
 | `/apps/academy` | Academy: AI training for your team, Sparkwing | Short online courses that teach your team to use AI safely in their own work. Coming soon. |
 | `/apps/nest` | Nest: your team's AI home page, Sparkwing | One place for your team's AI news, announcements, training links and app access requests. Coming soon. |
 | `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
-| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in. |
+| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in. |
 | `/bring-ai-in` | AI for business: start with our bookkeeping app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
 | `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
 | `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |

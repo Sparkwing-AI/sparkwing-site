@@ -211,7 +211,7 @@ test.describe('Review fixes', () => {
       '/': ['Sparkwing: AI strategy, workflows and automation', 'AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call.'],
       '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.'],
       '/spark-studio': ['AI strategy and consulting, custom AI agents: Spark Studio', 'AI consulting from Sydney. AI strategy, AI systems, custom AI apps and AI agents, built around your business, for Australia and the Philippines.'],
-      '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in.'],
+      '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in.'],
       '/bring-ai-in': ['AI automation for small business: save hours, Sparkwing', 'AI automation for small and growing businesses in Australia and the Philippines. Clear the manual work first, then add more. No IT team needed.'],
       '/scale-ai': ['AI governance and training for your team, Sparkwing', 'AI strategy, AI governance and AI training for your whole team, with rules and records in place. Built for organisations that need to show their work.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply.'],
