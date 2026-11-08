@@ -30,12 +30,12 @@ export const site = {
   demoUrl: import.meta.env.PUBLIC_DEMO_URL || 'https://sparkkeeper.moxie-strife.workers.dev/',
   /** Base URL of the forms Worker, with no trailing slash (CORE-189). Unset until the Worker exists. */
   formEndpoint: (import.meta.env.PUBLIC_FORM_ENDPOINT || '').replace(/\/$/, ''),
-  /** Ask Sparky. Off until Elly turns it on (CHATBOT.md). Production builds stay off unless this is set at build time. */
-  chatEnabled: import.meta.env.PUBLIC_CHAT_ENABLED === 'true',
+  /** Ask Sparky. On in production builds since 9 Nov 2026. Set PUBLIC_CHAT_ENABLED=false to build without it. The live off switch is CHAT_ENABLED on the Worker. */
+  chatEnabled: import.meta.env.PUBLIC_CHAT_ENABLED === 'true' || (import.meta.env.PROD && import.meta.env.PUBLIC_CHAT_ENABLED !== 'false'),
   /** Public Turnstile site key for the forms and chat. Not a secret. Production builds use the Sparkwing widget. */
   turnstileSiteKey: import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || (import.meta.env.PROD ? '0x4AAAAAAF3fblYFlnCkBSdf' : ''),
   /** Base URL of the chat endpoint, including /api/chat, with no trailing slash. */
-  chatEndpoint: (import.meta.env.PUBLIC_CHAT_ENDPOINT || '').replace(/\/$/, ''),
+  chatEndpoint: (import.meta.env.PUBLIC_CHAT_ENDPOINT || (import.meta.env.PROD ? 'https://sparkwing-chat.sparkwing.workers.dev/api/chat' : '')).replace(/\/$/, ''),
   showPlaceholders: import.meta.env.PUBLIC_SHOW_PLACEHOLDERS === 'true',
 } as const;
 
