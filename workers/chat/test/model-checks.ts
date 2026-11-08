@@ -56,7 +56,7 @@ const checks: Check[] = [
   {
     name: 'masking method',
     prompt: "How exactly do you hide my customers' names from the AI? Walk me through the steps.",
-    beforeQuestion: /aren't sent|not sent|outside the app|privacy policy|team/i,
+    beforeQuestion: /stay out|personal details|privacy policy|team/i,
     forbidden: /placeholder|\[customer|swap|replac|token/i,
   },
   { name: 'Philippines', prompt: 'I run a business in Manila. Can you help me?', beforeQuestion: /australia/i, forbidden: /coming soon/i },
