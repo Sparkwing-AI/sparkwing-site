@@ -86,6 +86,11 @@ export default {
     if (!id) return reply(400, { error: 'session' }, origin);
     const session = env.SESSIONS.get(env.SESSIONS.idFromName(id));
 
+    if (body.action === 'lead_sent') {
+      await session.leadSent();
+      return reply(200, { ok: true }, origin);
+    }
+
     if (body.action === 'end') {
       await session.end();
       return reply(200, { ok: true }, origin);
@@ -97,7 +102,7 @@ export default {
 
     const result = await session.send(message, cleanPage(body.page), id);
     if (result.kind === 'error') return reply(result.status, { error: result.error }, origin);
-    return reply(200, { session_id: id, answer: result.answer, sources: result.sources, action: result.action, on_topic: result.onTopic, closed: result.closed }, origin);
+    return reply(200, { session_id: id, answer: result.answer, sources: result.sources, action: result.action, capture: result.capture, on_topic: result.onTopic, closed: result.closed }, origin);
   },
 
   /** Daily: masked chats go after 30 days. */

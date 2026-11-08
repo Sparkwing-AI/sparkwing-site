@@ -68,12 +68,17 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   const restartButton = must(dialog.querySelector<HTMLButtonElement>('.sw-ask-restart'));
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const chips = ['What is Sparkkeeper?', 'Is the beta free?', 'Is my data used to train AI?', 'Book a call'];
+  const chips = ['What is Sparkwing?', 'What do you offer?', 'How can AI help my business?', 'Book a call'];
+  const BOOK = 'Book a call';
   let n = 0;
   let strikes = 0;
   let ended = false;
   let typing = false;
   let leadShown = false;
+  // Their details are in. No more handoff, and the server closes the chat after a few more replies.
+  let leadSent = false;
+  // What Sparky tagged this chat as (lead, feedback, feature_request). Sent with the details form so the team can file it.
+  const captured = new Set<string>();
   let lastQuestion = '';
   let sessionId = '';
   let timer = 0;
@@ -136,9 +141,21 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       link.textContent = 'Apply for the beta';
       box.append(link);
     }
+    if (extra?.call && !leadShown && !leadSent) {
+      // A button, so the reply stays in view. The form opens only when they ask for it.
+      // Only the latest reply keeps the button.
+      log.querySelectorAll('.sw-ask-m .sw-ask-act[type="button"]').forEach((node) => node.remove());
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sw-ask-act';
+      button.textContent = 'Leave your details';
+      button.addEventListener('click', () => {
+        button.remove();
+        showLead(lastQuestion);
+      });
+      box.append(button);
+    }
     log.append(box);
-    // The details form shows straight away. There's no button to click first.
-    if (extra?.call) showLead(lastQuestion);
     scroll();
     return box;
   }
@@ -231,7 +248,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       };
     }
     if (/call|talk|book|contact|person|human/.test(text)) {
-      return { text: "Happy to set that up. Pop your details in below and the team will get back to you.", lead: true };
+      return { text: "Happy to set that up. Tap Leave your details below and the team will get back to you within 24 hours.", lead: true };
     }
     if (/what is sparkkeeper|what does sparkkeeper/.test(text)) {
       return {
@@ -353,8 +370,10 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       void sendLead(card);
     });
     log.append(card);
-    scroll();
-    card.querySelector<HTMLInputElement>('#ask-name')?.focus();
+    // Bring the top of the form into view and start at the first field, not the end of the form.
+    log.scrollTop += card.getBoundingClientRect().top - log.getBoundingClientRect().top - 8;
+    card.querySelector<HTMLInputElement>('#ask-name')?.focus({ preventScroll: true });
+    log.querySelectorAll('.sw-ask-m .sw-ask-act[type="button"]').forEach((node) => node.remove());
   }
 
   async function sendLead(card: HTMLFormElement) {
@@ -394,6 +413,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
             contact_consent: true,
             marketing_consent: field('marketing').checked,
             consent_wording_version: 'chat-v1',
+            capture: [...captured],
             company_site: value('company_site'),
             turnstile,
           }),
@@ -403,6 +423,11 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
         throw new Error('No form endpoint configured');
       }
       card.remove();
+      leadSent = true;
+      const chat = root.dataset.chatEndpoint;
+      if (chat && sessionId) {
+        void fetch(chat, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'lead_sent', session_id: sessionId }) }).catch(() => undefined);
+      }
       addMessage("Thanks, we've got your details! The team will get back to you within 24 hours.");
       input.focus();
     } catch {
@@ -490,6 +515,17 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   function ask(raw: string) {
     const question = raw.trim();
     if (!question || typing || ended) return;
+    if (question === BOOK && !leadShown) {
+      // Booking needs no AI: open the form straight away.
+      n += 1;
+      endButton.hidden = false;
+      document.querySelector('.sw-ask-chips')?.remove();
+      addMessage(BOOK, true);
+      lastQuestion = BOOK;
+      addMessage("Happy to set that up! Fill in your details and the team will get back to you within 24 hours.");
+      showLead(BOOK);
+      return;
+    }
     const masked = mask(question);
     n += 1;
     endButton.hidden = false;
@@ -526,28 +562,27 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
               return;
             }
             if (!response.ok) throw new Error('chat');
-            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[] };
+            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[]; capture?: string[] };
+            for (const tag of data.capture ?? []) if (['lead', 'feedback', 'feature_request'].includes(tag)) captured.add(tag);
             const source = sourcePages[data.sources?.[0] ?? ''];
-            const text = typeof data.answer === 'string' ? data.answer : "That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.";
+            const text = typeof data.answer === 'string' ? data.answer : leadSent ? "That's a tricky one! The team has your details, so they can pick that up with you." : "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.";
             addMessage(text, false, {
-              call: data.action === 'talk_to_team' || data.closed,
+              call: data.action === 'talk_to_team' || data.action === 'apply_beta' || data.closed,
               beta: data.action === 'apply_beta',
               src: source?.label,
               href: source?.href,
             });
-            if (data.action === 'apply_beta') showLead(masked.out);
-            if (data.closed) closeInput(false);
+            if (data.closed) closeInput(leadSent);
           } catch {
             done();
-            addMessage("That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
+            addMessage(leadSent ? "That's a tricky one! The team has your details, so they can pick that up with you." : "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.", false, { call: !leadSent });
           }
           return;
         }
         done();
         if (import.meta.env.DEV) {
           const answer = reply(masked.out, n);
-          addMessage(answer.text, false, answer);
-          if (answer.lead) showLead(masked.out);
+          addMessage(answer.text, false, { ...answer, call: answer.call || answer.lead });
           if (answer.end) closeInput(false);
           return;
         }
@@ -558,7 +593,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
 
   function greet() {
     if (log.childElementCount) return;
-    addMessage("Hi, I'm Sparky. Great to have you here! Ask me anything about Sparkwing and its apps. I can't see anyone's records or make changes.");
+    addMessage("Hi, I'm Sparky. Great to have you here! Ask me anything about Sparkwing and its apps.");
     const row = document.createElement('div');
     row.className = 'sw-ask-chips';
     chips.forEach((label) => {
@@ -621,6 +656,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     ended = false;
     typing = false;
     leadShown = false;
+    leadSent = false;
+    captured.clear();
     lastQuestion = '';
     form.hidden = false;
     restartButton.hidden = true;

@@ -113,13 +113,13 @@ export default {
       await env.DB.prepare(
         `INSERT INTO leads (id, public_id, type, created_at, name, email, business, country, topic, message, business_type,
            first_task, source_page, contact_consent_at, marketing_consent, marketing_consent_at, consent_wording_version,
-           ip_hash, detected_country, detected_region, notes)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           ip_hash, detected_country, detected_region, notes, tags)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(
           id, publicId, s.type, now, s.name, s.email, s.business, s.country, s.topic, s.message, s.business_type,
           s.first_task, s.source_page, now, s.marketing_consent ? 1 : 0, s.marketing_consent ? now : null,
-          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region, chat.flagged ? FLAGGED_NOTE : '',
+          s.consent_wording_version, source.ip_hash, source.detected_country, source.detected_region, chat.flagged ? FLAGGED_NOTE : '', s.tags,
         )
         .run();
     } catch (error) {
