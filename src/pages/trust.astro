@@ -4,21 +4,11 @@ import '../styles/inner.css';
 import '../styles/platform.css';
 import CanvasHero from '../components/CanvasHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const steps = [
-  { title: 'We spot it', body: 'Names, phone numbers, emails, and ID, tax and account numbers.' },
-  { title: 'We swap it', body: 'Each detail becomes a placeholder, like [CUSTOMER 1] or [PHONE 1].' },
-  { title: 'The AI does the work', body: 'It only ever sees the placeholders.' },
-  {
-    title: 'We put it back',
-    body: 'The real details return inside your own space. The record keeps the masked version.',
-  },
-];
 ---
 
 <BaseLayout
   title="AI governance built in: how Sparkwing keeps AI trustworthy"
-  description="Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and masking designed in."
+  description="Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in."
 >
   <CanvasHero
     scene="trust"
@@ -74,22 +64,11 @@ const steps = [
   <section class="sw-band" aria-labelledby="pii-title">
     <div class="sw-band-inner sw-stack">
       <div class="pf-pii-head">
-        <h2 class="sw-h2" id="pii-title">Designed to keep your customers' details away from the AI.</h2>
+        <h2 class="sw-h2" id="pii-title">Names, contact details, and ID, tax and account numbers stay out of the AI.</h2>
         <p>
-          If masking can't run for any reason, the AI pauses and nothing is sent. This is how Sparkwing is designed, and we'll confirm what's live for you.
+          They stay inside your own space, kept separate from every other client. This is how Sparkwing is designed, and we'll confirm what's live for you.
         </p>
       </div>
-      <ol class="sw-steps sw-steps--num">
-        {
-          steps.map((step, index) => (
-            <li>
-              <b class="sw-step-n" aria-hidden="true">{index + 1}</b>
-              <b>{step.title}</b>
-              <span>{step.body}</span>
-            </li>
-          ))
-        }
-      </ol>
     </div>
   </section>
 
