@@ -53,7 +53,7 @@ bindings = [
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "sparkwing-chat-log"
-database_id = "REPLACE_WITH_ID_FROM_D1_CREATE"
+database_id = "a08cf559-5f65-46de-8e3d-6fdf2cc6df5a"
 migrations_dir = "migrations"
 
 [env.production.triggers]
