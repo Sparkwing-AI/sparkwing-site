@@ -90,7 +90,7 @@ interface SessionData {
 }
 
 export type SendResult =
-  | { kind: 'reply'; answer: string; sources: string[]; action: string; onTopic: boolean; closed: boolean }
+  | { kind: 'reply'; answer: string; sources: string[]; action: string; capture: string[]; onTopic: boolean; closed: boolean }
   | { kind: 'error'; status: number; error: string };
 
 /** One instance per chat: history lives here and never comes from the browser. */
@@ -140,13 +140,14 @@ export class ChatSession extends DurableObject<Env> {
     const finish = async (answer: string, closed: boolean, onTopic: boolean, decision: string, model?: ModelReply): Promise<SendResult> => {
       data.closed = closed;
       // History keeps the visitor's words in their tags and Sparky's replies as JSON, so later turns keep the same shape.
-      const said = JSON.stringify({ answer, sources: model?.clean?.sources ?? [], action: closed ? 'talk_to_team' : (model?.clean?.action ?? 'talk_to_team'), on_topic: onTopic });
+      const capture = model?.clean?.capture ?? [];
+      const said = JSON.stringify({ answer, sources: model?.clean?.sources ?? [], action: closed ? 'talk_to_team' : (model?.clean?.action ?? 'talk_to_team'), capture, on_topic: onTopic });
       data.turns.push({ role: 'user', content: `<visitor_message>${message}</visitor_message>` }, { role: 'assistant', content: said });
       if (data.turns.length > 24) data.turns.splice(0, data.turns.length - 24);
       await this.ctx.storage.put('session', data);
       const action = closed ? 'talk_to_team' : (model?.clean?.action ?? 'talk_to_team');
-      this.ctx.waitUntil(this.record(sessionId, data.count, page, message, answer, action, decision, model));
-      return { kind: 'reply', answer, sources: model?.clean?.sources ?? [], action, onTopic, closed };
+      this.ctx.waitUntil(this.record(sessionId, data.count, page, message, answer, action, capture, decision, model));
+      return { kind: 'reply', answer, sources: model?.clean?.sources ?? [], action, capture, onTopic, closed };
     };
 
     if (data.count >= LAST_MESSAGE) return finish(CLOSED, true, true, 'closed');
@@ -171,14 +172,14 @@ export class ChatSession extends DurableObject<Env> {
     return finish(spoken?.answer ?? SAFE, false, spoken?.onTopic ?? true, spoken ? 'answered' : 'fallback', model);
   }
 
-  private async record(sessionId: string, turn: number, page: string, question: string, answer: string, action: string, decision: string, model?: ModelReply): Promise<void> {
+  private async record(sessionId: string, turn: number, page: string, question: string, answer: string, action: string, capture: string[], decision: string, model?: ModelReply): Promise<void> {
     if (!this.env.DB) return;
     try {
       await this.env.DB.prepare(
-        `INSERT INTO chat_log (created_at, session_id, turn, page, question, answer, action, decision, input_tokens, output_tokens, cost_usd)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO chat_log (created_at, session_id, turn, page, question, answer, action, capture, decision, input_tokens, output_tokens, cost_usd)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
-        .bind(new Date().toISOString(), sessionId, turn, page, question, answer, action, decision, model?.input ?? 0, model?.output ?? 0, model?.cost ?? 0)
+        .bind(new Date().toISOString(), sessionId, turn, page, question, answer, action, capture.join(','), decision, model?.input ?? 0, model?.output ?? 0, model?.cost ?? 0)
         .run();
     } catch (error) {
       console.error('chat log failed', error instanceof Error ? error.message : 'unknown');
@@ -213,13 +214,19 @@ async function callModel(env: Env, data: SessionData, message: string): Promise<
       console.error('model request failed', response.status);
       return none;
     }
-    const body = (await response.json()) as { content?: { type: string; text?: string }[]; usage?: { input_tokens?: number; output_tokens?: number } };
-    const input = body.usage?.input_tokens ?? 0;
+    const body = (await response.json()) as {
+      content?: { type: string; text?: string }[];
+      usage?: { input_tokens?: number; output_tokens?: number; cache_creation_input_tokens?: number; cache_read_input_tokens?: number };
+    };
+    const fresh = body.usage?.input_tokens ?? 0;
+    const cacheWrite = body.usage?.cache_creation_input_tokens ?? 0;
+    const cacheRead = body.usage?.cache_read_input_tokens ?? 0;
+    const input = fresh + cacheWrite + cacheRead;
     const output = body.usage?.output_tokens ?? 0;
     const text = body.content?.find((block) => block.type === 'text')?.text ?? '';
     const clean = cleanAnswer(text, data.canary);
     if (!clean) console.warn('sparky fallback', rejectReason(text, data.canary));
-    return { clean, offline: false, input, output, cost: costUsd(input, output) };
+    return { clean, offline: false, input, output, cost: costUsd(fresh, output, cacheWrite, cacheRead) };
   } catch (error) {
     console.error('model request error', error instanceof Error ? error.name : 'unknown');
     return none;

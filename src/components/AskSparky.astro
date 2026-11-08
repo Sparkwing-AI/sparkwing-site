@@ -74,6 +74,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   let ended = false;
   let typing = false;
   let leadShown = false;
+  // What Sparky tagged this chat as (lead, feedback, feature_request). Sent with the details form so the team can file it.
+  const captured = new Set<string>();
   let lastQuestion = '';
   let sessionId = '';
   let timer = 0;
@@ -394,6 +396,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
             contact_consent: true,
             marketing_consent: field('marketing').checked,
             consent_wording_version: 'chat-v1',
+            capture: [...captured],
             company_site: value('company_site'),
             turnstile,
           }),
@@ -526,7 +529,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
               return;
             }
             if (!response.ok) throw new Error('chat');
-            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[] };
+            const data = (await response.json()) as { answer?: string; action?: string; closed?: boolean; sources?: string[]; capture?: string[] };
+            for (const tag of data.capture ?? []) if (['lead', 'feedback', 'feature_request'].includes(tag)) captured.add(tag);
             const source = sourcePages[data.sources?.[0] ?? ''];
             const text = typeof data.answer === 'string' ? data.answer : "That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.";
             addMessage(text, false, {
@@ -621,6 +625,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     ended = false;
     typing = false;
     leadShown = false;
+    captured.clear();
     lastQuestion = '';
     form.hidden = false;
     restartButton.hidden = true;

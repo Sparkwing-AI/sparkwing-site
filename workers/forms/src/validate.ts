@@ -6,6 +6,9 @@ export const topics = {
   other: 'Something else',
 } as const;
 
+/** How a chat capture is filed: any mix of these. The browser sends what Sparky tagged, and only these words are kept. */
+export const chatTags = ['lead', 'feedback', 'feature_request'] as const;
+
 export interface Submission {
   type: 'beta' | 'enquiry' | 'chat';
   name: string;
@@ -19,6 +22,7 @@ export interface Submission {
   source_page: string | null;
   marketing_consent: boolean;
   consent_wording_version: string | null;
+  tags: string;
 }
 
 export type Result = { ok: true; value: Submission } | { ok: false; errors: string[] } | { ok: 'spam' };
@@ -58,6 +62,7 @@ export function validate(body: unknown): Result {
   let message: string | null = null;
   let businessType: string | null = null;
   let firstTask: string | null = null;
+  let tags = '';
 
   if (type === 'beta') {
     country = text(raw.country, 50);
@@ -68,6 +73,9 @@ export function validate(body: unknown): Result {
   } else if (type === 'chat') {
     topic = 'Website chat';
     message = text(raw.message, 500, true) || null;
+    const asked = Array.isArray(raw.capture) ? raw.capture : [];
+    // Someone who leaves details without a tag still wants the team, so they count as a lead.
+    tags = chatTags.filter((tag) => asked.includes(tag)).join(',') || 'lead';
   } else {
     topic = text(raw.topic, 20);
     if (!Object.hasOwn(topics, topic)) errors.push('topic');
@@ -91,6 +99,7 @@ export function validate(body: unknown): Result {
       source_page: text(raw.source_page, 200) || null,
       marketing_consent: raw.marketing_consent === true,
       consent_wording_version: text(raw.consent_wording_version, 40) || null,
+      tags,
     },
   };
 }
