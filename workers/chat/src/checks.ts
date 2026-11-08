@@ -16,7 +16,7 @@ export const SOURCES: Record<string, string> = {
   nest: '/apps/nest',
 };
 
-export const SAFE = "That one's a bit outside what I can help with, but the team can. Leave your details below and they'll get back to you within 24 hours.";
+export const SAFE = "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.";
 
 export interface CleanAnswer {
   answer: string;

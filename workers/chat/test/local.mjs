@@ -73,7 +73,7 @@ try {
   // 22: malformed model reply gets the fallback
   mode = 'bad';
   const safe = await (await say(id, 'hello')).json();
-  assert.match(safe.answer, /outside what I can help with/);
+  assert.match(safe.answer, /tricky one/);
   mode = 'ok';
 
   // 17: message rate. Six a minute per session, so the seventh in this minute is refused
