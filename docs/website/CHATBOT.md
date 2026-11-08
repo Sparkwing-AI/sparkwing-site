@@ -27,6 +27,7 @@ Sparky can invite a visitor to leave their details, but code collects them. The 
 3. The card posts straight to the forms Worker with type `chat`. It never goes through the chat Worker or the model.
    - It also sends the capture tags Sparky gave the chat: any mix of `lead`, `feedback` and `feature_request`. The forms Worker keeps only those three words and saves them in `leads.tags`. No tag means `lead`. A business in an industry we don't cater to gets `feature_request` only.
    - One capture can show in all three views (Leads, Feedback, Feature requests). The views come in a later change.
+5. Once the details are sent, the widget tells the chat Worker (`lead_sent`). From then on Sparky never offers the form or button again: the prompt says so, the action is forced to `none`, and a reply that points at the form is replaced. He answers 3 more messages, then signs off ("Thanks for chatting! The team will be in touch within 24 hours.") and the chat closes with Start a new chat.
 4. The lead lands in the **Chat** tab of the lead list and emails `info@` with the subject `[Website chat] {name}`.
 
 **Rules that keep it clean**

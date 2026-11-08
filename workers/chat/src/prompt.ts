@@ -46,15 +46,18 @@ WIKI:
 ${KNOWLEDGE}`;
 
 /** The part that changes each turn. The canary stays out of the cached block. */
-export function turnSystem(messageNumber: number, canary: string): string {
-  const step = messageNumber <= 2 ? '1' : messageNumber <= 4 ? '2' : messageNumber <= 6 ? '3' : '4';
-  return `THIS TURN: visitor message ${messageNumber}. Current step: ${step}.\nCANARY: ${canary}`;
+export function turnSystem(messageNumber: number, canary: string, afterLead = false): string {
+  const step = afterLead ? '4' : messageNumber <= 2 ? '1' : messageNumber <= 4 ? '2' : messageNumber <= 6 ? '3' : '4';
+  const lead = afterLead
+    ? '\nThe visitor has already left their details, and the team will be in touch. Never mention the form, a button or leaving details again. Set action to none. Just answer their question warmly.'
+    : '';
+  return `THIS TURN: visitor message ${messageNumber}. Current step: ${step}.${lead}\nCANARY: ${canary}`;
 }
 
 /** The system blocks for the Messages API, with the static part cached. */
-export function buildSystem(messageNumber: number, canary: string): Array<{ type: 'text'; text: string; cache_control?: { type: 'ephemeral' } }> {
+export function buildSystem(messageNumber: number, canary: string, afterLead = false): Array<{ type: 'text'; text: string; cache_control?: { type: 'ephemeral' } }> {
   return [
     { type: 'text', text: STATIC_SYSTEM, cache_control: { type: 'ephemeral' } },
-    { type: 'text', text: turnSystem(messageNumber, canary) },
+    { type: 'text', text: turnSystem(messageNumber, canary, afterLead) },
   ];
 }

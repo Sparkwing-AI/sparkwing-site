@@ -18,6 +18,12 @@ export const SOURCES: Record<string, string> = {
 
 export const SAFE = "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.";
 
+/** The fallback once the visitor has sent their details. No button to point at by then. */
+export const SAFE_AFTER_LEAD = "That's a tricky one! The team has your details, so they can pick that up with you.";
+
+// After the details form is sent, a reply that points at the form again is turned down.
+const HANDOFF = /\b(button|form)\b|leave (your|their) details|fill (it|them) in|pass (your|their) details/i;
+
 export interface CleanAnswer {
   answer: string;
   sources: string[];
@@ -85,7 +91,7 @@ export function bannedReason(answer: string): string {
 }
 
 /** Why cleanAnswer turned a reply down, for the logs. Never includes the canary. */
-export function rejectReason(text: string, canary: string): string {
+export function rejectReason(text: string, canary: string, afterLead = false): string {
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
   const trimmed = start >= 0 && end > start ? text.slice(start, end + 1) : text.trim();
@@ -100,6 +106,7 @@ export function rejectReason(text: string, canary: string): string {
   const answer = stripLinksAndMarkup(parsed.answer);
   if (CONTACT.test(parsed.answer)) return 'contact detail';
   if (!answer) return 'empty after removing links';
+  if (afterLead && HANDOFF.test(answer)) return 'handoff after details sent';
   return bannedReason(answer) || 'unknown';
 }
 
@@ -116,7 +123,7 @@ function stripLinksAndMarkup(value: string): string {
 }
 
 /** Accepts the model's reply only if it passes every check. Null means the safe fallback. */
-export function cleanAnswer(text: string, canary: string): CleanAnswer | null {
+export function cleanAnswer(text: string, canary: string, afterLead = false): CleanAnswer | null {
   // Take the JSON object even if the model wrapped it in a code fence or a sentence.
   const start = text.indexOf('{');
   const end = text.lastIndexOf('}');
@@ -132,10 +139,11 @@ export function cleanAnswer(text: string, canary: string): CleanAnswer | null {
   // Emails are checked before link stripping, which would otherwise leave half an address behind.
   if (CONTACT.test(parsed.answer)) return null;
   if (!answer || hasBannedClaim(answer)) return null;
+  if (afterLead && HANDOFF.test(answer)) return null;
   const sources = Array.isArray(parsed.sources)
     ? parsed.sources.filter((id): id is string => typeof id === 'string' && id in SOURCES).slice(0, 1)
     : [];
-  const action = parsed.action === 'talk_to_team' || parsed.action === 'apply_beta' ? parsed.action : 'none';
+  const action = afterLead ? 'none' : parsed.action === 'talk_to_team' || parsed.action === 'apply_beta' ? parsed.action : 'none';
   return { answer, sources, action, capture: cleanCapture(parsed.capture), onTopic: parsed.on_topic !== false };
 }
 

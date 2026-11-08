@@ -86,6 +86,11 @@ export default {
     if (!id) return reply(400, { error: 'session' }, origin);
     const session = env.SESSIONS.get(env.SESSIONS.idFromName(id));
 
+    if (body.action === 'lead_sent') {
+      await session.leadSent();
+      return reply(200, { ok: true }, origin);
+    }
+
     if (body.action === 'end') {
       await session.end();
       return reply(200, { ok: true }, origin);

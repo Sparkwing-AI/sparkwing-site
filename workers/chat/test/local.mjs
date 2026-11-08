@@ -18,7 +18,7 @@ const model = createServer((req, res) => {
       res.writeHead(429);
       return res.end('{}');
     }
-    const text = mode === 'bad' ? 'not json' : mode === 'off' ? JSON.stringify({ answer: 'Sorry.', sources: [], action: 'none', on_topic: false }) : JSON.stringify({ answer: 'Happy to help.', sources: ['sparkkeeper'], action: 'none', on_topic: true });
+    const text = mode === 'handoff' ? JSON.stringify({ answer: 'Tap the button below to leave your details.', sources: [], action: 'talk_to_team', on_topic: true }) : mode === 'bad' ? 'not json' : mode === 'off' ? JSON.stringify({ answer: 'Sorry.', sources: [], action: 'none', on_topic: false }) : JSON.stringify({ answer: 'Happy to help.', sources: ['sparkkeeper'], action: 'none', on_topic: true });
     setTimeout(() => {
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ content: [{ type: 'text', text }], usage: { input_tokens: 5000, output_tokens: 300 } }));
@@ -102,6 +102,23 @@ try {
   assert.equal((await say(off, 'again')).status, 400, 'closed chat');
   assert.equal(seen.length, calls, 'no model call after the end');
   mode = 'ok';
+
+  // After the details form: no more handoff, and the third reply signs off
+  const lead = await start(ip());
+  await say(lead, 'hi');
+  assert.equal((await post({ action: 'lead_sent', session_id: lead })).status, 200, 'lead noted');
+  mode = 'handoff';
+  const pushy = await (await say(lead, 'one more question')).json();
+  assert.equal(pushy.action, 'none', 'no handoff after the form');
+  assert.match(pushy.answer, /team has your details/, 'a reply pointing at the form is replaced');
+  mode = 'ok';
+  const second = await (await say(lead, 'and another')).json();
+  assert.equal(second.closed, false);
+  const third = await (await say(lead, 'last one')).json();
+  assert.equal(third.closed, true, 'closes after three replies');
+  assert.equal(third.action, 'none');
+  assert.match(third.answer, /Happy to help\. Thanks for chatting!/, 'answer, then goodbye');
+  assert.equal((await say(lead, 'too late')).status, 400, 'closed after the form');
 
   // 21: API error or spend limit means offline, with one attempt only
   mode = 'error';

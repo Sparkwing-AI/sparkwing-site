@@ -50,6 +50,13 @@ assert.equal(cleanAnswer(json('Call 0412 345 678.'), 'ZZ9'), null, 'phone number
 assert.ok(cleanAnswer(json('We use trusted, enterprise-grade AI and hosting providers under strict terms.'), 'ZZ9'));
 assert.ok(cleanAnswer(json('Sparkkeeper sits alongside Xero, MYOB or QuickBooks, and Excel files upload fine.'), 'ZZ9'));
 
+// After the details form
+assert.equal(cleanAnswer(json('Tap the button below to leave your details.'), 'ZZ9', true), null, 'no pointing at the form again');
+assert.equal(rejectReason(json('Fill in the form below.'), 'ZZ9', true), 'handoff after details sent');
+assert.equal(cleanAnswer(json('The beta starts late November.', { action: 'talk_to_team' }), 'ZZ9', true)?.action, 'none', 'no handoff action');
+assert.ok(cleanAnswer(json('We can transform your platform.'), 'ZZ9', true), 'form inside other words is fine');
+assert.ok(cleanAnswer(json('Tap the button below.'), 'ZZ9'), 'before the form, the button is fine');
+
 // Capture tags
 assert.deepEqual(cleanAnswer(json('Hi', { capture: ['feature_request', 'lead', 'spam', 'feedback'] }), 'ZZ9')?.capture, ['lead', 'feedback', 'feature_request']);
 assert.deepEqual(cleanAnswer(json('Hi', { capture: 'lead' }), 'ZZ9')?.capture, []);
@@ -67,6 +74,8 @@ const blocks = buildSystem(3, 'ZZ9');
 assert.equal(blocks[0].text, STATIC_SYSTEM, 'the cached block is the same every turn');
 assert.ok(!blocks[0].text.includes('ZZ9') && blocks[1].text.includes('ZZ9'), 'the canary stays out of the cached block');
 assert.ok(blocks[0].cache_control && !blocks[1].cache_control);
+assert.ok(buildSystem(3, 'ZZ9', true)[1].text.includes('already left their details'), 'Sparky is told the form is in');
+assert.equal(buildSystem(3, 'ZZ9', true)[0].text, STATIC_SYSTEM, 'the cache holds after the form');
 
 // Log and cost
 assert.equal(cleanPage('/spark-studio'), '/spark-studio');
