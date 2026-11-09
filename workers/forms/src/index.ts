@@ -148,16 +148,14 @@ export default {
 
     // CORE-194: a short confirmation to the visitor, with none of their words in it. Only when Turnstile passed,
     // at most one a day per address, and three an hour per scrambled source.
-    if (s.type === 'enquiry' || s.type === 'beta') {
-      if (human) ctx.waitUntil(confirm(env, s.type, s.email, id, source.ip_hash));
-      else console.warn('confirmation skipped: bot check did not pass', id, typeof token === 'string' && token ? 'token sent' : 'no token');
-    }
+    if (human) ctx.waitUntil(confirm(env, s.type, s.email, id, source.ip_hash));
+    else console.warn('confirmation skipped: bot check did not pass', id, typeof token === 'string' && token ? 'token sent' : 'no token');
 
     return reply(200, { ok: true }, origin);
   },
 } satisfies ExportedHandler<Env>;
 
-async function confirm(env: Env, type: 'enquiry' | 'beta', email: string, id: string, ipHash: string | null): Promise<void> {
+async function confirm(env: Env, type: 'enquiry' | 'beta' | 'chat', email: string, id: string, ipHash: string | null): Promise<void> {
   try {
     const day = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const hour = new Date(Date.now() - 60 * 60 * 1000).toISOString();

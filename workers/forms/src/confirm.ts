@@ -1,5 +1,5 @@
 /**
- * Confirmation emails to people who send the enquiry or beta form (CORE-194).
+ * Confirmation emails to people who send the enquiry, beta or chat details form (CORE-194).
  * They hold no text the visitor typed, so the form can't be used to send someone else a message.
  */
 
@@ -7,11 +7,11 @@
 export const CONFIRMATIONS_PER_EMAIL_PER_DAY = 1;
 export const CONFIRMATIONS_PER_SOURCE_PER_HOUR = 3;
 
-export type ConfirmType = 'enquiry' | 'beta';
+export type ConfirmType = 'enquiry' | 'beta' | 'chat';
 
 /** Pure, so the rules can be tested. Counts are confirmations already sent. */
 export function shouldConfirm(type: string, flagged: boolean, toThisEmailToday: number, fromThisSourceThisHour: number): type is ConfirmType {
-  if (type !== 'enquiry' && type !== 'beta') return false;
+  if (type !== 'enquiry' && type !== 'beta' && type !== 'chat') return false;
   if (flagged) return false;
   if (toThisEmailToday >= CONFIRMATIONS_PER_EMAIL_PER_DAY) return false;
   return fromThisSourceThisHour < CONFIRMATIONS_PER_SOURCE_PER_HOUR;
@@ -23,6 +23,14 @@ const copy: Record<ConfirmType, { subject: string; heading: string; lines: strin
     heading: 'Thanks for getting in touch.',
     lines: [
       "We've got your message, and someone from our team will get back to you soon.",
+      'Want to add anything? Just reply to this email.',
+    ],
+  },
+  chat: {
+    subject: 'Thanks for getting in touch with Sparkwing',
+    heading: 'Thanks for getting in touch.',
+    lines: [
+      "We've got your details from your chat with Sparky, and someone from our team will get back to you within 24 hours.",
       'Want to add anything? Just reply to this email.',
     ],
   },

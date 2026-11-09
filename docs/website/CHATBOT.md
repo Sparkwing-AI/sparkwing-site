@@ -33,7 +33,7 @@ Sparky can invite a visitor to leave their details, but code collects them. The 
 **Rules that keep it clean**
 - A fresh Turnstile token on every submit, plus the hidden `company_site` field and server validation.
 - One lead per chat, and 3 per hour per hashed IP.
-- **No automatic email to the visitor,** so nobody can use the form to spam someone else's address.
+- **A short confirmation email to the visitor** (since 9 Nov 2026), with none of their words in it, only after the bot check passes. At most one a day per address and three an hour per visitor, so nobody can use the form to spam someone else's address.
 - **Flood rule:** after 10 chat leads in an hour, keep saving them with a note saying they are flagged, stop the alert emails and send one summary alert.
 - Treat stored leads as untrusted text: escape them everywhere, and treat them as hostile input if an AI or Magnet ever reads them.
 - The card keeps working when Sparky is offline, as the forms Worker is separate.
@@ -152,7 +152,7 @@ Use a Durable Object for strict counts. The Workers rate limiting binding is app
 | Stolen API key | Spend on our account | Worker secret only, single workspace, spend limit, rotation |
 | Spam flood | Downtime and noise | Rate limits, Turnstile, kill switch, offline state |
 | Fake leads | A polluted lead list and a full inbox | Turnstile on every submit, one lead per chat, flood rule, `Flagged` status |
-| Email bombing | Using our form to spam someone else | No automatic emails to the address entered |
+| Email bombing | Using our form to spam someone else | The confirmation holds none of their words, needs the bot check, and is capped at one a day per address and three an hour per visitor |
 | Stored script or injection in a lead | Attack whoever reads the lead | Plain text and escaped everywhere, treated as hostile by any AI that reads it |
 | Poisoned content | Instructions hidden in source content | Knowledge pack built only from reviewed repo content. No browsing, uploads or visitor content in it |
 
