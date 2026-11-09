@@ -3,12 +3,14 @@ import { confirmationHtml, confirmationSubject, confirmationText, shouldConfirm 
 
 assert.equal(shouldConfirm('enquiry', false, 0, 0), true);
 assert.equal(shouldConfirm('beta', false, 0, 2), true);
-assert.equal(shouldConfirm('chat', false, 0, 0), false, 'chat leads get no email');
+assert.equal(shouldConfirm('chat', false, 0, 0), true, 'chat leads get an email too');
+assert.equal(shouldConfirm('chat', false, 1, 0), false, 'one chat confirmation a day per address');
+assert.equal(shouldConfirm('other', false, 0, 0), false, 'unknown forms get no email');
 assert.equal(shouldConfirm('enquiry', true, 0, 0), false, 'flagged leads get no email');
 assert.equal(shouldConfirm('enquiry', false, 1, 0), false, 'one a day per address');
 assert.equal(shouldConfirm('beta', false, 0, 3), false, 'three an hour per source');
 
-for (const type of ['enquiry', 'beta'] as const) {
+for (const type of ['enquiry', 'beta', 'chat'] as const) {
   const html = confirmationHtml(type);
   assert.ok(html.includes('sparkwing.com.au'));
   assert.ok(!/[\u2014]/.test(html + confirmationText(type) + confirmationSubject(type)), 'no em dashes');
