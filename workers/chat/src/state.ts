@@ -196,10 +196,10 @@ export class ChatSession extends DurableObject<Env> {
     if (!this.env.DB) return;
     try {
       await this.env.DB.prepare(
-        `INSERT INTO chat_log (created_at, session_id, turn, page, question, answer, action, capture, decision, input_tokens, output_tokens, cost_usd)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO chat_log (created_at, session_id, turn, page, question, answer, action, capture, decision, input_tokens, output_tokens, cache_write_tokens, cache_read_tokens, cost_usd)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
-        .bind(new Date().toISOString(), sessionId, turn, page, question, answer, action, capture.join(','), decision, model?.input ?? 0, model?.output ?? 0, model?.cost ?? 0)
+        .bind(new Date().toISOString(), sessionId, turn, page, question, answer, action, capture.join(','), decision, model?.input ?? 0, model?.output ?? 0, model?.cacheWrite ?? 0, model?.cacheRead ?? 0, model?.cost ?? 0)
         .run();
     } catch (error) {
       console.error('chat log failed', error instanceof Error ? error.message : 'unknown');
@@ -212,12 +212,14 @@ interface ModelReply {
   offline: boolean;
   input: number;
   output: number;
+  cacheWrite: number;
+  cacheRead: number;
   cost: number;
 }
 
 /** One attempt only. An API error or spend limit means offline, never a retry loop. */
 async function callModel(env: Env, data: SessionData, message: string, afterLead: boolean): Promise<ModelReply> {
-  const none: ModelReply = { clean: null, offline: true, input: 0, output: 0, cost: 0 };
+  const none: ModelReply = { clean: null, offline: true, input: 0, output: 0, cacheWrite: 0, cacheRead: 0, cost: 0 };
   if (!env.ANTHROPIC_API_KEY) return none;
   try {
     const response = await fetch(env.MODEL_API_URL || 'https://api.anthropic.com/v1/messages', {
@@ -246,7 +248,7 @@ async function callModel(env: Env, data: SessionData, message: string, afterLead
     const text = body.content?.find((block) => block.type === 'text')?.text ?? '';
     const clean = cleanAnswer(text, data.canary, afterLead);
     if (!clean) console.warn('sparky fallback', rejectReason(text, data.canary, afterLead));
-    return { clean, offline: false, input, output, cost: costUsd(fresh, output, cacheWrite, cacheRead) };
+    return { clean, offline: false, input, output, cacheWrite, cacheRead, cost: costUsd(fresh, output, cacheWrite, cacheRead) };
   } catch (error) {
     console.error('model request error', error instanceof Error ? error.name : 'unknown');
     return none;

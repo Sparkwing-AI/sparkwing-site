@@ -162,6 +162,7 @@ Use a Durable Object for strict counts. The Workers rate limiting binding is app
 - **Approval:** any line marked **Confirm** or **Hold** is dropped by `scripts/build-knowledge.mjs` before it reaches the model. To approve one, remove the tag. Everything above section 0 is team notes and is dropped too.
 - **Build:** `npm run chat:knowledge` writes `workers/chat/src/knowledge.generated.ts`. `npm run chat:dev` does this first, and `npm run lint` fails when the generated file is out of date.
 - **Prompt:** `workers/chat/src/prompt.ts`. The rules and the wiki go in one cached system block. The turn number and the canary go in a second block, so the cache holds across turns.
+- **Checking the cache:** `chat_log` records `cache_write_tokens` and `cache_read_tokens` per turn (migration 0003). From turn 2 of a chat, `cache_read_tokens` should be most of `input_tokens`. If both stay at 0, something in the static block is changing between requests.
 - **Backstops in code:** a reply that names an AI or hosting vendor, or includes an email address or phone number, is replaced with the safe line and the reason is logged. Prices, banned claims, links and the canary are checked as before.
 - **Site and wiki match:** if the website says it, the wiki covers it, so Sparky never contradicts a page.
 
