@@ -47,3 +47,12 @@ Sparkwing helps businesses deliver change and transformation through AI, and the
 - Every section has to make sense if a visitor skips what came before it.
 - Text wrapping: headings and short copy use `text-wrap: balance`, and everything else uses `pretty`, so lines don't end on a lone word. Section intros run up to 1040px wide.
 - Menu: AI strategy, Save hours, Use AI safely, Products, Trust. AI strategy opens Spark Studio.
+
+## Contact page and business mobile (11 Nov 2026)
+Sparkwing now has a business mobile: +61 467 765 508 (`tel:+61467765508`).
+
+- New page: `design/source/Contact.dc.html`, route `/contact`. Dark hero ("Let's talk."), then three cards: Call or text, Email, Book a discovery call. The discovery call button opens the enquiry modal with the `call` topic.
+- Footer: "Say hello" now lists the mobile and a "Contact us" link, under the email (`design/source/Footer.dc.html`).
+- Privacy and Terms: the "Contact us" sections now include the mobile, and both read "Last updated 11 November 2026". Already regenerated with `scripts/convert-legal.mjs` and checked with `npm run test:legal`.
+- Phone number lives in `src/config/site.ts` next to the email, like every other company detail (FR-006).
+- No call hours on the page. Calls are returned during the day.
