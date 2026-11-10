@@ -10,6 +10,9 @@ export const company = {
   addressLocality: 'Sydney',
   addressCountry: 'AU',
   email: 'info@sparkwing.com.au',
+  phone: '+61 467 765 508',
+  /** E.164 form for tel, sms and structured data. */
+  phoneE164: '+61467765508',
 } as const;
 
 export const site = {
@@ -46,3 +49,5 @@ export const integrations = {
 } as const;
 
 export const mailto = `mailto:${company.email}`;
+export const tel = `tel:${company.phoneE164}`;
+export const sms = `sms:${company.phoneE164}`;

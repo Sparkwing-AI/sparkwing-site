@@ -29,6 +29,7 @@ const organization = {
   url: site.url,
   logo: new URL(site.logoPath, site.url).href,
   email: company.email,
+  telephone: company.phoneE164,
   identifier: { '@type': 'PropertyValue', propertyID: 'ABN', value: company.abn },
   address: { '@type': 'PostalAddress', addressLocality: company.addressLocality, addressCountry: company.addressCountry },
 };
