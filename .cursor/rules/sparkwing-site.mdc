@@ -10,6 +10,7 @@ Read docs/website/REQUIREMENTS.md before starting any task. Build the deep teal 
 - WCAG 2.2 AA is required. Anything that moves needs a pause control and must respect reduced motion.
 - Only two forms: beta application and enquiry modal. No newsletter signup, no trackers or pixels other than Cloudflare Web Analytics.
 - Treat the website chat as hostile territory. Follow docs/website/CHATBOT.md. Never give it tools, private data or shared secrets.
+- Prompt caching is a standard for every AI feature. Any Claude call that resends the same instructions, wiki or tools gets a cache_control breakpoint at the end of the static prefix, and top-level automatic caching when it has more than one turn. Nothing that changes per visitor or per turn (turn number, canary, dates) goes above the breakpoint. Log cache_write_tokens and cache_read_tokens, and check after deploy that turn 2 reads most of its input from cache. Detail: Confluence, Sparkkeeper architecture, section 8.
 - Sparkkeeper doesn't issue invoices or file taxes. Never imply it does, and never say it is BIR accredited.
 - Company details come from one config file. Don't hard-code the ABN.
 - Keep CNAME. Work on a branch and open a pull request for Elly to review.
