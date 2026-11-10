@@ -14,3 +14,7 @@ Start with `docs/website/REQUIREMENTS.md`. For the website chat, also read `docs
 - `.cursor/rules/`: project rules for Cursor
 
 Copy this folder's contents into the root of `Sparkwing-AI/sparkwing-site`, then work on a branch. The Jira epic is CORE-173. Its child tickets give the build order.
+
+## AI calls
+
+Prompt caching is a standard for every AI feature on this site, including Ask Sparky and any future agent. See the rule in `.cursor/rules/sparkwing-site.mdc` and `docs/website/CHATBOT.md`.
