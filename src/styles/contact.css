@@ -44,7 +44,7 @@
   line-height: var(--sw-leading-body);
 }
 
-.ct-free {
+.ct-card .ct-free {
   font-size: var(--sw-text-lead);
   font-weight: var(--sw-weight-bold);
   line-height: var(--sw-leading-body);
@@ -64,6 +64,22 @@
   margin-top: var(--sw-space-5);
   font-size: var(--sw-text-small);
   color: var(--sw-color-text-muted);
+}
+
+/* The band is a size container so the card grid can react to its own width. */
+.ct-band {
+  container-type: inline-size;
+}
+
+/* With two columns, the discovery card would sit alone under the others. Let it take the full row. */
+@container (min-width: 616px) and (max-width: 931px) {
+  .ct-card--tint {
+    grid-column: 1 / -1;
+  }
+
+  .ct-card--tint p {
+    max-width: 640px;
+  }
 }
 
 /* On a phone the Ask Sparky label is wide enough to cover Call, text and the discovery button.
