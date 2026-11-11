@@ -1,0 +1,103 @@
+/* Contact page. Tokens only. */
+
+.ct-hero {
+  max-width: var(--sw-container);
+  margin-inline: auto;
+}
+
+.ct-card {
+  align-items: flex-start;
+  background: var(--sw-color-surface);
+  border: 1px solid var(--sw-color-border);
+}
+
+.ct-card--tint {
+  background: var(--sw-color-tint);
+  border: 0;
+}
+
+.ct-card h2 {
+  font-size: var(--sw-text-h3);
+  font-weight: var(--sw-weight-bold);
+  color: var(--sw-color-deep);
+}
+
+.ct-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sw-space-8);
+  height: var(--sw-space-8);
+  border-radius: var(--sw-radius-md);
+  background: var(--sw-color-deep);
+  color: var(--sw-color-accent);
+}
+
+.ct-icon svg {
+  width: var(--sw-space-5);
+  height: var(--sw-space-5);
+}
+
+.ct-detail {
+  font-size: var(--sw-text-lead);
+  font-weight: var(--sw-weight-bold);
+  line-height: var(--sw-leading-body);
+}
+
+.ct-card .ct-free {
+  font-size: var(--sw-text-lead);
+  font-weight: var(--sw-weight-bold);
+  line-height: var(--sw-leading-body);
+  color: var(--sw-color-accent-text);
+}
+
+.ct-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sw-space-3);
+  width: 100%;
+  margin-top: auto;
+  padding-top: var(--sw-space-3);
+}
+
+.ct-note {
+  margin-top: var(--sw-space-5);
+  font-size: var(--sw-text-small);
+  color: var(--sw-color-text-muted);
+}
+
+/* The band is a size container so the card grid can react to its own width. */
+.ct-band {
+  container-type: inline-size;
+}
+
+/* With two columns, the discovery card would sit alone under the others. Let it take the full row. */
+@container (min-width: 616px) and (max-width: 931px) {
+  .ct-card--tint {
+    grid-column: 1 / -1;
+  }
+
+  .ct-card--tint p {
+    max-width: 640px;
+  }
+}
+
+/* On a phone the Ask Sparky label is wide enough to cover Call, text and the discovery button.
+   Show the star only on this page so those buttons stay one line and tappable. The control name is unchanged.
+   520px covers the one-column widths just above the 480px launcher inset, where Send a text still reaches the full label. */
+@media (max-width: 520px) {
+  body:has(.ct-hero) .sw-ask-launch {
+    gap: 0;
+    padding-inline: var(--sw-space-4);
+    font-size: 0;
+  }
+
+  body:has(.ct-hero) .sw-ask-launch svg {
+    width: var(--sw-space-5);
+    height: var(--sw-space-5);
+  }
+
+  .ct-actions {
+    scroll-margin-bottom: calc(var(--sw-button-height) + var(--sw-space-5));
+  }
+}

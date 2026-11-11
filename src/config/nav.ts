@@ -93,6 +93,7 @@ export const menuPageLinks = [
   { label: 'Save hours', href: '/bring-ai-in' },
   { label: 'Use AI safely', href: '/scale-ai' },
   { label: 'Trust', href: '/trust' },
+  { label: 'Contact', href: '/contact' },
 ] as const;
 
 export const footerColumns = [

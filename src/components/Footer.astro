@@ -1,7 +1,7 @@
 ---
 import Button from './Button.astro';
 import { footerColumns } from '../config/nav';
-import { company, mailto } from '../config/site';
+import { company, mailto, tel } from '../config/site';
 ---
 
 <footer class="sw-footer">
@@ -22,6 +22,8 @@ import { company, mailto } from '../config/site';
       <div class="sw-footer-col">
         <p class="sw-eyebrow">SAY HELLO</p>
         <a href={mailto}>{company.email}</a>
+        <a href={tel}>{company.phone}</a>
+        <a href="/contact">Contact us</a>
         <span>Based in Sydney. Working with businesses across Australia and the Philippines.</span>
       </div>
     </div>

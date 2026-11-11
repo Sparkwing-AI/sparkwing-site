@@ -1,0 +1,76 @@
+---
+import '../styles/page.css';
+import '../styles/inner.css';
+import '../styles/contact.css';
+import Button from '../components/Button.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { company, mailto, sms, tel } from '../config/site';
+---
+
+<BaseLayout
+  title="Contact Sparkwing: call, text or email"
+  description="Got a question about AI for your business, our apps or the Sparkkeeper beta? Call, text or email us. We'd love to hear from you."
+>
+  <section class="ph ph--deep" aria-labelledby="ct-title">
+    <div class="ph-copy ct-hero">
+      <p class="ph-eyebrow">CONTACT US</p>
+      <h1 class="ph-h1" id="ct-title">Let's talk.</h1>
+      <p class="ph-lead">
+        Got a question about AI for your business, our apps or the Sparkkeeper beta? Call, text or email us. We'd love to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-label="Ways to reach us">
+    <div class="sw-band-inner ct-band">
+      <div class="sw-cards">
+        <div class="sw-card ct-card">
+          <span class="ct-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="2" width="12" height="20" rx="2.5"></rect>
+              <path d="M11 18h2"></path>
+            </svg>
+          </span>
+          <h2>Call or text</h2>
+          <a class="ct-detail" href={tel}>{company.phone}</a>
+          <p>If we miss your call, leave a message and we'll call you back.</p>
+          <div class="ct-actions">
+            <Button variant="primary" href={tel}>Call us</Button>
+            <Button variant="outline" href={sms}>Send a text</Button>
+          </div>
+        </div>
+
+        <div class="sw-card ct-card">
+          <span class="ct-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2.5"></rect>
+              <path d="M3 6l9 7 9-7"></path>
+            </svg>
+          </span>
+          <h2>Email</h2>
+          <a class="ct-detail" href={mailto}>{company.email}</a>
+          <p>Send us your question and we'll get back to you.</p>
+          <div class="ct-actions">
+            <Button variant="primary" href={mailto}>Email us</Button>
+          </div>
+        </div>
+
+        <div class="sw-card ct-card ct-card--tint">
+          <span class="ct-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="17" rx="2.5"></rect>
+              <path d="M8 2v4M16 2v4M3 10h18"></path>
+            </svg>
+          </span>
+          <h2>Book a discovery call</h2>
+          <p class="ct-free">Free</p>
+          <p>Tell us your goals and where you'd like AI to help. We come back with a recommendation made for your business.</p>
+          <div class="ct-actions">
+            <Button variant="accent" enquiry="call">Book a discovery call</Button>
+          </div>
+        </div>
+      </div>
+      <p class="ct-note">{company.legalName} · ABN {company.abn} · Based in {company.location}</p>
+    </div>
+  </section>
+</BaseLayout>

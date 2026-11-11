@@ -4,6 +4,48 @@
 
 ## Task summary
 
+Contact page at `/contact` and the business mobile in the footer and Organization JSON-LD. Branch `feature/contact-page`. Copy and structure from `design/source/Contact.dc.html` and the Say hello block in `design/source/Footer.dc.html`. Privacy and Terms already regenerated. Do not merge.
+
+## Acceptance criteria
+
+- [x] `company.phone` and `company.phoneE164` in `src/config/site.ts`, with `tel` and `sms` helpers next to `mailto`
+- [x] Organization JSON-LD includes `telephone` (`+61467765508`)
+- [x] `/contact` matches the canvas: dark "Let's talk." hero, Call or text, Email, Book a discovery call. Discovery button uses `enquiry="call"`. Wording unchanged. Modal opens with topic "Book a discovery call"
+- [x] Footer Say hello lists the mobile (`tel`) and "Contact us" under the email, values from `site.ts`
+- [x] Menu panel includes Contact (`aria-current` on `/contact`). Desktop header links unchanged
+- [x] `privacy.astro` and `terms.astro` untouched. `npm run test:legal` matches the canvas
+- [x] Ask Sparky does not cover the card buttons at 390. Below 520px on this page the launcher shows the star only, so Call us, Send a text and Book a discovery call stay one line and clear of it
+- [x] Checked at 390, 768, 1024 and 1440. No sideways overflow. 1024 and 768 use two card columns. 1440 uses three
+- [x] `npm run lint`, `npm run build`, `npm run test:legal` pass
+
+## Work type
+
+[x] Other: marketing website page, multi-file UI
+
+## QA tier
+
+**Tier:** 2. New page, multi-file UI. Not NAB platform work.
+
+## User intent (verbatim, abridged)
+
+Pull `feature/contact-page`. Build the 11 Nov 2026 contact page and business mobile from DESIGN-CHANGES and `design/source`. Phone in `site.ts`, contact page, footer, menu link. Do not touch Privacy or Terms. Lint, build, test:legal. Check four widths and Ask Sparky on phones. Commit, push, open a PR into main. Don't merge.
+
+## Files touched
+
+src/config/site.ts, src/config/nav.ts, src/layouts/BaseLayout.astro, src/components/Footer.astro, src/styles/components.css, src/styles/contact.css, src/pages/contact.astro, tests/routes.json
+
+## Regression risks
+
+Footer link underline rule now keeps `tel:` and `/contact` underlined, like the email. Sitemap picks up `/contact` from the page glob. Below 520px on this page the Ask Sparky launcher shows the star only (`font-size: 0` on the label) so the card buttons stay clear. The button name stays Ask Sparky.
+
+## UX notes
+
+Card buttons stay left of the Ask Sparky launcher on a phone. Discovery call opens the existing enquiry modal. No call hours on the page.
+
+---
+
+## Earlier task summary
+
 Remove Sparkkeeper login and the public demo from the site. Home gold section now invites people to the beta or a discovery call. Ask Sparky's knowledge pack says there is no demo and no login. Latest earlier pass: design handoff of 4 Nov 2026 on branch `website/08-design-handoff`.
 
 ## Acceptance criteria (login and demo removal)

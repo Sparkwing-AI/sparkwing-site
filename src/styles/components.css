@@ -497,7 +497,7 @@
   color: var(--sw-color-on-deep);
 }
 
-.sw-footer-col a:not([href^='mailto']) {
+.sw-footer-col a:not([href^='mailto']):not([href^='tel:']):not([href='/contact']) {
   text-decoration: none;
 }
 
