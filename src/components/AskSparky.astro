@@ -219,7 +219,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (count >= 12) return { text: "I've really enjoyed this. The team can take it from here.", call: true, end: true };
     if (/\b(tax|bir|legal|lawyer|invest|advice)\b/.test(text)) {
       return {
-        text: "I can't give tax, legal or financial advice. Sparkkeeper sits alongside your registered books and invoicing, and those stay with your registered systems. The team can talk through what you need.",
+        text: "I can't give tax, legal or financial advice. Sparkkeeper sits alongside your accounting software, and those things stay with it and your accountant. The team can talk through what you need.",
         call: true,
       };
     }
@@ -252,7 +252,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     }
     if (/what is sparkkeeper|what does sparkkeeper/.test(text)) {
       return {
-        text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your registered books and invoicing.${hook}`,
+        text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your accounting software.${hook}`,
         src: 'Sparkkeeper page',
         href: '/sparkkeeper',
       };

@@ -347,51 +347,10 @@
   color: inherit;
 }
 
-.sk-toggle {
-  align-self: flex-start;
-  display: flex;
-  gap: var(--sw-space-1);
-  padding: var(--sw-space-1);
-  border-radius: var(--sw-radius-pill);
-  background: var(--sw-color-deep-raised);
-}
-
-.sk-toggle[hidden] {
-  display: none;
-}
-
-.sk-toggle button {
-  min-height: var(--sw-target-min);
-  padding: 0 calc(var(--sw-space-4) + 2px);
-  border: 0;
-  border-radius: var(--sw-radius-pill);
-  background: transparent;
-  color: var(--sw-color-on-deep);
-  font: inherit;
-  font-size: var(--sw-text-small);
-  font-weight: var(--sw-weight-bold);
-  cursor: pointer;
-}
-
-.sk-toggle button[aria-pressed='true'] {
-  background: var(--sw-color-accent);
-  color: var(--sw-color-deep);
-}
-
-.sk-toggle button:focus-visible {
-  outline: var(--sw-focus-ring);
-  outline-color: var(--sw-color-focus-on-deep);
-  outline-offset: var(--sw-focus-offset);
-}
-
 .sk-lang {
   display: flex;
   flex-direction: column;
   gap: var(--sw-space-6);
-}
-
-.sk-lang[hidden] {
-  display: none;
 }
 
 .sk-scope-grid {
