@@ -374,6 +374,19 @@
   .sw-ask-launch {
     right: var(--sw-space-3);
     bottom: var(--sw-space-3);
+    gap: 0;
+    width: var(--sw-button-height);
+    padding: 0;
+    justify-content: center;
+  }
+
+  .sw-ask-launch-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .sw-ask {

@@ -1,4 +1,4 @@
-export const countries = ['Australia', 'Philippines', 'Somewhere else'] as const;
+export const countries = ['Australia', 'Somewhere else'] as const;
 export const topics = {
   call: 'Book a discovery call',
   app: 'Ask about an app',

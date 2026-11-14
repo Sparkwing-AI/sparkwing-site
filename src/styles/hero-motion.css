@@ -50,7 +50,8 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: var(--sw-container);
+  /* The gutter sits inside the box, so add it to the container width. Content then lines up with the other bands. */
+  max-width: calc(var(--sw-container) + var(--sw-gutter) * 2);
   margin: 0 auto;
   padding: calc(var(--sw-space-10) - var(--sw-space-2)) var(--sw-gutter);
   box-sizing: border-box;

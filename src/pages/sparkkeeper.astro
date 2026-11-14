@@ -7,56 +7,29 @@ import ProductNav from '../components/ProductNav.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 
-const scope = [
-  {
-    code: 'en',
-    lang: undefined,
-    title: 'What Sparkkeeper covers today',
-    yesTitle: 'Sparkkeeper handles',
-    yes: [
-      'Your client records and everyday bookkeeping in one place',
-      'Reading receipts, invoices and spreadsheets into records',
-      'Answering questions about your books',
-      'Sending client emails on your schedule: reminders, birthdays and follow-ups, from templates you switch on',
-      'Notifications when something in your books needs you',
-      'Drafting reports and proposals for you to review',
-    ],
-    noTitle: 'Stays with your registered systems',
-    no: [
-      'Issuing BIR invoices',
-      'Filing and paying BIR taxes',
-      'Your registered books and invoicing system',
-      'Tax compliance, with your accountant',
-    ],
-    q: 'Does Sparkkeeper file my BIR taxes?',
-    a: 'No. Sparkkeeper doesn’t issue BIR invoices or file taxes today. Those stay with your registered systems and your accountant. Whether e-invoicing or CAS rules apply to your business is one for your accountant or tax adviser.',
-  },
-  {
-    code: 'tl',
-    lang: 'fil',
-    title: 'Saklaw ng Sparkkeeper today',
-    yesTitle: 'Sparkkeeper ang bahala sa',
-    yes: [
-      'Client records at araw-araw na bookkeeping niyo, nasa iisang lugar',
-      'Pagbasa ng resibo, invoices at spreadsheets para maging records',
-      'Pagsagot sa mga tanong tungkol sa books niyo',
-      'Pagpapadala ng emails sa clients sa schedule niyo: reminders, birthdays at follow-ups, mula sa templates na ino-on niyo',
-      'Notifications kapag may kailangang tingnan sa books niyo',
-      'Pag-draft ng reports at proposals para i-review niyo',
-    ],
-    noTitle: 'Nananatili sa registered systems niyo',
-    no: [
-      'Pag-issue ng BIR invoices',
-      'Pag-file at pagbayad ng BIR taxes',
-      'Registered books at invoicing system niyo',
-      'Tax compliance, kasama ang accountant niyo',
-    ],
-    q: 'Nagfa-file ba ng BIR taxes ang Sparkkeeper?',
-    a: 'Hindi. Hindi nag-i-issue ng BIR invoices o nagfa-file ng taxes ang Sparkkeeper today. Nananatili ’yun sa registered systems at accountant niyo. Kung applicable sa negosyo niyo ang e-invoicing o CAS rules, sa accountant o tax adviser niyo ’yun.',
-  },
-];
+const scope = {
+  title: 'What Sparkkeeper covers today',
+  yesTitle: 'Sparkkeeper handles',
+  yes: [
+    'Your client records and everyday bookkeeping in one place',
+    'Reading receipts, invoices and spreadsheets into records',
+    'Answering questions about your books',
+    'Sending client emails on your schedule: reminders, birthdays and follow-ups, from templates you switch on',
+    'Notifications when something in your books needs you',
+    'Drafting reports and proposals for you to review',
+  ],
+  noTitle: 'Stays with your accounting software',
+  no: [
+    'Issuing tax invoices',
+    'Lodging your BAS and GST',
+    'Payroll and super',
+    'Tax advice, with your accountant',
+  ],
+  q: 'Does Sparkkeeper do my BAS or tax invoices?',
+  a: "No. Sparkkeeper doesn’t issue tax invoices, run payroll or lodge your BAS today. Those stay with your accounting software, like Xero or MYOB, and your bookkeeper or accountant. Sparkkeeper sits alongside them for your client records, follow-ups and insights.",
+};
 
-const description = "Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.";
+const description = "Your numbers and clients in one place, alongside your accounting software. Ask Sparky, upload paperwork, create reports.";
 const schema = [
   {
     '@type': 'SoftwareApplication',
@@ -96,7 +69,7 @@ const schema = [
       </span>
       <h1 class="mx-h1 mx-h1--compact mx-h1--wide" id="sk-title">Less time on your books, more on your business.</h1>
       <p class="mx-p">
-        The AI tool for your everyday books and client records. Sparkkeeper keeps your numbers and clients in one place, with AI you can trust, and sits alongside your accounting software, registered books and invoicing.
+        The AI tool for your everyday books and client records. Sparkkeeper keeps your numbers and clients in one place, with AI you can trust, and sits alongside your accounting software.
       </p>
       <div class="mx-cta">
         <Button variant="accent" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
@@ -122,7 +95,7 @@ const schema = [
     site.showPlaceholders && (
       <section class="sk-story" aria-label="Client story">
         <div class="sk-story-inner">
-          <p class="sk-story-quote">[Beta client quote, in their own words, English or Taglish.]</p>
+          <p class="sk-story-quote">[Beta client quote, in their own words.]</p>
           <p>[Name, role, business]</p>
         </div>
       </section>
@@ -186,33 +159,25 @@ const schema = [
     </div>
   </section>
 
-  <section class="sw-band sk-scope" id="scope" aria-labelledby="scope-title-en">
+  <section class="sw-band sk-scope" id="scope" aria-labelledby="scope-title">
     <div class="sw-band-inner">
-      <div class="sk-toggle" role="group" aria-label="Language" data-lang-toggle hidden>
-        <button type="button" aria-pressed="true" data-lang-button="en">English</button>
-        <button type="button" aria-pressed="false" data-lang-button="tl">Taglish</button>
-      </div>
-      {
-        scope.map((block) => (
-          <div class="sk-lang" lang={block.lang} data-lang-block={block.code} hidden={block.code !== 'en'}>
-            <h2 class="sw-h2" id={`scope-title-${block.code}`}>{block.title}</h2>
-            <div class="sk-scope-grid">
-              <div class="sk-scope-card">
-                <h3>{block.yesTitle}</h3>
-                {block.yes.map((item) => <p>{item}</p>)}
-              </div>
-              <div class="sk-scope-card sk-scope-card--out">
-                <h3>{block.noTitle}</h3>
-                {block.no.map((item) => <p>{item}</p>)}
-              </div>
-            </div>
-            <div class="sk-answer">
-              <h3>{block.q}</h3>
-              <p>{block.a}</p>
-            </div>
+      <div class="sk-lang">
+        <h2 class="sw-h2" id="scope-title">{scope.title}</h2>
+        <div class="sk-scope-grid">
+          <div class="sk-scope-card">
+            <h3>{scope.yesTitle}</h3>
+            {scope.yes.map((item) => <p>{item}</p>)}
           </div>
-        ))
-      }
+          <div class="sk-scope-card sk-scope-card--out">
+            <h3>{scope.noTitle}</h3>
+            {scope.no.map((item) => <p>{item}</p>)}
+          </div>
+        </div>
+        <div class="sk-answer">
+          <h3>{scope.q}</h3>
+          <p>{scope.a}</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -239,30 +204,5 @@ const schema = [
       <Button variant="deep" size="lg" href="/sparkkeeper/beta">Apply for the beta</Button>
     </div>
   </section>
-  <noscript>
-    <style>
-      .sk-lang[hidden] {
-        display: flex !important;
-      }
-    </style>
-  </noscript>
 </BaseLayout>
 
-<script>
-  // Language toggle for the scope section. Both blocks are in the HTML, so the page reads fine without JavaScript.
-  const toggle = document.querySelector<HTMLElement>('[data-lang-toggle]');
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-lang-button]');
-  const blocks = document.querySelectorAll<HTMLElement>('[data-lang-block]');
-
-  if (toggle) {
-    toggle.hidden = false;
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
-        blocks.forEach((block) => {
-          block.hidden = block.dataset.langBlock !== button.dataset.langButton;
-        });
-      });
-    });
-  }
-</script>

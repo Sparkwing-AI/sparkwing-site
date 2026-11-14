@@ -241,10 +241,14 @@
 .home-stat h3 {
   margin: 0;
   font-size: var(--sw-text-h3);
-  font-weight: var(--sw-weight-bold);
-  line-height: var(--sw-leading-snug);
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--sw-color-deep);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .home-stat p {
@@ -272,7 +276,9 @@
 }
 
 .home-products {
-  background: var(--sw-color-surface);
+  background: radial-gradient(60% 70% at 12% 0%, color-mix(in srgb, var(--sw-brand-wing-violet) 55%, transparent), transparent 70%),
+    radial-gradient(55% 65% at 92% 100%, color-mix(in srgb, var(--sw-brand-lagoon) 38%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--sw-brand-navy-900) 0%, var(--sw-brand-navy-950) 100%);
 }
 
 .home-products .sw-band-inner {
@@ -511,7 +517,7 @@
 .home-steps {
   position: relative;
   overflow: clip;
-  background: var(--sw-color-page);
+  background: var(--sw-brand-spark-gold);
 }
 
 .home-steps .sw-band-inner {
@@ -737,7 +743,7 @@
 
 /* Team */
 .home-team {
-  background: var(--sw-color-surface);
+  background: var(--sw-color-violet-tint);
 }
 
 .home-team .sw-band-inner {
@@ -916,7 +922,7 @@
 }
 
 .home-context {
-  background: var(--sw-color-navy);
+  background: var(--sw-color-deep);
   color: var(--sw-color-on-deep);
 }
 
@@ -958,7 +964,7 @@
   gap: var(--sw-space-3);
   padding: 26px;
   border-radius: var(--sw-radius-xl);
-  border: 1px solid var(--sw-color-border-on-navy);
+  border: 2px solid color-mix(in srgb, var(--sw-brand-lagoon-100) 60%, transparent);
 }
 
 .home-context-card b {
@@ -1029,8 +1035,12 @@
 }
 
 .home-context-card--fit {
-  border: 2px solid var(--sw-color-accent);
-  background: var(--sw-color-navy-raised);
+  border: 2px solid transparent;
+  background: linear-gradient(var(--sw-color-deep-raised), var(--sw-color-deep-raised)) padding-box,
+    conic-gradient(from var(--glow-angle), color-mix(in srgb, var(--sw-brand-spark-gold) 28%, transparent) 0, color-mix(in srgb, var(--sw-brand-spark-gold) 28%, transparent) 55%, var(--sw-brand-ember) 72%, var(--sw-brand-spark-gold) 84%, var(--sw-brand-glow-light) 92%, color-mix(in srgb, var(--sw-brand-spark-gold) 28%, transparent) 100%) border-box;
+  position: relative;
+  isolation: isolate;
+  animation: home-glow-spin 5s linear infinite;
 }
 
 .home-context-card--fit .home-context-card-head b {
@@ -1277,4 +1287,151 @@
   :root[data-motion]:not([data-paused]) .home-marquee:hover .home-marquee-track {
     animation-play-state: paused;
   }
+}
+
+.home-stat-num {
+  font-size: 60px;
+  line-height: 1;
+  padding-bottom: 0.06em;
+  color: var(--sw-brand-lagoon);
+  background: linear-gradient(100deg, var(--g1), var(--g2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-stat-sub {
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--sw-color-deep);
+}
+
+.home-stat--1 {
+  --g1: var(--sw-brand-lagoon);
+  --g2: var(--sw-brand-wing-violet);
+}
+
+.home-stat--2 {
+  --g1: var(--sw-brand-wing-violet);
+  --g2: var(--sw-brand-ember);
+}
+
+.home-stat--3 {
+  --g1: var(--sw-brand-ember);
+  --g2: var(--sw-brand-ember-deep);
+}
+
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes home-glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
+.home-context-card--fit::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -2;
+  border-radius: inherit;
+  background: conic-gradient(from var(--glow-angle), transparent 0, transparent 58%, var(--sw-brand-ember) 74%, var(--sw-brand-spark-gold) 86%, var(--sw-brand-glow-light) 93%, transparent 100%);
+  filter: blur(14px);
+  opacity: 0.75;
+}
+
+.home-context-card--fit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--sw-color-deep-raised);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-context-card--fit {
+    animation: none;
+    --glow-angle: 215deg;
+  }
+}
+
+.home-trust-card {
+  background: var(--sw-brand-white);
+  color: var(--sw-color-deep);
+  border-radius: var(--sw-radius-xl);
+  padding: clamp(28px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sw-space-7);
+}
+
+.home-context .home-trust .sw-h2,
+.home-context .home-trust h3 {
+  color: var(--sw-color-deep);
+}
+
+.home-trust-word {
+  color: var(--sw-brand-lagoon);
+  background: linear-gradient(100deg, var(--sw-brand-lagoon), var(--sw-brand-wing-violet) 60%, var(--sw-brand-ember));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-steps .sw-h2,
+.home-steps .sw-lead {
+  color: var(--sw-color-deep);
+}
+
+.home-steps .home-flight-card {
+  background: var(--sw-brand-white);
+}
+
+.home-team .home-person {
+  background: var(--sw-brand-white);
+}
+
+.home-products .sw-h2 {
+  color: var(--sw-brand-white);
+}
+
+.home-products .sw-lead {
+  color: color-mix(in srgb, var(--sw-brand-white) 82%, transparent);
+}
+
+.home-products .home-map-card {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--sw-brand-white) 12%, transparent), color-mix(in srgb, var(--sw-brand-white) 4%, transparent));
+  border-color: color-mix(in srgb, var(--sw-brand-white) 22%, transparent);
+  box-shadow: 0 12px 32px var(--sw-shadow-color-14);
+  color: var(--sw-brand-white);
+}
+
+.home-products .home-map-card:hover {
+  border-color: var(--sw-brand-spark-gold);
+}
+
+.home-products .home-map-pillar {
+  color: var(--sw-brand-spark-gold);
+}
+
+.home-products .home-map-body {
+  color: color-mix(in srgb, var(--sw-brand-white) 82%, transparent);
+}
+
+.home-products .home-map-card--live {
+  background: var(--sw-color-action);
+  border-color: var(--sw-color-action);
+  color: var(--sw-color-on-action);
+}
+
+.home-products .home-map-card--live .home-map-pillar,
+.home-products .home-map-card--live .home-map-body {
+  color: var(--sw-color-on-action);
 }
