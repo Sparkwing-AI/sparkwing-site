@@ -6,18 +6,17 @@ async function pauseViaMarquee(page: Page) {
 }
 
 test.describe('Home', () => {
-  test('has one h1 and the three doors', async ({ page }) => {
+  test('has one h1 and the two doors', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Transform how your business works.');
-    await expect(page.getByRole('link', { name: /I want an AI strategy for my business/ })).toHaveAttribute('href', '/spark-studio');
-    await expect(page.getByRole('link', { name: /I want to save hours on manual work/ })).toHaveAttribute('href', '/bring-ai-in');
-    await expect(page.getByRole('link', { name: /I want my whole team using AI safely/ })).toHaveAttribute('href', '/scale-ai');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText("AI that's safe, practical, and goes beyond basic chatbots.");
+    await expect(page.getByRole('link', { name: /I want less paperwork and manual admin/ })).toHaveAttribute('href', '/bring-ai-in');
+    await expect(page.getByRole('link', { name: /I want AI my team and I can trust/ })).toHaveAttribute('href', '/scale-ai');
   });
 
-  test('the transformation steps and the apps map cover all five pillars', async ({ page }) => {
+  test('the five steps and the apps map cover all five pillars', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('.home-flight-card')).toHaveCount(5);
-    await expect(page.locator('.home-flight-pillar')).toHaveText(['Strategy', 'Data and context', 'Rules', 'People', 'Tools and scale']);
+    await expect(page.locator('.home-flight-pillar')).toHaveText(['Discover & plan', 'Your context', 'Your rules', 'Your tools', 'Your people']);
     await expect(page.locator('.home-map-card')).toHaveCount(8);
     await expect(page.locator('.home-map-card--live')).toHaveAttribute('href', '/sparkkeeper');
     await expect(page.locator('.home-map-card', { hasText: 'Coming soon' })).toHaveCount(4);
@@ -25,7 +24,7 @@ test.describe('Home', () => {
 
   test('stats sources open in a new tab and keep the disclaimer visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText("Industry research. These aren't Sparkwing results.")).toBeVisible();
+    await expect(page.getByText('Figures from independent industry reports.')).toBeVisible();
     const sources = page.locator('.home-sources a');
     await expect(sources).toHaveCount(2);
     for (const link of await sources.all()) {
@@ -148,22 +147,20 @@ test.describe('Home', () => {
     expect(await href(/^Magnet/)).toBe('/apps/magnet');
     expect(await href(/^Academy/)).toBe('/apps/academy');
     expect(await href(/^Nest/)).toBe('/apps/nest');
-    expect(await href(/Meet Spark Studio/)).toBe('/spark-studio');
     expect(await href(/See how trust is built in/)).toBe('/trust');
     expect(await href('Join the beta')).toBe('/sparkkeeper/beta');
     await expect(page.locator('a', { hasText: 'Sparkkeeper login' })).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Try the demo' })).toHaveCount(0);
     await expect(page.locator('a[href*="workers.dev"]')).toHaveCount(0);
     await expect(page.locator('.home-try').getByRole('link', { name: 'Join the beta' })).toHaveAttribute('href', '/sparkkeeper/beta');
-    await expect(page.locator('.home-try').getByRole('link', { name: 'Book a discovery call' })).toHaveAttribute('data-enquiry', 'call');
     await expect(page.getByRole('link', { name: 'Book a discovery call' }).first()).toHaveAttribute('data-enquiry', 'call');
   });
 
-  test('focus ring on Meet Spark Studio uses the gold focus colour', async ({ page }) => {
+  test('focus ring on the Hive link uses the gold focus colour on the dark band', async ({ page }) => {
     await page.goto('/');
-    const band = page.getByRole('link', { name: /Meet Spark Studio/ });
-    await band.focus();
-    const colour = await band.evaluate((el) => getComputedStyle(el).outlineColor);
+    const link = page.getByRole('link', { name: /See how Hive works/ });
+    await link.focus();
+    const colour = await link.evaluate((el) => getComputedStyle(el).outlineColor);
     const gold = await page.evaluate(() => {
       const probe = document.createElement('i');
       probe.style.color = 'var(--sw-color-focus-on-deep)';
@@ -180,11 +177,11 @@ test.describe('Home', () => {
     await expect(page.locator('body')).not.toContainText(/\[[A-Z][^\]]+\]/);
   });
 
-  test('team cards show the three people with equal widths at wide', async ({ page }) => {
+  test('team cards show the two people with equal widths at wide', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
     const cards = page.locator('.home-person');
-    await expect(cards).toHaveCount(3);
+    await expect(cards).toHaveCount(2);
     const widths = await cards.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().width)));
     expect(new Set(widths).size).toBe(1);
   });
