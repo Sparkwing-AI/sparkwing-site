@@ -81,17 +81,17 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
 
 /** Page links shown inline at 1200px and wider. */
 export const pageLinks = [
-  { label: 'AI strategy', href: '/spark-studio' },
-  { label: 'Save hours', href: '/bring-ai-in' },
+  { label: 'Cut manual admin', href: '/bring-ai-in' },
   { label: 'Use AI safely', href: '/scale-ai' },
+  { label: 'AI strategy', href: '/spark-studio' },
   { label: 'Trust', href: '/trust' },
 ] as const;
 
 /** Page links shown first in the Menu panel below 1200px. */
 export const menuPageLinks = [
-  { label: 'AI strategy', href: '/spark-studio' },
-  { label: 'Save hours', href: '/bring-ai-in' },
+  { label: 'Cut manual admin', href: '/bring-ai-in' },
   { label: 'Use AI safely', href: '/scale-ai' },
+  { label: 'AI strategy', href: '/spark-studio' },
   { label: 'Trust', href: '/trust' },
   { label: 'Contact', href: '/contact' },
 ] as const;
@@ -109,9 +109,9 @@ export const footerColumns = [
   {
     heading: 'PATHS',
     links: [
-      { label: 'Build your AI strategy', href: '/spark-studio' },
-      { label: 'Save hours on manual work', href: '/bring-ai-in' },
+      { label: 'Cut manual admin', href: '/bring-ai-in' },
       { label: 'Use AI safely', href: '/scale-ai' },
+      { label: 'Build your AI strategy', href: '/spark-studio' },
     ],
   },
   {

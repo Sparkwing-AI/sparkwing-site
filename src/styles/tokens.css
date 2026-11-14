@@ -21,6 +21,9 @@
   --sw-brand-navy-900: #14263D;
   --sw-brand-navy-800: #1F3450;
   --sw-brand-navy-700: #3A4C66;
+  --sw-brand-navy-950: #0F2036;
+  --sw-brand-ember-deep: #C2410C;
+  --sw-brand-glow-light: #FFF3C9;
 
   /* Surfaces */
   --sw-color-page: var(--sw-brand-morning-silk);

@@ -10,7 +10,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     <svg aria-hidden="true" width="20" height="20" viewBox="-12 -12 24 24" fill="currentColor">
       <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
     </svg>
-    Ask Sparky
+    <span class="sw-ask-launch-label">Ask Sparky</span>
   </button>
   <div class="sw-ask" id="sw-ask" role="dialog" aria-labelledby="sw-ask-title" hidden>
     <div class="sw-ask-panel">
@@ -86,7 +86,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   /** Links come from this list only. The model can name a page, never write a link. */
   const sourcePages: Record<string, { label: string; href: string } | undefined> = {
     home: { label: 'Home', href: '/' },
-    'bring-ai-in': { label: 'Save hours', href: '/bring-ai-in' },
+    'bring-ai-in': { label: 'Cut manual admin', href: '/bring-ai-in' },
     'scale-ai': { label: 'Use AI safely', href: '/scale-ai' },
     'spark-studio': { label: 'Spark Studio', href: '/spark-studio' },
     trust: { label: 'Trust', href: '/trust' },
