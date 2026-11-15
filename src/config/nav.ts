@@ -50,7 +50,7 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
 
 /** Page links shown inline at 1200px and wider. */
 export const pageLinks = [
-  { label: 'Apps', href: '/apps' },
+  { label: 'Apps', href: '/sparkkeeper' },
   { label: 'Services', href: '/spark-studio' },
   { label: 'How it works', href: '/how-it-works' },
   { label: 'Trust', href: '/trust' },
