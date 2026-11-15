@@ -388,6 +388,55 @@
   font-weight: var(--sw-weight-bold);
 }
 
+/* Wide screens: the Apps dropdown is a floating card under the nav, not a full-width bar. */
+@media (min-width: 1200px) {
+  .sw-menu {
+    right: auto;
+    left: max(var(--sw-gutter), calc((100% - var(--sw-container)) / 2 + 150px));
+    width: min(760px, calc(100% - var(--sw-gutter) * 2));
+    margin-top: var(--sw-space-2);
+    overflow: hidden;
+    border: 1px solid var(--sw-color-border);
+    border-radius: var(--sw-radius-xl);
+  }
+
+  .sw-menu-grid {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  .sw-menu-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    grid-template-rows: auto;
+    column-gap: var(--sw-space-6);
+    align-items: start;
+    padding: var(--sw-space-6);
+  }
+
+  .sw-menu-col .sw-eyebrow,
+  .sw-menu-col .sw-menu-item {
+    grid-column: 1;
+  }
+
+  .sw-menu-item {
+    padding: var(--sw-space-3);
+    border-radius: var(--sw-radius-lg);
+  }
+
+  .sw-menu-item:hover {
+    background: var(--sw-color-tint);
+  }
+
+  .sw-menu-col .sw-menu-call {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: stretch;
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 1199px) {
   .sw-nav-links {
     display: none;
