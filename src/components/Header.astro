@@ -105,8 +105,42 @@ const current = (href: string) => (path === href ? 'page' : undefined);
     if (!open) opener = null;
   }
 
+  // On wide screens with a mouse, the Apps dropdown opens on hover and closes when the pointer leaves.
+  const hoverMode = window.matchMedia('(min-width: 1200px) and (hover: hover)');
+  const appsButton = document.querySelector<HTMLButtonElement>('.sw-products-btn');
+  let closeTimer = 0;
+
+  function cancelClose() {
+    window.clearTimeout(closeTimer);
+  }
+
+  function scheduleClose() {
+    cancelClose();
+    closeTimer = window.setTimeout(() => setOpen(false), 150);
+  }
+
+  if (appsButton && panel) {
+    appsButton.addEventListener('pointerenter', (event) => {
+      if (!hoverMode.matches || event.pointerType !== 'mouse') return;
+      cancelClose();
+      if (panel.hidden) {
+        opener = appsButton;
+        setOpen(true);
+      }
+    });
+    appsButton.addEventListener('pointerleave', () => {
+      if (hoverMode.matches && !panel.hidden) scheduleClose();
+    });
+    panel.addEventListener('pointerenter', cancelClose);
+    panel.addEventListener('pointerleave', () => {
+      if (hoverMode.matches && !panel.hidden) scheduleClose();
+    });
+  }
+
   toggles.forEach((button) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+      // A mouse click on Apps while the hover dropdown is already showing leaves it open. The keyboard still toggles it.
+      if (button === appsButton && hoverMode.matches && !panel?.hidden && event.detail > 0) return;
       if (panel?.hidden) {
         opener = button;
         setOpen(true);
