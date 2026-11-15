@@ -1404,6 +1404,7 @@
 
 .home-products .sw-lead {
   color: color-mix(in srgb, var(--sw-brand-white) 82%, transparent);
+  max-width: 800px;
 }
 
 .home-products .home-map-card {
