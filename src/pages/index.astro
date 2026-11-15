@@ -19,18 +19,12 @@ const pillarApps = [
     body: 'AI strategy, setup and coaching, plus custom apps or agents when you need them.',
   },
   {
-    pillar: 'Data and context',
-    name: 'Hive',
-    href: '/trust#hive',
-    logo: logo('hive-light'),
-    body: 'Your business context layer, so AI answers from your own information. Included with every app.',
-  },
-  {
-    pillar: 'Rules',
-    name: 'Control Tower',
-    href: '/trust#control-tower',
-    logo: logo('control-tower-light'),
-    body: 'Governance and guardrails that decide what AI can do and keep a record. Included with every app.',
+    pillar: 'Tools and scale',
+    name: 'Sparkkeeper',
+    href: '/sparkkeeper',
+    logo: '/assets/logos/sparkkeeper-on-dark.svg',
+    badge: 'Beta',
+    body: 'AI for your bookkeeping and client records. Your paperwork goes in, tidy records come out.',
   },
   {
     pillar: 'People',
@@ -41,36 +35,12 @@ const pillarApps = [
     body: 'Short online courses that bring your team up to speed and confident with AI.',
   },
   {
-    pillar: 'People',
-    name: 'Nest',
-    href: '/apps/nest',
-    logo: logo('nest'),
-    badge: 'Coming soon',
-    body: "Your team's AI home page for news, training links and app access.",
-  },
-  {
-    pillar: 'Tools and scale',
-    name: 'Sparkkeeper',
-    href: '/sparkkeeper',
-    logo: '/assets/logos/sparkkeeper-on-dark.svg',
-    badge: 'Beta',
-    body: 'AI for your bookkeeping and client records. Your paperwork goes in, tidy records come out.',
-  },
-  {
     pillar: 'Tools and scale',
     name: 'Magnet',
     href: '/apps/magnet',
     logo: logo('magnet-light'),
     badge: 'Coming soon',
     body: 'Put AI to work on growing your business, from first enquiry to yes.',
-  },
-  {
-    pillar: 'Tools and scale',
-    name: 'AI Crew',
-    href: '/trust#ai-crew',
-    logo: logo('ai-crew-light'),
-    badge: 'Coming soon',
-    body: 'AI specialists and bots for your repeat work, with helpers you approve.',
   },
 ];
 
@@ -115,12 +85,11 @@ const team = [
     label="Animation: a wing of light beats slowly, shedding gold sparks."
   >
     <div class="mx-text" slot="copy">
-      <span class="mx-eyebrow">Take flight with AI you can trust.</span>
-      <h1 class="mx-h1 mx-h1--compact mx-h1--wide" id="hero-title">AI that's safe, practical, and goes beyond basic chatbots.</h1>
-      <p class="mx-p">Save time and get more done with AI strategy, apps and agents tailored to your business and your team.</p>
+      <h1 class="mx-h1 mx-h1--compact mx-h1--wide" id="hero-title">AI that's tailored to your business.</h1>
+      <p class="mx-p">Go beyond basic chatbots with trusted, AI-powered apps that take care of your paperwork and help boost your sales.</p>
       <div class="mx-cta">
         <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
-        <Button variant="outline" size="lg" href="#how-it-works">See how it works</Button>
+        <Button variant="outline" size="lg" href="/how-it-works">See how it works</Button>
       </div>
     </div>
     <div class="mx-paths" slot="paths">
@@ -168,12 +137,12 @@ const team = [
           href="https://www.ecb.europa.eu/press/blog/date/2026/html/ecb.blog20260826~e1c1a89999.en.html"
           target="_blank"
           rel="noopener"
-          >*European Central Bank, AI adoption and the productivity promise, August 2026: median among AI users, from a survey of about 20,000 people across 11 euro area countries.<span
+          >*European Central Bank, Aug 2026: median among AI users in the euro area.<span
             class="sw-visually-hidden"> (opens in a new tab)</span
           ></a
         >{' '}
         <a href="https://www.salesforce.com/news/stories/smbs-ai-trends-2025/" target="_blank" rel="noopener"
-          >**Salesforce, SMB Trends, December 2024: 3,350 leaders of businesses with up to 200 staff across North America, Latin America, Asia-Pacific and Europe. Businesses using AI only.<span
+          >**Salesforce SMB Trends, Dec 2024: small and mid-sized businesses using AI.<span
             class="sw-visually-hidden"> (opens in a new tab)</span
           ></a
         >
@@ -215,7 +184,7 @@ const team = [
           </div>
         </div>
       </div>
-      <a class="home-context-link" href="/trust">See how Hive works</a>
+      <a class="home-context-link" href="/how-it-works#business-context">See how Hive works</a>
       <section class="home-trust home-trust-card" aria-labelledby="trust-title">
         <h2 class="sw-h2" id="trust-title">AI that you can <span class="home-trust-word">trust</span>.</h2>
         <div class="home-trust-grid">
@@ -233,7 +202,7 @@ const team = [
     </div>
   </section>
 
-  <section class="sw-band home-steps" id="how-it-works" aria-labelledby="steps-title">
+  <section class="sw-band home-steps" id="how-we-tailor" aria-labelledby="steps-title">
     <canvas class="home-flight-canvas" aria-hidden="true"></canvas>
     <div class="home-flight-pause"><MotionTrigger corner="bottom-right" /></div>
     <div class="sw-band-inner">
@@ -252,7 +221,7 @@ const team = [
             </a>
           </li>
           <li>
-            <a class="home-flight-card" href="/trust#hive">
+            <a class="home-flight-card" href="/how-it-works#business-context">
               <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">2</span><img src="/assets/logos/hive.svg" width="44" height="44" alt="" loading="lazy" /></span>
               <span class="home-flight-label"><span class="home-flight-pillar">Your context</span></span>
               <h3>Give AI your business knowledge.</h3>
@@ -260,7 +229,7 @@ const team = [
             </a>
           </li>
           <li>
-            <a class="home-flight-card" href="/trust#control-tower">
+            <a class="home-flight-card" href="/how-it-works#rules">
               <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">3</span><img src="/assets/logos/control-tower.svg" width="44" height="44" alt="" loading="lazy" /></span>
               <span class="home-flight-label"><span class="home-flight-pillar">Your rules</span></span>
               <h3>Set governance and guardrails.</h3>
@@ -288,7 +257,7 @@ const team = [
     </div>
   </section>
 
-  <section class="sw-band home-team" aria-labelledby="team-title">
+  <section class="sw-band home-team" id="team" aria-labelledby="team-title">
     <div class="sw-band-inner">
       <h2 class="sw-h2" id="team-title">A team that knows AI, change adoption, and great experiences.</h2>
       <div class="home-team-grid">
@@ -317,9 +286,9 @@ const team = [
   <section class="sw-band home-products" aria-labelledby="products-title">
     <div class="sw-band-inner">
       <div class="sw-section-head">
-        <h2 class="sw-h2" id="products-title">Sparkwing brings tools that get you started on your AI journey.</h2>
+        <h2 class="sw-h2" id="products-title">We bring the tools that get you on your AI journey.</h2>
         <p class="sw-lead">
-          Strategy, data and context, rules, people, and tools each have a Sparkwing app or service behind them. Our apps run on the same trusted base, so you can add more when you're ready.
+          From defining your tailored AI strategy, to apps that take on the manual admin, manage your leads, and train your team, Sparkwing has your business covered.
         </p>
       </div>
       <ul class="home-map" role="list">

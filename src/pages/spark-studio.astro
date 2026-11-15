@@ -11,16 +11,19 @@ import { site } from '../config/site';
 const services = [
   {
     title: 'AI strategy',
-    body: 'We check your AI maturity across five areas: strategy, data and context, rules, people and tools. Then we build a plan around your goals and biggest time sinks.',
+    body: 'Find the jobs where AI will save the most time, and agree the rules for using it safely.',
   },
   {
-    title: 'AI systems, setup and training',
-    body: 'Get your data, business context, people and first apps ready, and train your team to use AI on real work.',
+    title: 'AI setup',
+    body: 'Get your documents, your people and your first apps ready, so your team can start using AI on real work.',
   },
-  { title: 'Custom AI apps', body: "Build an app around how your business works, when the ready-made ones don't fit." },
   {
-    title: 'AI agents',
-    body: 'Build AI helpers for the repeat work in your team, like an inbox sorter or a report writer.',
+    title: 'Custom apps and agents',
+    body: "Build an app or an AI helper around how your business works, when the ready-made ones don't fit.",
+  },
+  {
+    title: 'AI coaching',
+    body: 'Hands-on coaching so your team is confident using AI well and safely.',
   },
 ];
 
@@ -34,7 +37,7 @@ const steps = [
     title: 'We build and set up',
     body: 'A small team tries it first, so we can fix what needs fixing before everyone starts.',
   },
-  { title: 'You grow', body: "We train your people and stay close, and you add more whenever you're ready." },
+  { title: 'You grow', body: "We coach your team on using AI and stay close, and you add more whenever you're ready." },
 ];
 
 const description = "AI consulting from Sydney. AI strategy, AI systems, custom AI apps and AI agents, built around your business, for businesses across Australia.";
@@ -66,12 +69,10 @@ const schema = [
     <div class="mx-text" slot="copy">
       <span class="mx-mark">
         <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
-        <span class="mx-eyebrow">Spark Studio · AI strategy and consulting</span>
+        <span class="mx-eyebrow">Spark Studio</span>
       </span>
-      <h1 class="mx-h1 mx-h1--compact" id="ss-title">Want to bring AI transformation to your company? Talk to us.</h1>
-      <p class="mx-p">
-        Spark Studio is Sparkwing's AI strategy and consulting team. We find where AI will help most, build your plan, set it up properly, train your people, and create custom apps or AI agents when you need them.
-      </p>
+      <h1 class="mx-h1 mx-h1--compact" id="ss-title">Spark Studio customises your AI journey</h1>
+      <p class="mx-p">AI strategy, setup, tailored apps, and AI coaching for your team</p>
       <div class="mx-cta">
         <Button variant="accent" size="lg" enquiry="studio">Book a discovery call</Button>
       </div>
@@ -86,7 +87,7 @@ const schema = [
 
   <section class="sw-band sw-band--surface" aria-labelledby="ss-do">
     <div class="sw-band-inner sw-stack">
-      <h2 class="sw-h2" id="ss-do">AI strategy, AI systems, custom apps and AI agents</h2>
+      <h2 class="sw-h2" id="ss-do">What we can do for you.</h2>
       <div class="sw-cards">
         {
           services.map((service) => (
@@ -102,7 +103,7 @@ const schema = [
 
   <section class="sw-band" aria-labelledby="ss-how">
     <div class="sw-band-inner sw-stack">
-      <h2 class="sw-h2" id="ss-how">How we work with you</h2>
+      <h2 class="sw-h2" id="ss-how">How we work with you.</h2>
       <ol class="sw-steps">
         {
           steps.map((step) => (
@@ -121,10 +122,20 @@ const schema = [
       <h2 class="sw-base-title" id="ss-trust">Custom work, on the same trusted base.</h2>
       <div class="sw-base-copy">
         <p>
-          What we build is designed to run on the same base platform as every Sparkwing app. Hive knows your business, and Control Tower decides what's allowed and keeps a record of what the AI did. We don't use your data to train AI models.
+          What we build runs on the same base as every Sparkwing app. Your business context stays in one place, you set the rules, and you check AI drafts before they go out. We don't use your data to train AI models.
         </p>
-        <a class="sw-link" href="/trust">How the base platform works</a>
+        <a class="sw-link" href="/how-it-works">See how it works</a>
       </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--gold" aria-labelledby="ss-cta">
+    <div class="sw-band-inner sw-band-inner--row">
+      <div class="sw-gold-copy">
+        <h2 id="ss-cta">Ready to talk about your business?</h2>
+        <p>Book a discovery call and tell us where the time goes.</p>
+      </div>
+      <Button variant="deep" size="lg" enquiry="studio">Book a discovery call</Button>
     </div>
   </section>
 </BaseLayout>

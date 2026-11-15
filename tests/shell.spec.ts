@@ -4,27 +4,12 @@ import { expect, test } from '@playwright/test';
 // Header menu, footer and enquiry modal behaviour (FR-001 to FR-005, FR-904, FR-905, FR-910).
 
 test.describe('header menu', () => {
-  test('Products opens, Esc closes and focus returns to the button', async ({ page }, info) => {
+  test('wide: main links lead to the five pages', async ({ page }, info) => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');
-    const products = page.getByRole('button', { name: 'Products' });
-    await expect(products).toHaveAttribute('aria-expanded', 'false');
-    await products.click();
-    await expect(products).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('.sw-menu-item', { hasText: 'Hive' })).toBeVisible();
-    await expect(page.getByText('Not sure where to begin?')).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(products).toHaveAttribute('aria-expanded', 'false');
-    await expect(products).toBeFocused();
-    await expect(page.locator('#sw-menu')).toBeHidden();
-  });
-
-  test('clicking outside closes the menu', async ({ page }, info) => {
-    test.skip(info.project.name === 'compact', 'Wide layout only');
-    await page.goto('/');
-    await page.getByRole('button', { name: 'Products' }).click();
-    await page.locator('footer h2').click();
-    await expect(page.locator('#sw-menu')).toBeHidden();
+    const nav = page.getByRole('navigation', { name: 'Main' });
+    await expect(nav.getByRole('link')).toHaveText(['Apps', 'Services', 'How it works', 'Trust']);
+    await expect(nav.getByRole('link', { name: 'How it works' })).toHaveAttribute('href', '/how-it-works');
   });
 
   test('compact: Menu button reads Menu or Close and lists page links first', async ({ page }, info) => {
@@ -36,7 +21,7 @@ test.describe('header menu', () => {
     const close = page.getByRole('button', { name: 'Close', exact: true }).first();
     await expect(close).toHaveAttribute('aria-expanded', 'true');
     const first = page.locator('#sw-menu a').first();
-    await expect(first).toHaveText('Cut manual admin');
+    await expect(first).toHaveText('Home');
     await page.keyboard.press('Escape');
     await expect(page.locator('.sw-menu-btn')).toBeFocused();
   });

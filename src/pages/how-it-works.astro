@@ -1,0 +1,134 @@
+---
+import '../styles/page.css';
+import '../styles/inner.css';
+import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import FlowStage from '../components/FlowStage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+const things = [
+  {
+    id: 'business-context',
+    label: 'HIVE',
+    logo: '/assets/logos/hive-light.svg',
+    title: 'Your business context.',
+    body: 'Your documents, records and ways of working are kept in one place, so every answer draws on your own business context. The more you add, the more accurate the answers get.',
+  },
+  {
+    id: 'rules',
+    label: 'CONTROL TOWER',
+    logo: '/assets/logos/control-tower-light.svg',
+    title: 'Your rules.',
+    body: 'You decide what the AI can do and what needs your approval. Control Tower keeps a record of what happened, so you can always check.',
+  },
+  {
+    id: 'approval',
+    label: 'AI CREW',
+    logo: '/assets/logos/ai-crew-light.svg',
+    title: 'Approval before anything goes out.',
+    body: 'Repeat jobs like sorting the inbox or drafting a report can be handed to AI helpers. Everything stays a draft until you have checked it.',
+  },
+];
+
+const steps = [
+  { title: 'You drop in the paperwork.', body: 'Invoices, receipts, client lists and spreadsheets all go to the same place.' },
+  { title: 'AI fills in the records.', body: 'The AI sorts the details and fills in your records, using your business context and your rules.' },
+  { title: 'You check and approve.', body: 'Review the draft, approve it, and the tidy record is saved.' },
+];
+
+const description =
+  'How Sparkwing works: your business context and rules sit behind every app, and you review AI drafts before anything goes out.';
+const schema = [
+  {
+    '@type': 'WebPage',
+    name: 'How Sparkwing works',
+    url: new URL('/how-it-works', site.url).href,
+    description,
+    isPartOf: { '@id': new URL('/#website', site.url).href },
+  },
+];
+---
+
+<BaseLayout schema={schema} title="How Sparkwing works: your business context, your rules" description={description}>
+  <CanvasHero
+    scene="flow"
+    titleId="hiw-title"
+    label="Animation: your business context, rules and approval feed every app and come out as accurate answers, work you can check and a clear record."
+  >
+    <div class="mx-text" slot="copy">
+      <h1 class="mx-h1 mx-h1--compact" id="hiw-title">Your business context and rules power every answer.</h1>
+      <p class="mx-p">Add your business context, set what the AI can do, and review everything before it goes out.</p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
+        <Button variant="outline" size="lg" href="/sparkkeeper">See the apps</Button>
+      </div>
+    </div>
+    <FlowStage
+      slot="stage"
+      logo="/assets/sparkwing-mark.png"
+      inputs={['Your business context', 'Your rules', 'Your approval']}
+      outputs={['Accurate answers', 'Work you can check', 'A clear record']}
+    />
+  </CanvasHero>
+
+  <section class="sw-band sw-band--surface" aria-labelledby="hiw-three">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="hiw-three">Three things work behind every app.</h2>
+      <p>They come included with every Sparkwing app, so you get them from day one.</p>
+      <div class="sw-cards">
+        {
+          things.map((thing) => (
+            <div class="sw-card" id={thing.id}>
+              <img src={thing.logo} alt="" width="48" height="48" />
+              <p><b>{thing.label}</b></p>
+              <h3>{thing.title}</h3>
+              <p>{thing.body}</p>
+              <p><b>Included with every app</b></p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band" aria-labelledby="hiw-practice">
+    <div class="sw-band-inner sw-stack">
+      <h2 class="sw-h2" id="hiw-practice">What it looks like in practice.</h2>
+      <p>Here is a typical job in Sparkkeeper, our bookkeeping app.</p>
+      <ol class="sw-steps sw-steps--num">
+        {
+          steps.map((step, index) => (
+            <li>
+              <b class="sw-step-n" aria-hidden="true">{index + 1}</b>
+              <b>{step.title}</b>
+              <span>{step.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface sw-base" aria-labelledby="hiw-trust">
+    <div class="sw-base-grid">
+      <h2 class="sw-base-title" id="hiw-trust">Your information stays yours.</h2>
+      <div class="sw-base-copy">
+        <p>
+          We don't use your data to train AI models. Your customers' details stay private, and you check AI drafts before they go out.
+        </p>
+        <a class="sw-link" href="/trust">More on trust and security</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--gold" aria-labelledby="hiw-cta">
+    <div class="sw-band-inner sw-band-inner--row">
+      <div class="sw-gold-copy">
+        <h2 id="hiw-cta">Want to see how it fits your business?</h2>
+        <p>Book a discovery call and we'll show you what AI could take off your plate.</p>
+      </div>
+      <Button variant="deep" size="lg" enquiry="call">Book a discovery call</Button>
+    </div>
+  </section>
+</BaseLayout>
