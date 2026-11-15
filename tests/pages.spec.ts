@@ -6,6 +6,7 @@ const motionPages = [
   '/apps/academy',
   '/apps/nest',
   '/spark-studio',
+  '/how-it-works',
   '/trust',
   '/bring-ai-in',
   '/scale-ai',
@@ -228,7 +229,7 @@ test.describe('Review fixes', () => {
       ['/scale-ai', 'Control Tower Governance and guardrails', '/trust#control-tower'],
       ['/scale-ai', 'Academy', '/apps/academy'],
       ['/scale-ai', 'Nest', '/apps/nest'],
-      ['/spark-studio', 'How the base platform works', '/trust'],
+      ['/spark-studio', 'See how it works', '/how-it-works'],
     ];
     for (const [route, name, href] of checks) {
       await page.goto(route);

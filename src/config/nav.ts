@@ -2,7 +2,7 @@
 export const enquiryTopics = [
   { value: 'call', label: 'Book a discovery call' },
   { value: 'app', label: 'Ask about an app' },
-  { value: 'studio', label: 'AI strategy or transformation for my business' },
+  { value: 'studio', label: 'AI strategy and coaching for my business' },
   { value: 'other', label: 'Something else' },
 ] as const;
 
@@ -20,7 +20,7 @@ export interface ProductLink {
 
 export const productGroups: { heading: string; items: ProductLink[] }[] = [
   {
-    heading: 'TEAM APPS',
+    heading: 'APPS',
     items: [
       {
         label: 'Sparkkeeper',
@@ -44,55 +44,23 @@ export const productGroups: { heading: string; items: ProductLink[] }[] = [
         logo: logo('academy'),
         badge: { label: 'Coming soon', tone: 'neutral' },
       },
-      {
-        label: 'Nest',
-        href: '/apps/nest',
-        summary: 'One place your whole team checks in',
-        logo: logo('nest'),
-        badge: { label: 'Coming soon', tone: 'neutral' },
-      },
-    ],
-  },
-  {
-    heading: 'INCLUDED WITH EVERY APP',
-    items: [
-      { label: 'Hive', href: '/trust#hive', summary: 'Your business context layer', logo: logo('hive') },
-      { label: 'AI Crew', href: '/trust#ai-crew', summary: 'AI tooling that does the work, with helpers you approve', logo: logo('ai-crew') },
-      {
-        label: 'Control Tower',
-        href: '/trust#control-tower',
-        summary: 'Governance and guardrails',
-        logo: logo('control-tower'),
-      },
-    ],
-  },
-  {
-    heading: 'AI STRATEGY AND CONSULTING',
-    items: [
-      {
-        label: 'Spark Studio',
-        href: '/spark-studio',
-        summary: 'AI strategy, setup, custom apps and AI agents',
-        logo: logo('spark-studio'),
-      },
     ],
   },
 ];
 
 /** Page links shown inline at 1200px and wider. */
 export const pageLinks = [
-  { label: 'Cut manual admin', href: '/bring-ai-in' },
-  { label: 'Use AI safely', href: '/scale-ai' },
-  { label: 'AI strategy', href: '/spark-studio' },
+  { label: 'Apps', href: '/apps' },
+  { label: 'Services', href: '/spark-studio' },
+  { label: 'How it works', href: '/how-it-works' },
   { label: 'Trust', href: '/trust' },
+  { label: 'About', href: '/#team' },
 ] as const;
 
 /** Page links shown first in the Menu panel below 1200px. */
 export const menuPageLinks = [
-  { label: 'Cut manual admin', href: '/bring-ai-in' },
-  { label: 'Use AI safely', href: '/scale-ai' },
-  { label: 'AI strategy', href: '/spark-studio' },
-  { label: 'Trust', href: '/trust' },
+  { label: 'Home', href: '/' },
+  ...pageLinks,
   { label: 'Contact', href: '/contact' },
 ] as const;
 
@@ -103,7 +71,6 @@ export const footerColumns = [
       { label: 'Sparkkeeper', href: '/sparkkeeper' },
       { label: 'Magnet', href: '/apps/magnet' },
       { label: 'Academy', href: '/apps/academy' },
-      { label: 'Nest', href: '/apps/nest' },
     ],
   },
   {
@@ -115,11 +82,11 @@ export const footerColumns = [
     ],
   },
   {
-    heading: 'TRUST',
+    heading: 'HOW IT WORKS',
     links: [
-      { label: 'Hive', href: '/trust#hive' },
-      { label: 'AI Crew', href: '/trust#ai-crew' },
-      { label: 'Control Tower', href: '/trust#control-tower' },
+      { label: 'Your business context', href: '/how-it-works#business-context' },
+      { label: 'Your rules', href: '/how-it-works#rules' },
+      { label: 'Approval before it goes out', href: '/how-it-works#approval' },
     ],
   },
 ] as const;

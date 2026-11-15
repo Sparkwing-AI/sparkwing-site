@@ -8,7 +8,7 @@ async function pauseViaMarquee(page: Page) {
 test.describe('Home', () => {
   test('has one h1 and the two doors', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText("AI that's safe, practical, and goes beyond basic chatbots.");
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText("AI that's tailored to your business.");
     await expect(page.getByRole('link', { name: /I want less paperwork and manual admin/ })).toHaveAttribute('href', '/bring-ai-in');
     await expect(page.getByRole('link', { name: /I want AI my team and I can trust/ })).toHaveAttribute('href', '/scale-ai');
   });
@@ -17,9 +17,9 @@ test.describe('Home', () => {
     await page.goto('/');
     await expect(page.locator('.home-flight-card')).toHaveCount(5);
     await expect(page.locator('.home-flight-pillar')).toHaveText(['Discover & plan', 'Your context', 'Your rules', 'Your tools', 'Your people']);
-    await expect(page.locator('.home-map-card')).toHaveCount(8);
+    await expect(page.locator('.home-map-card')).toHaveCount(4);
     await expect(page.locator('.home-map-card--live')).toHaveAttribute('href', '/sparkkeeper');
-    await expect(page.locator('.home-map-card', { hasText: 'Coming soon' })).toHaveCount(4);
+    await expect(page.locator('.home-map-card', { hasText: 'Coming soon' })).toHaveCount(2);
   });
 
   test('stats sources open in a new tab and keep the disclaimer visible', async ({ page }) => {
@@ -146,7 +146,6 @@ test.describe('Home', () => {
     expect(await href(/See everything Sparkkeeper does/)).toBe('/sparkkeeper');
     expect(await href(/^Magnet/)).toBe('/apps/magnet');
     expect(await href(/^Academy/)).toBe('/apps/academy');
-    expect(await href(/^Nest/)).toBe('/apps/nest');
     expect(await href(/See how trust is built in/)).toBe('/trust');
     expect(await href('Join the beta')).toBe('/sparkkeeper/beta');
     await expect(page.locator('a', { hasText: 'Sparkkeeper login' })).toHaveCount(0);
