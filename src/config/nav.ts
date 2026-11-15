@@ -54,7 +54,6 @@ export const pageLinks = [
   { label: 'Services', href: '/spark-studio' },
   { label: 'How it works', href: '/how-it-works' },
   { label: 'Trust', href: '/trust' },
-  { label: 'About', href: '/#team' },
 ] as const;
 
 /** Page links shown first in the Menu panel below 1200px. */

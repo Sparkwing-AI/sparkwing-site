@@ -8,7 +8,7 @@ test.describe('header menu', () => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Main' });
-    await expect(nav.getByRole('link')).toHaveText(['Apps', 'Services', 'How it works', 'Trust', 'About']);
+    await expect(nav.getByRole('link')).toHaveText(['Apps', 'Services', 'How it works', 'Trust']);
     await expect(nav.getByRole('link', { name: 'How it works' })).toHaveAttribute('href', '/how-it-works');
   });
 
