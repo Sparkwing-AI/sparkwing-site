@@ -63,7 +63,6 @@ const current = (href: string) => (path === href ? 'page' : undefined);
       {
         productGroups.map((group, index) => (
           <div class="sw-menu-col">
-            <p class="sw-eyebrow">{group.heading}</p>
             {group.items.map((item) => (
               <a class="sw-menu-item" href={item.href}>
                 <img src={item.logo} alt="" width="36" height="36" />
