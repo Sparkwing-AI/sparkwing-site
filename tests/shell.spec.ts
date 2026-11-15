@@ -20,6 +20,19 @@ test.describe('header menu', () => {
     await expect(page.locator('#sw-menu')).toBeHidden();
   });
 
+  test('wide: Apps dropdown opens on hover and closes when the pointer leaves', async ({ page }, info) => {
+    test.skip(info.project.name === 'compact', 'Wide layout only');
+    await page.goto('/');
+    const apps = page.getByRole('button', { name: 'Apps' });
+    await apps.hover();
+    await expect(page.locator('#sw-menu')).toBeVisible();
+    await page.locator('#sw-menu').hover();
+    await page.waitForTimeout(300);
+    await expect(page.locator('#sw-menu')).toBeVisible();
+    await page.mouse.move(700, 700);
+    await expect(page.locator('#sw-menu')).toBeHidden();
+  });
+
   test('wide: the other main links lead to their pages', async ({ page }, info) => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');

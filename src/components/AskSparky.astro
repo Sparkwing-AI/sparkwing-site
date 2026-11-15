@@ -51,7 +51,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
 </div>
 
 <script>
-  import { turnstileToken } from '../scripts/turnstile';
+  import { turnstileToken, warmTurnstile } from '../scripts/turnstile';
   function must<T extends Element>(value: T | null): T {
     if (!value) throw new Error('Ask Sparky markup is incomplete');
     return value;
@@ -81,6 +81,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   const captured = new Set<string>();
   let lastQuestion = '';
   let sessionId = '';
+  // The chat session starts in the background after the greeting shows, so the greeting never waits on the network.
+  let starting: Promise<boolean> = Promise.resolve(true);
   let timer = 0;
 
   /** Links come from this list only. The model can name a page, never write a link. */
@@ -548,6 +550,13 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
           pending.remove();
           typing = false;
         };
+        if (endpoint && !sessionId) {
+          const started = await starting;
+          if (!started) {
+            done();
+            return;
+          }
+        }
         if (endpoint && sessionId) {
           try {
             const response = await fetch(endpoint, {
@@ -611,15 +620,15 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     dialog.hidden = false;
     openButton.hidden = true;
     if (log.childElementCount === 0) {
-      void beginSession().then((ok) => {
-        if (!ok) {
-          addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
-          closeInput(false);
-          log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
-          return;
-        }
-        greet();
-        input.focus();
+      greet();
+      input.focus();
+      starting = beginSession();
+      void starting.then((ok) => {
+        if (ok) return;
+        if (n === 0) log.replaceChildren();
+        addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
+        closeInput(false);
+        log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
       });
       return;
     }
@@ -668,6 +677,12 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     input.focus();
   }
 
+  const warm = () => {
+    if (root.dataset.chatEndpoint) warmTurnstile();
+  };
+  openButton.addEventListener('pointerenter', warm, { once: true });
+  openButton.addEventListener('focus', warm, { once: true });
+  openButton.addEventListener('touchstart', warm, { once: true, passive: true });
   openButton.addEventListener('click', open);
   closeButton.addEventListener('click', close);
   endButton.addEventListener('click', endByVisitor);

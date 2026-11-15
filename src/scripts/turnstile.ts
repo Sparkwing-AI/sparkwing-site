@@ -1,4 +1,4 @@
-/** Cloudflare Turnstile for the website forms. Loads only when a form is sent, so nothing extra runs on page load. */
+/** Cloudflare Turnstile for the website forms. Loads only when a form is sent, or when a visitor is about to open Sparky, so nothing extra runs on page load. */
 
 type TurnstileApi = {
   render(el: HTMLElement, options: Record<string, unknown>): string;
@@ -59,4 +59,9 @@ export async function turnstileToken(sitekey: string | undefined, action: string
       'expired-callback': () => finish(''),
     });
   });
+}
+
+/** Starts loading the Turnstile script early. Safe to call more than once. */
+export function warmTurnstile(): void {
+  void loadTurnstile().catch(() => undefined);
 }
