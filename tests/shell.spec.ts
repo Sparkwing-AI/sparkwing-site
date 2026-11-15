@@ -4,12 +4,36 @@ import { expect, test } from '@playwright/test';
 // Header menu, footer and enquiry modal behaviour (FR-001 to FR-005, FR-904, FR-905, FR-910).
 
 test.describe('header menu', () => {
-  test('wide: main links lead to the five pages', async ({ page }, info) => {
+  test('wide: Apps opens a dropdown, Esc closes and focus returns to the button', async ({ page }, info) => {
+    test.skip(info.project.name === 'compact', 'Wide layout only');
+    await page.goto('/');
+    const apps = page.getByRole('button', { name: 'Apps' });
+    await expect(apps).toHaveAttribute('aria-expanded', 'false');
+    await apps.click();
+    await expect(apps).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('.sw-menu-item')).toHaveCount(3);
+    await expect(page.locator('.sw-menu-item', { hasText: 'Sparkkeeper' })).toBeVisible();
+    await expect(page.locator('.sw-menu-item', { hasText: 'Hive' })).toHaveCount(0);
+    await page.keyboard.press('Escape');
+    await expect(apps).toHaveAttribute('aria-expanded', 'false');
+    await expect(apps).toBeFocused();
+    await expect(page.locator('#sw-menu')).toBeHidden();
+  });
+
+  test('wide: the other main links lead to their pages', async ({ page }, info) => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Main' });
-    await expect(nav.getByRole('link')).toHaveText(['Apps', 'Services', 'How it works', 'Trust']);
+    await expect(nav.getByRole('link')).toHaveText(['Services', 'How it works', 'Trust']);
     await expect(nav.getByRole('link', { name: 'How it works' })).toHaveAttribute('href', '/how-it-works');
+  });
+
+  test('clicking outside closes the dropdown', async ({ page }, info) => {
+    test.skip(info.project.name === 'compact', 'Wide layout only');
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Apps' }).click();
+    await page.locator('footer h2').click();
+    await expect(page.locator('#sw-menu')).toBeHidden();
   });
 
   test('compact: Menu button reads Menu or Close and lists page links first', async ({ page }, info) => {
