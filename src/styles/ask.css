@@ -389,13 +389,18 @@
     white-space: nowrap;
   }
 
+  /* The chat fills the visible area. Script sets --sw-ask-top and --sw-ask-h to the visual viewport, so the on-screen keyboard never covers or pushes it. */
   .sw-ask {
-    inset: 0;
+    inset: auto;
+    top: var(--sw-ask-top, 0);
+    right: 0;
+    left: 0;
+    height: var(--sw-ask-h, 100dvh);
   }
 
   .sw-ask-panel {
     width: 100%;
-    height: 100dvh;
+    height: 100%;
     border: none;
     border-radius: 0;
   }
