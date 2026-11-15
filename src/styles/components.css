@@ -394,10 +394,11 @@
     right: auto;
     left: max(var(--sw-gutter), calc((100% - var(--sw-container)) / 2 + 150px));
     width: min(760px, calc(100% - var(--sw-gutter) * 2));
-    margin-top: var(--sw-space-2);
+    margin-top: 0;
     overflow: hidden;
     border: 1px solid var(--sw-color-border);
-    border-radius: var(--sw-radius-xl);
+    border-top: 0;
+    border-radius: 0 0 var(--sw-radius-xl) var(--sw-radius-xl);
   }
 
   .sw-menu-grid {
