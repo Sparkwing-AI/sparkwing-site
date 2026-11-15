@@ -49,4 +49,18 @@ test.describe('Sparky greeting', () => {
     await expect(page.locator('#sw-ask-log')).toContainText("I can't start another chat right now", { timeout: 5000 });
     await expect(page.locator('#sw-ask-log')).not.toContainText("Hi, I'm Sparky");
   });
+
+  test('on a phone, opening does not raise the keyboard and the whole greeting is in view', async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const page = await context.newPage();
+    await page.route('https://challenges.cloudflare.com/**', (route) => route.abort());
+    await page.route(endpoint, (route) => route.fulfill({ json: { session_id: 'test-session' } }));
+    await page.goto('/');
+    await page.locator('#sw-ask-open').tap();
+    const greeting = page.locator('#sw-ask-log .sw-ask-m').first();
+    await expect(greeting).toContainText("Hi, I'm Sparky");
+    await expect(greeting).toBeInViewport({ ratio: 1 });
+    await expect(page.locator('#sw-ask-input')).not.toBeFocused();
+    await context.close();
+  });
 });

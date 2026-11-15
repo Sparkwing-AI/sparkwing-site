@@ -616,12 +616,37 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     log.append(row);
   }
 
+  const coarse = window.matchMedia('(pointer: coarse)');
+  const phone = window.matchMedia('(max-width: 480px)');
+
+  /** On a phone, focusing the box raises the keyboard over the greeting, so visitors tap the box themselves. */
+  function focusInput() {
+    if (!coarse.matches) input.focus();
+  }
+
+  /** On a phone the chat follows the visible area, so the keyboard sits below it with no gap and the top stays in view. */
+  function fitViewport() {
+    const viewport = window.visualViewport;
+    if (!viewport || !phone.matches || dialog.hidden) {
+      dialog.style.removeProperty('--sw-ask-top');
+      dialog.style.removeProperty('--sw-ask-h');
+      return;
+    }
+    dialog.style.setProperty('--sw-ask-top', `${viewport.offsetTop}px`);
+    dialog.style.setProperty('--sw-ask-h', `${viewport.height}px`);
+    scroll();
+  }
+
+  window.visualViewport?.addEventListener('resize', fitViewport);
+  window.visualViewport?.addEventListener('scroll', fitViewport);
+
   function open() {
     dialog.hidden = false;
     openButton.hidden = true;
+    fitViewport();
     if (log.childElementCount === 0) {
       greet();
-      input.focus();
+      focusInput();
       starting = beginSession();
       void starting.then((ok) => {
         if (ok) return;
@@ -632,11 +657,12 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       });
       return;
     }
-    if (!form.hidden) input.focus();
+    if (!form.hidden) focusInput();
   }
 
   function close() {
     dialog.hidden = true;
+    fitViewport();
     openButton.hidden = false;
     openButton.focus();
   }
