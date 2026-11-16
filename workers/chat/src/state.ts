@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 import { buildSystem, MODEL } from './prompt';
-import { cleanAnswer, costUsd, rejectReason, SAFE, SAFE_AFTER_LEAD, type CleanAnswer } from './checks';
+import { cleanAnswer, costUsd, rejectReason, SAFE, SAFE_AFTER_LEAD, SAFE_AGAIN, type CleanAnswer } from './checks';
 
 export interface Env {
   ANTHROPIC_API_KEY?: string;
@@ -189,7 +189,9 @@ export class ChatSession extends DurableObject<Env> {
     const spoken = model.clean;
     if (spoken && !spoken.onTopic) data.strikes += 1;
     if (data.strikes >= 3) return finish(STRIKE_END, true, false, 'off_topic_end', model);
-    return finish(spoken?.answer ?? (afterLead ? SAFE_AFTER_LEAD : SAFE), false, spoken?.onTopic ?? true, spoken ? 'answered' : 'fallback', model);
+    const lastSaid = data.turns.at(-1)?.content ?? '';
+    const fallback = afterLead ? SAFE_AFTER_LEAD : lastSaid.includes(JSON.stringify(SAFE).slice(1, -1)) ? SAFE_AGAIN : SAFE;
+    return finish(spoken?.answer ?? fallback, false, spoken?.onTopic ?? true, spoken ? 'answered' : 'fallback', model);
   }
 
   private async record(sessionId: string, turn: number, page: string, question: string, answer: string, action: string, capture: string[], decision: string, model?: ModelReply): Promise<void> {
