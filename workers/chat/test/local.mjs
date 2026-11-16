@@ -74,6 +74,8 @@ try {
   mode = 'bad';
   const safe = await (await say(id, 'hello')).json();
   assert.match(safe.answer, /tricky one/);
+  const again = await (await say(id, 'hello again')).json();
+  assert.match(again.answer, /extra detail/, 'a second fallback in a row is worded differently');
   mode = 'ok';
 
   // 17: message rate. Six a minute per session, so the seventh in this minute is refused
