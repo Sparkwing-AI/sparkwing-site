@@ -24,7 +24,7 @@ test.describe('Home', () => {
 
   test('stats sources open in a new tab and keep the disclaimer visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('Figures from independent industry reports.')).toBeVisible();
+    await expect(page.getByText('Survey figures, as reported by AI users.')).toBeVisible();
     const sources = page.locator('.home-sources a');
     await expect(sources).toHaveCount(2);
     for (const link of await sources.all()) {
