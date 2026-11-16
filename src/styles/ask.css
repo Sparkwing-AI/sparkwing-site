@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   width: min(400px, calc(100vw - var(--sw-space-6)));
-  height: min(640px, calc(100dvh - var(--sw-space-7)));
+  height: min(780px, calc(100dvh - var(--sw-space-7)));
   overflow: hidden;
   border: 1px solid var(--sw-color-border-strong);
   border-radius: var(--sw-radius-xl);
