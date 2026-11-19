@@ -46,11 +46,11 @@
 }
 
 .hiw-mark {
-  color: var(--sw-color-action);
+  padding-bottom: 0.1em;
 }
 
 .mx-hero .hiw-mark {
-  color: var(--sw-color-accent);
+  background-image: var(--sw-gradient-spectrum);
 }
 
 .hiw-hero p {
@@ -110,31 +110,22 @@
 }
 
 .hiw-num {
+  width: fit-content;
+  padding-bottom: 0.08em;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   font-size: clamp(40px, 4vw, 56px);
   font-weight: var(--sw-weight-extrabold);
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
-.hiw-card:nth-child(1) .hiw-num {
-  color: var(--sw-color-action);
-}
-
-.hiw-card:nth-child(2) .hiw-num {
-  color: var(--sw-color-violet);
-}
-
-.hiw-card:nth-child(3) .hiw-num {
-  color: var(--sw-brand-ember);
-}
-
-.hiw-card:nth-child(4) .hiw-num {
-  color: var(--sw-color-action);
-}
-
-.hiw-card:nth-child(5) .hiw-num {
-  color: var(--sw-color-violet);
-}
+.hiw-card:nth-child(1) .hiw-num { background-image: var(--sw-gradient-lagoon-violet); }
+.hiw-card:nth-child(2) .hiw-num { background-image: var(--sw-gradient-violet-ember); }
+.hiw-card:nth-child(3) .hiw-num { background-image: var(--sw-gradient-ember-deep); }
+.hiw-card:nth-child(4) .hiw-num { background-image: var(--sw-gradient-lagoon-ember); }
+.hiw-card:nth-child(5) .hiw-num { background-image: var(--sw-gradient-violet-lagoon); }
 
 .hiw-card h3 {
   font-size: var(--sw-text-lead);
@@ -147,8 +138,8 @@
   gap: var(--sw-space-2);
 }
 
-.hiw-plan {
-  display: flex;
+.sw-band-inner.hiw-plan {
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--sw-space-8) var(--sw-space-10);
@@ -156,14 +147,14 @@
 
 .hiw-plan-copy {
   display: flex;
-  flex: 1 1 22rem;
+  flex: 1 1 22.5rem;
   flex-direction: column;
   gap: var(--sw-space-4);
   min-width: 0;
 }
 
 .hiw-plan-art {
-  width: min(100%, 18rem);
+  width: min(100%, calc(var(--sw-space-11) * 3 + var(--sw-space-1) * 2));
   height: auto;
   margin-top: var(--sw-space-5);
 }
@@ -242,13 +233,26 @@
   gap: var(--sw-space-6) var(--sw-space-8);
 }
 
-.hiw-aside {
-  width: min(100%, 18rem);
-  height: auto;
-  object-fit: scale-down;
+.hiw-split .hiw-intro {
+  flex: 1 1 30rem;
+  max-width: calc(var(--sw-space-11) * 7 + var(--sw-space-8) + var(--sw-space-7));
+  min-width: 0;
 }
 
-.hiw-aside--coach { width: min(100%, 14rem); }
+.hiw-aside {
+  flex: 0 1 calc(var(--sw-space-11) * 3);
+  width: calc(var(--sw-space-11) * 3 + var(--sw-space-1));
+  max-width: 100%;
+  height: calc(var(--sw-space-11) * 3 + var(--sw-space-6));
+  object-fit: scale-down;
+  object-position: center bottom;
+}
+
+.hiw-aside--coach {
+  flex-basis: calc(var(--sw-space-11) * 2 + var(--sw-space-6));
+  width: calc(var(--sw-space-11) * 2 + var(--sw-space-6));
+  height: calc(var(--sw-space-10) * 3 + var(--sw-space-7) + var(--sw-space-1));
+}
 
 .hiw-training { background: var(--sw-color-tint); }
 
@@ -277,15 +281,42 @@
 .hiw-lesson p { margin: 0; font-size: var(--sw-text-body-lg); line-height: 1.45; }
 
 .hiw-plan ul {
-  flex: 1.3 1 28rem;
+  flex: 1.3 1 27.5rem;
   min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* Board padding is 96px on most bands. A few sections tighten one edge. */
+#plan.sw-band {
+  padding-bottom: calc(var(--sw-space-9) + var(--sw-space-2));
+}
+
+#trust.sw-band {
+  padding-top: var(--sw-space-6);
+}
+
+#training.sw-band {
+  padding-top: var(--sw-space-9);
+}
+
+#trust .sw-band-inner {
+  gap: calc(var(--sw-space-8) + var(--sw-space-2));
+}
+
+#trust .hiw-columns,
+#trust .sw-actions {
+  margin-top: 0;
+}
+
 .hiw-knowledge {
   background: var(--sw-color-deep);
+  color: var(--sw-color-on-deep-soft);
+}
+
+.hiw-knowledge .sw-h2,
+.hiw-knowledge .sw-lead {
   color: var(--sw-color-on-deep-soft);
 }
 

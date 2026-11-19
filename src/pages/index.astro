@@ -7,7 +7,13 @@ import CanvasHero from '../components/CanvasHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 
-const lines = ['lower costs.', 'boost sales.', 'cut paperwork.', 'serve customers.', 'save time.'];
+const lines = [
+  { text: 'lower costs.', grad: 'sw-grad--aqua-violet' },
+  { text: 'boost sales.', grad: 'sw-grad--violet-peach' },
+  { text: 'cut paperwork.', grad: 'sw-grad--peach-coral' },
+  { text: 'serve customers.', grad: 'sw-grad--aqua-peach' },
+  { text: 'save time.', grad: 'sw-grad--gold-peach' },
+];
 
 const services = [
   {
@@ -85,7 +91,6 @@ const apps = [
     name: 'Sparkkeeper',
     href: '/apps#sparkkeeper',
     logo: '/assets/logos/sparkkeeper.png',
-    badge: 'Beta',
     body: 'Your records and your clients in one place.',
   },
   {
@@ -111,7 +116,7 @@ const apps = [
   title="Sparkwing: AI strategy, workflows and automation"
   description="AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call."
 >
-  <CanvasHero scene="home" titleId="hero-title" label="Animation: a wing of light beats slowly, shedding gold sparks.">
+  <CanvasHero scene="home" titleId="hero-title" label="Animation: a spiral galaxy turns slowly, with a butterfly at its centre.">
     <div class="mx-text" slot="copy">
       <p class="home-kicker">AI consulting for growing businesses</p>
       <h1 class="mx-h1" id="hero-title">
@@ -119,7 +124,7 @@ const apps = [
         <span aria-hidden="true">
           <span>AI that helps</span>
           <span class="home-flip">
-            {lines.map((line) => <span>{line}</span>)}
+            {lines.map((line) => <span class:list={['sw-grad', line.grad]}>{line.text}</span>)}
           </span>
         </span>
       </h1>
@@ -247,7 +252,7 @@ const apps = [
         {
           apps.map((app) => (
             <a class="home-app" href={app.href}>
-              <Badge size="sm" tone={app.badge === 'Beta' ? 'success' : 'neutral'}>{app.badge}</Badge>
+              {app.badge && <Badge size="sm">{app.badge}</Badge>}
               <h3 class="home-app-name">
                 <img src={app.logo} alt="" width="48" height="48" />
                 {app.name}

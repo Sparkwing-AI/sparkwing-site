@@ -123,6 +123,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--sw-space-2) var(--sw-space-5);
   max-width: var(--sw-container);
   margin-inline: auto;
@@ -130,12 +131,19 @@
   box-sizing: content-box;
 }
 
+.sw-nav-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sw-space-5);
+  margin-left: auto;
+}
+
 .sw-nav-right {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sw-space-2);
-  margin-left: auto;
 }
 
 .sw-logo {

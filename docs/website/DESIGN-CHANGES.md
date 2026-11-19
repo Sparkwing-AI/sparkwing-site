@@ -4,7 +4,7 @@
 
 Source: the downloaded boards `Homepage-html`, `How it works-html`, `Shared header-html` and `Shared footer-html`, plus the illustration folders under `assets/`. The public canvas needed a sign-in for the file itself. The boards win where they differ from the older 18 Nov export.
 
-- Header: Services (`/#services`), How it works, Apps, Book a discovery call. No announcement bar, no Products menu, no Trust link. `/trust` stays live.
+- Header: Services (`/#services`), How it works, Apps, Book a discovery call. Elly confirmed the ticket's `/spark-studio` target was out of date. No announcement bar, no Products menu, no Trust link. `/trust` stays live.
 - Footer: the shared footer. Services says "Build your AI plan". Apps link to `/apps#sparkkeeper`, `#magnet` and `#academy`. Contact us stays, because the ticket asked for it and the footer board does not show it.
 - Homepage sections: hero, why use AI, services, how we tailor, apps, gold band. Removed sections are kept in `src/archive/home-retired.astro`.
 - How it works replaces the old steps story, with the Libra meteor canvas from the board script, scroll-in steps, and the glow card. `--glow-angle` is registered with `inherits: true`.
@@ -23,10 +23,9 @@ Clashes to check:
 
 - The shared header sends Services to the homepage services section. The ticket said `/spark-studio`. The board is what shipped.
 - The footer board has no Contact us link. The ticket said to keep it.
-- The AI helpers picture alt says "custom app" on the board. The page says "an app".
-- Step 4 on How it works ends with a comma in the board: "We help your team learn in using AI for day-to-day work,". Copied as written.
-- `/apps` is still the redirect to Magnet. Header, footer and homepage links point at `/apps#…` for the page Elly has not approved yet.
-- The Sparkkeeper card still says Beta, as on the homepage board.
+- The AI helpers picture alt says "an app". The board said "custom app". Elly confirmed we no longer use "custom app".
+- How it works step 4 on the board was a typo. The page now reads: "We help your team learn to use AI for day-to-day work."
+- The Sparkkeeper Beta badge is removed from the homepage card. Other pages that still say beta (Sparkkeeper, Bring AI in, Contact, Ask Sparky) were not changed in this pass.
 
 ## Earlier notes
 

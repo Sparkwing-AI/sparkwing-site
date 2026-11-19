@@ -21,8 +21,22 @@
 
 .home-flip > span {
   grid-area: 1 / 1;
-  color: var(--sw-color-accent);
   opacity: 0;
+  white-space: nowrap;
+}
+
+.mx-hero:has(#hero-title) .mx-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.75fr);
+}
+
+@media (max-width: 900px) {
+  .mx-hero:has(#hero-title) .mx-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-flip > span {
+    white-space: normal;
+  }
 }
 
 .home-flip > span:first-child {
@@ -79,23 +93,20 @@
 }
 
 .home-stat-figure b {
+  width: fit-content;
+  padding-bottom: 0.08em;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   font-size: clamp(52px, 5.5vw, 68px);
   font-weight: var(--sw-weight-extrabold);
   letter-spacing: -0.03em;
   line-height: 1.05;
 }
 
-.home-stat:nth-child(1) .home-stat-figure b {
-  color: var(--sw-color-spark);
-}
-
-.home-stat:nth-child(2) .home-stat-figure b {
-  color: var(--sw-color-violet);
-}
-
-.home-stat:nth-child(3) .home-stat-figure b {
-  color: var(--sw-color-action);
-}
+.home-stat:nth-child(1) .home-stat-figure b { background-image: var(--sw-gradient-ember-deep); }
+.home-stat:nth-child(2) .home-stat-figure b { background-image: var(--sw-gradient-violet-ember); }
+.home-stat:nth-child(3) .home-stat-figure b { background-image: var(--sw-gradient-lagoon-violet); }
 
 .home-stat-figure span,
 .home-stat-source {
@@ -181,9 +192,9 @@
 }
 
 .home-svc-stage {
-  display: flex;
-  flex: 1 1 20rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  flex: 1 1 36rem;
   align-items: center;
   gap: var(--sw-space-4) var(--sw-space-6);
   min-width: 0;
@@ -191,14 +202,18 @@
 
 .home-svc-panel {
   display: flex;
-  flex: 1 1 16rem;
   flex-direction: column;
   gap: var(--sw-space-3);
   min-width: 0;
 }
 
 .home-svc-num {
-  color: var(--sw-color-deep);
+  width: fit-content;
+  padding-bottom: 0.08em;
+  background-image: var(--sw-gradient-deep-violet);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   font-size: clamp(64px, 6vw, 88px);
   font-weight: var(--sw-weight-extrabold);
   letter-spacing: -0.04em;
@@ -212,10 +227,10 @@
 }
 
 .home-svc-art {
-  flex: 1 1 18rem;
-  max-width: 26rem;
   width: 100%;
+  max-width: 26rem;
   height: auto;
+  justify-self: end;
 }
 
 .home-svc.is-ready .home-svc-panel,
@@ -425,6 +440,10 @@
   .home-stats-panel,
   .home-app-row {
     flex-direction: column;
+  }
+
+  .home-svc-stage {
+    grid-template-columns: 1fr;
   }
 
   .home-stat + .home-stat {
