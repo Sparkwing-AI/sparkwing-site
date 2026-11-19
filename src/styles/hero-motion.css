@@ -569,3 +569,8 @@
     margin: calc(var(--sw-space-6) * -1) 0 0 calc(var(--sw-space-6) * -1);
   }
 }
+
+/* The header sits on the hero, so the copy starts below it. */
+.sw-header--overlay + main .mx-grid {
+  padding-top: calc(var(--sw-space-11) + var(--sw-space-6));
+}

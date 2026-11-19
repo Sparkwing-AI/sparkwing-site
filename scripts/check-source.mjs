@@ -11,6 +11,8 @@ const allowed = new Set([
   'scripts/motion-engine.js',
   // Canvas 2D drawing colours for the Home flight. Also pixels.
   'scripts/flight.js',
+  // Canvas pixels for the How it works Libra hero.
+  'scripts/libra.js',
 ]);
 const extensions = ['.astro', '.ts', '.js', '.mjs', '.css', '.svg', '.md', '.mdx', '.json'];
 

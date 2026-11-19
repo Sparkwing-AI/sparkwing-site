@@ -1,0 +1,464 @@
+---
+/* Retired homepage (CORE-216). Not a route. The path cards, business-context block,
+   trust card, team, Sparkkeeper marquee and beta band stay here so they are not deleted. */
+import '../styles/page.css';
+import '../styles/home.css';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import CanvasHero from '../components/CanvasHero.astro';
+import MotionTrigger from '../components/MotionTrigger.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+const logo = (name: string) => `/assets/logos/${name}.svg`;
+
+const pillarApps = [
+  {
+    pillar: 'Strategy',
+    name: 'Spark Studio',
+    href: '/spark-studio',
+    logo: logo('spark-studio'),
+    body: 'AI strategy, setup and training, plus custom apps or agents when you need them.',
+  },
+  {
+    pillar: 'Data and context',
+    name: 'Hive',
+    href: '/trust#hive',
+    logo: logo('hive'),
+    body: 'Your business context layer, so AI answers from your own information. Included with every app.',
+  },
+  {
+    pillar: 'Rules',
+    name: 'Control Tower',
+    href: '/trust#control-tower',
+    logo: logo('control-tower'),
+    body: 'Governance and guardrails that decide what AI can do and keep a record. Included with every app.',
+  },
+  {
+    pillar: 'People',
+    name: 'Academy',
+    href: '/apps/academy',
+    logo: logo('academy'),
+    badge: 'Coming soon',
+    body: 'Short online courses that bring your team up to speed and confident with AI.',
+  },
+  {
+    pillar: 'People',
+    name: 'Nest',
+    href: '/apps/nest',
+    logo: logo('nest'),
+    badge: 'Coming soon',
+    body: "Your team's AI home page for news, training links and app access.",
+  },
+  {
+    pillar: 'Tools and scale',
+    name: 'Sparkkeeper',
+    href: '/sparkkeeper',
+    logo: '/assets/logos/sparkkeeper-on-dark.svg',
+    badge: 'Beta',
+    body: 'AI for your bookkeeping and client records. Your paperwork goes in, tidy records come out.',
+  },
+  {
+    pillar: 'Tools and scale',
+    name: 'Magnet',
+    href: '/apps/magnet',
+    logo: logo('magnet'),
+    badge: 'Coming soon',
+    body: 'Put AI to work on growing your business, from first enquiry to yes.',
+  },
+  {
+    pillar: 'Tools and scale',
+    name: 'AI Crew',
+    href: '/trust#ai-crew',
+    logo: logo('ai-crew'),
+    badge: 'Coming soon',
+    body: 'AI specialists and bots for your repeat work, with helpers you approve.',
+  },
+];
+
+const marquee = [
+  'Encoding sales invoices',
+  'Typing up receipts',
+  'Copying from Excel',
+  'Updating client lists',
+  'Building monthly reports',
+];
+
+const trust = [
+  { title: 'Answers come from your own information', body: 'Every AI answer is based on what you keep in Hive: your records, documents and rules.' },
+  {
+    title: 'A human checks before anything goes out',
+    body: 'Uploads save only after you check them, and reports arrive as drafts for your review.',
+  },
+  {
+    title: 'Your data stays yours',
+    body: "Your data is kept separate from every other client, and your customers' names, contact details, and ID, tax and account numbers stay out of the AI.",
+  },
+];
+
+const team = [
+  {
+    name: 'Elly Hizon',
+    role: 'Founder and CEO',
+    photo: '/assets/team/elly-hizon.jpg',
+    bio: "Elly is a Certified Scrum Product Owner (CSPO) and AI Product Manager who builds products that solve real customer problems. After 19+ years in product management and user experience, she has delivered value for businesses including regulated enterprises. Now she's bringing responsible AI to teams as part of their transformation.",
+  },
+  {
+    name: 'Timothy Paz',
+    role: 'Business Development Director and Accounting Consultant',
+    photo: '/assets/team/timothy-paz.jpg',
+    bio: 'Tim is a CPA in the Philippines who brings hands-on experience in accounting, taxation and financial advisory. He has added technology consulting to that mix, and is Partner and COO of Lucent Managers, a Makati firm helping MSMEs with business registration, compliance, accounting and tax.',
+  },
+  {
+    name: 'Eric de Felix',
+    role: 'Platform Experience and Development Director',
+    photo: '/assets/team/eric-de-felix.jpg',
+    bio: "Eric is a lead UX developer on AI platforms and multi-client management apps used in regulated professions. With 10+ years across user interface, front-end development and visual design, he knows how to build software right. Now he's shaping the experience and development of Sparkwing's platforms.",
+  },
+];
+---
+
+<BaseLayout
+  schema={[{ '@type': 'WebSite', '@id': new URL('/#website', site.url).href, name: site.name, url: site.url, inLanguage: site.lang, publisher: { '@id': new URL('/#organization', site.url).href } }]}
+  title="Sparkwing: AI strategy, workflows and automation"
+  description="AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call."
+>
+  <CanvasHero
+    scene="home"
+    titleId="hero-title"
+    label="Animation: a wing of light beats slowly, shedding gold sparks."
+  >
+    <div class="mx-text" slot="copy">
+      <span class="mx-eyebrow">Take flight with AI you can trust.</span>
+      <h1 class="mx-h1 mx-h1--compact mx-h1--wide" id="hero-title">Transform how your business works.</h1>
+      <p class="mx-p">
+        A clear AI strategy, the right tools, a team ready to use them, and rules that keep it safe. Less time on manual work, more time on your customers. Let's get you ready for lift-off.
+      </p>
+      <div class="mx-cta">
+        <Button variant="accent" size="lg" enquiry="call">Book a discovery call</Button>
+        <Button variant="outline" size="lg" href="#how-it-works">See how it works</Button>
+      </div>
+    </div>
+    <div class="mx-paths" slot="paths">
+      <p>Where are you starting from?</p>
+      <div class="mx-path-row">
+        <a class="mx-path" href="/spark-studio">
+          <span>
+            <b>I want an AI strategy for my business</b>
+            <small>Know where AI will help most, with a clear plan to get there.</small>
+          </span>
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+        <a class="mx-path" href="/bring-ai-in">
+          <span>
+            <b>I want to save hours on manual work</b>
+            <small>Clear the repetitive work first, starting with our bookkeeping app, Sparkkeeper.</small>
+          </span>
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+        <a class="mx-path" href="/scale-ai">
+          <span>
+            <b>I want my whole team using AI safely</b>
+            <small>Bring everyone along, with training, rules and records in place.</small>
+          </span>
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </CanvasHero>
+
+  <section class="sw-band home-steps" id="how-it-works" aria-labelledby="steps-title">
+    <canvas class="home-flight-canvas" aria-hidden="true"></canvas>
+    <div class="home-flight-pause"><MotionTrigger corner="bottom-right" /></div>
+    <div class="sw-band-inner">
+      <div class="sw-section-head">
+        <h2 class="sw-h2" id="steps-title">AI transformation, one step at a time.</h2>
+        <p class="sw-lead">You don't need a big, scary project. Start where AI will help most, then build up the five things that make a business AI-ready.</p>
+      </div>
+      <div class="home-flight">
+        <ol class="home-flight-steps">
+          <li>
+            <a class="home-flight-card" href="/spark-studio">
+              <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">1</span><img src="/assets/logos/spark-studio.svg" width="44" height="44" alt="" loading="lazy" /></span>
+              <span class="home-flight-label"><span class="home-flight-pillar">Strategy</span></span>
+              <h3>Find where AI pays off.</h3>
+              <p>Check how AI-ready you are, then plan with Spark Studio.</p>
+            </a>
+          </li>
+          <li>
+            <a class="home-flight-card" href="/trust#hive">
+              <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">2</span><img src="/assets/logos/hive.svg" width="44" height="44" alt="" loading="lazy" /></span>
+              <span class="home-flight-label"><span class="home-flight-pillar">Data and context</span></span>
+              <h3>Teach AI your business.</h3>
+              <p>Get your data and business context ready with Hive.</p>
+            </a>
+          </li>
+          <li>
+            <a class="home-flight-card" href="/trust#control-tower">
+              <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">3</span><img src="/assets/logos/control-tower.svg" width="44" height="44" alt="" loading="lazy" /></span>
+              <span class="home-flight-label"><span class="home-flight-pillar">Rules</span></span>
+              <h3>Set your AI guardrails.</h3>
+              <p>Decide what AI can do with Control Tower.</p>
+            </a>
+          </li>
+          <li>
+            <a class="home-flight-card" href="/apps/academy">
+              <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">4</span><img src="/assets/logos/academy.svg" width="44" height="44" alt="" loading="lazy" /></span>
+              <span class="home-flight-label"><span class="home-flight-pillar">People</span><Badge size="sm">Coming soon</Badge></span>
+              <h3>Get your people ready.</h3>
+              <p>Build skills and confidence with Academy and Nest.</p>
+            </a>
+          </li>
+          <li>
+            <a class="home-flight-card" href="/sparkkeeper">
+              <span class="home-flight-top"><span class="home-flight-num" aria-hidden="true">5</span><img src="/assets/logos/sparkkeeper.svg" width="44" height="44" alt="" loading="lazy" /></span>
+              <span class="home-flight-label"><span class="home-flight-pillar">Tools and scale</span></span>
+              <h3>Put AI to work and grow.</h3>
+              <p>Start with Sparkkeeper, then add more apps.</p>
+            </a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band home-context" aria-labelledby="context-title">
+    <div class="sw-band-inner">
+      <div class="sw-section-head home-context-head">
+        <h2 class="sw-h2" id="context-title">Your business context is what makes AI smarter.</h2>
+        <p>
+          AI wouldn't know how to write or create for your business until you give it the context it needs. Sparkwing's Hive does exactly that, and structures it so your AI can easily understand and use it.
+        </p>
+      </div>
+      <div class="home-context-answers">
+        <div class="home-context-card">
+          <span class="home-context-card-head">
+            <b>Without your business context</b>
+          </span>
+          <div class="home-context-msg home-context-msg--me">
+            <p class="home-context-user"><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img class="home-context-avatar" src="/assets/chat/avatar-marco.jpg" width="44" height="44" alt="" loading="lazy" />
+          </div>
+          <div class="home-context-msg">
+            <img class="home-context-avatar" src="/assets/chat/avatar-ai.svg" width="44" height="44" alt="" loading="lazy" />
+            <p class="home-context-bot"><span class="sw-visually-hidden">AI replied: </span>I can't see your client list. If you paste it in, I can help you work through it.</p>
+          </div>
+        </div>
+        <div class="home-context-card home-context-card--fit">
+          <span class="home-context-card-head">
+            <b>With your business context on Sparkwing Hive</b>
+          </span>
+          <div class="home-context-msg home-context-msg--me">
+            <p class="home-context-user"><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img class="home-context-avatar" src="/assets/chat/avatar-marco.jpg" width="44" height="44" alt="" loading="lazy" />
+          </div>
+          <div class="home-context-msg">
+            <img class="home-context-avatar" src="/assets/chat/avatar-ai-sparkwing.svg" width="44" height="44" alt="" loading="lazy" />
+            <p class="home-context-bot"><span class="sw-visually-hidden">AI with Sparkwing replied: </span>I suggest following up with Reyes Trading, who's been waiting 21 days, and Marlow Studio, who's waited 12. Reyes comes first. Want me to draft the email?</p>
+          </div>
+        </div>
+      </div>
+      <div class="home-context-points">
+        <div>
+          <h3>Knows your business</h3>
+          <p>It can tell you about actual clients, invoices, and due dates.</p>
+        </div>
+        <div>
+          <h3>You shape how it replies</h3>
+          <p>Hive also stores the rules you define, so they can govern the AI's answers and how it uses context.</p>
+        </div>
+        <div>
+          <h3>Knows more as you go</h3>
+          <p>Every record and document you add gives the AI more of your business to work from.</p>
+        </div>
+      </div>
+      <a class="home-context-link" href="/trust">See how Hive works</a>
+    </div>
+  </section>
+
+  <section class="sw-band home-stats" aria-labelledby="stats-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2 home-stats-title" id="stats-title">Why businesses are turning to AI.</h2>
+      <div class="home-stats-grid">
+        <div class="home-stat">
+          <h3>Get back about 3 hours a week*</h3>
+          <p>
+            What the typical person using AI at work reports saving.
+          </p>
+        </div>
+        <div class="home-stat">
+          <h3>Keep more: 86% see better margins**</h3>
+          <p>Reported by small and mid-sized businesses already using AI.</p>
+        </div>
+        <div class="home-stat">
+          <h3>Earn more: 91% say AI boosts revenue**</h3>
+          <p>From the same businesses. Put your hours into clients, follow-ups and new business.</p>
+        </div>
+      </div>
+      <p class="home-sources">
+        Industry research. These aren't Sparkwing results. All figures are self-reported.
+        <a
+          href="https://www.ecb.europa.eu/press/blog/date/2026/html/ecb.blog20260826~e1c1a89999.en.html"
+          target="_blank"
+          rel="noopener"
+          >*European Central Bank, AI adoption and the productivity promise, August 2026: median among AI users, from a survey of about 20,000 people across 11 euro area countries.<span
+            class="sw-visually-hidden"> (opens in a new tab)</span
+          ></a
+        >{' '}
+        <a href="https://www.salesforce.com/news/stories/smbs-ai-trends-2025/" target="_blank" rel="noopener"
+          >**Salesforce, SMB Trends, December 2024: 3,350 leaders of businesses with up to 200 staff across North America, Latin America, Asia-Pacific and Europe. Businesses using AI only.<span
+            class="sw-visually-hidden"> (opens in a new tab)</span
+          ></a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section class="sw-band home-products" aria-labelledby="products-title">
+    <div class="sw-band-inner">
+      <div class="sw-section-head">
+        <h2 class="sw-h2" id="products-title">How Sparkwing covers every part of your AI transformation.</h2>
+        <p class="sw-lead">
+          Strategy, data and context, rules, people, and tools each have a Sparkwing app or service behind them. Our apps run on the same trusted base, so you can add more when you're ready.
+        </p>
+      </div>
+      <ul class="home-map" role="list">
+        {
+          pillarApps.map((app) => (
+            <li>
+              <a class:list={['home-map-card', app.badge === 'Beta' && 'home-map-card--live']} href={app.href}>
+                <span class="home-map-pillar">{app.pillar}</span>
+                <span class="home-map-head">
+                  <img src={app.logo} alt="" width="36" height="36" loading="lazy" decoding="async" />
+                  <span class="home-map-name">{app.name}</span>
+                  {app.badge && <Badge size="sm" tone={app.badge === 'Beta' ? 'success' : 'neutral'}>{app.badge}</Badge>}
+                </span>
+                <span class="home-map-body">{app.body}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="home-marquee" aria-label="Manual admin work Sparkkeeper can take on">
+    <p class="home-marquee-label">Hand your manual admin to Sparkkeeper</p>
+    <div class="home-marquee-window">
+      <div class="home-marquee-track">
+        <ul class="home-marquee-copy" role="list">
+          {marquee.map((item) => <li>{item}</li>)}
+        </ul>
+        <ul class="home-marquee-copy" role="list" aria-hidden="true">
+          {marquee.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <MotionTrigger />
+    </div>
+  </section>
+
+  <section class="sw-band home-try" aria-labelledby="try-title">
+    <div class="sw-band-inner">
+      <div class="home-try-copy">
+        <h2 id="try-title">Be one of the first to try Sparkkeeper.</h2>
+        <p>
+          Sparkkeeper is our AI app for bookkeeping and client records. Ask Sparky about your books, upload a stack of paperwork and create reports in one click. The beta starts in late November and places are limited, so apply now and we'll be in touch. <a class="sw-link" href="/sparkkeeper">See everything Sparkkeeper does</a>
+        </p>
+      </div>
+      <div class="sw-actions">
+        <Button variant="deep" size="lg" href="/sparkkeeper/beta">Join the beta</Button>
+        <Button variant="outline" size="lg" enquiry="call">Book a discovery call</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band home-need" aria-labelledby="need-title">
+    <div class="sw-band-inner">
+      <div class="home-need-copy">
+        <img src="/assets/logos/spark-studio.svg" alt="" width="56" height="56" />
+        <h2 class="sw-h2" id="need-title">Want to bring AI transformation to your company? Talk to us.</h2>
+        <p>Spark Studio builds your AI strategy, sets everything up, and creates custom apps or agents when ours don't cover what you need.</p>
+      </div>
+      <div class="sw-actions">
+        <Button variant="accent" size="lg" enquiry="studio">Talk to us</Button>
+        <Button variant="outline" size="lg" href="/spark-studio">Meet Spark Studio</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band home-team" aria-labelledby="team-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="team-title">Built by a team who live and breathe AI, business and great products.</h2>
+      <div class="home-team-grid">
+        {
+          team.map((person) => (
+            <div class="home-person">
+              <img src={person.photo} alt={person.name} width="144" height="144" loading="lazy" decoding="async" />
+              <h3>{person.name}</h3>
+              <p class="role">{person.role}</p>
+              <p class="bio">{person.bio}</p>
+            </div>
+          ))
+        }
+      </div>
+      {
+        site.showPlaceholders && (
+          <div class="home-placeholder">
+            <p>[First client story]</p>
+            <p>[Their words and their numbers, in English or Taglish, added after the beta.]</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="sw-band home-trust" aria-labelledby="trust-title">
+    <div class="sw-band-inner">
+      <h2 class="sw-h2" id="trust-title">Trust comes built into every app.</h2>
+      <div class="home-trust-grid">
+        {
+          trust.map((item) => (
+            <div class="home-trust-item">
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+      <a class="sw-link home-trust-link" href="/trust">See how trust is built in</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.home-steps');
+  const wrap = section?.querySelector<HTMLElement>('.home-flight');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (section && wrap && !reduce.matches && !document.documentElement.hasAttribute('data-paused')) {
+    wrap.dataset.flight = 'armed';
+    const showAll = () => wrap.removeAttribute('data-flight');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        import('../scripts/flight.js')
+          .then(({ startFlight }) => {
+            const run = startFlight(section);
+            const sync = () => run.pause(document.documentElement.hasAttribute('data-paused') || reduce.matches);
+            new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-paused'] });
+            reduce.addEventListener('change', sync);
+          })
+          .catch(showAll);
+      },
+      { rootMargin: '300px 0px' },
+    );
+    observer.observe(section);
+  }
+</script>

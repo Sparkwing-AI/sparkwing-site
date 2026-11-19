@@ -8,118 +8,38 @@ export const enquiryTopics = [
 
 export type EnquiryTopic = (typeof enquiryTopics)[number]['value'];
 
-const logo = (name: string) => `/assets/logos/${name}.svg`;
-
-export interface ProductLink {
-  label: string;
-  href: string;
-  summary: string;
-  logo: string;
-  badge?: { label: string; tone: 'success' | 'neutral' };
-}
-
-export const productGroups: { heading: string; items: ProductLink[] }[] = [
-  {
-    heading: 'TEAM APPS',
-    items: [
-      {
-        label: 'Sparkkeeper',
-        href: '/sparkkeeper',
-        summary: 'Your numbers and your clients in one place',
-        // New mark (on light). The on-light SVG is not in the repo yet, so this is the 256px PNG.
-        logo: '/assets/logos/sparkkeeper.png',
-        badge: { label: 'Beta', tone: 'success' },
-      },
-      {
-        label: 'Magnet',
-        href: '/apps/magnet',
-        summary: 'AI for your leads and follow-ups',
-        logo: logo('magnet'),
-        badge: { label: 'Coming soon', tone: 'neutral' },
-      },
-      {
-        label: 'Academy',
-        href: '/apps/academy',
-        summary: 'Get your team up to speed and confident with AI',
-        logo: logo('academy'),
-        badge: { label: 'Coming soon', tone: 'neutral' },
-      },
-      {
-        label: 'Nest',
-        href: '/apps/nest',
-        summary: 'One place your whole team checks in',
-        logo: logo('nest'),
-        badge: { label: 'Coming soon', tone: 'neutral' },
-      },
-    ],
-  },
-  {
-    heading: 'INCLUDED WITH EVERY APP',
-    items: [
-      { label: 'Hive', href: '/trust#hive', summary: 'Your business context layer', logo: logo('hive') },
-      { label: 'AI Crew', href: '/trust#ai-crew', summary: 'AI tooling that does the work, with helpers you approve', logo: logo('ai-crew') },
-      {
-        label: 'Control Tower',
-        href: '/trust#control-tower',
-        summary: 'Governance and guardrails',
-        logo: logo('control-tower'),
-      },
-    ],
-  },
-  {
-    heading: 'AI STRATEGY AND CONSULTING',
-    items: [
-      {
-        label: 'Spark Studio',
-        href: '/spark-studio',
-        summary: 'AI strategy, setup, custom apps and AI agents',
-        logo: logo('spark-studio'),
-      },
-    ],
-  },
-];
-
-/** Page links shown inline at 1200px and wider. */
+/** Page links in the header, and in the Menu panel below 1200px. Apps is one link, with no dropdown. */
 export const pageLinks = [
-  { label: 'AI strategy', href: '/spark-studio' },
-  { label: 'Save hours', href: '/bring-ai-in' },
-  { label: 'Use AI safely', href: '/scale-ai' },
-  { label: 'Trust', href: '/trust' },
-] as const;
-
-/** Page links shown first in the Menu panel below 1200px. */
-export const menuPageLinks = [
-  { label: 'AI strategy', href: '/spark-studio' },
-  { label: 'Save hours', href: '/bring-ai-in' },
-  { label: 'Use AI safely', href: '/scale-ai' },
-  { label: 'Trust', href: '/trust' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Services', href: '/#services' },
+  { label: 'How it works', href: '/how-it-works' },
+  { label: 'Apps', href: '/apps' },
 ] as const;
 
 export const footerColumns = [
   {
-    heading: 'APPS',
+    heading: 'Services',
     links: [
-      { label: 'Sparkkeeper', href: '/sparkkeeper' },
-      { label: 'Magnet', href: '/apps/magnet' },
-      { label: 'Academy', href: '/apps/academy' },
-      { label: 'Nest', href: '/apps/nest' },
-    ],
-  },
-  {
-    heading: 'PATHS',
-    links: [
-      { label: 'Build your AI strategy', href: '/spark-studio' },
-      { label: 'Save hours on manual work', href: '/bring-ai-in' },
+      { label: 'Build your AI plan', href: '/spark-studio' },
+      { label: 'Cut manual admin', href: '/bring-ai-in' },
       { label: 'Use AI safely', href: '/scale-ai' },
     ],
   },
   {
-    heading: 'TRUST',
+    heading: 'Apps',
     links: [
-      { label: 'Hive', href: '/trust#hive' },
-      { label: 'AI Crew', href: '/trust#ai-crew' },
-      { label: 'Control Tower', href: '/trust#control-tower' },
+      { label: 'Sparkkeeper', href: '/apps#sparkkeeper' },
+      { label: 'Magnet', href: '/apps#magnet' },
+      { label: 'Academy', href: '/apps#academy' },
+    ],
+  },
+  {
+    heading: 'How it works',
+    links: [
+      { label: 'Our process', href: '/how-it-works#steps' },
+      { label: 'Your AI plan', href: '/how-it-works#plan' },
+      { label: 'Your business knowledge', href: '/how-it-works#business-knowledge' },
+      { label: 'Your rules', href: '/how-it-works#rules' },
+      { label: 'Team training', href: '/how-it-works#training' },
     ],
   },
 ] as const;

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const motionPages = [
+  '/how-it-works',
   '/sparkkeeper',
   '/apps/magnet',
   '/apps/academy',
@@ -89,7 +90,7 @@ test.describe('Spark Studio', () => {
   test('shows no prices or client names, and the CTA opens the studio enquiry', async ({ page }) => {
     await page.goto('/spark-studio');
     await expect(page.locator('main')).not.toContainText(/\$\d/);
-    await page.getByRole('link', { name: 'Book a discovery call' }).first().click();
+    await page.locator('main').getByRole('link', { name: 'Book a discovery call' }).first().click();
     await expect(page.locator('#enq-topic')).toHaveValue('studio');
   });
 });
@@ -299,14 +300,10 @@ test.describe('Decisions of 4 Nov', () => {
     await expect(page.locator('#beta-fail')).toContainText("That didn't send. Please try again, or email info@sparkwing.com.au.");
   });
 
-  test('announcement text and link are centred on the same line', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === 'compact', 'The two items wrap onto separate lines at 390.');
+  test('the Sparkkeeper beta announcement bar is gone', async ({ page }) => {
     await page.goto('/');
-    const [text, link] = await Promise.all([
-      page.locator('.sw-announce span').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; }),
-      page.locator('.sw-announce a').evaluate((el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2; }),
-    ]);
-    expect(Math.abs(text - link)).toBeLessThanOrEqual(1);
+    await expect(page.locator('.sw-announce')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Trust', exact: true })).toHaveCount(0);
   });
 
   for (const route of [...motionPages, '/']) {
