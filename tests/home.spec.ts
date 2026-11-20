@@ -5,9 +5,9 @@ test.describe('Home', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('AI that helps');
     await expect(page.getByRole('link', { name: 'Book a free discovery call' })).toHaveAttribute('data-enquiry', 'call');
-    await expect(page.getByRole('link', { name: 'See how it works' })).toHaveAttribute('href', '#how');
-    await expect(page.getByRole('link', { name: 'See our services' })).toHaveAttribute('href', '/spark-studio');
-    await expect(page.getByRole('link', { name: 'See the full process' })).toHaveAttribute('href', '/how-it-works');
+    await expect(page.getByRole('link', { name: 'See how it works' })).toHaveAttribute('href', '/services');
+    await expect(page.getByRole('link', { name: 'See our services' })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'See the full process' })).toHaveAttribute('href', '/services#steps');
   });
 
   test('services can be selected and apps link to the apps page', async ({ page }) => {

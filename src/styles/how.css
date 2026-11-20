@@ -310,6 +310,23 @@
   margin-top: 0;
 }
 
+/* The divider sits in the gap, so every column's text is the same width. */
+#trust .hiw-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--sw-space-7);
+}
+
+#trust .hiw-column,
+#trust .hiw-column + .hiw-column {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+#trust .hiw-column + .hiw-column::before {
+  left: calc(var(--sw-space-7) / -2);
+}
+
 .hiw-knowledge {
   background: var(--sw-color-deep);
   color: var(--sw-color-on-deep-soft);
@@ -470,7 +487,9 @@
 }
 
 @media (max-width: 800px) {
-  .hiw-columns {
+  .hiw-columns,
+  #trust .hiw-columns {
+    display: flex;
     flex-direction: column;
   }
 
@@ -479,12 +498,70 @@
     padding: var(--sw-space-5) 0;
   }
 
-  .hiw-column + .hiw-column::before {
+  .hiw-column + .hiw-column::before,
+  #trust .hiw-column + .hiw-column::before {
     top: 0;
     right: 0;
     bottom: auto;
+    left: 0;
     width: auto;
     height: 1px;
+  }
+}
+
+.hiw-offer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: var(--sw-space-8);
+}
+
+.hiw-offer > div {
+  display: flex;
+  flex: 1 1 15rem;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: var(--sw-space-2) var(--sw-space-6) var(--sw-space-2) 0;
+}
+
+.hiw-offer > div + div {
+  padding-left: var(--sw-space-6);
+  border-left: 1px solid var(--sw-color-rule);
+}
+
+.hiw-offer span {
+  width: fit-content;
+  padding-bottom: 0.08em;
+  background-image: var(--sw-gradient-deep-violet);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 18px;
+  font-weight: var(--sw-weight-extrabold);
+}
+
+.hiw-offer h3 {
+  margin: 0;
+  font-size: var(--sw-text-h3);
+  line-height: 1.15;
+}
+
+.hiw-offer p {
+  margin: 0;
+  font-size: var(--sw-text-body-lg);
+  line-height: 1.45;
+}
+
+@media (max-width: 800px) {
+  .hiw-offer > div,
+  .hiw-offer > div + div {
+    padding: var(--sw-space-5) 0;
+    border-top: 1px solid var(--sw-color-rule);
+    border-left: 0;
+  }
+
+  .hiw-offer > div:first-child {
+    border-top: 0;
   }
 }
 

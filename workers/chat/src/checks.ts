@@ -7,7 +7,7 @@ export const SOURCES: Record<string, string> = {
   home: '/',
   'bring-ai-in': '/bring-ai-in',
   'scale-ai': '/scale-ai',
-  'spark-studio': '/spark-studio',
+  'spark-studio': '/services',
   trust: '/trust',
   sparkkeeper: '/sparkkeeper',
   beta: '/sparkkeeper/beta',

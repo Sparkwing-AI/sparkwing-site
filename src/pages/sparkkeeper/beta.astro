@@ -5,28 +5,11 @@ import Button from '../../components/Button.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { company, mailto, site } from '../../config/site';
 
-const expect = [
-  { title: 'Free for the beta month', body: 'You get all of Sparkkeeper, and we cover your AI credits.' },
-  {
-    title: 'AI credits to get you started',
-    body: 'Your account comes with a starter allowance. The app shows how much you have used.',
-  },
-  { title: 'Top-ups if you need more', body: 'Running low? Ask us for a top-up.' },
-  { title: 'Limited seats', body: 'We keep numbers small so we can look after everyone in it.' },
-  { title: 'A say in what we build next', body: 'Send feedback and feature requests from inside the app.' },
-];
-
-const next = [
-  'You send this form.',
-  "We'll let you know if you got into the beta list.",
-  'We send you your login details.',
-  'You can use and evaluate Sparkkeeper for a month.',
-];
 ---
 
 <BaseLayout
   title="Apply for the free Sparkkeeper beta, Sparkwing"
-  description="Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply."
+  description="Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta."
 >
   <section class="bt-hero" aria-labelledby="pa-title">
     <div class="bt-grid">
@@ -113,25 +96,6 @@ const next = [
         </div>
       </div>
 
-      <div class="bt-expect">
-        <h2 id="pa-expect">What to expect</h2>
-        <ul class="bt-points">
-          {
-            expect.map((point) => (
-              <li>
-                <b>{point.title}</b>
-                <span>{point.body}</span>
-              </li>
-            ))
-          }
-        </ul>
-        <div class="bt-next">
-          <h3>What happens next</h3>
-          <ol>
-            {next.map((step) => <li>{step}</li>)}
-          </ol>
-        </div>
-      </div>
     </div>
   </section>
 

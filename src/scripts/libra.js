@@ -1,5 +1,5 @@
 /**
- * How it works hero, ported from the board's startMeteors.
+ * How it works hero. A hollow numbered puzzle cube turns slowly in the starfield.
  * Canvas pixels live here. CSS tokens do not apply.
  * Pauses when the page pause control sets data-paused, and when the tab is hidden.
  */
@@ -19,7 +19,7 @@ export function startLibra(canvas) {
   let t = 0;
   let last = 0;
   let next = 2.5;
-  let con = [];
+  let cube = { x: 0, y: 0, L: 200 };
   let raf = 0;
   let paused = reduce.matches || document.documentElement.hasAttribute('data-paused');
   const stageEl = canvas.closest('.mx-hero')?.querySelector('.mx-stage');
@@ -50,9 +50,6 @@ export function startLibra(canvas) {
     x.fillStyle = gr;
     x.fillRect(0, 0, 64, 64);
   }
-  const DIP = [[0, 0.458, 1], [0.132, 0.377, 0.55], [0.227, 0.308, 0.55], [0.344, 0, 0.8], [0.7, 0.245, 1], [0.641, 0.725, 0.75], [0.366, 0.901, 0.9], [0.366, 1, 0.5]];
-  const EDGES = [[0, 1], [1, 2], [2, 3], [3, 4], [3, 5], [4, 5], [5, 6], [6, 7]];
-
   const layout = () => {
     const b = canvas.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -63,10 +60,9 @@ export function startLibra(canvas) {
     canvas.height = H * dpr;
     if (stageEl) {
       const sb = stageEl.getBoundingClientRect();
-      const S = Math.min(sb.width / 0.75, sb.height) * 0.88;
-      const ox = sb.left - b.left + sb.width / 2 - 0.35 * S;
-      const oy = sb.top - b.top + sb.height / 2 - 0.5 * S;
-      con = DIP.map(([x, y, s]) => ({ x: ox + x * S, y: oy + y * S, s }));
+      const ox = sb.left - b.left;
+      const oy = sb.top - b.top;
+      cube = { x: ox + sb.width * 0.52, y: oy + sb.height * 0.52, L: Math.min(sb.width * 0.34, sb.height * 0.4) };
     }
     stars = [];
     const n = Math.round((W * H) / 6500);
@@ -105,13 +101,99 @@ export function startLibra(canvas) {
     }
   };
 
+  const drawCube = () => {
+    const fade = Math.max(0, Math.min(1, (t - 0.3) / 1.6));
+    if (fade <= 0) return;
+    const TOP = [[1, 1, 1], [2, 3, 3], [2, 4, 4]];
+    const FRONT = [[2, 4, 4], [2, 4, 5], [2, 5, 5]];
+    const RIGHT = [[1, 3, 4], [1, 3, 5], [1, 5, 5]];
+    const BACK = [[3, 3, 1], [4, 1, 1], [4, 2, 2]];
+    const LEFT = [[2, 2, 4], [2, 5, 4], [5, 5, 4]];
+    const th = ((35 + t * 5) * Math.PI) / 180;
+    const ph = (35.264 * Math.PI) / 180;
+    const cT = Math.cos(th);
+    const sT = Math.sin(th);
+    const cP = Math.cos(ph);
+    const sP = Math.sin(ph);
+    const L = cube.L;
+    const proj = (X, Y, Z) => {
+      const xr = X * cT - Z * sT;
+      const zr = X * sT + Z * cT;
+      const yr = Y * cP - zr * sP;
+      return [cube.x + xr * L, cube.y + 7 * Math.sin(t * 0.5) - yr * L];
+    };
+    const allFaces = [
+      { map: TOP, shade: 0.11, vis: 1, v: (a, b) => proj(-0.5 + a / 3, 0.5, -0.5 + b / 3) },
+      { map: FRONT, shade: 0.05, vis: cT, v: (a, b) => proj(-0.5 + a / 3, 0.5 - b / 3, 0.5) },
+      { map: RIGHT, shade: 0.08, vis: sT, v: (a, b) => proj(0.5, 0.5 - b / 3, -0.5 + a / 3) },
+      { map: BACK, shade: 0.05, vis: -cT, v: (a, b) => proj(0.5 - a / 3, 0.5 - b / 3, -0.5) },
+      { map: LEFT, shade: 0.08, vis: -sT, v: (a, b) => proj(-0.5, 0.5 - b / 3, 0.5 - a / 3) },
+    ];
+    const faces = allFaces.filter((f) => f.vis > 0.02);
+    ctx.globalAlpha = fade;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    const seg = (p, q, w) => {
+      ctx.strokeStyle = 'rgba(95,214,236,0.14)';
+      ctx.lineWidth = w + 3.5;
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(q[0], q[1]);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(170,240,250,0.9)';
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]);
+      ctx.lineTo(q[0], q[1]);
+      ctx.stroke();
+    };
+    faces.forEach((f) => {
+      for (let k = 0; k <= 3; k += 1) {
+        for (let i = 0; i < 3; i += 1) {
+          const edge = k === 0 || k === 3;
+          if (edge || f.map[k - 1][i] !== f.map[k][i]) seg(f.v(i, k), f.v(i + 1, k), edge ? 1.9 : 1.3);
+          if (edge || f.map[i][k - 1] !== f.map[i][k]) seg(f.v(k, i), f.v(k, i + 1), edge ? 1.9 : 1.3);
+        }
+      }
+    });
+    const num = (f, fi, fj, label) => {
+      const o = f.v(fi, fj);
+      const u = f.v(fi + 1, fj);
+      const w = f.v(fi, fj + 1);
+      ctx.save();
+      ctx.transform((u[0] - o[0]) / 100, (u[1] - o[1]) / 100, (w[0] - o[0]) / 100, (w[1] - o[1]) / 100, o[0], o[1]);
+      ctx.font = '800 46px "DM Sans", system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(254,185,56,0.8)';
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = 'rgba(255,233,176,0.95)';
+      ctx.fillText(label, 0, 2);
+      ctx.restore();
+    };
+    const NUMS = [
+      [allFaces[0], 1.5, 0.5, '1'], [allFaces[1], 0.5, 1.5, '2'], [allFaces[0], 2, 1.5, '3'], [allFaces[1], 2, 0.5, '4'], [allFaces[1], 2, 2.5, '5'],
+      [allFaces[2], 0.5, 1.5, '1'], [allFaces[2], 1.5, 0.5, '3'], [allFaces[2], 2.5, 0.5, '4'], [allFaces[2], 2.5, 2.5, '5'],
+      [allFaces[3], 1.5, 1.5, '1'], [allFaces[3], 0.5, 0.5, '3'], [allFaces[3], 0.5, 1.5, '4'], [allFaces[3], 1.5, 2.5, '2'],
+      [allFaces[4], 0.5, 0.5, '2'], [allFaces[4], 0.5, 2.5, '5'], [allFaces[4], 2.5, 0.5, '4'],
+    ];
+    NUMS.forEach((n) => {
+      if (faces.indexOf(n[0]) >= 0) num(n[0], n[1], n[2], n[3]);
+    });
+    [[0.5, 0.5, 0.5], [-0.5, 0.5, 0.5], [0.5, 0.5, -0.5], [-0.5, 0.5, -0.5]].forEach((c, j) => {
+      const pt = proj(c[0], c[1], c[2]);
+      const sz = 44 * (1 + 0.14 * Math.sin(t * 1.4 + j * 1.9));
+      ctx.drawImage(glow, pt[0] - sz / 2, pt[1] - sz / 2, sz, sz);
+    });
+  };
+
   const draw = () => {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'lighter';
-    if (con.length) {
-      const cx = (con[0].x + con[4].x) / 2;
-      const cy = (con[3].y + con[7].y) / 2;
+    if (cube.L) {
+      const cx = cube.x;
+      const cy = cube.y;
       const R = Math.max(W, H) * 0.3;
       [[-0.55, -0.2, [60, 110, 215], 0.12, 0.55], [0.35, 0.15, [140, 90, 215], 0.27, 0.7], [0.1, -0.5, [195, 95, 190], 0.17, 0.5], [-0.15, 0.5, [50, 170, 190], 0.08, 0.45], [0.75, -0.2, [115, 80, 205], 0.23, 0.6], [0.6, 0.6, [70, 130, 220], 0.09, 0.5], [-0.7, 0.45, [165, 90, 205], 0.17, 0.5]].forEach(([dx, dy, c, a, sz], i) => {
         const x = cx + dx * R + Math.sin(t * 0.05 + i) * R * 0.1;
@@ -142,47 +224,7 @@ export function startLibra(canvas) {
       ctx.arc(s.x, s.y, s.r, 0, 6.29);
       ctx.fill();
     });
-    if (con.length) {
-      const p = Math.max(0, Math.min(1, (t - 0.6) / 4.5));
-      ctx.lineCap = 'round';
-      ctx.globalAlpha = 1;
-      EDGES.forEach(([a, b], i) => {
-        const f = Math.max(0, Math.min(1, p * EDGES.length - i));
-        if (f <= 0) return;
-        const ex = con[a].x + (con[b].x - con[a].x) * f;
-        const ey = con[a].y + (con[b].y - con[a].y) * f;
-        ctx.strokeStyle = 'rgba(95,214,236,0.14)';
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(con[a].x, con[a].y);
-        ctx.lineTo(ex, ey);
-        ctx.stroke();
-        ctx.strokeStyle = 'rgba(170,240,250,0.85)';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(con[a].x, con[a].y);
-        ctx.lineTo(ex, ey);
-        ctx.stroke();
-      });
-      con.forEach((s, j) => {
-        const al = Math.max(0, Math.min(1, (t - 0.3 - j * 0.35) / 0.6));
-        if (al <= 0) return;
-        const sz = (s.s >= 0.9 ? 78 : 46 * s.s) * (1 + 0.12 * Math.sin(t * 1.3 + j * 1.7));
-        ctx.globalAlpha = al;
-        ctx.drawImage(glow, s.x - sz / 2, s.y - sz / 2, sz, sz);
-        if (s.s >= 0.9) {
-          ctx.strokeStyle = 'rgba(255,248,231,0.7)';
-          ctx.lineWidth = 1.2;
-          const L = 26 + 4 * Math.sin(t * 1.3);
-          ctx.beginPath();
-          ctx.moveTo(s.x - L, s.y);
-          ctx.lineTo(s.x + L, s.y);
-          ctx.moveTo(s.x, s.y - L);
-          ctx.lineTo(s.x, s.y + L);
-          ctx.stroke();
-        }
-      });
-    }
+    if (cube.L) drawCube();
     ctx.lineCap = 'round';
     mets.forEach((m) => {
       const sp = Math.hypot(m.vx, m.vy) || 1;

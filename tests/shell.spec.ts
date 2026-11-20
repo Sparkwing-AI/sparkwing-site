@@ -4,12 +4,12 @@ import { expect, test } from '@playwright/test';
 // Header menu, footer and enquiry modal behaviour (FR-001 to FR-005, FR-904, FR-905, FR-910).
 
 test.describe('header menu', () => {
-  test('wide nav lists Services, How it works and Apps, with no dropdown', async ({ page }, info) => {
+  test('wide nav lists Home, Services and Apps, with no dropdown', async ({ page }, info) => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');
     await expect(page.getByRole('button', { name: 'Products' })).toHaveCount(0);
-    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/#services');
-    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'How it works' })).toHaveAttribute('href', '/how-it-works');
+    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
+    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/services');
     await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Apps' })).toHaveAttribute('href', '/apps');
     await expect(page.locator('.sw-announce')).toHaveCount(0);
   });
@@ -23,7 +23,7 @@ test.describe('header menu', () => {
     const close = page.getByRole('button', { name: 'Close', exact: true }).first();
     await expect(close).toHaveAttribute('aria-expanded', 'true');
     const first = page.locator('#sw-menu a').first();
-    await expect(first).toHaveText('Services');
+    await expect(first).toHaveText('Home');
     await page.keyboard.press('Escape');
     await expect(page.locator('.sw-menu-btn')).toBeFocused();
     await expect(page.locator('#sw-menu')).toBeHidden();

@@ -18,5 +18,9 @@ export default defineConfig({
   build: {
     format: 'file',
   },
+  redirects: {
+    '/how-it-works': { status: 301, destination: '/services' },
+    '/spark-studio': { status: 301, destination: '/services' },
+  },
   integrations: [copyCname],
 });

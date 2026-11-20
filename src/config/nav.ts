@@ -1,25 +1,26 @@
 /** Enquiry topics. The value is what the modal sends and what a button's data-enquiry attribute names. */
 export const enquiryTopics = [
   { value: 'call', label: 'Book a discovery call' },
-  { value: 'app', label: 'Ask about an app' },
-  { value: 'studio', label: 'An AI plan for my business' },
-  { value: 'other', label: 'Something else' },
+  { value: 'demo', label: 'Request a demo' },
+  { value: 'pricing', label: 'Enquire about pricing' },
+  { value: 'general', label: 'General questions' },
+  { value: 'support', label: 'I need support' },
 ] as const;
 
 export type EnquiryTopic = (typeof enquiryTopics)[number]['value'];
 
-/** Page links in the header, and in the Menu panel below 1200px. Apps is one link, with no dropdown. */
+/** Page links in the header, and in the Menu panel below 1200px. */
 export const pageLinks = [
-  { label: 'Services', href: '/#services' },
-  { label: 'How it works', href: '/how-it-works' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
   { label: 'Apps', href: '/apps' },
 ] as const;
 
 export const footerColumns = [
   {
-    heading: 'Services',
+    heading: 'Learn more',
     links: [
-      { label: 'Build your AI plan', href: '/spark-studio' },
+      { label: 'Build your AI plan', href: '/services' },
       { label: 'Cut manual admin', href: '/bring-ai-in' },
       { label: 'Use AI safely', href: '/scale-ai' },
     ],
@@ -33,13 +34,13 @@ export const footerColumns = [
     ],
   },
   {
-    heading: 'How it works',
+    heading: 'Services',
     links: [
-      { label: 'Our process', href: '/how-it-works#steps' },
-      { label: 'Your AI plan', href: '/how-it-works#plan' },
-      { label: 'Your business knowledge', href: '/how-it-works#business-knowledge' },
-      { label: 'Your rules', href: '/how-it-works#rules' },
-      { label: 'Team training', href: '/how-it-works#training' },
+      { label: 'Our process', href: '/services#steps' },
+      { label: 'Your AI plan', href: '/services#plan' },
+      { label: 'Your business knowledge', href: '/services#business-knowledge' },
+      { label: 'Your rules', href: '/services#rules' },
+      { label: 'Team training', href: '/services#training' },
     ],
   },
 ] as const;

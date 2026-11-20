@@ -153,7 +153,7 @@
   min-height: var(--sw-target-min);
   color: var(--sw-color-on-deep);
   font-size: var(--sw-text-h3);
-  font-weight: var(--sw-weight-extrabold);
+  font-weight: var(--sw-weight-semibold);
   letter-spacing: -0.02em;
   text-decoration: none;
 }
