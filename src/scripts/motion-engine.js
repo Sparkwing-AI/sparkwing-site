@@ -170,6 +170,7 @@ export function startScene(root, kind, opts = {}) {
       const tile = root.querySelector('[data-tile]'), card = root.querySelector('.mx-card');
       if (tile) { const r = relRect(tile); return { x: r.x + r.w * 0.82, y: r.y - 4 * B.size }; }
       if (card) { const r = relRect(card); return { x: r.x + r.w * 0.5, y: r.y - 12 * B.size }; }
+      if (kind === 'home') return { x: F.cx, y: F.cy - F.r * 0.05 };
       return { x: F.cx, y: F.cy + F.r * 0.32 - 26 * B.size };
     }
     function spline(pts) { const out = [], cr = (a, b, c2, d, t) => 0.5 * (2 * b + (c2 - a) * t + (2 * a - 5 * b + 4 * c2 - d) * t * t + (3 * b - a - 3 * c2 + d) * t * t * t); for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)]; for (let k = 0; k < 40; k++) { const t = k / 40; out.push({ x: cr(p0.x, p1.x, p2.x, p3.x, t), y: cr(p0.y, p1.y, p2.y, p3.y, t) }); } } out.push(pts[pts.length - 1]); return out; }
@@ -210,7 +211,7 @@ export function startScene(root, kind, opts = {}) {
       fx.globalAlpha = 1;
       if (B.mode !== 'wait') { const moving = B.mode !== 'perch', open = moving ? 0.28 + 0.72 * Math.abs(Math.cos(T * 19)) : 0.72 + 0.28 * Math.cos(T * 1.6); drawButterfly(B.x, B.y, B.ang, B.size, open); }
     }
-    function fairyLayout() { fc.width = W * dpr; fc.height = H * dpr; B.size = W < 700 ? 0.72 : 0.92; }
+    function fairyLayout() { fc.width = W * dpr; fc.height = H * dpr; B.size = kind === 'home' ? (W < 700 ? 0.36 : 0.46) : (W < 700 ? 0.72 : 0.92); }
     const sc = scenes[kind] || scenes.flow;
     function layout() {
       const b = c.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, dprCap); W = Math.round(b.width); H = Math.round(b.height); if (!W || !H) return false; c.width = W * dpr; c.height = H * dpr; const r = relRect(stageEl); F = { x0: r.x, y0: r.y, w: r.w, h: r.h, cx: r.cx, cy: r.cy, r: Math.min(r.w, r.h) / 2 }; pulses = []; bursts = []; X = {}; fairyLayout(); buildStars(); sc.init(); if (B.mode === 'fly') B.path = flightPath(); if (B.mode === 'hop') { B.mode = 'perch'; } if (B.seen) { B.mode = 'perch'; B.dust = []; } return true;

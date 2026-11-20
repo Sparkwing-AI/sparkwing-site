@@ -147,9 +147,9 @@ const apps = [
           <h3>More sales</h3>
           <p class="home-stat-figure"><b>91%</b><span>of small businesses using AI say it boosts revenue</span></p>
           <p class="home-stat-source">
-            Sources:
+            <span>Sources:{'\u00A0'}</span>
             <a href="https://www.salesforce.com/news/stories/smbs-ai-trends-2025/" target="_blank" rel="noopener">Salesforce SMB Trends, Dec 2024<span class="sw-visually-hidden"> (opens in a new tab)</span></a>
-            and
+            <span>{'\u00A0'}and{'\u00A0'}</span>
             <a href="https://chainstoreage.com/survey-small-businesses-cite-cost-and-time-savings-top-ai-benefits" target="_blank" rel="noopener">Thryv survey, Apr 2026<span class="sw-visually-hidden"> (opens in a new tab)</span></a>
           </p>
         </div>
@@ -157,7 +157,7 @@ const apps = [
           <h3>Better margins</h3>
           <p class="home-stat-figure"><b>86%</b><span>of small businesses using AI say it improves margins</span></p>
           <p class="home-stat-source">
-            Sources:
+            <span>Sources:{'\u00A0'}</span>
             <a href="https://www.salesforce.com/news/stories/smbs-ai-trends-2025/" target="_blank" rel="noopener">Salesforce SMB Trends, Dec 2024<span class="sw-visually-hidden"> (opens in a new tab)</span></a>
           </p>
         </div>
@@ -165,9 +165,9 @@ const apps = [
           <h3>Your time back</h3>
           <p class="home-stat-figure"><b>3 hrs</b><span>saved a week, say 74% of small businesses using AI</span></p>
           <p class="home-stat-source">
-            Sources:
+            <span>Sources:{'\u00A0'}</span>
             <a href="https://www.ecb.europa.eu/press/blog/date/2026/html/ecb.blog20260826~e1c1a89999.en.html" target="_blank" rel="noopener">European Central Bank, Aug 2026<span class="sw-visually-hidden"> (opens in a new tab)</span></a>
-            and
+            <span>{'\u00A0'}and{'\u00A0'}</span>
             <a href="https://dynamicbusiness.com/article/commbank-and-openai-are-betting-ai-can-fix-the-tradie-admin-problem" target="_blank" rel="noopener">OpenAI survey of 1,000+ Australian SMBs, Sep 2026<span class="sw-visually-hidden"> (opens in a new tab)</span></a>
           </p>
         </div>
@@ -252,7 +252,7 @@ const apps = [
         {
           apps.map((app) => (
             <a class="home-app" href={app.href}>
-              {app.badge && <Badge size="sm">{app.badge}</Badge>}
+              <span class="home-app-badge">{app.badge && <Badge size="sm">{app.badge}</Badge>}</span>
               <h3 class="home-app-name">
                 <img src={app.logo} alt="" width="48" height="48" />
                 {app.name}

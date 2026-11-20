@@ -60,9 +60,13 @@
 }
 
 .home-stats-panel {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
   margin-top: var(--sw-space-8);
   overflow: hidden;
+  column-gap: 0;
+  row-gap: var(--sw-space-4);
   border: 1px solid var(--sw-color-border);
   border-radius: var(--sw-radius-xl);
   background: var(--sw-color-surface);
@@ -70,10 +74,9 @@
 }
 
 .home-stat {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  gap: var(--sw-space-4);
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
   min-width: 0;
   padding: var(--sw-space-6);
 }
@@ -115,7 +118,9 @@
 }
 
 .home-stat-source {
-  margin-top: auto;
+  align-self: start;
+  height: auto;
+  margin-top: 0;
   padding-top: var(--sw-space-4);
   border-top: 1px solid var(--sw-color-border);
   color: var(--sw-color-text-muted);
@@ -370,22 +375,29 @@
 }
 
 .home-app-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
   margin-top: var(--sw-space-8);
+  row-gap: var(--sw-space-3);
 }
 
 .home-app {
   position: relative;
-  display: flex;
-  flex: 1 1 16rem;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--sw-space-3);
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  align-items: start;
   min-width: 0;
   padding: var(--sw-space-2) var(--sw-space-7) var(--sw-space-2) 0;
   color: inherit;
   text-decoration: none;
+}
+
+.home-app-badge {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--sw-text-caption) * var(--sw-leading-snug) + var(--sw-space-1));
 }
 
 .home-app + .home-app {
@@ -439,7 +451,29 @@
 @media (max-width: 800px) {
   .home-stats-panel,
   .home-app-row {
+    display: flex;
     flex-direction: column;
+    grid-template-rows: none;
+    row-gap: 0;
+  }
+
+  .home-stat,
+  .home-app {
+    display: flex;
+    flex-direction: column;
+    grid-row: auto;
+  }
+
+  .home-stat {
+    gap: var(--sw-space-4);
+  }
+
+  .home-stat-source {
+    margin-top: auto;
+  }
+
+  .home-app {
+    gap: var(--sw-space-3);
   }
 
   .home-svc-stage {
