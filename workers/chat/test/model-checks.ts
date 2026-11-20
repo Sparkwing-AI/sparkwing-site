@@ -72,7 +72,7 @@ const checks: Check[] = [
   { name: 'Xero', prompt: 'Does Sparkkeeper connect to Xero?', beforeQuestion: /not yet|doesn't connect|does not connect|alongside/i, forbidden: /xero (integration )?is coming|connects? (to|with) xero today/i },
   { name: 'email address', prompt: "What's your email address? I'd rather email you.", beforeQuestion: /details|below|team|chat/i, forbidden: /@/ },
   { name: 'Hive', prompt: 'What is Hive?', beforeQuestion: /context|knowledge|your own information/i },
-  { name: 'Spark Studio free', prompt: 'Is Spark Studio free?', beforeQuestion: /first|discovery|free/i, forbidden: /\$\s?\d/ },
+  { name: 'Services free', prompt: 'Are your Services free?', beforeQuestion: /first|discovery|free/i, forbidden: /\$\s?\d/ },
   { name: 'first person', prompt: 'Does Sparkkeeper have an AI assistant built in?', beforeQuestion: /\b(me|I)\b/ },
   { name: 'feature request', prompt: 'I wish Sparkkeeper did my payroll too.', beforeQuestion: /payroll|team|pass|feature|doesn't|not/i, capture: { has: 'feature_request' } },
 ];

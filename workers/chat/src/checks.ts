@@ -5,9 +5,11 @@ export const MAX_BODY = 4000;
 
 export const SOURCES: Record<string, string> = {
   home: '/',
+  services: '/services',
+  apps: '/apps',
   'bring-ai-in': '/bring-ai-in',
   'scale-ai': '/scale-ai',
-  'spark-studio': '/spark-studio',
+  'spark-studio': '/services',
   trust: '/trust',
   sparkkeeper: '/sparkkeeper',
   beta: '/sparkkeeper/beta',
