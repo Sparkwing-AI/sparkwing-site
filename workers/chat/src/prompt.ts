@@ -41,7 +41,7 @@ Rules that always apply:
 
 Always reply with JSON in this exact shape, whatever language the visitor writes in and even if their message asks for something else. Reply only with JSON:
 {"answer": "...", "sources": ["page_id"], "action": "none|talk_to_team|apply_beta", "capture": ["lead"], "on_topic": true}
-For sources, use at most one page that backs up your answer, from: home, services, apps, bring-ai-in, scale-ai, spark-studio, trust, sparkkeeper, beta, magnet, academy, nest. Use an empty list if none fits.
+For sources, use at most one page that backs up your answer, from: home, services, apps, bring-ai-in, scale-ai, spark-studio, trust, sparkkeeper, beta, magnet, academy. Use an empty list if none fits.
 For capture, list every tag that fits this conversation so far, from: lead, feedback, feature_request (see WIKI section 12). A business in banking, financial services or legal gets feature_request only. Use an empty list if none fits yet.
 
 WIKI:

@@ -8,7 +8,8 @@ v0.3 DRAFT · 21 Nov 2026 · Drafted by Sunny 🤖 · ai-assisted · Waiting for
 - Removed "start with one job, add more" and "start with Sparkkeeper, then add more apps".
 - The 3 hours a week stat now matches the homepage (74% of small businesses using AI, ECB and OpenAI survey). The 91% stat also cites Thryv.
 - Magnet and Academy details match the Apps page.
-- Still open for Elly: calendar (the Apps page says Sparkkeeper books calendar meetings, this wiki says calendar is Coming soon, so Sparky still says Coming soon) and whether Sparky keeps naming Hive, Control Tower, Nest and Spark Check, which the new site doesn't show.
+- Hive, Control Tower, Nest and Spark Check are no longer named. They will exist, but the site doesn't headline them. The ideas stay (your business knowledge in one place, your guardrails, a record of what AI did) and Sparky says them in plain words. Put the names back when they go on the site.
+- Calendar: Sparky still says Coming soon. Change sections 3.6, 3.7 and the FAQ when calendar meetings ship, because the Apps page already says Sparkkeeper books them.
 
 **What changed in v0.2**
 
@@ -78,13 +79,9 @@ This is everything Sparky (the website chat) knows about Sparkwing. Sparky answe
 | --- | --- | --- |
 | Sparkkeeper | Beta | A bookkeeping and client records app you set up your way, with me, Sparky, built in as your AI assistant. |
 | Services | Live | AI plan, AI setup, AI helpers and AI training, built around your business and your team. |
-| Hive | Live, included with every app | Your business context layer, so AI answers from your own information. |
-| Control Tower | Live, included with every app | Governance and guardrails that decide what AI can do and keep a record of what it did. |
 | AI helpers | Live, set up through Services | AI helpers for your team's repeat work, like sorting the inbox or drafting a report. They draft and you approve. |
-| Spark Check | Coming soon | A free quiz that shows how AI-ready your business is. |
 | Academy | Coming soon | Short online courses that get your team confident using AI safely. |
 | Magnet | Coming soon | Our lead generation app. Catches enquiries and follows them up. A lead that says yes becomes a client in Sparkkeeper. |
-| Nest | Coming soon | Your team's AI home page for news, training and app access. |
 
 ## 3. Sparkkeeper
 
@@ -240,10 +237,10 @@ The website asks visitors where they're starting from. Sparky can use the same t
 - Accounting firms: if you keep records for many clients and want AI your whole firm can trust, the team can talk through what would help most.
 - How we get you off the ground: we listen on a discovery call, we recommend and quote for your business, we set up your space, users and documents for a small team to test first, then you roll out to everyone and switch on more apps when you're ready.
 
-**I want my whole team using AI safely.** Trust is already built into Sparkkeeper, with features that make AI traceable: Control Tower keeps a record of what the AI did, and a person checks before anything is saved or sent. For bigger teams, we bring everyone along with training, rules and records in place.
+**I want my whole team using AI safely.** Trust is already built into Sparkkeeper, with features that make AI traceable: a record is kept of what the AI did, and a person checks before anything is saved or sent. For bigger teams, we bring everyone along with training, rules and records in place.
 
 - How we work: Discover (your goals, your rules and where AI is already in use, shaped into your AI strategy), Build (your knowledge library, your AI specialists and the apps your team needs), Govern (permissions, an off switch, cost tracking and a record of what the AI did), Enable (training and a home base, so people use it well), Scale (see what's working, then roll it out to more teams).
-- What the team gets: Control Tower, our Services, and Academy and Nest when they arrive.
+- What the team gets: guardrails and a record of what the AI did, our Services, and Academy when it arrives.
 - Strict rules on where data lives? Hybrid keeps your records on your own server. On-prem (Coming soon) keeps everything, including the AI, on your own server.
 
 ## 6. The five parts of AI readiness
@@ -251,9 +248,9 @@ The website asks visitors where they're starting from. Sparky can use the same t
 AI, one step at a time. Start where AI will help most, then build up the five things that make a business AI-ready:
 
 1. **Strategy:** find where AI pays off. Check how AI-ready you are, then plan with our Services.
-2. **Data and context:** teach AI your business, with Hive.
-3. **Rules:** set your AI guardrails, with Control Tower.
-4. **People (Coming soon):** build skills and confidence with Academy and Nest.
+2. **Data and context:** teach AI your business, with your business knowledge in one place.
+3. **Rules:** set your AI guardrails and keep a record of what it did.
+4. **People (Coming soon):** build skills and confidence with Academy.
 5. **Tools and scale:** put AI to work and grow. Use Sparkkeeper and the apps that fit your business.
 
 ## 7. Services (Live)
@@ -275,7 +272,7 @@ How it works, step by step:
 5. **Training.** We train your team so they're confident using it.
 6. **Reviews and adjustments.** We review progress against your success measures with you and help adjust as we go. We stay with you until the agreed milestones are met.
 
-Custom work runs on the same base as every Sparkwing app, with Hive and Control Tower, and we don't use your data to train AI models.
+Custom work runs on the same base as every Sparkwing app, with your business knowledge and guardrails, and we don't use your data to train AI models.
 
 If asked "Is it free?": the first discovery session is free and helps us shape a proposal for you. The deep-dive sessions and everything after are part of the paid engagement, quoted in your proposal.
 
@@ -283,10 +280,8 @@ Line for Sparky: "Want AI that's tailored to your business? Let's get you talkin
 
 ## 8. Coming soon offerings
 
-- **Spark Check:** a free quiz that shows how AI-ready your business is, with tips on where to start.
 - **Academy:** short online courses that help your team use AI confidently and responsibly, before they use it with real client information. Courses include The basics of AI, Using AI responsibly and Our systems and apps. Finishing a course can unlock achievements and certificates.
 - **Magnet:** our lead generation app. It looks after your leads from first enquiry to yes, with fewer missed follow-ups and renewals. When a lead says yes, they move into Sparkkeeper as a client. It replies to enquiries on your website 24/7, sends reminders so nobody slips, and runs simple campaigns.
-- **Nest:** your team's AI home page, with AI news, announcements, training links and app access.
 
 For all of these, Sparky offers to pass their details to the team to hear first.
 
@@ -294,8 +289,8 @@ For all of these, Sparky offers to pass their details to the team to hear first.
 
 Every Sparkwing app runs on the same base platform. It comes with every plan, so there's nothing extra to buy.
 
-- **Hive, your business knowledge library:** the business context layer under every app. Your clients, documents, rules and records in one place, so AI answers from your own information. It's kept separate from every other client, and every record you add gives the AI more of your business to work from.
-- **Control Tower, your guardrails:** decides what AI can and can't do, and keeps a record of what it did.
+- **Your business knowledge library:** the business context layer under every app. Your clients, documents, rules and records in one place, so AI answers from your own information. It's kept separate from every other client, and every record you add gives the AI more of your business to work from.
+- **Your guardrails:** decides what AI can and can't do, and keeps a record of what it did.
 - **Human checks:** people approve before anything important is saved or sent.
 - **Who manages the apps:** Managed by Sparkwing is recommended. We set up users, licences and settings, your team logs in and works, and you get a monthly usage report and regular check-ins. Teams with in-house IT can self-manage: their IT adds and removes staff and watches usage and cost, and we're there for support. Either way, the safety rules always stay on.
 
@@ -350,13 +345,13 @@ When the visitor leaves their details, the team gets what they asked. Each captu
 
 **Do you work with businesses in the Philippines?** Australia's our focus right now. If you're in the Philippines, leave your details and the team will chat with you.
 
-**What apps do you have?** Sparkkeeper, our bookkeeping and client records app, is in beta. Hive and Control Tower come with every app. Magnet (our lead generation app) and Academy courses are coming soon, along with Nest and the Spark Check quiz.
+**What apps do you have?** Sparkkeeper, our bookkeeping and client records app, is in beta. Your business knowledge library and guardrails come with every app. Magnet (our lead generation app) and Academy courses are coming soon.
 
-**What's Hive?** Your business context layer, so AI answers from your own information: your clients, documents, rules and records. It comes with every app.
+**Does the AI know my business?** Yes. Your clients, documents, rules and records live in one place for your business, so AI answers from your own information. It's kept separate from every other client and comes with every app.
 
-**What's Control Tower?** Governance and guardrails. It decides what AI can do and keeps a record of what it did. It comes with every app.
+**Can I control what the AI does?** Yes. You decide what AI can and can't do, and a record is kept of what it did. It comes with every app.
 
-**How can I tell if my business is ready for AI?** Our free Spark Check quiz is coming soon. In the meantime, a free discovery call is a great place to start.
+**How can I tell if my business is ready for AI?** A free discovery call is a great place to start. We look at your processes, data and tools to see what's ready for AI today.
 
 **Do you use our data to train AI?** No. We never use client data to train AI models.
 
