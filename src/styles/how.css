@@ -322,15 +322,12 @@
   gap: calc(var(--sw-space-8) + var(--sw-space-2));
 }
 
-#trust-section .hiw-columns {
-  margin-top: 0;
-}
-
 /* The divider sits in the gap, so every column's text is the same width. */
 #trust-section .hiw-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: var(--sw-space-7);
+  margin-top: 0;
 }
 
 #trust-section .hiw-column,
