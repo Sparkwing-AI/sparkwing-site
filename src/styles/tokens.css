@@ -18,6 +18,7 @@
   --sw-brand-morning-silk: #FFF8E7;
   --sw-brand-inkwell: #1E2B2A;
   --sw-brand-white: #FFFFFF;
+  --sw-brand-black: #000000;
   --sw-brand-navy-900: #14263D;
   --sw-brand-navy-800: #1F3450;
   --sw-brand-navy-700: #3A4C66;
@@ -43,6 +44,7 @@
   --sw-color-text: var(--sw-brand-inkwell);
   --sw-color-text-muted: var(--sw-brand-lagoon-700);
   --sw-color-on-deep: var(--sw-brand-white);
+  --sw-color-black: var(--sw-brand-black);
   --sw-color-on-deep-soft: var(--sw-brand-lagoon-50);
   --sw-color-on-deep-muted: var(--sw-brand-lagoon-100);
   --sw-color-link: var(--sw-brand-glade);

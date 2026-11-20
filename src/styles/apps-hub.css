@@ -140,6 +140,10 @@
   margin: 0;
 }
 
+.apps-copy .sw-btn {
+  margin-top: var(--sw-space-5);
+}
+
 .apps-list {
   display: flex;
   flex-direction: column;
@@ -206,202 +210,42 @@
   transform: translateY(-50%) perspective(1800px) rotateX(18deg) rotateY(-26deg) rotateZ(4deg) scale(1.05);
 }
 
-#magnet .apps-win {
-  right: 0;
-  left: auto;
-  transform: translateY(-50%) perspective(1800px) rotateX(18deg) rotateY(26deg) rotateZ(-4deg) scale(1.05);
-  transform-origin: right center;
-}
-
 .apps-win img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.apps-win-top {
-  display: flex;
-  align-items: center;
-  gap: var(--sw-space-4);
-  height: 36px;
-  padding: 0 14px;
-  background: var(--sw-color-deep);
-  color: var(--sw-color-on-deep);
-  font-size: 11px;
-  font-weight: var(--sw-weight-bold);
-}
-
-.apps-win-mark {
-  width: 16px;
-  height: 16px;
-  border-radius: 5px;
-  background: var(--sw-color-accent);
-}
-
-.apps-tab {
-  padding: 10px 0 8px;
-  border-bottom: 2px solid transparent;
-  font-weight: var(--sw-weight-medium);
-  opacity: 0.7;
-}
-
-.apps-tab--on {
-  border-bottom-color: var(--sw-color-accent);
-  opacity: 1;
-}
-
-.apps-win-body {
+.apps-pair {
   display: grid;
-  gap: 10px;
-  padding: 14px;
-  background: var(--sw-color-tint);
-  color: var(--sw-color-text);
-  font-size: 11px;
-  line-height: 1.3;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sw-space-8) var(--sw-space-10);
 }
 
-.apps-win-body--three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.apps-win-body--split {
-  grid-template-columns: 1.3fr 1fr;
-}
-
-.apps-span {
-  grid-column: 1 / -1;
-}
-
-.apps-card {
-  min-width: 0;
-  padding: 10px;
-  border: 1px solid var(--sw-color-success-tint);
-  border-radius: 10px;
-  background: var(--sw-color-surface);
-}
-
-.apps-card h3 {
-  margin: 0 0 6px;
-  font-size: 11px;
-  font-weight: var(--sw-weight-bold);
-}
-
-.apps-stat {
-  font-size: 20px;
-  font-weight: var(--sw-weight-extrabold);
-  line-height: 1;
-}
-
-.apps-stat small {
-  display: block;
-  margin-top: 4px;
-  color: var(--sw-color-text-muted);
-  font-size: 10px;
-  font-weight: var(--sw-weight-medium);
-}
-
-.apps-lead {
-  margin-top: 6px;
-  padding: 7px 8px;
-  border: 1px solid var(--sw-color-success-tint);
-  border-radius: var(--sw-radius-sm);
-}
-
-.apps-lead b {
-  display: block;
-}
-
-.apps-lead span {
-  color: var(--sw-color-text-muted);
-}
-
-.apps-chip {
-  display: inline-block;
-  padding: 1px 7px;
-  border-radius: var(--sw-radius-pill);
-  font-size: 10px;
-  font-weight: var(--sw-weight-bold);
-  white-space: nowrap;
-}
-
-.apps-chip--go {
-  background: var(--sw-color-success-tint);
-  color: var(--sw-color-success-text);
-}
-
-.apps-chip--wait {
-  background: var(--sw-color-accent-tint);
-  color: var(--sw-color-accent-text);
-}
-
-.apps-chip--run {
-  background: var(--sw-color-violet-tint);
-  color: var(--sw-color-violet);
-}
-
-.apps-rowline {
-  display: flex;
-  align-items: center;
-  gap: var(--sw-space-2);
-  padding: 6px 0;
-}
-
-.apps-rowline b {
-  flex: 1;
-  font-weight: var(--sw-weight-semibold);
-}
-
-.apps-pg {
-  height: 6px;
-  margin-top: 6px;
-  overflow: hidden;
-  border-radius: var(--sw-radius-pill);
-  background: var(--sw-color-success-tint);
-}
-
-.apps-pg i {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, var(--sw-color-action), var(--sw-color-violet));
-}
-
-.apps-pg--full i {
+.apps-pair .apps-copy {
+  flex: none;
   width: 100%;
 }
 
-.apps-pg--mid i {
-  width: 60%;
-}
-
-.apps-ring {
-  display: grid;
-  width: 78px;
-  height: 78px;
-  margin: 4px auto 6px;
-  place-items: center;
-  border-radius: 50%;
-  background: conic-gradient(var(--sw-color-action) 0 68%, var(--sw-color-success-tint) 0);
-}
-
-.apps-ring span {
-  display: grid;
-  width: 56px;
-  height: 56px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--sw-color-surface);
-  font-size: 15px;
-  font-weight: var(--sw-weight-extrabold);
+#magnet,
+#academy {
+  scroll-margin-top: calc(var(--sw-space-9) + var(--sw-space-6) + var(--sw-space-1));
 }
 
 .apps-close p {
-  max-width: 40rem;
+  max-width: none;
+  text-wrap: wrap;
+}
+
+@media (max-width: 800px) {
+  .apps-pair {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px) {
   .apps-hero .mx-stage {
-    height: 340px;
+    height: auto;
   }
 
   .ap-out {

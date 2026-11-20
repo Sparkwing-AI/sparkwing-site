@@ -20,7 +20,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="mx-grid sw-container">
       <div class="mx-text">
         <p class="home-kicker">Our apps</p>
-        <h1 class="mx-h1" id="apps-hero-title">The tools that <span class="sw-grad sw-grad--spectrum">take on the admin</span>.</h1>
+        <h1 class="mx-h1" id="apps-hero-title"><span class="mx-h1-line">The tools that</span> <span class="mx-h1-line"><span class="sw-grad sw-grad--spectrum">take on the admin</span>.</span></h1>
         <p class="mx-p">Apps that take on the paperwork, look after your leads and train your team, all customised to your business.</p>
         <div class="mx-cta">
           <Button variant="accent" size="lg" enquiry="demo">Request a demo</Button>
@@ -114,24 +114,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <section class="sw-band apps-band apps-band--white" id="magnet" aria-labelledby="mg-name">
+  <section class="sw-band apps-band apps-band--white" aria-label="Magnet and Academy">
     <div class="sw-band-inner">
-      <div class="apps-row">
-        <div class="apps-shot apps-shot--left" role="img" aria-label="A mock-up of Magnet showing new enquiries, leads being followed up, a lead who said yes and a reminder campaign">
-          <div class="apps-win" aria-hidden="true">
-            <div class="apps-win-top"><i class="apps-win-mark"></i>Magnet<span class="apps-tab apps-tab--on">Leads</span><span class="apps-tab">Reminders</span><span class="apps-tab">Campaigns</span><span class="apps-tab">Clients</span></div>
-            <div class="apps-win-body apps-win-body--three">
-              <div class="apps-card"><div class="apps-stat">9<small>Open leads</small></div></div>
-              <div class="apps-card"><div class="apps-stat">3<small>Reminders due today</small></div></div>
-              <div class="apps-card"><div class="apps-stat">2<small>New clients this week</small></div></div>
-              <div class="apps-card"><h3>New enquiries</h3><div class="apps-lead"><b>Priya N.</b><span>Website form</span></div><div class="apps-lead"><b>Dan W.</b><span>Phone call</span></div></div>
-              <div class="apps-card"><h3>Following up</h3><div class="apps-lead"><b>Marlow Studio</b><span class="apps-chip apps-chip--wait">Reminder today</span></div></div>
-              <div class="apps-card"><h3>Signed up</h3><div class="apps-lead"><b>Anika R.</b><span class="apps-chip apps-chip--go">Now a client in Sparkkeeper</span></div></div>
-              <div class="apps-card apps-span"><h3>Spring check-in email</h3><div class="apps-rowline"><b>Sent 48</b><b>Opened 31</b><b>Replied 9</b><span class="apps-chip apps-chip--run">Running</span></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="apps-copy">
+      <div class="apps-pair">
+        <div class="apps-copy" id="magnet">
           <Badge>Coming soon</Badge>
           <h2 id="mg-name">Magnet</h2>
           <p class="apps-promise">Put AI to work on growing your business.</p>
@@ -144,14 +130,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </ul>
           <Button variant="deep" size="lg" enquiry="demo">Ask us about this app</Button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sw-band apps-band apps-band--tint" id="academy" aria-labelledby="ac-name">
-    <div class="sw-band-inner">
-      <div class="apps-row">
-        <div class="apps-copy">
+        <div class="apps-copy" id="academy">
           <Badge>Coming soon</Badge>
           <h2 id="ac-name">Academy</h2>
           <p class="apps-promise">Get your team up to speed and confident using AI.</p>
@@ -162,24 +141,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <li><span class="apps-tick" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span>Finishing a course can unlock achievements and certificates</span></li>
           </ul>
           <Button variant="deep" size="lg" enquiry="demo">Ask us about this app</Button>
-        </div>
-        <div class="apps-shot" role="img" aria-label="A mock-up of Academy showing short courses with progress, team progress and the certificates a finished course unlocks">
-          <div class="apps-win" aria-hidden="true">
-            <div class="apps-win-top"><i class="apps-win-mark"></i>Academy<span class="apps-tab apps-tab--on">Courses</span><span class="apps-tab">My team</span><span class="apps-tab">Certificates</span></div>
-            <div class="apps-win-body apps-win-body--split">
-              <div class="apps-card">
-                <h3>Your courses</h3>
-                <div class="apps-lead"><b>The basics of AI</b><span>12 minutes</span> <span class="apps-chip apps-chip--go">Done</span><div class="apps-pg apps-pg--full"><i></i></div></div>
-                <div class="apps-lead"><b>Using AI responsibly</b><span>15 minutes</span> <span class="apps-chip apps-chip--wait">In progress</span><div class="apps-pg apps-pg--mid"><i></i></div></div>
-                <div class="apps-lead"><b>Our systems and apps</b><span>Finish course 2 to start</span> <span class="apps-chip apps-chip--run">Locked</span></div>
-              </div>
-              <div class="apps-card">
-                <h3>Team progress</h3>
-                <div class="apps-ring"><span>68%</span></div>
-                <span>5 of 7 people on track</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -103,20 +103,21 @@
   color: var(--sw-color-text-muted);
 }
 
-/* Header. Deep teal on inner pages. Transparent when it sits on a hero. */
+/* Header. Deep teal on inner pages. On a hero it is transparent until the page scrolls. */
 .sw-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 20;
   background: var(--sw-color-deep);
   color: var(--sw-color-on-deep);
 }
 
 .sw-header--overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
   background: transparent;
+}
+
+.sw-header--overlay.is-stuck {
+  background: var(--sw-color-deep);
 }
 
 .sw-nav-row {
@@ -151,6 +152,7 @@
   color: var(--sw-color-on-deep);
   font-size: var(--sw-text-h3);
   font-weight: var(--sw-weight-semibold);
+  line-height: 1;
   letter-spacing: -0.02em;
   text-decoration: none;
 }
@@ -344,19 +346,76 @@
     display: none;
   }
 
+  .sw-nav-book {
+    display: none;
+  }
+
+  .sw-nav-row {
+    flex-wrap: nowrap;
+  }
+
+  .sw-header--overlay {
+    background: var(--sw-color-deep);
+  }
+
   .sw-menu-btn {
     display: flex;
     align-items: center;
-    min-height: var(--sw-target-min);
-    padding: 0 var(--sw-space-4);
+    justify-content: center;
+    width: var(--sw-target-min);
+    height: var(--sw-target-min);
+    padding: 0;
     border: 1.5px solid var(--sw-color-on-deep);
     border-radius: var(--sw-radius-pill);
     background: transparent;
     color: var(--sw-color-on-deep);
-    font: inherit;
-    font-size: var(--sw-text-body);
-    font-weight: var(--sw-weight-bold);
     cursor: pointer;
+  }
+
+  .sw-menu-icon,
+  .sw-menu-icon::before,
+  .sw-menu-icon::after {
+    display: block;
+    width: var(--sw-space-4);
+    height: var(--sw-focus-offset);
+    border-radius: var(--sw-focus-offset);
+    background: currentColor;
+  }
+
+  .sw-menu-icon {
+    position: relative;
+  }
+
+  .sw-menu-icon::before,
+  .sw-menu-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .sw-menu-icon::before {
+    top: calc(var(--sw-space-2) * -1);
+  }
+
+  .sw-menu-icon::after {
+    top: var(--sw-space-2);
+  }
+
+  .sw-menu-btn[aria-expanded='true'] .sw-menu-icon {
+    background: transparent;
+  }
+
+  .sw-menu-btn[aria-expanded='true'] .sw-menu-icon::before,
+  .sw-menu-btn[aria-expanded='true'] .sw-menu-icon::after {
+    top: 0;
+  }
+
+  .sw-menu-btn[aria-expanded='true'] .sw-menu-icon::before {
+    transform: rotate(45deg);
+  }
+
+  .sw-menu-btn[aria-expanded='true'] .sw-menu-icon::after {
+    transform: rotate(-45deg);
   }
 }
 
@@ -390,8 +449,8 @@
 .sw-footer-top {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--sw-space-6) var(--sw-space-8);
+  align-items: flex-start;
+  gap: var(--sw-space-6) calc(var(--sw-space-11) + var(--sw-space-10));
 }
 
 .sw-footer-brand {

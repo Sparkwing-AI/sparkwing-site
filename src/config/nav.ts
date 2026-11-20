@@ -18,14 +18,6 @@ export const pageLinks = [
 
 export const footerColumns = [
   {
-    heading: 'Apps',
-    links: [
-      { label: 'Sparkkeeper', href: '/apps#sparkkeeper' },
-      { label: 'Magnet', href: '/apps#magnet' },
-      { label: 'Academy', href: '/apps#academy' },
-    ],
-  },
-  {
     heading: 'Services',
     links: [
       { label: 'Our process', href: '/services#steps' },
@@ -33,6 +25,14 @@ export const footerColumns = [
       { label: 'Your business knowledge', href: '/services#business-knowledge' },
       { label: 'Your rules', href: '/services#trust' },
       { label: 'Team training', href: '/services#training' },
+    ],
+  },
+  {
+    heading: 'Apps',
+    links: [
+      { label: 'Sparkkeeper', href: '/apps#sparkkeeper' },
+      { label: 'Magnet', href: '/apps#magnet' },
+      { label: 'Academy', href: '/apps#academy' },
     ],
   },
 ] as const;

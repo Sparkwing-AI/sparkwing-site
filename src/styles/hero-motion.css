@@ -503,41 +503,46 @@
 .mx-at-r0-t48 { right: 0; top: 48%; }
 
 @media (max-width: 900px) {
-  .mx-paths { order: 1; }
-  .mx-stage { order: 2; height: 380px; }
-
-  .mx-hero:has(.mx-paths) .mx-stage {
-    height: 320px;
-  }
-
   .mx-hero {
     min-height: 0;
     display: block;
   }
 
   .mx-grid {
+    position: static;
+    z-index: auto;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--sw-space-6);
     padding-top: var(--sw-space-8);
     padding-bottom: 76px;
   }
 
-  .mx-veil {
-    background: linear-gradient(
-      180deg,
-      var(--bg2) 0%,
-      color-mix(in srgb, var(--sw-hero-deep-2) 86%, transparent) 34%,
-      transparent 54%
-    );
+  .mx-hero .mx-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: auto;
+    height: auto;
+    pointer-events: none;
   }
 
+  .mx-fairy {
+    z-index: 0;
+  }
+
+  .mx-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .mx-h1-line {
+    display: block;
+  }
+
+  .mx-veil,
   .mx-hero[data-ground='navy'] .mx-veil {
-    background: linear-gradient(
-      180deg,
-      var(--bg2) 0%,
-      color-mix(in srgb, var(--sw-hero-navy-2) 86%, transparent) 34%,
-      transparent 54%
-    );
+    z-index: 1;
+    background: color-mix(in srgb, var(--sw-color-black) 72%, transparent);
   }
 
   .mx-card {
@@ -567,7 +572,18 @@
   }
 }
 
-/* The header sits on the hero, so the copy starts below it. */
-.sw-header--overlay + main .mx-grid {
-  padding-top: calc(var(--sw-space-11) + var(--sw-space-6));
+@media (min-width: 1200px) {
+  .sw-header--overlay ~ main {
+    margin-top: calc(-1 * (var(--sw-target-min) + 2 * var(--sw-space-4)));
+  }
+
+  .sw-header--overlay ~ main .mx-grid {
+    padding-top: calc(var(--sw-space-11) + var(--sw-space-6));
+  }
+}
+
+@media (max-width: 1199px) {
+  .sw-header--overlay ~ main .mx-grid {
+    padding-top: calc(var(--sw-space-10) - var(--sw-space-2));
+  }
 }

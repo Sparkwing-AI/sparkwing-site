@@ -30,8 +30,8 @@ const current = (href: string) => (path === href ? 'page' : undefined);
         </nav>
         <div class="sw-nav-right">
           <Button class="sw-nav-book" variant="accent" size="sm" enquiry="call">Book a discovery call</Button>
-          <button class="sw-menu-btn" type="button" aria-expanded="false" aria-controls="sw-menu" data-menu-toggle>
-            Menu
+          <button class="sw-menu-btn" type="button" aria-expanded="false" aria-controls="sw-menu" aria-label="Menu" data-menu-toggle>
+            <span class="sw-menu-icon" aria-hidden="true"></span>
           </button>
         </div>
       </div>
@@ -56,7 +56,7 @@ const current = (href: string) => (path === href ? 'page' : undefined);
     if (!panel || !toggle) return;
     panel.hidden = !open;
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.textContent = open ? 'Close' : 'Menu';
+    toggle.setAttribute('aria-label', open ? 'Close' : 'Menu');
     if (!open && returnFocus) toggle.focus();
   }
 
@@ -75,4 +75,10 @@ const current = (href: string) => (path === href ? 'page' : undefined);
   });
 
   document.addEventListener('sw:enquiry-open', () => setOpen(false));
+
+  if (header?.classList.contains('sw-header--overlay')) {
+    const markStuck = () => header.classList.toggle('is-stuck', window.scrollY > 4);
+    markStuck();
+    window.addEventListener('scroll', markStuck, { passive: true });
+  }
 </script>

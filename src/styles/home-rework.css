@@ -34,8 +34,8 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .home-flip > span {
-    white-space: normal;
+  .home-flip {
+    display: grid;
   }
 }
 
@@ -440,12 +440,19 @@
 .home-close .sw-h2,
 .home-close p {
   color: var(--sw-color-deep);
+  text-wrap: wrap;
 }
 
 .home-close p {
-  max-width: 40rem;
+  max-width: none;
   font-size: var(--sw-text-lead);
   line-height: 1.45;
+}
+
+@media (min-width: 900px) {
+  .home-close-tail {
+    display: block;
+  }
 }
 
 @media (max-width: 800px) {
