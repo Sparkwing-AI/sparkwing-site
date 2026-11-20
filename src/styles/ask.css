@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   width: min(400px, calc(100vw - var(--sw-space-6)));
-  height: min(640px, calc(100dvh - var(--sw-space-7)));
+  height: min(780px, calc(100dvh - var(--sw-space-7)));
   overflow: hidden;
   border: 1px solid var(--sw-color-border-strong);
   border-radius: var(--sw-radius-xl);
@@ -374,15 +374,33 @@
   .sw-ask-launch {
     right: var(--sw-space-3);
     bottom: var(--sw-space-3);
+    gap: 0;
+    width: var(--sw-button-height);
+    padding: 0;
+    justify-content: center;
   }
 
+  .sw-ask-launch-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The chat fills the visible area. Script sets --sw-ask-top and --sw-ask-h to the visual viewport, so the on-screen keyboard never covers or pushes it. */
   .sw-ask {
-    inset: 0;
+    inset: auto;
+    top: var(--sw-ask-top, 0);
+    right: 0;
+    left: 0;
+    height: var(--sw-ask-h, 100dvh);
   }
 
   .sw-ask-panel {
     width: 100%;
-    height: 100dvh;
+    height: 100%;
     border: none;
     border-radius: 0;
   }

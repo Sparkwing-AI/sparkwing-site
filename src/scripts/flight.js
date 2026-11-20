@@ -1,7 +1,8 @@
 /** The Home transformation steps: a butterfly flies in once and touches each hidden card to life.
  * Canvas pixel colours stay in this file: they are drawn, not styled.
  */
-const RGB = { gold: '254,185,56', ember: '240,130,30', violet: '106,86,200', white: '255,255,255' };
+// Palette for the gold steps band: trail and sparks are drawn in violet, teal and rust so they read on gold.
+const RGB = { gold: '85,69,155', ember: '194,65,12', violet: '31,132,118', white: '255,255,255' };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const ease = (t) => t * t * (3 - 2 * t);
 const rnd = (a, b) => a + Math.random() * (b - a);
@@ -96,7 +97,7 @@ export function startFlight(section, opts = {}) {
     lastDot = { x, y };
     if (stacked && overCard(x, y)) return;
     tg.setTransform(dpr, 0, 0, dpr, 0, 0);
-    tg.fillStyle = `rgba(${RGB.gold},.9)`;
+    tg.fillStyle = `rgba(${RGB.gold},.55)`;
     tg.beginPath(); tg.arc(x, y, 1.7, 0, 6.29); tg.fill();
   }
 
@@ -152,11 +153,11 @@ export function startFlight(section, opts = {}) {
     [-1, 1].forEach((side) => {
       g.save(); g.scale(side * open, 1);
       const up = g.createLinearGradient(0, -2, 26, -24);
-      up.addColorStop(0, '#FFD777'); up.addColorStop(0.42, '#8D78E2'); up.addColorStop(1, '#55459B');
+      up.addColorStop(0, '#FFFFFF'); up.addColorStop(0.42, '#8D78E2'); up.addColorStop(1, '#55459B');
       g.fillStyle = up; g.strokeStyle = 'rgba(85,69,155,.55)'; g.lineWidth = 0.9;
       g.beginPath(); g.moveTo(1, -1); g.bezierCurveTo(6, -24, 27, -30, 31, -18); g.bezierCurveTo(33, -9, 19, 0, 1, 2); g.closePath(); g.fill(); g.stroke();
       const lo = g.createLinearGradient(0, 2, 18, 20);
-      lo.addColorStop(0, '#FFD777'); lo.addColorStop(1, '#F39A2B');
+      lo.addColorStop(0, '#FFFFFF'); lo.addColorStop(1, '#E07B00');
       g.fillStyle = lo;
       g.beginPath(); g.moveTo(1, 2); g.bezierCurveTo(13, 2, 24, 7, 20, 16); g.bezierCurveTo(16, 24, 5, 17, 1, 7); g.closePath(); g.fill(); g.stroke();
       g.fillStyle = 'rgba(255,255,255,.9)';

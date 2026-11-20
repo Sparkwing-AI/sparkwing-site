@@ -10,7 +10,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     <svg aria-hidden="true" width="20" height="20" viewBox="-12 -12 24 24" fill="currentColor">
       <path d="M0-12Q1.5-1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5-12 0Q-1.5-1.5 0-12Z"></path>
     </svg>
-    Ask Sparky
+    <span class="sw-ask-launch-label">Ask Sparky</span>
   </button>
   <div class="sw-ask" id="sw-ask" role="dialog" aria-labelledby="sw-ask-title" hidden>
     <div class="sw-ask-panel">
@@ -51,7 +51,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
 </div>
 
 <script>
-  import { turnstileToken } from '../scripts/turnstile';
+  import { turnstileToken, warmTurnstile } from '../scripts/turnstile';
   function must<T extends Element>(value: T | null): T {
     if (!value) throw new Error('Ask Sparky markup is incomplete');
     return value;
@@ -81,14 +81,16 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   const captured = new Set<string>();
   let lastQuestion = '';
   let sessionId = '';
+  // The chat session starts in the background after the greeting shows, so the greeting never waits on the network.
+  let starting: Promise<boolean> = Promise.resolve(true);
   let timer = 0;
 
   /** Links come from this list only. The model can name a page, never write a link. */
   const sourcePages: Record<string, { label: string; href: string } | undefined> = {
     home: { label: 'Home', href: '/' },
-    'bring-ai-in': { label: 'Save hours', href: '/bring-ai-in' },
+    'bring-ai-in': { label: 'Cut manual admin', href: '/bring-ai-in' },
     'scale-ai': { label: 'Use AI safely', href: '/scale-ai' },
-    'spark-studio': { label: 'Services', href: '/services' },
+    'spark-studio': { label: 'Spark Studio', href: '/spark-studio' },
     trust: { label: 'Trust', href: '/trust' },
     sparkkeeper: { label: 'Sparkkeeper', href: '/sparkkeeper' },
     beta: { label: 'Sparkkeeper beta', href: '/sparkkeeper/beta' },
@@ -219,7 +221,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (count >= 12) return { text: "I've really enjoyed this. The team can take it from here.", call: true, end: true };
     if (/\b(tax|bir|legal|lawyer|invest|advice)\b/.test(text)) {
       return {
-        text: "I can't give tax, legal or financial advice. Sparkkeeper sits alongside your registered books and invoicing, and those stay with your registered systems. The team can talk through what you need.",
+        text: "I can't give tax, legal or financial advice. Sparkkeeper sits alongside your accounting software, and those things stay with it and your accountant. The team can talk through what you need.",
         call: true,
       };
     }
@@ -252,7 +254,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     }
     if (/what is sparkkeeper|what does sparkkeeper/.test(text)) {
       return {
-        text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your registered books and invoicing.${hook}`,
+        text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your accounting software.${hook}`,
         src: 'Sparkkeeper page',
         href: '/sparkkeeper',
       };
@@ -263,7 +265,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
       return {
         text: "Love that you're thinking ahead on this. Spark Studio sounds like your fit: we set AI up around your business, and build custom apps or AI agents when you need more.",
         src: 'Spark Studio page',
-        href: '/services',
+        href: '/spark-studio',
         call: true,
       };
     }
@@ -548,6 +550,13 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
           pending.remove();
           typing = false;
         };
+        if (endpoint && !sessionId) {
+          const started = await starting;
+          if (!started) {
+            done();
+            return;
+          }
+        }
         if (endpoint && sessionId) {
           try {
             const response = await fetch(endpoint, {
@@ -607,27 +616,53 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     log.append(row);
   }
 
+  const coarse = window.matchMedia('(pointer: coarse)');
+  const phone = window.matchMedia('(max-width: 480px)');
+
+  /** On a phone, focusing the box raises the keyboard over the greeting, so visitors tap the box themselves. */
+  function focusInput() {
+    if (!coarse.matches) input.focus();
+  }
+
+  /** On a phone the chat follows the visible area, so the keyboard sits below it with no gap and the top stays in view. */
+  function fitViewport() {
+    const viewport = window.visualViewport;
+    if (!viewport || !phone.matches || dialog.hidden) {
+      dialog.style.removeProperty('--sw-ask-top');
+      dialog.style.removeProperty('--sw-ask-h');
+      return;
+    }
+    dialog.style.setProperty('--sw-ask-top', `${viewport.offsetTop}px`);
+    dialog.style.setProperty('--sw-ask-h', `${viewport.height}px`);
+    scroll();
+  }
+
+  window.visualViewport?.addEventListener('resize', fitViewport);
+  window.visualViewport?.addEventListener('scroll', fitViewport);
+
   function open() {
     dialog.hidden = false;
     openButton.hidden = true;
+    fitViewport();
     if (log.childElementCount === 0) {
-      void beginSession().then((ok) => {
-        if (!ok) {
-          addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
-          closeInput(false);
-          log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
-          return;
-        }
-        greet();
-        input.focus();
+      greet();
+      focusInput();
+      starting = beginSession();
+      void starting.then((ok) => {
+        if (ok) return;
+        if (n === 0) log.replaceChildren();
+        addMessage("I can't start another chat right now, but the team can still help. Leave your details below and they'll get back to you within 24 hours.", false, { call: true });
+        closeInput(false);
+        log.querySelector<HTMLButtonElement>('.sw-ask-act')?.focus();
       });
       return;
     }
-    if (!form.hidden) input.focus();
+    if (!form.hidden) focusInput();
   }
 
   function close() {
     dialog.hidden = true;
+    fitViewport();
     openButton.hidden = false;
     openButton.focus();
   }
@@ -668,6 +703,12 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     input.focus();
   }
 
+  const warm = () => {
+    if (root.dataset.chatEndpoint) warmTurnstile();
+  };
+  openButton.addEventListener('pointerenter', warm, { once: true });
+  openButton.addEventListener('focus', warm, { once: true });
+  openButton.addEventListener('touchstart', warm, { once: true, passive: true });
   openButton.addEventListener('click', open);
   closeButton.addEventListener('click', close);
   endButton.addEventListener('click', endByVisitor);

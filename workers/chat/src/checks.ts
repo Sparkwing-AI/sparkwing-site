@@ -7,7 +7,7 @@ export const SOURCES: Record<string, string> = {
   home: '/',
   'bring-ai-in': '/bring-ai-in',
   'scale-ai': '/scale-ai',
-  'spark-studio': '/services',
+  'spark-studio': '/spark-studio',
   trust: '/trust',
   sparkkeeper: '/sparkkeeper',
   beta: '/sparkkeeper/beta',
@@ -17,6 +17,9 @@ export const SOURCES: Record<string, string> = {
 };
 
 export const SAFE = "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.";
+
+/** A second fallback in a row says something different, so it doesn't read as stuck. */
+export const SAFE_AGAIN = "Thanks for the extra detail! I'd rather the team gave you a proper answer on that than a guess from me. Click on the button below and they'll get back to you within 24 hours.";
 
 /** The fallback once the visitor has sent their details. No button to point at by then. */
 export const SAFE_AFTER_LEAD = "That's a tricky one! The team has your details, so they can pick that up with you.";
