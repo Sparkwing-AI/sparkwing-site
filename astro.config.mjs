@@ -21,6 +21,8 @@ export default defineConfig({
   redirects: {
     '/how-it-works': { status: 301, destination: '/services' },
     '/spark-studio': { status: 301, destination: '/services' },
+    '/bring-ai-in': { status: 301, destination: '/apps' },
+    '/scale-ai': { status: 301, destination: '/services' },
   },
   integrations: [copyCname],
 });

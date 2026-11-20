@@ -4,7 +4,7 @@
 
 ## Task summary
 
-Footer update on `core-216-simpler-home`. Remove the Learn more column. Services links land on the eyebrow (`#steps`, `#plan`, `#business-knowledge`, `#trust`, `#training`) with scroll-margin so a header does not cover the label. `/bring-ai-in` and `/scale-ai` stay in the repo and are not linked from the header, footer or homepage.
+Remove pages that nothing on the new site links to. `/bring-ai-in` and `/scale-ai` are deleted from the repo. Copies sit in `local-archive/orphaned-pages`, which is gitignored. `/how-it-works` and `/spark-studio` were already gone from this branch. Old addresses redirect: bring-ai-in to `/apps`, the other three to `/services`. Sparky is not edited. Sparkkeeper, Magnet, Academy, Nest, Trust and Contact stay, because live pages still link to them.
 
 ## Acceptance criteria (footer)
 
