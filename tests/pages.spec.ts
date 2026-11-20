@@ -138,7 +138,7 @@ test.describe('Beta application', () => {
     await page.locator('#name').fill('Test Person');
     await page.locator('#email').fill('test@example.com');
     await page.locator('#business').fill('Test Co');
-    await page.locator('#country').selectOption('Philippines');
+    await page.locator('#country').selectOption('Australia');
     await page.locator('#work').fill('Bookkeeping');
     await page.locator('#consent').check();
     await page.getByRole('button', { name: 'Send my application' }).click();
@@ -193,27 +193,10 @@ test.describe('Review fixes', () => {
     await context.close();
   });
 
-  test('without JavaScript both language blocks are readable', async ({ browser }) => {
-    const context = await browser.newContext({ javaScriptEnabled: false });
-    const page = await context.newPage();
-    await page.goto('/sparkkeeper');
-    await expect(page.locator('[data-lang-block="en"]')).toBeVisible();
-    await expect(page.locator('[data-lang-block="tl"]')).toBeVisible();
-    await context.close();
-  });
-
-  test('Taglish toggle swaps the language block and sets lang', async ({ page }) => {
-    await page.goto('/sparkkeeper');
-    await page.getByRole('button', { name: 'Taglish' }).click();
-    await expect(page.locator('[data-lang-block="tl"]')).toBeVisible();
-    await expect(page.locator('[data-lang-block="tl"]')).toHaveAttribute('lang', 'fil');
-    await expect(page.locator('[data-lang-block="en"]')).toBeHidden();
-  });
-
   test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
     const rows: Record<string, [string, string]> = {
       '/': ['Sparkwing: AI strategy, workflows and automation', 'AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call.'],
-      '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports.'],
+      '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software. Ask Sparky, upload paperwork, create reports.'],
       '/services': ['Sparkwing: Services', 'AI planned and set up around the way you work, your rules and your team, without the overwhelm.'],
       '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],

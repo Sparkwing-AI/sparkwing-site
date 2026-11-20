@@ -318,6 +318,12 @@
   scroll-margin-top: calc(var(--sw-space-9) + var(--sw-space-6) + var(--sw-space-1));
 }
 
+@media (min-width: 1200px) {
+  .sw-anchor {
+    scroll-margin-top: calc(var(--sw-space-9) + var(--sw-space-6) + var(--sw-space-1) + var(--sw-target-min) + 2 * var(--sw-space-4));
+  }
+}
+
 #trust-section .sw-band-inner {
   gap: calc(var(--sw-space-8) + var(--sw-space-2));
 }

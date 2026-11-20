@@ -167,7 +167,7 @@
   padding: var(--sw-space-3) 0;
   border: 0;
   background: none;
-  color: color-mix(in srgb, var(--sw-color-deep) 34%, transparent);
+  color: var(--sw-color-deep);
   font: inherit;
   font-size: clamp(30px, 3.6vw, 48px);
   font-weight: var(--sw-weight-extrabold);
@@ -178,7 +178,7 @@
 }
 
 .home-svc-name:hover {
-  color: color-mix(in srgb, var(--sw-color-deep) 70%, transparent);
+  color: var(--sw-color-deep);
 }
 
 .home-svc-bar {
