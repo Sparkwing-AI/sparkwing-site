@@ -7,6 +7,8 @@ const copyCname = {
   hooks: {
     'astro:build:done': async ({ dir }) => {
       await copyFile(new URL('./CNAME', import.meta.url), new URL('CNAME', dir));
+      // /apps.html sits beside the /apps folder (Magnet, Academy, Nest). A static check looks up the folder and misses the page.
+      await copyFile(new URL('apps.html', dir), new URL('apps/index.html', dir));
     },
   },
 };
