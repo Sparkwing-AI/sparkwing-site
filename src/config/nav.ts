@@ -18,14 +18,6 @@ export const pageLinks = [
 
 export const footerColumns = [
   {
-    heading: 'Learn more',
-    links: [
-      { label: 'Build your AI plan', href: '/services' },
-      { label: 'Cut manual admin', href: '/bring-ai-in' },
-      { label: 'Use AI safely', href: '/scale-ai' },
-    ],
-  },
-  {
     heading: 'Apps',
     links: [
       { label: 'Sparkkeeper', href: '/apps#sparkkeeper' },
@@ -39,7 +31,7 @@ export const footerColumns = [
       { label: 'Our process', href: '/services#steps' },
       { label: 'Your AI plan', href: '/services#plan' },
       { label: 'Your business knowledge', href: '/services#business-knowledge' },
-      { label: 'Your rules', href: '/services#rules' },
+      { label: 'Your rules', href: '/services#trust' },
       { label: 'Team training', href: '/services#training' },
     ],
   },

@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 // Header menu, footer and enquiry modal behaviour (FR-001 to FR-005, FR-904, FR-905, FR-910).
 
@@ -177,6 +177,29 @@ test.describe('legal links inside forms', () => {
   });
 });
 
+const serviceAnchors = [
+  { name: 'Our process', id: 'steps' },
+  { name: 'Your AI plan', id: 'plan' },
+  { name: 'Your business knowledge', id: 'business-knowledge' },
+  { name: 'Your rules', id: 'trust' },
+  { name: 'Team training', id: 'training' },
+] as const;
+
+async function expectEyebrowBelowHeader(page: Page, id: string) {
+  const eyebrow = page.locator(`#${id}`);
+  await expect(eyebrow).toBeInViewport();
+  const place = await page.evaluate((anchorId) => {
+    const label = document.getElementById(anchorId)?.getBoundingClientRect();
+    const header = document.querySelector('[data-header]')?.getBoundingClientRect();
+    if (!label || !header) return null;
+    const headerBottom = header.bottom > 0 && header.top < window.innerHeight ? header.bottom : 0;
+    return { top: label.top, headerBottom };
+  }, id);
+  expect(place).not.toBeNull();
+  expect(place!.top).toBeGreaterThanOrEqual(place!.headerBottom - 1);
+  expect(place!.top - place!.headerBottom).toBeLessThanOrEqual(140);
+}
+
 test.describe('footer', () => {
   test('company line reads as required and ACN is absent', async ({ page }) => {
     await page.goto('/');
@@ -185,4 +208,37 @@ test.describe('footer', () => {
     );
     await expect(page.locator('body')).not.toContainText('ACN');
   });
+
+  test('lists Apps, Services and Contact, with no Learn more column', async ({ page }) => {
+    await page.goto('/');
+    const headings = page.locator('.sw-footer-heading');
+    await expect(headings).toHaveText(['Apps', 'Services', 'Contact']);
+    await expect(page.locator('footer').getByRole('link', { name: 'Build your AI plan' })).toHaveCount(0);
+    await expect(page.locator('footer').getByRole('link', { name: 'Cut manual admin' })).toHaveCount(0);
+    await expect(page.locator('footer').getByRole('link', { name: 'Use AI safely' })).toHaveCount(0);
+    await expect(page.locator('header').getByRole('link', { name: 'Cut manual admin' })).toHaveCount(0);
+    await expect(page.locator('header').getByRole('link', { name: 'Use AI safely' })).toHaveCount(0);
+  });
+
+  for (const width of [390, 900, 1440]) {
+    test(`Services links land on the eyebrow at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+
+      for (const anchor of serviceAnchors) {
+        await page.goto(`/services#${anchor.id}`);
+        await expectEyebrowBelowHeader(page, anchor.id);
+      }
+
+      await page.goto('/services');
+      for (const anchor of serviceAnchors) {
+        await page.locator('footer').getByRole('link', { name: anchor.name, exact: true }).click();
+        await expect(page).toHaveURL(new RegExp(`/services#${anchor.id}$`));
+        await expectEyebrowBelowHeader(page, anchor.id);
+      }
+
+      await page.getByRole('link', { name: 'See the five steps' }).click();
+      await expect(page).toHaveURL(/#steps$/);
+      await expectEyebrowBelowHeader(page, 'steps');
+    });
+  }
 });

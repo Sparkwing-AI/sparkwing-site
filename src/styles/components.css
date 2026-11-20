@@ -125,10 +125,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sw-space-2) var(--sw-space-5);
-  max-width: var(--sw-container);
-  margin-inline: auto;
-  padding: var(--sw-space-4) var(--sw-gutter);
-  box-sizing: content-box;
+  padding-block: var(--sw-space-4);
 }
 
 .sw-nav-cluster {

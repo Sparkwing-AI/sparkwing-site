@@ -75,10 +75,22 @@
 }
 
 .hiw-track-fill {
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--sw-color-action), var(--sw-color-violet), var(--sw-brand-ember));
+}
+
+.hiw-track-fill::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 16px solid var(--sw-brand-ember);
+  transform: translateY(-50%);
 }
 
 .hiw-cards {
@@ -289,41 +301,46 @@
 }
 
 /* Board padding is 96px on most bands. A few sections tighten one edge. */
-#plan.sw-band {
+#plan-section {
   padding-bottom: calc(var(--sw-space-9) + var(--sw-space-2));
 }
 
-#trust.sw-band {
+#trust-section {
   padding-top: var(--sw-space-6);
 }
 
-#training.sw-band {
+#training-section {
   padding-top: var(--sw-space-9);
 }
 
-#trust .sw-band-inner {
+/* Header is the logo plus its padding. The extra space keeps the label clear of it. */
+.sw-anchor {
+  scroll-margin-top: calc(var(--sw-space-9) + var(--sw-space-6) + var(--sw-space-1));
+}
+
+#trust-section .sw-band-inner {
   gap: calc(var(--sw-space-8) + var(--sw-space-2));
 }
 
-#trust .hiw-columns,
-#trust .sw-actions {
+#trust-section .hiw-columns,
+#trust-section .sw-actions {
   margin-top: 0;
 }
 
 /* The divider sits in the gap, so every column's text is the same width. */
-#trust .hiw-columns {
+#trust-section .hiw-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: var(--sw-space-7);
 }
 
-#trust .hiw-column,
-#trust .hiw-column + .hiw-column {
+#trust-section .hiw-column,
+#trust-section .hiw-column + .hiw-column {
   padding-right: 0;
   padding-left: 0;
 }
 
-#trust .hiw-column + .hiw-column::before {
+#trust-section .hiw-column + .hiw-column::before {
   left: calc(var(--sw-space-7) / -2);
 }
 
@@ -488,7 +505,7 @@
 
 @media (max-width: 800px) {
   .hiw-columns,
-  #trust .hiw-columns {
+  #trust-section .hiw-columns {
     display: flex;
     flex-direction: column;
   }
@@ -499,7 +516,7 @@
   }
 
   .hiw-column + .hiw-column::before,
-  #trust .hiw-column + .hiw-column::before {
+  #trust-section .hiw-column + .hiw-column::before {
     top: 0;
     right: 0;
     bottom: auto;

@@ -187,16 +187,26 @@
   position: absolute;
   top: 50%;
   left: 0;
-  width: min(600px, 140%);
+  width: 600px;
+  height: 420px;
   overflow: hidden;
   border-radius: 14px;
-  background: var(--sw-color-surface);
-  box-shadow: var(--sw-shadow-lg);
+  background: var(--sw-color-tint);
+  box-shadow:
+    var(--sw-shadow-lg),
+    0 0 0 1px color-mix(in srgb, var(--sw-color-deep) 10%, transparent);
+  object-fit: cover;
   transform: translateY(-50%) perspective(1800px) rotateX(18deg) rotateY(-26deg) rotateZ(4deg) scale(1.05);
   transform-origin: left center;
 }
 
-.apps-shot--left .apps-win {
+#sparkkeeper .apps-win {
+  height: auto;
+  object-fit: contain;
+  transform: translateY(-50%) perspective(1800px) rotateX(18deg) rotateY(-26deg) rotateZ(4deg) scale(1.05);
+}
+
+#magnet .apps-win {
   right: 0;
   left: auto;
   transform: translateY(-50%) perspective(1800px) rotateX(18deg) rotateY(26deg) rotateZ(-4deg) scale(1.05);
@@ -404,11 +414,6 @@
     min-height: 420px;
     margin-right: 0;
     margin-left: 0;
-  }
-
-  .apps-win,
-  .apps-shot--left .apps-win {
-    transform: none;
   }
 }
 

@@ -49,15 +49,11 @@
 .mx-grid {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: var(--sw-container);
-  margin: 0 auto;
-  padding: calc(var(--sw-space-10) - var(--sw-space-2)) var(--sw-gutter);
-  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
   gap: var(--sw-space-8);
   align-items: center;
+  padding-block: calc(var(--sw-space-10) - var(--sw-space-2));
 }
 
 .mx-text {
@@ -522,7 +518,8 @@
   .mx-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--sw-space-6);
-    padding: var(--sw-space-8) var(--sw-space-4) 76px;
+    padding-top: var(--sw-space-8);
+    padding-bottom: 76px;
   }
 
   .mx-veil {

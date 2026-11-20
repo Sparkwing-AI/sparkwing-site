@@ -81,6 +81,7 @@ a {
 }
 
 .sw-container {
+  box-sizing: border-box;
   width: 100%;
   max-width: calc(var(--sw-container) + 2 * var(--sw-gutter));
   margin-inline: auto;

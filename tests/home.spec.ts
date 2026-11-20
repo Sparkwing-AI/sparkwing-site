@@ -55,6 +55,25 @@ test.describe('Home', () => {
     await expect(band).toHaveAttribute('data-enquiry', 'call');
   });
 
+  for (const width of [390, 900, 1280, 1440]) {
+    for (const route of ['/', '/services', '/apps']) {
+      test(`hero headline lines up with the logo and the first section at ${width} on ${route}`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(route);
+        const edges = await page.evaluate(() => {
+          const left = (selector: string) => document.querySelector(selector)?.getBoundingClientRect().left ?? Number.NaN;
+          return {
+            logo: left('.sw-logo'),
+            hero: left('.mx-hero h1'),
+            section: left('main .sw-band h2'),
+          };
+        });
+        expect(Math.abs(edges.hero - edges.section)).toBeLessThanOrEqual(1);
+        expect(Math.abs(edges.logo - edges.section)).toBeLessThanOrEqual(1);
+      });
+    }
+  }
+
   for (const width of [390, 900, 1440]) {
     test(`no horizontal scroll at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
