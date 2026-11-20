@@ -1,5 +1,35 @@
 # Design changes to pick up
 
+## Simpler homepage and How it works (20 Nov 2026, CORE-216)
+
+Source: the downloaded boards `Homepage-html`, `How it works-html`, `Shared header-html` and `Shared footer-html`, plus the illustration folders under `assets/`. The public canvas needed a sign-in for the file itself. The boards win where they differ from the older 18 Nov export.
+
+- Header: Services (`/#services`), How it works, Apps, Book a discovery call. Elly confirmed the ticket's `/spark-studio` target was out of date. No announcement bar, no Products menu, no Trust link. `/trust` stays live.
+- Footer: the shared footer. Services says "Build your AI plan". Apps link to `/apps#sparkkeeper`, `#magnet` and `#academy`. Contact us stays, because the ticket asked for it and the footer board does not show it.
+- Homepage sections: hero, why use AI, services, how we tailor, apps, gold band. Removed sections are kept in `src/archive/home-retired.astro`.
+- How it works replaces the old steps story, with the Libra meteor canvas from the board script, scroll-in steps, and the glow card. `--glow-angle` is registered with `inherits: true`.
+- Illustrations are the full files from the asset folders, cropped with the board's `object-position` and `object-view-box`.
+
+Wording still to confirm before changing other pages:
+
+- `bring-ai-in.astro` meta: "Clear the manual work first, then add more." Proposed: "Clear the manual work. No IT team needed."
+- `bring-ai-in.astro` body: "Start with one job, add more when you're ready..." Proposed: "Start with one job. We run the rest for you."
+- `bring-ai-in.astro`: "or an app or AI agent built around how you work." Proposed: "or an app or AI helper built around how you work."
+- `spark-studio.astro`: "Custom apps and agents", "you add more whenever you're ready", "Custom app", "AI agent", and the page title. Proposed visible labels: "AI helpers" and "apps". Leave the title and meta until the SEO pass.
+- `scale-ai.astro`: "your AI specialists" and "custom apps or AI agents". Proposed: "your AI helpers" and "apps or AI helpers".
+- `AskSparky.astro`: "Sparkwing's AI assistant" and the reply that says "custom apps or AI agents". Proposed: "Sparkwing's AI helper", and "apps or AI helpers when you need them."
+
+Clashes to check:
+
+- The shared header sends Services to the homepage services section. The ticket said `/spark-studio`. The board is what shipped.
+- The footer board has no Contact us link. The ticket said to keep it.
+- The AI helpers picture alt says "an app". The board said "custom app". Elly confirmed we no longer use "custom app".
+- How it works step 4 on the board was a typo. The page now reads: "We help your team learn to use AI for day-to-day work."
+- The Sparkkeeper Beta badge is removed from the homepage card. Other pages that still say beta (Sparkkeeper, Bring AI in, Contact, Ask Sparky) were not changed in this pass.
+
+## Earlier notes
+
+
 This bundle is the source of truth. `design/source/` and `design/screens/` win over what's built. Compare every page against them and change what differs. Some items below may already be done, so check before changing them.
 
 ## Heroes

@@ -49,16 +49,11 @@
 .mx-grid {
   position: relative;
   z-index: 1;
-  width: 100%;
-  /* The gutter sits inside the box, so add it to the container width. Content then lines up with the other bands. */
-  max-width: calc(var(--sw-container) + var(--sw-gutter) * 2);
-  margin: 0 auto;
-  padding: calc(var(--sw-space-10) - var(--sw-space-2)) var(--sw-gutter);
-  box-sizing: border-box;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
   gap: var(--sw-space-8);
   align-items: center;
+  padding-block: calc(var(--sw-space-10) - var(--sw-space-2));
 }
 
 .mx-text {
@@ -508,40 +503,46 @@
 .mx-at-r0-t48 { right: 0; top: 48%; }
 
 @media (max-width: 900px) {
-  .mx-paths { order: 1; }
-  .mx-stage { order: 2; height: 380px; }
-
-  .mx-hero:has(.mx-paths) .mx-stage {
-    height: 320px;
-  }
-
   .mx-hero {
     min-height: 0;
     display: block;
   }
 
   .mx-grid {
+    position: static;
+    z-index: auto;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--sw-space-6);
-    padding: var(--sw-space-8) var(--sw-space-4) 76px;
+    padding-top: var(--sw-space-8);
+    padding-bottom: 76px;
   }
 
-  .mx-veil {
-    background: linear-gradient(
-      180deg,
-      var(--bg2) 0%,
-      color-mix(in srgb, var(--sw-hero-deep-2) 86%, transparent) 34%,
-      transparent 54%
-    );
+  .mx-hero .mx-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: auto;
+    height: auto;
+    pointer-events: none;
   }
 
+  .mx-fairy {
+    z-index: 0;
+  }
+
+  .mx-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .mx-h1-line {
+    display: block;
+  }
+
+  .mx-veil,
   .mx-hero[data-ground='navy'] .mx-veil {
-    background: linear-gradient(
-      180deg,
-      var(--bg2) 0%,
-      color-mix(in srgb, var(--sw-hero-navy-2) 86%, transparent) 34%,
-      transparent 54%
-    );
+    z-index: 1;
+    background: color-mix(in srgb, var(--sw-color-black) 72%, transparent);
   }
 
   .mx-card {
@@ -568,5 +569,21 @@
     width: var(--sw-space-9);
     height: var(--sw-space-9);
     margin: calc(var(--sw-space-6) * -1) 0 0 calc(var(--sw-space-6) * -1);
+  }
+}
+
+@media (min-width: 1200px) {
+  .sw-header--overlay ~ main {
+    margin-top: calc(-1 * (var(--sw-target-min) + 2 * var(--sw-space-4)));
+  }
+
+  .sw-header--overlay ~ main .mx-grid {
+    padding-top: calc(var(--sw-space-11) + var(--sw-space-6));
+  }
+}
+
+@media (max-width: 1199px) {
+  .sw-header--overlay ~ main .mx-grid {
+    padding-top: calc(var(--sw-space-10) - var(--sw-space-2));
   }
 }

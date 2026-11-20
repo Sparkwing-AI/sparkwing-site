@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import { site } from '../config/site';
 
-/** Pages that exist but must not be listed: the 404 and the /apps redirect to /apps/magnet. */
-const notListed = new Set(['/404', '/apps']);
+/** The 404 page exists but must not be listed. */
+const notListed = new Set(['/404']);
 
 const pages = import.meta.glob('./**/*.astro');
 

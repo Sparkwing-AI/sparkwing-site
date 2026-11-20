@@ -59,6 +59,10 @@ const typeTag = { beta: ['tag-beta', 'Beta'], enquiry: ['tag-enquiry', 'Enquiry'
 /** Short labels for the topic value already saved on an enquiry. */
 const topicTags: Record<string, string> = {
   call: 'Book a call',
+  demo: 'Request a demo',
+  pricing: 'Pricing',
+  general: 'General questions',
+  support: 'I need support',
   app: 'App enquiry',
   studio: 'Spark Studio',
   other: 'Something else',

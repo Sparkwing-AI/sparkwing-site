@@ -1,0 +1,288 @@
+---
+import '../styles/page.css';
+import '../styles/hero-motion.css';
+import '../styles/home-rework.css';
+import '../styles/how.css';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import MotionTrigger from '../components/MotionTrigger.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  {
+    title: 'Discovery call',
+    free: true,
+    body: 'Tell us what slows your business down.',
+    image: '/assets/illustrations/steps/step-01-discovery-call.png',
+    alt: 'Two people on the phone, talking through their business',
+    crop: 'hiw-round-1',
+  },
+  {
+    title: 'AI readiness check',
+    body: 'We check where AI should focus first.',
+    image: '/assets/illustrations/steps/step-02-ai-readiness.png',
+    alt: 'A colleague pointing to a checklist with three items ticked',
+    crop: 'hiw-round-2',
+  },
+  {
+    title: 'We draft your AI plan',
+    body: 'A clear plan for your review and sign off.',
+    image: '/assets/illustrations/steps/step-03-ai-plan.png',
+    alt: 'A colleague presenting a plan as a row of coloured steps',
+    crop: 'hiw-round-3',
+  },
+  {
+    title: 'Team training',
+    body: 'We help your team learn to use AI for day-to-day work.',
+    image: '/assets/illustrations/steps/step-04-team-training.png',
+    alt: 'A team member watching a training video on a laptop',
+    crop: 'hiw-round-4',
+  },
+  {
+    title: 'Review and adjust',
+    body: 'We check-in and fine-tune with you.',
+    image: '/assets/illustrations/steps/step-05-review-adjust.png',
+    alt: 'Two colleagues reviewing results together on a tablet',
+    crop: 'hiw-round-5',
+  },
+];
+
+const plan = [
+  { title: 'Your AI priorities', body: 'We find where AI saves you the most time, so you start with the jobs that matter.' },
+  { title: 'The apps you need', body: 'We set up the apps that fit the way your business runs.' },
+  { title: 'The AI helpers you need', body: 'AI helpers that take on the jobs your team repeats, like sorting the inbox or drafting a report.' },
+  { title: 'The logins and keys', body: 'If your apps are hosted in the cloud, we give you the logins and keys so you can manage them.' },
+];
+
+const trust = [
+  { id: 'rules', title: 'Your rules.', body: 'You decide what AI helpers do. Dashboards show AI work history, so you can always check.' },
+  { id: 'approval', title: 'Your approvals.', body: 'Repeat jobs like report writing can go to AI helpers. They draft, you approve.' },
+  { id: undefined, title: 'Your details are private.', body: 'Personal details like customer names, contact info and account numbers stay out of the AI.' },
+];
+
+const training = [
+  { title: 'The basics of AI', body: 'What AI is and how it can help with your daily work.', tone: 'action' },
+  { title: 'Using AI responsibly', body: 'How to keep your business and customer details safe.', tone: 'violet' },
+  { title: 'Our systems and apps', body: 'Hands-on practice with the apps we set up for you.', tone: 'ember' },
+];
+---
+
+<BaseLayout
+  overlayHeader
+  title="Sparkwing: Services"
+  description="AI planned and set up around the way you work, your rules and your team, without the overwhelm."
+>
+  <section class="mx-hero" data-ground="deep" aria-labelledby="hiw-title">
+    <canvas class="mx-canvas" data-libra aria-hidden="true"></canvas>
+    <div class="mx-veil"></div>
+    <div class="mx-grid sw-container">
+      <div class="mx-text">
+        <p class="home-kicker">Our Services</p>
+        <h1 class="mx-h1" id="hiw-title"><span class="mx-h1-line">AI <span class="sw-grad hiw-mark">made easy</span></span> <span class="mx-h1-line">for you and your team</span></h1>
+        <p class="mx-p">AI planned and set up around the way you work, your rules and your team, without the overwhelm.</p>
+        <div class="mx-cta">
+          <Button variant="accent" size="lg" enquiry="call">Book a free discovery call</Button>
+          <Button variant="outline" size="lg" href="#steps">See the five steps</Button>
+        </div>
+      </div>
+      <div class="mx-stage" role="img" aria-label="Animation: a glowing outlined puzzle cube made of five numbered pieces, turning slowly under a starry sky with a meteor shower."></div>
+    </div>
+    <MotionTrigger class="home-hero-hit" corner="bottom-right" />
+  </section>
+
+  <section class="sw-band sw-band--surface" id="what-we-do" aria-labelledby="wwd-title">
+    <div class="sw-band-inner">
+      <div class="home-section-copy">
+        <p class="home-kicker home-kicker--spark">What we do</p>
+        <h2 class="sw-h2" id="wwd-title">Four ways we help your business.</h2>
+      </div>
+      <div class="hiw-offer">
+        <div>
+          <span>01</span>
+          <h3>AI plan</h3>
+          <p>Find where AI saves the most time and how to roll it out.</p>
+        </div>
+        <div>
+          <span>02</span>
+          <h3>AI setup</h3>
+          <p>Pick the right tools and set them up for your team.</p>
+        </div>
+        <div>
+          <span>03</span>
+          <h3>AI helpers</h3>
+          <p>Set up AI helpers to take on manual admin and paperwork.</p>
+        </div>
+        <div>
+          <span>04</span>
+          <h3>AI training</h3>
+          <p>Online learning and training for confident, safe AI use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band" id="steps-section" aria-labelledby="steps-title">
+    <div class="sw-band-inner">
+      <div class="hiw-intro">
+        <p class="home-kicker home-kicker--spark sw-anchor" id="steps">Our process</p>
+        <h2 class="sw-h2" id="steps-title">We guide you through your AI journey.</h2>
+        <p class="sw-lead">From the first call, to building your AI plan, apps and AI helpers, to getting your team confident with AI, we're with you every step of the way.</p>
+      </div>
+      <div class="hiw-flow" data-flow>
+        <div class="hiw-track" aria-hidden="true"><div class="hiw-track-fill"></div></div>
+        <ol class="hiw-cards">
+          {
+            steps.map((step, index) => (
+              <li class="hiw-card">
+                <div class="hiw-card-top">
+                  <span class={`hiw-num hiw-num-${index + 1}`}>{index + 1}</span>
+                  <img class:list={['hiw-round', step.crop]} src={step.image} alt={step.alt} width="72" height="72" loading="lazy" />
+                </div>
+                <div class="hiw-card-title">
+                  <h3>{step.title}</h3>
+                  {step.free && <Badge size="sm" tone="success">Free</Badge>}
+                </div>
+                <p>{step.body}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--surface" id="plan-section" aria-labelledby="plan-title">
+    <div class="sw-band-inner hiw-plan">
+      <div class="hiw-plan-copy">
+        <p class="home-kicker home-kicker--spark sw-anchor" id="plan">Your AI plan</p>
+        <h2 class="sw-h2" id="plan-title">What's included in your AI plan.</h2>
+        <p class="sw-lead">Everything is set up around your business, then handed over so you stay in control.</p>
+        <img class="hiw-plan-art" src="/assets/illustrations/services/svc-03-ai-helpers.png" alt="Two colleagues reviewing an app on a tablet in front of a web page" width="290" height="362" loading="lazy" />
+      </div>
+      <ul>
+        {
+          plan.map((item) => (
+            <li>
+              <span class="hiw-star" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 1 L14.6 9.4 L23 12 L14.6 14.6 L12 23 L9.4 14.6 L1 12 L9.4 9.4 Z" fill="currentColor"></path></svg>
+              </span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="sw-band hiw-knowledge" id="knowledge-section" aria-labelledby="knowledge-title">
+    <div class="sw-band-inner">
+      <div class="hiw-intro">
+        <p class="home-kicker sw-anchor" id="business-knowledge">Your business knowledge</p>
+        <h2 class="sw-h2" id="knowledge-title">AI that knows your business.</h2>
+        <p class="sw-lead">We set up one place for your documents, records and ways of working, so every answer draws on your own business. The more you add, the more accurate it gets.</p>
+      </div>
+      <div class="hiw-chats">
+        <div class="hiw-chat">
+          <b>Without your business knowledge</b>
+          <div class="hiw-msg hiw-msg--me">
+            <p><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img src="/assets/chat/avatar-marco.jpg" width="44" height="44" alt="" />
+          </div>
+          <div class="hiw-msg">
+            <img src="/assets/chat/avatar-ai.svg" width="44" height="44" alt="" />
+            <p><span class="sw-visually-hidden">AI replied: </span>I can't see your client list. If you paste it in, I can help you work through it.</p>
+          </div>
+        </div>
+        <div class="hiw-chat hiw-chat--fit">
+          <b>With your business knowledge</b>
+          <div class="hiw-msg hiw-msg--me">
+            <p><span class="sw-visually-hidden">You asked: </span>Who should I follow up this week?</p>
+            <img src="/assets/chat/avatar-marco.jpg" width="44" height="44" alt="" />
+          </div>
+          <div class="hiw-msg">
+            <img src="/assets/chat/avatar-ai-sparkwing.svg" width="44" height="44" alt="" />
+            <p><span class="sw-visually-hidden">AI with your business knowledge replied: </span>I suggest following up with Reyes Trading, who has waited 21 days, and Marlow Studio, who has waited 12 days. Reyes comes first. Want me to draft the email?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band" id="trust-section" aria-labelledby="trust-title">
+    <div class="sw-band-inner">
+      <div class="hiw-split">
+        <div class="hiw-intro">
+          <p class="home-kicker home-kicker--spark sw-anchor" id="trust">Trust and security</p>
+          <h2 class="sw-h2" id="trust-title">AI that you can <span class="sw-grad sw-grad--lagoon-violet">trust</span>.</h2>
+          <p class="sw-lead">We help you set the rules for how AI works in your business. Those rules come with every Sparkwing app from day one, and we don't use your data to train AI models.</p>
+        </div>
+        <img class="hiw-aside" src="/assets/illustrations/services/svc-01-ai-plan.png" alt="Two colleagues beside a board with three coloured panels, setting the rules for AI" width="295" height="324" loading="lazy" />
+      </div>
+      <div class="hiw-columns">
+        {
+          trust.map((item) => (
+            <div class="hiw-column" id={item.id}>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band hiw-training" id="training-section" aria-labelledby="training-title">
+    <div class="sw-band-inner">
+      <div class="hiw-split">
+        <div class="hiw-intro">
+          <p class="home-kicker home-kicker--spark sw-anchor" id="training">Training</p>
+          <h2 class="sw-h2" id="training-title">We train you <span class="sw-grad sw-grad--lagoon-violet">and your team</span>.</h2>
+          <p class="sw-lead">Practical sessions on your own work, so everyone feels confident from the first week.</p>
+        </div>
+        <img class="hiw-aside hiw-aside--coach" src="/assets/illustrations/services/svc-04-ai-coaching.png" alt="A coach showing a colleague how to use AI on a laptop" width="226" height="283" loading="lazy" />
+      </div>
+      <div class="hiw-lessons">
+        {
+          training.map((item) => (
+            <div class={`hiw-lesson hiw-lesson--${item.tone}`}>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="sw-band sw-band--gold hiw-close" id="contact" aria-labelledby="hiw-close-title">
+    <div class="sw-band-inner sw-band-inner--row">
+      <div class="sw-gold-copy">
+        <h2 class="sw-h2" id="hiw-close-title">Want to see how it fits your business?</h2>
+        <p>Book a discovery call and we'll show you what AI could take off your plate.</p>
+      </div>
+      <Button variant="deep" size="lg" enquiry="call">Book a discovery call</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { startLibra } from '../scripts/libra.js';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-libra]');
+  if (canvas) startLibra(canvas);
+
+  const flow = document.querySelector<HTMLElement>('[data-flow]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (flow && !reduce.matches && 'IntersectionObserver' in window) {
+    flow.dataset.armed = '';
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      flow.classList.add('is-shown');
+      observer.disconnect();
+    }, { threshold: 0.05 });
+    observer.observe(flow);
+  }
+</script>

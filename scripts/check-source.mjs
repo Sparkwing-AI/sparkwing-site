@@ -11,6 +11,9 @@ const allowed = new Set([
   'scripts/motion-engine.js',
   // Canvas 2D drawing colours for the Home flight. Also pixels.
   'scripts/flight.js',
+  // Canvas pixels for the How it works cube hero and the Apps starfield.
+  'scripts/libra.js',
+  'scripts/apps-sky.js',
 ]);
 const extensions = ['.astro', '.ts', '.js', '.mjs', '.css', '.svg', '.md', '.mdx', '.json'];
 

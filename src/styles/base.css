@@ -53,12 +53,35 @@ a {
   color: var(--sw-color-link);
 }
 
+/* Multi-colour type from the boards. The gradient is only as wide as the words. */
+.sw-grad {
+  width: fit-content;
+  padding-bottom: 0.08em;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.sw-grad--spectrum { background-image: var(--sw-gradient-spectrum); }
+.sw-grad--lagoon-violet { background-image: var(--sw-gradient-lagoon-violet); }
+.sw-grad--violet-lagoon { background-image: var(--sw-gradient-violet-lagoon); }
+.sw-grad--deep-violet { background-image: var(--sw-gradient-deep-violet); }
+.sw-grad--violet-ember { background-image: var(--sw-gradient-violet-ember); }
+.sw-grad--ember-deep { background-image: var(--sw-gradient-ember-deep); }
+.sw-grad--lagoon-ember { background-image: var(--sw-gradient-lagoon-ember); }
+.sw-grad--aqua-violet { background-image: var(--sw-gradient-aqua-violet); }
+.sw-grad--violet-peach { background-image: var(--sw-gradient-violet-peach); }
+.sw-grad--peach-coral { background-image: var(--sw-gradient-peach-coral); }
+.sw-grad--aqua-peach { background-image: var(--sw-gradient-aqua-peach); }
+.sw-grad--gold-peach { background-image: var(--sw-gradient-gold-peach); }
+
 :focus-visible {
   outline: var(--sw-focus-ring);
   outline-offset: var(--sw-focus-offset);
 }
 
 .sw-container {
+  box-sizing: border-box;
   width: 100%;
   max-width: calc(var(--sw-container) + 2 * var(--sw-gutter));
   margin-inline: auto;

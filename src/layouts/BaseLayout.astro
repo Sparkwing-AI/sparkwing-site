@@ -14,9 +14,11 @@ interface Props {
   noindex?: boolean;
   /** Extra JSON-LD for this page (SEO-07). Organization is added on every page. */
   schema?: Record<string, unknown>[];
+  /** Transparent header sitting on a dark hero. Other pages use the solid deep teal header. */
+  overlayHeader?: boolean;
 }
 
-const { title, description, noindex = false, schema = [] } = Astro.props;
+const { title, description, noindex = false, schema = [], overlayHeader = false } = Astro.props;
 const cleanPath = Astro.url.pathname.replace(/(?:\/index)?\.html$/, '') || '/';
 const canonical = new URL(cleanPath, site.url).href;
 const ogImage = new URL(site.ogImage.path, site.url).href;
@@ -83,7 +85,7 @@ const jsonLd = JSON.stringify(graph).replace(/</g, '\\u003c');
   </head>
   <body>
     <a class="sw-skip-link" href="#main">Skip to main content</a>
-    <Header path={cleanPath} />
+    <Header path={cleanPath} overlay={overlayHeader} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

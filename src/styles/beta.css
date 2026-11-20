@@ -4,12 +4,13 @@
 }
 
 .bt-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
-  gap: var(--sw-space-7) var(--sw-space-9);
-  align-items: start;
-  max-width: var(--sw-container);
+  max-width: 44rem;
   margin-inline: auto;
+}
+
+.bt-main .sw-form-submit {
+  align-self: center;
+  margin-top: var(--sw-space-6);
 }
 
 .bt-main {

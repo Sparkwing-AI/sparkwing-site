@@ -123,14 +123,28 @@ export function startScene(root, kind, opts = {}) {
         }
       },
       home: {
-        init() { X.L = Math.min(F.r * 1.42, W * 0.46); X.sheds = []; X.next = 0; X.fe = []; const n = scaled(18, 13); for (let i = 0; i < n; i++) { const u = i / (n - 1); X.fe.push({ ang: -0.42 + u * 1.75, len: X.L * (0.46 + 0.62 * Math.sin(0.25 + u * 2.75)), bend: 0.2 + u * 0.14, ph: rnd(0, 6.28) }); } },
-        pt(fe, t, side) { const flap = 0.16 + Math.sin(T * 0.62) * 0.14; const a = fe.ang + Math.sin(T * 0.62 + fe.ang) * 0.025; const b = fe.bend * Math.sin(t * 3.14) * fe.len; const x0 = Math.cos(a) * fe.len * t + Math.sin(a) * b * 0.55, y0 = -Math.sin(a) * fe.len * t + Math.cos(a) * b * 0.55; const fold = (side > 0 ? 0.32 : 0.92) + flap; const x = x0 * Math.cos(fold) * side, z = x0 * Math.sin(fold) * (side > 0 ? -0.55 : 0.55), y = y0; const f = 900 / (900 + z); return [F.cx + x * f, F.cy + F.r * 0.32 + y * f, f]; },
-        step(dt) { X.next -= dt; if (X.next <= 0) { X.next = 0.11; const fe = pick(X.fe), side = Math.random() < 0.74 ? 1 : -1; const p = this.pt(fe, 1, side); X.sheds.push({ x: p[0], y: p[1], vx: rnd(-20, 4), vy: rnd(10, 34), age: 0, life: rnd(1.8, 3.2), col: Math.random() < 0.8 ? 'gold' : 'white' }); } for (let i = X.sheds.length - 1; i >= 0; i--) { const s = X.sheds[i]; s.age += dt; s.x += s.vx * dt; s.y += s.vy * dt; if (s.age > s.life) X.sheds.splice(i, 1); } },
+        init() {
+          X.L = Math.min(F.r * 1.55, W * 0.47); X.tilt = -0.42; X.flat = 0.52;
+          const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+          const col = (rr) => { const r = Math.random(); if (r < 0.06) return [255, 170, 205]; if (rr < 0.22) return [255, 236, 205]; if (rr < 0.55) return r < 0.5 ? [190, 170, 250] : [130, 165, 240]; return r < 0.6 ? [95, 214, 196] : [130, 165, 240]; };
+          const armTh = (rr) => 2.4 * Math.log(1 + 7 * rr), pickArm = () => { const r = Math.random(); return r < 0.38 ? 0 : r < 0.76 ? Math.PI : r < 0.88 ? Math.PI / 2 : Math.PI * 1.5; };
+          X.stars = []; const n = scaled(3200, 1500);
+          for (let i = 0; i < n; i++) { const arm = Math.random() < 0.55, rr = arm ? Math.pow(rnd(0.02, 1), 0.9) : Math.min(1, -Math.log(1 - rnd(0.02, 0.97)) * 0.26), th = arm ? pickArm() + armTh(rr) + gauss() * (0.34 - 0.18 * rr) : rnd(0, 6.28); X.stars.push({ rr, th, c: col(rr), s: rnd(0.9, 2.4) * (1.1 - 0.45 * rr), al: rnd(0.5, 1) * (0.2 + 0.8 * Math.pow(1 - rr, 0.7)), ph: rnd(0, 6.28) }); }
+          X.haze = []; const nh = scaled(60, 30); for (let i = 0; i < nh; i++) { const a = rnd(0, 6.28), d = Math.pow(rnd(0, 1), 1.3) * 0.4; X.haze.push({ x: Math.cos(a) * d, y: Math.sin(a) * d, r: rnd(0.12, 0.3), c: Math.random() < 0.55 ? [200, 185, 250] : [255, 225, 190], al: rnd(0.008, 0.02) * (1.4 - d * 2) }); }
+          X.dust = []; const nd = scaled(380, 180);
+          for (let i = 0; i < nd; i++) { const rr = rnd(0.1, 0.92), th = pickArm() + armTh(rr) + gauss() * 0.3; X.dust.push({ rr, th, c: col(rr), r: (18 + 26 * (1 - rr) * rnd(0.5, 1)) * (X.L / 420), al: rnd(0.04, 0.08) * 1.5 * Math.pow(1 - rr, 0.7) * Math.min(1, rr * 3) + 0.002, ph: rnd(0, 6.28) }); }
+        },
+        gp(rr, th) { const w = 0.022 / (0.25 + rr), a = th + T * w, x = rr * X.L * Math.cos(a), y = rr * X.L * Math.sin(a) * X.flat, ct = Math.cos(X.tilt), st = Math.sin(X.tilt); return [F.cx + x * ct - y * st, F.cy - F.r * 0.05 + x * st + y * ct]; },
+        step() {},
         draw() {
-          spark(F.cx, F.cy + F.r * 0.32, F.r * 2.1, 0.16, 'violet');
-          [-1, 1].forEach((side) => { X.fe.forEach((fe, i) => { const u = i / (X.fe.length - 1), N = 22; let prev = null; for (let k = 0; k <= N; k++) { const t = k / N, v = this.pt(fe, t, side); if (prev) { const mix = t; const r = Math.round(150 + (254 - 150) * mix), g = Math.round(132 + (185 - 132) * mix), b = Math.round(232 + (56 - 232) * mix); ctx.globalAlpha = 1; ctx.strokeStyle = `rgba(${r},${g},${b},${(side > 0 ? 0.5 : 0.34) * (0.45 + 0.55 * t)})`; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(v[0], v[1]); ctx.stroke(); } prev = v; if (k % 3 === 0 && k) spark(v[0], v[1], 4 + 12 * t * t, 0.34 + 0.6 * t, t > 0.58 ? 'gold' : 'violet'); } const trav = (T * 0.14 + fe.ph) % 1; const v = this.pt(fe, trav, side); spark(v[0], v[1], 18, 0.9 * Math.sin(trav * 3.14), 'white'); const tip = this.pt(fe, 1, side); spark(tip[0], tip[1], 20 + 22 * Math.sin(u * 3.14), 0.82 + 0.15 * Math.sin(T * 1.4 + fe.ph), 'gold'); }); });
-          X.sheds.forEach((s) => { const k = s.age / s.life; spark(s.x, s.y, 13 * (1 - k * 0.6), 0.85 * (1 - k), s.col); });
-          const cy = F.cy + F.r * 0.32, sz = 15 + Math.sin(T * 1.4) * 2.4; spark(F.cx, cy, 120, 0.55, 'gold'); ctx.globalAlpha = 1; ctx.fillStyle = '#FFF4D6'; ctx.beginPath(); [[0, -1], [0.13, -0.13], [1, 0], [0.13, 0.13], [0, 1], [-0.13, 0.13], [-1, 0], [-0.13, -0.13]].forEach(([a, b], i) => { const x = F.cx + a * sz * 1.5, y = cy + b * sz * 1.5; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); ctx.fill();
+          const cy = F.cy - F.r * 0.05;
+          ctx.save(); ctx.globalCompositeOperation = 'lighter';
+          { ctx.save(); ctx.translate(F.cx, cy); ctx.rotate(X.tilt); ctx.scale(1, X.flat); const hg = ctx.createRadialGradient(0, 0, 0, 0, 0, X.L * 0.95); hg.addColorStop(0, 'rgba(200,185,250,0.1)'); hg.addColorStop(0.45, 'rgba(120,150,235,0.07)'); hg.addColorStop(1, 'rgba(95,214,196,0)'); ctx.globalAlpha = 1; ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(0, 0, X.L * 0.95, 0, 6.2832); ctx.fill(); X.haze.forEach((h) => { const hx = h.x * X.L, hy = h.y * X.L, hr = h.r * X.L, g2 = ctx.createRadialGradient(hx, hy, 0, hx, hy, hr); g2.addColorStop(0, `rgba(${h.c[0]},${h.c[1]},${h.c[2]},${h.al})`); g2.addColorStop(1, `rgba(${h.c[0]},${h.c[1]},${h.c[2]},0)`); ctx.fillStyle = g2; ctx.fillRect(hx - hr, hy - hr, hr * 2, hr * 2); }); ctx.restore(); }
+          X.dust.forEach((d) => { const p = this.gp(d.rr, d.th); const g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], d.r); g.addColorStop(0, `rgba(${d.c[0]},${d.c[1]},${d.c[2]},${d.al})`); g.addColorStop(1, `rgba(${d.c[0]},${d.c[1]},${d.c[2]},0)`); ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(p[0] - d.r, p[1] - d.r, d.r * 2, d.r * 2); });
+          spark(F.cx, cy, X.L * 0.5, 0.2, 'violet'); spark(F.cx, cy, X.L * 0.34, 0.5, 'gold');
+          X.stars.forEach((st) => { const p = this.gp(st.rr, st.th); ctx.globalAlpha = st.al * (0.7 + 0.3 * Math.sin(T * 0.8 + st.ph)); ctx.fillStyle = `rgb(${st.c[0]},${st.c[1]},${st.c[2]})`; ctx.fillRect(p[0] - st.s / 2, p[1] - st.s / 2, st.s, st.s); });
+          ctx.restore();
+          spark(F.cx, cy, 46, 0.85, 'white'); spark(F.cx, cy, 20, 1, 'white');
         }
       },
       trust: {
@@ -156,6 +170,7 @@ export function startScene(root, kind, opts = {}) {
       const tile = root.querySelector('[data-tile]'), card = root.querySelector('.mx-card');
       if (tile) { const r = relRect(tile); return { x: r.x + r.w * 0.82, y: r.y - 4 * B.size }; }
       if (card) { const r = relRect(card); return { x: r.x + r.w * 0.5, y: r.y - 12 * B.size }; }
+      if (kind === 'home') return { x: F.cx, y: F.cy - F.r * 0.05 };
       return { x: F.cx, y: F.cy + F.r * 0.32 - 26 * B.size };
     }
     function spline(pts) { const out = [], cr = (a, b, c2, d, t) => 0.5 * (2 * b + (c2 - a) * t + (2 * a - 5 * b + 4 * c2 - d) * t * t + (3 * b - a - 3 * c2 + d) * t * t * t); for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)]; for (let k = 0; k < 40; k++) { const t = k / 40; out.push({ x: cr(p0.x, p1.x, p2.x, p3.x, t), y: cr(p0.y, p1.y, p2.y, p3.y, t) }); } } out.push(pts[pts.length - 1]); return out; }
@@ -196,7 +211,7 @@ export function startScene(root, kind, opts = {}) {
       fx.globalAlpha = 1;
       if (B.mode !== 'wait') { const moving = B.mode !== 'perch', open = moving ? 0.28 + 0.72 * Math.abs(Math.cos(T * 19)) : 0.72 + 0.28 * Math.cos(T * 1.6); drawButterfly(B.x, B.y, B.ang, B.size, open); }
     }
-    function fairyLayout() { fc.width = W * dpr; fc.height = H * dpr; B.size = W < 700 ? 0.72 : 0.92; }
+    function fairyLayout() { fc.width = W * dpr; fc.height = H * dpr; B.size = kind === 'home' ? (W < 700 ? 0.36 : 0.46) : (W < 700 ? 0.72 : 0.92); }
     const sc = scenes[kind] || scenes.flow;
     function layout() {
       const b = c.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, dprCap); W = Math.round(b.width); H = Math.round(b.height); if (!W || !H) return false; c.width = W * dpr; c.height = H * dpr; const r = relRect(stageEl); F = { x0: r.x, y0: r.y, w: r.w, h: r.h, cx: r.cx, cy: r.cy, r: Math.min(r.w, r.h) / 2 }; pulses = []; bursts = []; X = {}; fairyLayout(); buildStars(); sc.init(); if (B.mode === 'fly') B.path = flightPath(); if (B.mode === 'hop') { B.mode = 'perch'; } if (B.seen) { B.mode = 'perch'; B.dust = []; } return true;
