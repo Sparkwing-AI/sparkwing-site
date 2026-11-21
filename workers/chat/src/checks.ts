@@ -73,7 +73,10 @@ const BANNED = /bir[- ]accredit|e-?invoic|e-?fil(e|ing)|guarantee|discount/i;
 // Sparky never names who runs Sparkwing's AI or hosting, even to deny it. Checked on every sentence, negated or not.
 const VENDOR = /\b(anthropic|claude|haiku|sonnet|opus|openai|chatgpt|gpt-?\d|gemini|mistral|llama|cloudflare|azure|aws|amazon web services|google cloud|vercel|supabase|microsoft graph|durable objects?)\b/i;
 const CONTACT = /[^\s@]+@[^\s@]+\.[a-z]{2,}|\b(?:\+?61|0)[2-478](?:[ -]?\d){8}\b/i;
-const PRICE = /[$₱€£]\s?\d|\b\d[\d,.]*\s?(aud|usd|php|pesos?|dollars?)\b/i;
+// "Ask the team about discounts" names a topic and makes no claim. Only allowed in a sentence that hands over to the team.
+const DISCOUNT_TOPIC = /\b(about|on|regarding|around) (any )?discounts?\b/gi;
+const TEAM = /\bteam\b/i;
+const PRICE =/[$₱€£]\s?\d|\b\d[\d,.]*\s?(aud|usd|php|pesos?|dollars?)\b/i;
 
 /** A claim we never make is only rejected when the sentence states it. "It doesn't file taxes" is fine. */
 function hasBannedClaim(answer: string): boolean {
@@ -87,7 +90,10 @@ export function bannedReason(answer: string): string {
   const vendor = answer.match(VENDOR);
   if (vendor) return `vendor: ${vendor[0]}`;
   if (CONTACT.test(answer)) return 'contact detail';
-  const sentence = answer.split(/(?<=[.!?])\s+/).find((item) => BANNED.test(item) && !NEGATED.test(item));
+  const sentence = answer
+    .split(/(?<=[.!?])\s+/)
+    .map((item) => (TEAM.test(item) ? item.replace(DISCOUNT_TOPIC, '') : item))
+    .find((item) => BANNED.test(item) && !NEGATED.test(item));
   return sentence ? `claim: ${sentence.match(BANNED)?.[0] ?? ''}` : '';
 }
 

@@ -2,6 +2,8 @@ name = "sparkwing-chat"
 account_id = "9d662527c737f4da3e868a52641e3d09"
 main = "src/index.ts"
 compatibility_date = "2026-11-01"
+# Keep variables set in the Cloudflare dashboard on every deploy. Wrangler only reads this at the top level.
+keep_vars = true
 
 [observability]
 enabled = true
@@ -18,7 +20,7 @@ port = 8788
 
 [vars]
 ALLOWED_ORIGINS = "http://127.0.0.1:4321,http://localhost:4321"
-CHAT_ENABLED = "true"
+# No CHAT_ENABLED here: missing means on. Put CHAT_ENABLED=false in .dev.vars to test the offline state.
 
 [durable_objects]
 bindings = [
@@ -33,15 +35,14 @@ database_id = "local-chat-log"
 migrations_dir = "migrations"
 
 # Deploy with: npx wrangler deploy --config workers/chat/wrangler.toml --env production
-# keep_vars means switching CHAT_ENABLED off in the Cloudflare dashboard survives a later deploy.
+# CHAT_ENABLED is the kill switch, so it is not set here. It lives only in the Cloudflare dashboard,
+# and keep_vars stops a deploy from changing it. Missing or anything but "false" means the chat is on.
 [env.production]
 name = "sparkwing-chat"
-keep_vars = true
 
 [env.production.vars]
 ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
 EXPECTED_HOSTNAME = "sparkwing.com.au"
-CHAT_ENABLED = "true"
 DAILY_BUDGET_USD = "1"
 
 [env.production.durable_objects]
