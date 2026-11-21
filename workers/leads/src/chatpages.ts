@@ -108,6 +108,7 @@ function outcomeTag(row: SessionRow): [string, string] {
   if (row.flag) return ['Flagged', 'tag-flag'];
   const outcome = effectiveOutcome(row);
   if (row.lead_sent === 1 || outcome === 'lead') return ['Left details', 'tag-done'];
+  if (outcome === 'in_progress') return ['In progress', 'tag-live'];
   if (outcome === 'no_message') return ['No message', 'tag-quiet'];
   return ['Fell off', 'tag-quiet'];
 }

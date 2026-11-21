@@ -48,10 +48,18 @@ export interface Stats {
   topics: TopicRow[];
 }
 
-/** Chats still marked active but quiet are shown as left, until the nightly job settles them. */
-export function effectiveOutcome(row: Pick<SessionRow, 'outcome' | 'turns'>): string {
+/** How long a chat goes quiet before it counts as over. Matches QUIET_MS in the chat Worker's insights.ts. */
+export const QUIET_MS = 35 * 60 * 1000;
+
+/**
+ * Chats still marked active are in progress while they had activity in the last 35 minutes.
+ * After that they are shown as left, until the nightly job settles them.
+ */
+export function effectiveOutcome(row: Pick<SessionRow, 'outcome' | 'turns' | 'last_activity_at'>, now = Date.now()): string {
   if (row.outcome !== 'active') return row.outcome;
-  return row.turns > 0 ? 'left' : 'no_message';
+  if (row.turns === 0) return 'no_message';
+  const last = Date.parse(row.last_activity_at ?? '');
+  return now - last < QUIET_MS ? 'in_progress' : 'left';
 }
 
 const pageNames: Record<string, string> = {
@@ -102,18 +110,19 @@ function median(values: number[]): number {
   return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
-export function computeStats(rows: SessionRow[]): Stats {
+export function computeStats(rows: SessionRow[], now = Date.now()): Stats {
   const messagedRows = rows.filter((r) => r.turns > 0);
   const flaggedRows = messagedRows.filter((r) => r.flag !== '');
   const genuineRows = messagedRows.filter((r) => r.flag === '');
   const isLead = (r: SessionRow) => r.lead_sent === 1 || r.outcome === 'lead';
   const leadRows = genuineRows.filter(isLead);
   const offeredRows = genuineRows.filter((r) => r.offered === 1);
-  const droppedRows = genuineRows.filter((r) => !isLead(r));
+  const isLive = (r: SessionRow) => effectiveOutcome(r, now) === 'in_progress';
+  const droppedRows = genuineRows.filter((r) => !isLead(r) && !isLive(r));
   const turns = genuineRows.map((r) => r.turns);
 
   const exit = (r: SessionRow): string => {
-    const outcome = effectiveOutcome(r);
+    const outcome = effectiveOutcome(r, now);
     if (outcome === 'cap') return 'Closed by the message cap';
     if (outcome === 'off_topic') return 'Ended after off-topic replies';
     if (r.offered === 1) return 'Left after the lead card offer';
@@ -131,7 +140,7 @@ export function computeStats(rows: SessionRow[]): Stats {
     const row = topicMap.get(id) ?? { id, n: 0, leads: 0, drop: 0 };
     row.n += 1;
     if (isLead(r)) row.leads += 1;
-    else row.drop += 1;
+    else if (!isLive(r)) row.drop += 1;
     topicMap.set(id, row);
   }
 
