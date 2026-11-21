@@ -314,6 +314,12 @@
   box-shadow: 0 0 0 5px color-mix(in srgb, var(--sw-color-accent) 22%, transparent);
 }
 
+/* The line joins the dots. It stops on the last dot, as on the canvas. */
+.home-step:last-child {
+  padding-right: 0;
+  border-top-color: transparent;
+}
+
 .home-step-kicker {
   display: flex;
   flex-wrap: wrap;
