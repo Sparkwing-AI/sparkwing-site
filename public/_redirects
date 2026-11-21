@@ -2,3 +2,8 @@
 /spark-studio /services 301
 /bring-ai-in /apps 301
 /scale-ai /services 301
+/trust /services#trust 301
+/sparkkeeper /apps#sparkkeeper 301
+/apps/magnet /apps#magnet 301
+/apps/academy /apps#academy 301
+/apps/nest /apps 301

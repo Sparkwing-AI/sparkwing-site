@@ -1,11 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const motionPages = [
-  '/sparkkeeper',
-  '/apps/magnet',
-  '/apps/academy',
-  '/apps/nest',
-  '/trust',
+  '/apps',
 ];
 
 test.describe('Page set', () => {
@@ -40,33 +36,7 @@ test.describe('Page set', () => {
   });
 });
 
-test.describe('Sparkkeeper', () => {
-  test('sub-nav marks the current page and Taglish block is hidden until toggled', async ({ page }) => {
-    await page.goto('/sparkkeeper');
-    await expect(page.locator('.sw-subnav [aria-current="page"]')).toHaveText('Sparkkeeper');
-    await expect(page.locator('[lang="fil"]').first()).toBeHidden();
-  });
-});
-
 test.describe('Apps', () => {
-  const apps = [
-    { route: '/apps/magnet', name: 'Magnet' },
-    { route: '/apps/academy', name: 'Academy' },
-    { route: '/apps/nest', name: 'Nest' },
-  ];
-  for (const app of apps) {
-    test(`${app.name} marks itself in the sub-nav and opens the app enquiry`, async ({ page }) => {
-      await page.goto(app.route);
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText(app.name);
-      await expect(page.locator('.sw-subnav [aria-current="page"]')).toHaveText(app.name);
-      await page.getByRole('link', { name: 'Ask us about this app' }).click();
-      await expect(page.locator('#sw-enquiry')).toBeVisible();
-      await expect(page.locator('#enq-topic')).toHaveValue('demo');
-      await expect(page.locator('.sw-select-face')).toHaveText('Request a demo');
-      await expect(page.getByRole('link', { name: 'How the base platform works' })).toHaveAttribute('href', '/trust');
-    });
-  }
-
   test('the Apps page has the three app sections and a demo enquiry', async ({ page }) => {
     await page.goto('/apps');
     await expect(page).toHaveURL(/\/apps$/);
@@ -80,12 +50,21 @@ test.describe('Apps', () => {
   });
 });
 
-test.describe('Trust', () => {
-  test('has the three anchors and the FR-502 sentence', async ({ page }) => {
-    await page.goto('/trust');
-    for (const id of ['hive', 'ai-crew', 'control-tower']) await expect(page.locator(`#${id}`)).toHaveCount(1);
-    await expect(page.getByText("This is how Sparkwing is designed, and we'll confirm what's live for you.")).toBeVisible();
-  });
+test.describe('Retired product pages', () => {
+  const redirects: Array<[string, RegExp, string]> = [
+    ['/trust', /\/services(\.html)?#trust$/, '#trust'],
+    ['/sparkkeeper', /\/apps(\.html)?#sparkkeeper$/, '#sparkkeeper'],
+    ['/apps/magnet', /\/apps(\.html)?#magnet$/, '#magnet'],
+    ['/apps/academy', /\/apps(\.html)?#academy$/, '#academy'],
+    ['/apps/nest', /\/apps(\.html)?$/, '#sparkkeeper'],
+  ];
+  for (const [route, landing, anchor] of redirects) {
+    test(`the old ${route} address lands on its section`, async ({ page }) => {
+      await page.goto(route);
+      await expect(page).toHaveURL(landing);
+      await expect(page.locator(anchor)).toHaveCount(1);
+    });
+  }
 });
 
 test.describe('Spark Studio', () => {
@@ -154,7 +133,7 @@ test.describe('404', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText("We couldn't find that page.");
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
     await expect(page.locator('main').getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
-    await expect(page.locator('main').getByRole('link', { name: 'Sparkkeeper' })).toHaveAttribute('href', '/sparkkeeper');
+    await expect(page.locator('main').getByRole('link', { name: 'Sparkkeeper' })).toHaveAttribute('href', '/apps#sparkkeeper');
   });
 });
 
@@ -196,9 +175,7 @@ test.describe('Review fixes', () => {
   test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
     const rows: Record<string, [string, string]> = {
       '/': ['Sparkwing: AI consulting for growing businesses', 'We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call.'],
-      '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software. Ask Sparky, upload paperwork, create reports.'],
       '/services': ['AI consulting and team training: Sparkwing Services', 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.'],
-      '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],
     };
     for (const [route, [title, description]] of Object.entries(rows)) {
@@ -224,18 +201,9 @@ test.describe('Review fixes', () => {
     expect(names).toEqual(['AI plan', 'AI setup', 'AI helpers', 'AI training']);
   });
 
-  test('Trust anchors land on the whole card, with its label visible', async ({ page }) => {
-    for (const id of ['hive', 'ai-crew', 'control-tower']) {
-      await page.goto(`/trust#${id}`);
-      const card = page.locator(`#${id}`);
-      await expect(card).toBeInViewport({ ratio: 1 });
-      await expect(card.locator('.pf-tag')).toBeInViewport({ ratio: 1 });
-    }
-  });
   test('links on the new pages match the requirements link table', async ({ page }) => {
     const checks: Array<[string, string, string]> = [
-      ['/sparkkeeper', 'Join the beta', '/sparkkeeper/beta'],
-      ['/sparkkeeper', 'Apply for the beta', '/sparkkeeper/beta'],
+      ['/apps', 'Sign up for the beta', '/sparkkeeper/beta'],
       ['/services', 'See the five steps', '#steps'],
     ];
     for (const [route, name, href] of checks) {
@@ -244,12 +212,6 @@ test.describe('Review fixes', () => {
     }
   });
 
-  test('sticky sub-nav does not hide a focused link', async ({ page }) => {
-    await page.goto('/apps/magnet');
-    const padding = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop));
-    const bar = await page.locator('.sw-subnav').evaluate((el) => el.getBoundingClientRect().height);
-    expect(padding).toBeGreaterThanOrEqual(bar);
-  });
 });
 
 test.describe('Decisions of 4 Nov', () => {
@@ -337,17 +299,7 @@ test.describe('Decisions of 4 Nov', () => {
 });
 
 test.describe('medium width', () => {
-  for (const width of [390, 1440]) {
-    test(`no horizontal scroll on Sparkkeeper at ${width}`, async ({ page }, info) => {
-      test.skip(info.project.name !== 'wide', 'The viewport is set inside the test.');
-      await page.setViewportSize({ width, height: 900 });
-      await page.goto('/sparkkeeper');
-      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-      expect(overflow).toBeLessThanOrEqual(0);
-    });
-  }
-
-  for (const route of ['/sparkkeeper', '/apps/magnet', '/apps/academy', '/apps/nest', '/services', '/trust']) {
+  for (const route of ['/apps', '/sparkkeeper/beta', '/services']) {
     test(`no horizontal scroll at 768: ${route}`, async ({ page }) => {
       await page.setViewportSize({ width: 768, height: 900 });
       await page.goto(route);
