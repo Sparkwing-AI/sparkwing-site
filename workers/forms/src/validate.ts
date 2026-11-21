@@ -24,10 +24,13 @@ export interface Submission {
   marketing_consent: boolean;
   consent_wording_version: string | null;
   tags: string;
+  /** The Ask Sparky chat this lead came from. Chat leads only. */
+  chat_session_id: string | null;
 }
 
 export type Result = { ok: true; value: Submission } | { ok: false; errors: string[] } | { ok: 'spam' };
 
+const sessionPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function text(input: unknown, max: number, multiline = false): string {
@@ -101,6 +104,7 @@ export function validate(body: unknown): Result {
       marketing_consent: raw.marketing_consent === true,
       consent_wording_version: text(raw.consent_wording_version, 40) || null,
       tags,
+      chat_session_id: type === 'chat' && typeof raw.chat_session_id === 'string' && sessionPattern.test(raw.chat_session_id) ? raw.chat_session_id.toLowerCase() : null,
     },
   };
 }

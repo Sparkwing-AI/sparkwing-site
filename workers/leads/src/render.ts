@@ -1,58 +1,6 @@
 import { statuses, type Lead } from '../../shared/types';
-
-const esc = (value: string | number | null | undefined) =>
-  String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
-
-const when = (iso: string) => esc(iso.slice(0, 16).replace('T', ' ')) + ' UTC';
-
-const style = `
-:root { color-scheme: light dark; --bg: #fff8e7; --ink: #0d3b36; --card: #fff; --line: #cfc9b6; --accent: #1f8a70; }
-@media (prefers-color-scheme: dark) { :root { --bg: #0d2b28; --ink: #f4efe0; --card: #123b36; --line: #2d5b54; --accent: #4fc4a3; } }
-* { box-sizing: border-box; }
-body { margin: 0; padding: 24px 16px 64px; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
-main { max-width: 1100px; margin: 0 auto; }
-h1 { margin: 0 0 4px; font-size: 1.5rem; }
-.who { margin: 0 0 24px; opacity: .8; }
-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
-nav a, button { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; }
-nav a[aria-current='page'] { background: var(--ink); color: var(--bg); }
-.card { margin: 0 0 16px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); scroll-margin-top: 16px; }
-.card:target { animation: lead-mark 2s ease-out 1; }
-@keyframes lead-mark { from { box-shadow: 0 0 0 3px var(--accent); } to { box-shadow: 0 0 0 3px transparent; } }
-@media (prefers-reduced-motion: reduce) { .card:target { animation: none; box-shadow: 0 0 0 3px var(--accent); } }
-.ref { margin: 0 0 8px; font-weight: 700; letter-spacing: .04em; }
-.find { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin: 0 0 16px; }
-.find input { min-height: 44px; min-width: min(100%, 280px); padding: 8px 12px; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; }
-.hint { display: block; margin-top: 4px; font-size: .85rem; }
-.notice { margin: 0 0 16px; }
-.card h2 { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; font-size: 1.1rem; }
-.tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; line-height: 1; }
-.tag-beta { background: var(--ink); color: var(--bg); }
-.tag-enquiry { border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
-.tag-chat { border: 1.5px dashed var(--ink); background: transparent; color: var(--ink); }
-.tag-topic { border: 1.5px solid var(--accent); background: transparent; color: var(--ink); }
-.tag-hint { border: 1.5px dotted var(--ink); background: transparent; color: var(--ink); font-weight: 600; }
-.meta { margin: 0 0 12px; opacity: .8; font-size: .9rem; }
-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0 0 12px; }
-dt { font-weight: 600; }
-dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-form.edit { display: grid; gap: 12px; }
-form.edit label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
-form.edit textarea { width: 100%; }
-label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
-select, textarea { font: inherit; color: inherit; background-color: var(--bg); border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; }
-select { appearance: none; padding-right: 44px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230d3b36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px 16px; }
-@media (prefers-color-scheme: dark) { select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%23f4efe0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); } }
-textarea { min-width: min(100%, 420px); min-height: 44px; }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-@media (max-width: 600px) { dl { grid-template-columns: 1fr; } }
-.danger { margin-top: 20px; }
-.danger summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font-weight: 500; cursor: pointer; }
-.danger p { margin: 12px 0; max-width: 62ch; }
-.danger-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.danger button, .danger a { min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font-weight: 500; text-decoration: none; }
-.danger a { display: inline-flex; align-items: center; }
-`;
+import { esc, style, when } from './common';
+import { shell, type NavKey } from './layout';
 
 const typeTag = { beta: ['tag-beta', 'Beta'], enquiry: ['tag-enquiry', 'Enquiry'], chat: ['tag-chat', 'Chat'] } as const;
 
@@ -109,6 +57,7 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
           ['Message', lead.message],
         ];
   rows.push(['Marketing emails OK', lead.marketing_consent ? `Yes, ${lead.marketing_consent_at?.slice(0, 10)}` : 'No']);
+  rows.push(['Confirmation email', lead.confirmation_sent_at ? `Sent ${lead.confirmation_sent_at.slice(0, 16).replace('T', ' ')} UTC` : 'Not sent']);
   const [typeClass, typeLabel] = typeTag[lead.type];
   const topic = topicTag(lead);
   const options = statuses.map((s) => `<option${s === lead.status ? ' selected' : ''}>${s}</option>`).join('');
@@ -121,6 +70,7 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
 <h2><span>${esc(lead.name)}</span> <span class="tag ${typeClass}">${typeLabel}</span>${topic ? ` <span class="tag tag-topic">${esc(topic)}</span>` : ''}${locationDiffers(lead) ? ' <span class="tag tag-hint">Location differs</span>' : ''}</h2>
 <p class="meta">${when(lead.created_at)} · from ${esc(lead.source_page)} · ${esc(lead.status)}${extra ? `<br>${extra}` : ''}</p>
 <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v) || '-'}</dd>`).join('')}</dl>
+${lead.chat_session_id ? `<p><a href="/chat/transcripts?session=${esc(lead.chat_session_id)}">View the chat</a></p>` : ''}
 <form class="edit" method="post" action="/leads/${esc(lead.id)}">
 <input type="hidden" name="tab" value="${esc(tab)}">${marketing ? '<input type="hidden" name="marketing" value="1">' : ''}
 <label>Status<select name="status">${options}</select></label>
@@ -138,7 +88,7 @@ function card(lead: Lead, tab: string, marketing: boolean): string {
 </article>`;
 }
 
-export const listTabs = ['all', 'beta', 'enquiries', 'chat'] as const;
+export const listTabs = ['all', 'forms', 'beta', 'enquiries', 'chat'] as const;
 export type ListTab = (typeof listTabs)[number];
 
 function sameSource(lead: Lead): string {
@@ -162,17 +112,17 @@ export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: stri
   if (marketing) exportParams.set('marketing', '1');
   if (q.trim()) exportParams.set('q', q.trim());
   if (source) exportParams.set('source', source);
-  return `<!doctype html>
-<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow"><title>Lead list</title><style>${style}</style></head>
-<body><main>
-<h1>Lead list</h1>
-<p class="who">Signed in as ${esc(user)}</p>
+  const nav: NavKey = tab === 'chat' ? 'chat-leads' : tab === 'all' ? 'all' : 'forms';
+  const heading = { all: 'All leads', forms: 'Form leads', beta: 'Form leads: beta', enquiries: 'Form leads: enquiries', chat: 'Chat leads' }[tab];
+  const sub =
+    tab === 'chat'
+      ? '<p class="sub">People who left their details in Ask Sparky. Chats where nobody left details are not leads. They are in Chat, Overview.</p>'
+      : tab === 'forms' || tab === 'beta' || tab === 'enquiries'
+        ? `<nav aria-label="Form type"><a href="${query('forms', marketing)}"${current('forms')}>Both</a><a href="${query('beta', marketing)}"${current('beta')}>Beta</a><a href="${query('enquiries', marketing)}"${current('enquiries')}>Enquiries</a></nav>`
+        : '';
+  const body = `<h2 class="title">${heading}</h2>
+${sub}
 <nav aria-label="Lead list">
-<a href="${query('all', marketing)}"${current('all')}>All</a>
-<a href="${query('beta', marketing)}"${current('beta')}>Beta</a>
-<a href="${query('enquiries', marketing)}"${current('enquiries')}>Enquiries</a>
-<a href="${query('chat', marketing)}"${current('chat')}>Chat</a>
 <a href="${query(tab, !marketing)}">${marketing ? 'Show everyone' : 'Marketing OK only'}</a>
 <a href="/export.csv?${exportParams.toString().replace(/&/g, '&amp;')}">Export CSV</a>
 </nav>
@@ -182,8 +132,8 @@ export function page(leads: Lead[], tab: ListTab, marketing: boolean, user: stri
 <button type="submit">Search</button>
 </form>
 ${source ? `<p class="notice">Showing the same connection as ${esc(source)}. <a href="${query('all', marketing)}">Show all leads</a><span class="hint">Same internet connection. This may or may not be the same person.</span></p>` : ''}
-${leads.length ? leads.map((l) => card(l, tab, marketing)).join('\n') : `<p>${q.trim() || source ? 'No matches.' : 'Nothing here yet.'}</p>`}
-</main></body></html>`;
+${leads.length ? leads.map((l) => card(l, tab, marketing)).join('\n') : `<p>${q.trim() || source ? 'No matches.' : 'Nothing here yet.'}</p>`}`;
+  return shell('Leads', nav, user, body);
 }
 
 /** Quotes every cell, and defuses cells a spreadsheet would run as a formula. */

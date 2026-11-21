@@ -1,9 +1,14 @@
 import { statuses, type Lead, type Status } from '../../shared/types';
 import { accessUser } from './access';
+import { insightsPage, overviewPage, ranges, transcriptsPage, type Filter, type LogTurn, type Range } from './chatpages';
+import type { SessionRow } from './chatstats';
+import { shell } from './layout';
 import { csvFor, listTabs, page, type ListTab } from './render';
 
 interface Env {
   DB: D1Database;
+  /** The chat Worker's log database. This Worker only ever reads it. */
+  CHATLOG?: D1Database;
 }
 
 const security = {
@@ -67,7 +72,9 @@ function searchTerm(raw: string): string | null {
 async function load(env: Env, tab: ListTab, marketing: boolean, q: string, source: string | null): Promise<Lead[]> {
   const filters: string[] = [];
   const binds: string[] = [];
-  if (tab !== 'all') {
+  if (tab === 'forms') {
+    filters.push("leads.type IN ('beta', 'enquiry')");
+  } else if (tab !== 'all') {
     filters.push('leads.type = ?');
     binds.push(typeOf[tab]);
   }
@@ -98,6 +105,86 @@ async function load(env: Env, tab: ListTab, marketing: boolean, q: string, sourc
     FROM leads ${where} ORDER BY leads.created_at DESC LIMIT 1000`;
   const { results } = await env.DB.prepare(sql).bind(...binds).all<Lead & { ip_hash?: string | null; same_source_ids?: string | null }>();
   return forDisplay(results);
+}
+
+
+const sessionColumns =
+  'session_id, started_at, last_activity_at, country, start_page, last_page, turns, offered, lead_sent, outcome, flag, topic, cost_usd';
+const sessionId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const DAY = 24 * 60 * 60 * 1000;
+
+function asRange(value: string | null): Range {
+  return ranges.some(([key]) => key === value) ? (value as Range) : '30';
+}
+
+function sinceFor(range: Range): string {
+  return range === 'all' ? '' : new Date(Date.now() - Number(range) * DAY).toISOString();
+}
+
+function asFilter(value: string | null): Filter {
+  return value === 'lead' || value === 'left' || value === 'flagged' ? value : 'all';
+}
+
+async function sessionsSince(db: D1Database, since: string, limit: number): Promise<SessionRow[]> {
+  const { results } = await db
+    .prepare(`SELECT ${sessionColumns} FROM chat_sessions WHERE started_at >= ? ORDER BY started_at DESC LIMIT ?`)
+    .bind(since, limit)
+    .all<SessionRow>();
+  return results;
+}
+
+function notConnected(user: string): Response {
+  return html(shell('Chat', 'overview', user, '<h2 class="title">Chat</h2><p>The chat log database is not connected to this Worker yet. See docs/website/SPARKY-GOLIVE.md, section 5.</p>'), 503);
+}
+
+async function chatRoutes(url: URL, env: Env, user: string): Promise<Response | null> {
+  if (!['/chat', '/chat/transcripts', '/chat/insights'].includes(url.pathname)) return null;
+  const chat = env.CHATLOG;
+  if (!chat) return notConnected(user);
+
+  if (url.pathname === '/chat') {
+    const range = asRange(url.searchParams.get('range'));
+    const since = sinceFor(range);
+    const rows = await sessionsSince(chat, since, 20000);
+    const leads = await env.DB.prepare(
+      "SELECT COUNT(*) AS total, COALESCE(SUM(confirmation_sent_at IS NOT NULL), 0) AS confirmed FROM leads WHERE type = 'chat' AND created_at >= ?",
+    )
+      .bind(since)
+      .first<{ total: number; confirmed: number }>();
+    return html(overviewPage(rows, range, user, { total: leads?.total ?? 0, confirmed: leads?.confirmed ?? 0 }));
+  }
+
+  if (url.pathname === '/chat/insights') {
+    const range = asRange(url.searchParams.get('range'));
+    const rows = await sessionsSince(chat, sinceFor(range), 20000);
+    const { results } = await chat
+      .prepare(
+        "SELECT question, COUNT(*) AS n FROM chat_log WHERE decision = 'fallback' AND created_at >= ? GROUP BY lower(question) ORDER BY n DESC, MAX(created_at) DESC LIMIT 10",
+      )
+      .bind(new Date(Date.now() - 90 * DAY).toISOString())
+      .all<{ question: string; n: number }>();
+    return html(insightsPage(rows, range, user, results));
+  }
+
+  const filter = asFilter(url.searchParams.get('filter'));
+  const rows = await sessionsSince(chat, '', 300);
+  const wanted = url.searchParams.get('session') ?? '';
+  let chosen: Parameters<typeof transcriptsPage>[3] = null;
+  if (wanted) {
+    if (!sessionId.test(wanted)) {
+      chosen = { session: null, turns: [], leadId: null, asked: wanted };
+    } else {
+      const session = await chat.prepare(`SELECT ${sessionColumns} FROM chat_sessions WHERE session_id = ?`).bind(wanted.toLowerCase()).first<SessionRow>();
+      const turns = session
+        ? (await chat.prepare('SELECT turn, created_at, question, answer, decision FROM chat_log WHERE session_id = ? ORDER BY turn').bind(wanted.toLowerCase()).all<LogTurn>()).results
+        : [];
+      const lead = session
+        ? await env.DB.prepare('SELECT public_id FROM leads WHERE chat_session_id = ? LIMIT 1').bind(wanted.toLowerCase()).first<{ public_id: string }>()
+        : null;
+      chosen = { session, turns, leadId: lead?.public_id ?? null, asked: wanted };
+    }
+  }
+  return html(transcriptsPage(rows, filter, user, chosen));
 }
 
 export default {
@@ -166,6 +253,9 @@ export default {
         },
       });
     }
+
+    const chatPage = await chatRoutes(url, env, user);
+    if (chatPage) return chatPage;
 
     if (url.pathname !== '/') return new Response('Not found', { status: 404, headers: security });
     return html(page(await load(env, tab, marketing, q, source), tab, marketing, user, q, source));

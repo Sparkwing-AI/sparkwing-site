@@ -40,13 +40,29 @@ npx wrangler deploy --config workers/forms/wrangler.toml
 2. Set the GitHub repository variables `PUBLIC_CHAT_ENABLED=true`, `PUBLIC_CHAT_ENDPOINT` (the Worker address plus `/api/chat`) and `PUBLIC_TURNSTILE_SITE_KEY`.
 3. Run Publish, then test the live chat, including the bot check and a chat lead.
 
+## 5. Chat analytics (leads site)
+
+Do these in order. Nothing changes for visitors.
+
+```
+npx wrangler d1 migrations apply sparkwing-chat-log --remote --config workers/chat/wrangler.toml --env production
+npx wrangler d1 migrations apply sparkwing-leads --remote --config workers/forms/wrangler.toml
+npx wrangler deploy --config workers/chat/wrangler.toml --env production
+npx wrangler deploy --config workers/forms/wrangler.toml
+npx wrangler deploy --config workers/leads/wrangler.toml
+```
+
+Then publish the site, so the chat lead card sends the chat id. Check the leads site menu, send a test chat, and check it appears under Chat, Transcripts. Topics fill in after the nightly job, around 3:17 UTC.
+
+**Retention:** the chat Worker keeps transcripts for 30 days until `CHAT_RETENTION_DAYS` is changed in the Cloudflare dashboard (Worker, Settings, Variables). Change it to `90` only after the privacy page says 90 days.
+
 ## Off switch
 
 In Cloudflare, open the `sparkwing-chat` Worker, go to Settings, then Variables, and set `CHAT_ENABLED` to `false`. Visitors see the offline message straight away and can still reach the team.
 
 ## Reading chats
 
-Masked chats are in the `sparkwing-chat-log` D1 database, in the Cloudflare dashboard. They delete after 30 days.
+Masked chats are in the `sparkwing-chat-log` D1 database, in the Cloudflare dashboard, and on the leads site under Chat, Transcripts. They delete after 30 days, or 90 once `CHAT_RETENTION_DAYS` is raised.
 
 ## Not done yet
 

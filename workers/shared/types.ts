@@ -23,6 +23,10 @@ export interface Lead {
   notes: string;
   detected_country: string | null;
   detected_region: string | null;
+  /** When the visitor's confirmation email went out. Null when none was sent. */
+  confirmation_sent_at?: string | null;
+  /** The Ask Sparky chat this lead came from. Chat leads only. */
+  chat_session_id?: string | null;
   /** Readable id such as L-0001. The internal id stays the database key. */
   public_id: string;
   /** Other readable ids that share a scrambled source. The hash itself is never sent to the page. */

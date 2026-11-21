@@ -1,4 +1,6 @@
 import { cleanPage, MAX_BODY, prepareMessage } from './checks';
+import { cleanCountry, retentionDays } from './insights';
+import { settleSessions } from './settle';
 import { ChatLimits, ChatSession, type Env } from './state';
 
 export { ChatLimits, ChatSession };
@@ -38,7 +40,7 @@ async function turnstileOk(token: unknown, env: Env, origin: string, ip: string)
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname !== '/api/chat') return new Response('Not found', { status: 404 });
     const origin = originOf(request, env);
@@ -79,6 +81,18 @@ export default {
       if (!(await limits.allowStart(ip))) return reply(429, { error: 'limit' }, origin);
       const id = crypto.randomUUID();
       await env.SESSIONS.get(env.SESSIONS.idFromName(id)).begin();
+      // Country code only. The IP address is never stored.
+      const country = cleanCountry((request as { cf?: { country?: string } }).cf?.country);
+      const started = new Date().toISOString();
+      if (env.DB) {
+        ctx.waitUntil(
+          env.DB.prepare('INSERT OR IGNORE INTO chat_sessions (session_id, started_at, last_activity_at, country) VALUES (?, ?, ?, ?)')
+            .bind(id, started, started, country)
+            .run()
+            .then(() => undefined)
+            .catch((error) => console.error('chat session row failed', error instanceof Error ? error.message : 'unknown')),
+        );
+      }
       return reply(200, { ok: true, session_id: id }, origin);
     }
 
@@ -88,6 +102,15 @@ export default {
 
     if (body.action === 'lead_sent') {
       await session.leadSent();
+      if (env.DB) {
+        ctx.waitUntil(
+          env.DB.prepare("UPDATE chat_sessions SET lead_sent = 1, outcome = 'lead' WHERE session_id = ?")
+            .bind(id)
+            .run()
+            .then(() => undefined)
+            .catch((error) => console.error('chat lead mark failed', error instanceof Error ? error.message : 'unknown')),
+        );
+      }
       return reply(200, { ok: true }, origin);
     }
 
@@ -105,10 +128,16 @@ export default {
     return reply(200, { session_id: id, answer: result.answer, sources: result.sources, action: result.action, capture: result.capture, on_topic: result.onTopic, closed: result.closed }, origin);
   },
 
-  /** Daily: masked chats go after 30 days. */
+  /** Daily: settle quiet chats first, then masked transcripts go after CHAT_RETENTION_DAYS (30 by default, 90 at most). The per-chat summaries stay. */
   async scheduled(_event: ScheduledController, env: Env): Promise<void> {
     if (!env.DB) return;
-    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    try {
+      const done = await settleSessions(env);
+      console.log('chat sessions settled', done.settled, 'labelled', done.labelled);
+    } catch (error) {
+      console.error('settle failed', error instanceof Error ? error.message : 'unknown');
+    }
+    const cutoff = new Date(Date.now() - retentionDays(env.CHAT_RETENTION_DAYS) * 24 * 60 * 60 * 1000).toISOString();
     await env.DB.prepare('DELETE FROM chat_log WHERE created_at < ?').bind(cutoff).run();
   },
 } satisfies ExportedHandler<Env>;

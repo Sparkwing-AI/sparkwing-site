@@ -85,8 +85,12 @@ function db() {
 const page = await worker.fetch(new Request(url), { DB: db() } as never, user);
 const html = await page.text();
 assert.equal(page.status, 200);
-assert.match(html, /<a href="\/\?tab=all" aria-current="page">All<\/a>/);
-assert.ok(html.indexOf('>All<') < html.indexOf('>Beta<'));
+assert.match(html, /<a href="\/\?tab=all" aria-current="page">All leads<\/a>/);
+assert.ok(html.indexOf('>Form leads<') < html.indexOf('>Chat leads<'), 'chat leads sit under Leads, after form leads');
+assert.ok(html.indexOf('>Leads<') < html.indexOf('>Chat<'), 'the Chat group follows the Leads group');
+assert.match(html, /href="\/chat\/transcripts">Transcripts/);
+assert.match(html, /Confirmation email/);
+assert.match(html, /Not sent/);
 assert.match(html, /Ann &lt;script&gt;/);
 assert.match(html, /note &amp; co/);
 assert.match(html, /class="tag tag-enquiry">Enquiry/);

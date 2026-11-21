@@ -43,6 +43,8 @@ ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
 EXPECTED_HOSTNAME = "sparkwing.com.au"
 CHAT_ENABLED = "true"
 DAILY_BUDGET_USD = "1"
+# Matches the live privacy policy. Change to "90" in the Cloudflare dashboard only after the policy says 90.
+CHAT_RETENTION_DAYS = "30"
 
 [env.production.durable_objects]
 bindings = [

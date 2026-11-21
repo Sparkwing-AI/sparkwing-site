@@ -83,6 +83,24 @@ Attacks and harmful requests never get the playful line. Sparky never claims to 
 - The model also returns `on_topic` (true or false), and the Worker counts strikes.
 - From message 7, the card appears automatically if it hasn't already.
 
+## 2c. Chat analytics on the leads site
+
+The leads site (first version of Magnet's lead list) has a menu: **Leads** (Form leads, Chat leads, All leads) and **Chat** (Overview, Transcripts, Topics and insights).
+
+**What is stored**
+- `chat_log` (chat Worker's D1): masked questions and answers per turn. Deleted after `CHAT_RETENTION_DAYS`: 30 by default, 90 at most. Set it to 90 only after the privacy page says 90.
+- `chat_sessions` (same database): one row per chat with counts and labels only. Start time, country code, start and last page, turns, whether the lead card was offered, outcome, spam flag, topic id and cost. No visitor text and no IP address. Kept with no end date.
+- `leads.chat_session_id` (leads D1): links a chat lead to its chat, so Chat leads can open the transcript.
+
+**How the numbers work**
+- Country is the code Cloudflare reports when the chat starts.
+- A chat is **engaged** when the visitor sent at least one message. **Genuine** means engaged and not flagged.
+- **Fall-off** is a genuine chat that ended without details. Fall-offs are not leads: they have no contact details and no permission to contact. They stay in the numbers and the topics.
+- A nightly job (the chat Worker's cron) settles chats that have been quiet for 35 minutes: final outcome, spam flag (injection phrases, off-topic strikes, gibberish, faster than a person types) and one topic from a fixed rubric (`workers/chat/src/insights.ts`), labelled by the chat model on masked text only, at most 60 chats a night. A failed label is retried each night for three days. The job runs before the purge, so labels exist while the text does.
+- The leads Worker reads the chat log through a `CHATLOG` binding and only ever runs SELECT on it. Visitor and model text is escaped on every page.
+
+**Not built yet:** a "lead card opened" funnel step (needs a small widget event) and a most-asked-questions ranking (topics cover it for now).
+
 ## 3. How it's built
 
 ```text
@@ -224,7 +242,7 @@ Also have someone who didn't build it spend 30 minutes trying to break it on sta
 - **Kill switch:** `CHAT_ENABLED` is a Worker setting that Elly can change without a deploy. Off shows the offline state.
 - **Launch flag:** `PUBLIC_CHAT_ENABLED` stays off by default, so the site can launch before the chat does.
 - **Alerts:** budget marks at 50%, 80% and 100% go to the Worker logs until `info@` email works. Set a spend notification in the Claude Console too.
-- **Logs:** masked messages, answers, page, decision and cost, for 30 days. No raw IP addresses. Only the Sparkwing Cloudflare account can read them, in the D1 console.
+- **Logs:** masked messages, answers, page, decision and cost, for 30 days (up to 90 once the privacy page says so, see section 2c). No raw IP addresses. Only the Sparkwing Cloudflare account and the signed-in team on the leads site can read them.
 - **Review:** read a sample weekly at first, and add any new attack to the tests.
 - **Taglish:** off at launch. English answers only until Tim reviews sample answers and test 10 passes.
 - **Control Tower:** don't claim the chat runs through Control Tower unless that's true when it ships.
