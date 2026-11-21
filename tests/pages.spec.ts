@@ -175,8 +175,8 @@ test.describe('Review fixes', () => {
   test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
     const rows: Record<string, [string, string]> = {
       '/': ['Sparkwing: AI consulting for growing businesses', 'We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call.'],
-      '/services': ['AI consulting and team training: Sparkwing Services', 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.'],
-      '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],
+      '/services': ['Sparkwing Services: AI consulting and team training', 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.'],
+      '/sparkkeeper/beta': ['Sparkwing: apply for the free Sparkkeeper beta', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],
     };
     for (const [route, [title, description]] of Object.entries(rows)) {
       await page.goto(route);

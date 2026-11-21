@@ -218,9 +218,9 @@ Full security rules, limits and attack tests are in `docs/website/CHATBOT.md`. R
 | `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
 | `/bring-ai-in` | AI for business: start with our bookkeeping app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
 | `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
-| `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
-| `/privacy` | Privacy policy, Sparkwing | How Sparkwing Pty Ltd collects, uses, shares and protects personal information. |
-| `/terms` | Terms of use, Sparkwing | The terms for using the Sparkwing website. |
+| `/sparkkeeper/beta` | Sparkwing: apply for the free Sparkkeeper beta | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
+| `/privacy` | Sparkwing privacy policy | How Sparkwing Pty Ltd collects, uses, shares and protects personal information. |
+| `/terms` | Sparkwing terms of use | The terms for using the Sparkwing website. |
 
 **Search research, 3 Nov 2026.** Google Trends, past 12 months. These figures show relative interest within each comparison, so they can't be compared across rows and aren't search counts. Replace them with Search Console data after launch.
 
