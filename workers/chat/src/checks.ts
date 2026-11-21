@@ -7,15 +7,11 @@ export const SOURCES: Record<string, string> = {
   home: '/',
   services: '/services',
   apps: '/apps',
-  'bring-ai-in': '/bring-ai-in',
-  'scale-ai': '/scale-ai',
-  'spark-studio': '/services',
-  trust: '/trust',
-  sparkkeeper: '/sparkkeeper',
+  trust: '/services#trust',
+  sparkkeeper: '/apps#sparkkeeper',
   beta: '/sparkkeeper/beta',
-  magnet: '/apps/magnet',
-  academy: '/apps/academy',
-  nest: '/apps/nest',
+  magnet: '/apps#magnet',
+  academy: '/apps#academy',
 };
 
 export const SAFE = "That's a tricky one! Best if the team can help you with that. Click on the button below to leave your details and they'll get back to you within 24 hours.";

@@ -90,15 +90,11 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     home: { label: 'Home', href: '/' },
     services: { label: 'Services', href: '/services' },
     apps: { label: 'Apps', href: '/apps' },
-    'bring-ai-in': { label: 'Cut manual admin', href: '/bring-ai-in' },
-    'scale-ai': { label: 'Use AI safely', href: '/scale-ai' },
-    'spark-studio': { label: 'Services', href: '/services' },
     trust: { label: 'Trust', href: '/services#trust' },
-    sparkkeeper: { label: 'Sparkkeeper', href: '/sparkkeeper' },
+    sparkkeeper: { label: 'Sparkkeeper', href: '/apps#sparkkeeper' },
     beta: { label: 'Sparkkeeper beta', href: '/sparkkeeper/beta' },
-    magnet: { label: 'Magnet', href: '/apps/magnet' },
-    academy: { label: 'Academy', href: '/apps/academy' },
-    nest: { label: 'Nest', href: '/apps/nest' },
+    magnet: { label: 'Magnet', href: '/apps#magnet' },
+    academy: { label: 'Academy', href: '/apps#academy' },
   };
 
   type PreviewReply = {
@@ -257,8 +253,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (/what is sparkkeeper|what does sparkkeeper/.test(text)) {
       return {
         text: `Sparkkeeper keeps your numbers and clients in one place. You can ask Sparky questions, upload paperwork and create reports. It sits alongside your accounting software.${hook}`,
-        src: 'Sparkkeeper page',
-        href: '/sparkkeeper',
+        src: 'Apps page',
+        href: '/apps#sparkkeeper',
       };
     }
     if (count >= 8) return { text: "I've really enjoyed this. The team can take it from here, so pop your details in and they'll be in touch.", lead: true };
@@ -274,8 +270,8 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (count === 1) return { text: "Great to meet you. What kind of business do you run, and what's eating up the most time?" };
     return {
       text: "Sounds like you've got plenty on your plate, and looking for help is a smart move. Sparkkeeper could suit you. It keeps your numbers and clients in one place, and the beta is free for one month.",
-      src: 'Sparkkeeper page',
-      href: '/sparkkeeper',
+      src: 'Apps page',
+      href: '/apps#sparkkeeper',
       beta: true,
       call: true,
     };

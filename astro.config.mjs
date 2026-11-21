@@ -26,6 +26,10 @@ export default defineConfig({
     '/bring-ai-in': { status: 301, destination: '/apps' },
     '/scale-ai': { status: 301, destination: '/services' },
     '/trust': { status: 301, destination: '/services#trust' },
+    '/sparkkeeper': { status: 301, destination: '/apps#sparkkeeper' },
+    '/apps/magnet': { status: 301, destination: '/apps#magnet' },
+    '/apps/academy': { status: 301, destination: '/apps#academy' },
+    '/apps/nest': { status: 301, destination: '/apps' },
   },
   integrations: [copyCname],
 });

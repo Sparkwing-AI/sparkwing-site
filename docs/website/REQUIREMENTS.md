@@ -30,10 +30,10 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
 | `/` | Sparkwing: AI strategy, workflows and automation | AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call. |
-| `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
-| `/apps/magnet` | Magnet: AI for leads and follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
-| `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
-| `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
+| `/sparkkeeper` | Retired. Redirects to `/apps#sparkkeeper` | None | None | Product pages now live as sections on Apps |
+| `/apps/magnet` | Retired. Redirects to `/apps#magnet` | None | None | Product pages now live as sections on Apps |
+| `/apps/academy` | Retired. Redirects to `/apps#academy` | None | None | Product pages now live as sections on Apps |
+| `/apps/nest` | Retired. Redirects to `/apps` | None | None | Product pages now live as sections on Apps |
 | `/spark-studio` | AI strategy and consulting, custom AI agents: Spark Studio | AI consulting from Sydney. AI strategy, AI systems, custom AI apps and AI agents, built around your business, for Australia and the Philippines. |
 | `/trust` | Retired. Redirects to `/services#trust` | None | None | The trust section now lives on Services |
 | `/bring-ai-in` | AI automation for small business: save hours, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Clear the manual work first, then add more. No IT team needed. |
@@ -211,10 +211,10 @@ Full security rules, limits and attack tests are in `docs/website/CHATBOT.md`. R
 | Route | Title | Description |
 | --- | --- | --- |
 | `/` | Sparkwing: AI automation for less paperwork, more business | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
-| `/sparkkeeper` | Sparkkeeper: AI for bookkeeping and client records | Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports. |
-| `/apps/magnet` | Magnet: fewer missed follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
-| `/apps/academy` | Academy: AI training for your team, Sparkwing | Short online courses that teach your team to use AI safely in their own work. Coming soon. |
-| `/apps/nest` | Nest: your team's AI home page, Sparkwing | One place for your team's AI news, announcements, training links and app access requests. Coming soon. |
+| `/sparkkeeper` | Retired. Redirects to `/apps#sparkkeeper` | None | None | Product pages now live as sections on Apps |
+| `/apps/magnet` | Retired. Redirects to `/apps#magnet` | None | None | Product pages now live as sections on Apps |
+| `/apps/academy` | Retired. Redirects to `/apps#academy` | None | None | Product pages now live as sections on Apps |
+| `/apps/nest` | Retired. Redirects to `/apps` | None | None | Product pages now live as sections on Apps |
 | `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
 | `/bring-ai-in` | AI for business: start with our bookkeeping app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
 | `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
