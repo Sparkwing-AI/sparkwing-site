@@ -174,8 +174,8 @@ test.describe('Review fixes', () => {
 
   test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
     const rows: Record<string, [string, string]> = {
-      '/': ['Sparkwing: AI strategy, workflows and automation', 'AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call.'],
-      '/services': ['Sparkwing: Services', 'AI planned and set up around the way you work, your rules and your team, without the overwhelm.'],
+      '/': ['Sparkwing: AI consulting for growing businesses', 'We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call.'],
+      '/services': ['AI consulting and team training: Sparkwing Services', 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],
     };
     for (const [route, [title, description]] of Object.entries(rows)) {
@@ -189,6 +189,16 @@ test.describe('Review fixes', () => {
       await expect(page.locator('meta[name="twitter:title"]'), route).toHaveAttribute('content', title);
       await expect(page.locator('meta[name="twitter:description"]'), route).toHaveAttribute('content', description);
     }
+  });
+
+  test('Services page carries Service structured data with the four services', async ({ page }) => {
+    await page.goto('/services');
+    const raw = await page.locator('script[type="application/ld+json"]').first().textContent();
+    const graph = JSON.parse(raw ?? '{}')['@graph'] as Array<Record<string, any>>;
+    const service = graph.find((node) => node['@type'] === 'Service');
+    expect(service?.name).toBe('Sparkwing Services');
+    const names = service?.hasOfferCatalog.itemListElement.map((offer: any) => offer.itemOffered.name);
+    expect(names).toEqual(['AI plan', 'AI setup', 'AI helpers', 'AI training']);
   });
 
   test('links on the new pages match the requirements link table', async ({ page }) => {
