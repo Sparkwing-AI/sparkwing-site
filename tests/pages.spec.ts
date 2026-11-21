@@ -195,7 +195,7 @@ test.describe('Review fixes', () => {
 
   test('title, description, Open Graph and Twitter tags match the requirements table', async ({ page }) => {
     const rows: Record<string, [string, string]> = {
-      '/': ['Sparkwing: AI strategy, workflows and automation', 'AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call.'],
+      '/': ['Sparkwing: AI consulting for growing businesses', 'We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call.'],
       '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software. Ask Sparky, upload paperwork, create reports.'],
       '/services': ['AI consulting and team training: Sparkwing Services', 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.'],
       '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in.'],
