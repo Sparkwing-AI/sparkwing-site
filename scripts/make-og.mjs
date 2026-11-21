@@ -1,5 +1,6 @@
-// Builds the 1200 by 630 share image (SEO-05) from the tokens and the Sparkwing mark.
+// Builds the 1200 by 630 share image (SEO-05) from the tokens, the Sparkwing mark and a capture of the Services hero (design/og/hero-cube-bg.png).
 // Run with: npm run build:og   Output: public/assets/og-image.png
+// The background is the Services hero with its text hidden, shifted and scaled so the cube sits right of the copy.
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
@@ -7,6 +8,7 @@ import { chromium } from '@playwright/test';
 const root = new URL('../', import.meta.url);
 const tokens = await readFile(new URL('src/styles/tokens.css', root), 'utf8');
 const mark = (await readFile(new URL('public/assets/sparkwing-mark.png', root))).toString('base64');
+const bg = (await readFile(new URL('design/og/hero-cube-bg.png', root))).toString('base64');
 
 const html = `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8">
@@ -14,21 +16,19 @@ const html = `<!doctype html>
 <style>
 ${tokens}
 * { box-sizing: border-box; margin: 0; }
-body { width: 1200px; height: 630px; overflow: hidden; background: var(--sw-color-deep); color: var(--sw-color-on-deep); font-family: var(--sw-font-sans); }
-.card { position: relative; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 52px 80px; }
+body { width: 1200px; height: 630px; overflow: hidden; background: var(--sw-color-deep) url(data:image/png;base64,${bg}) -204px -170px / 1560px 819px no-repeat; color: var(--sw-color-on-deep); font-family: var(--sw-font-sans); }
+.card { position: relative; display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 52px 80px 60px; }
 .brand { display: flex; align-items: center; gap: 20px; }
-.brand img { width: 128px; height: 128px; }
-.name { font-size: 76px; line-height: 1; font-weight: 700; letter-spacing: -0.01em; }
-.tag { margin-top: 8px; font-size: 24px; font-weight: 700; letter-spacing: 0.08em; color: var(--sw-color-accent); }
-h1 { max-width: 1040px; text-wrap: balance; font-size: 92px; font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+.brand img { width: 140px; height: 140px; }
+.name { font-size: 84px; line-height: 1; font-weight: 700; letter-spacing: -0.01em; }
+.tag { margin-top: 6px; font-size: 38px; font-weight: 800; letter-spacing: 0.1em; color: var(--sw-color-accent); }
+h1 { max-width: 660px; font-size: 92px; font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+.grad { background: linear-gradient(90deg, #5CCFC4 0%, #9FA9E8 55%, #E9A872 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .bar { width: 220px; height: 12px; margin-top: 24px; border-radius: 6px; background: var(--sw-color-accent); }
-.sub { margin-top: 20px; font-size: 42px; font-weight: 700; color: var(--sw-color-on-deep); }
-.foot { font-size: 28px; font-weight: 500; color: var(--sw-color-tint); }
 </style></head>
 <body><div class="card">
-<div class="brand"><img src="data:image/png;base64,${mark}" alt=""><div><div class="name">Sparkwing</div><div class="tag">AN AI TRANSFORMATION COMPANY</div></div></div>
-<div><h1>Transform your business with AI.</h1><div class="bar"></div><p class="sub">AI strategy, workflows and automation</p></div>
-
+<div class="brand"><img src="data:image/png;base64,${mark}" alt=""><div><div class="name">Sparkwing</div><div class="tag">AI CONSULTING</div></div></div>
+<div><h1>AI <span class="grad">made easy</span><br>for you and<br>your team.</h1><div class="bar"></div></div>
 </div></body></html>`;
 
 const browser = await chromium.launch();

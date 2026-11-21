@@ -3,8 +3,7 @@
   "cleanUrls": true,
   "skip": [
     "^https?://(?!(?:localhost|127\\.0\\.0\\.1)[:/])",
-    "^mailto:",
-    "^https?://(?:localhost|127\\.0\\.0\\.1):\\d+/sparkkeeper(?:[#?]|$)"
+    "^mailto:"
   ],
   "verbosity": "error"
 }

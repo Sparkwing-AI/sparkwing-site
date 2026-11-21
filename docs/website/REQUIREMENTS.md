@@ -29,13 +29,13 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Sparkwing: AI strategy, workflows and automation | AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call. |
-| `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
-| `/apps/magnet` | Magnet: AI for leads and follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
-| `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
-| `/apps/nest` | Nest | Apps (Nest tab) | Same template | Coming soon app |
+| `/` | Sparkwing: AI consulting for growing businesses | We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call. |
+| `/sparkkeeper` | Retired. Redirects to `/apps#sparkkeeper` | None | None | Product pages now live as sections on Apps |
+| `/apps/magnet` | Retired. Redirects to `/apps#magnet` | None | None | Product pages now live as sections on Apps |
+| `/apps/academy` | Retired. Redirects to `/apps#academy` | None | None | Product pages now live as sections on Apps |
+| `/apps/nest` | Retired. Redirects to `/apps` | None | None | Product pages now live as sections on Apps |
 | `/spark-studio` | AI strategy and consulting, custom AI agents: Spark Studio | AI consulting from Sydney. AI strategy, AI systems, custom AI apps and AI agents, built around your business, for Australia and the Philippines. |
-| `/trust` | Trust and base platform | Platform, PlatformMedium, PlatformCompact | `Platform-*.png` | Hive, AI Crew, Control Tower, masking, who manages |
+| `/trust` | Retired. Redirects to `/services#trust` | None | None | The trust section now lives on Services |
 | `/bring-ai-in` | AI automation for small business: save hours, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Clear the manual work first, then add more. No IT team needed. |
 | `/scale-ai` | AI governance and training for your team, Sparkwing | AI strategy, AI governance and AI training for your whole team, with rules and records in place. Built for organisations that need to show their work. |
 | `/privacy` | Privacy policy | Privacy, PrivacyMedium, PrivacyCompact | `Privacy-*.png` | Legal. Don't reword |
@@ -72,13 +72,13 @@ Shared on every page: **Nav** and **Footer** boards, and the **Enquiry** modal (
 | "See how trust is built in" | Home trust | `/trust` |
 | "Join the beta" | Home gold section, Sparkkeeper hero | `/sparkkeeper/beta` |
 | Stat footnotes | Home stats band | European Central Bank and Salesforce (URLs on canvas). New tab, `rel="noopener"` |
-| Sub-nav: Sparkkeeper, Magnet, Academy, Nest, Base platform | Sparkkeeper, Apps | Each route, and `/trust` |
+| Sub-nav: Sparkkeeper, Magnet, Academy, Nest | Sparkkeeper, Apps | Each route |
 | Sub-nav: Features, What it covers, Beta | Sparkkeeper | `#features`, `#scope`, `#beta` |
 | "See what it covers today" | Bring AI in | `/sparkkeeper#scope` |
 | Sparkkeeper, Magnet, Spark Studio cards | Bring AI in | Each route |
 | Accounting firms card | Bring AI in | Opens the enquiry modal |
 | Control Tower, Academy, Nest, Spark Studio cards | Scale | `/trust#control-tower`, `/apps/academy`, `/apps/nest`, `/spark-studio` |
-| "How the base platform works" | Apps, Studio | `/trust` |
+| "How we keep AI trustworthy" | Sparkkeeper, app pages | `/services#trust` |
 | Footer: Apps, Paths, Trust columns | Every page | The routes above |
 | Footer: Privacy, Terms | Every page | `/privacy`, `/terms` |
 
@@ -212,17 +212,16 @@ Full security rules, limits and attack tests are in `docs/website/CHATBOT.md`. R
 | Route | Title | Description |
 | --- | --- | --- |
 | `/` | Sparkwing: AI automation for less paperwork, more business | Hand your manual admin to AI you can check. Sparkwing helps businesses in Australia and the Philippines save hours with trusted AI. |
-| `/sparkkeeper` | Sparkkeeper: AI for bookkeeping and client records | Your numbers and clients in one place, alongside your accounting software and registered books. Ask Sparky, upload paperwork, create reports. |
-| `/apps/magnet` | Magnet: fewer missed follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
-| `/apps/academy` | Academy: AI training for your team, Sparkwing | Short online courses that teach your team to use AI safely in their own work. Coming soon. |
-| `/apps/nest` | Nest: your team's AI home page, Sparkwing | One place for your team's AI news, announcements, training links and app access requests. Coming soon. |
+| `/sparkkeeper` | Retired. Redirects to `/apps#sparkkeeper` | None | None | Product pages now live as sections on Apps |
+| `/apps/magnet` | Retired. Redirects to `/apps#magnet` | None | None | Product pages now live as sections on Apps |
+| `/apps/academy` | Retired. Redirects to `/apps#academy` | None | None | Product pages now live as sections on Apps |
+| `/apps/nest` | Retired. Redirects to `/apps` | None | None | Product pages now live as sections on Apps |
 | `/spark-studio` | Spark Studio: AI consulting, automation and custom AI agents | AI consulting from Sydney-based Sparkwing. We set AI up around your business and build custom apps or AI agents when you need more. |
-| `/trust` | AI governance built in: how Sparkwing keeps AI trustworthy | Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in. |
 | `/bring-ai-in` | AI for business: start with our bookkeeping app, Sparkwing | AI automation for small and growing businesses in Australia and the Philippines. Start with the job that eats the most hours. No IT team needed. |
 | `/scale-ai` | AI strategy and governance for your team, Sparkwing | Get more from AI across your team, with rules and records in place. AI strategy, governance, ecosystems and enablement. |
-| `/sparkkeeper/beta` | Apply for the free Sparkkeeper beta, Sparkwing | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
-| `/privacy` | Privacy policy, Sparkwing | How Sparkwing Pty Ltd collects, uses, shares and protects personal information. |
-| `/terms` | Terms of use, Sparkwing | The terms for using the Sparkwing website. |
+| `/sparkkeeper/beta` | Sparkwing: apply for the free Sparkkeeper beta | Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. See what to expect and apply. |
+| `/privacy` | Sparkwing privacy policy | How Sparkwing Pty Ltd collects, uses, shares and protects personal information. |
+| `/terms` | Sparkwing terms of use | The terms for using the Sparkwing website. |
 
 **Search research, 3 Nov 2026.** Google Trends, past 12 months. These figures show relative interest within each comparison, so they can't be compared across rows and aren't search counts. Replace them with Search Console data after launch.
 

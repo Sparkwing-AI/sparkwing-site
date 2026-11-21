@@ -7,6 +7,7 @@ import Badge from '../components/Badge.astro';
 import Button from '../components/Button.astro';
 import MotionTrigger from '../components/MotionTrigger.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
 
 const steps = [
   {
@@ -65,12 +66,40 @@ const training = [
   { title: 'Using AI responsibly', body: 'How to keep your business and customer details safe.', tone: 'violet' },
   { title: 'Our systems and apps', body: 'Hands-on practice with the apps we set up for you.', tone: 'ember' },
 ];
+const title = 'Sparkwing Services: AI consulting and team training';
+const description = 'AI consulting from Sydney: an AI plan, setup, AI helpers and team training, built around your business. Book a free discovery call.';
+const offers = [
+  { name: 'AI plan', description: 'Find where AI will save you the most time, and how to put it in place.' },
+  { name: 'AI setup', description: 'Pick the right tools and set them up for your team.' },
+  { name: 'AI helpers', description: 'Set up AI helpers to take on manual admin and paperwork.' },
+  { name: 'AI training', description: 'Online learning and hands-on training so your team uses AI confidently and safely.' },
+];
+const schema = [
+  {
+    '@type': 'Service',
+    name: 'Sparkwing Services',
+    url: new URL('/services', site.url).href,
+    description,
+    serviceType: 'AI consulting and team training',
+    areaServed: [{ '@type': 'Country', name: 'Australia' }],
+    provider: { '@id': new URL('/#organization', site.url).href },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Sparkwing Services',
+      itemListElement: offers.map((offer) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: offer.name, description: offer.description },
+      })),
+    },
+  },
+];
 ---
 
 <BaseLayout
   overlayHeader
-  title="Sparkwing: Services"
-  description="AI planned and set up around the way you work, your rules and your team, without the overwhelm."
+  schema={schema}
+  title={title}
+  description={description}
 >
   <section class="mx-hero" data-ground="deep" aria-labelledby="hiw-title">
     <canvas class="mx-canvas" data-libra aria-hidden="true"></canvas>
