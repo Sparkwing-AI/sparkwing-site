@@ -5,7 +5,6 @@ const motionPages = [
   '/apps/magnet',
   '/apps/academy',
   '/apps/nest',
-  '/trust',
 ];
 
 test.describe('Page set', () => {
@@ -63,7 +62,7 @@ test.describe('Apps', () => {
       await expect(page.locator('#sw-enquiry')).toBeVisible();
       await expect(page.locator('#enq-topic')).toHaveValue('demo');
       await expect(page.locator('.sw-select-face')).toHaveText('Request a demo');
-      await expect(page.getByRole('link', { name: 'How the base platform works' })).toHaveAttribute('href', '/trust');
+      await expect(page.getByRole('link', { name: 'How we keep AI trustworthy' })).toHaveAttribute('href', '/services#trust');
     });
   }
 
@@ -81,10 +80,10 @@ test.describe('Apps', () => {
 });
 
 test.describe('Trust', () => {
-  test('has the three anchors and the FR-502 sentence', async ({ page }) => {
+  test('the old /trust address lands on the Services trust section', async ({ page }) => {
     await page.goto('/trust');
-    for (const id of ['hive', 'ai-crew', 'control-tower']) await expect(page.locator(`#${id}`)).toHaveCount(1);
-    await expect(page.getByText("This is how Sparkwing is designed, and we'll confirm what's live for you.")).toBeVisible();
+    await expect(page).toHaveURL(/\/services(\.html)?#trust$/);
+    await expect(page.locator('#trust')).toHaveCount(1);
   });
 });
 
@@ -198,7 +197,6 @@ test.describe('Review fixes', () => {
       '/': ['Sparkwing: AI strategy, workflows and automation', 'AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call.'],
       '/sparkkeeper': ['Sparkkeeper: AI for bookkeeping and client records', 'Your numbers and clients in one place, alongside your accounting software. Ask Sparky, upload paperwork, create reports.'],
       '/services': ['Sparkwing: Services', 'AI planned and set up around the way you work, your rules and your team, without the overwhelm.'],
-      '/trust': ['AI governance built in: how Sparkwing keeps AI trustworthy', 'Hive, AI Crew and Control Tower sit under every Sparkwing app, with rules, records and privacy designed in.'],
       '/sparkkeeper/beta': ['Apply for the free Sparkkeeper beta, Sparkwing', 'Full Sparkkeeper features free for one month, with AI credits included and top-ups on request. Limited seats. Apply for the beta.'],
     };
     for (const [route, [title, description]] of Object.entries(rows)) {
@@ -214,14 +212,6 @@ test.describe('Review fixes', () => {
     }
   });
 
-  test('Trust anchors land on the whole card, with its label visible', async ({ page }) => {
-    for (const id of ['hive', 'ai-crew', 'control-tower']) {
-      await page.goto(`/trust#${id}`);
-      const card = page.locator(`#${id}`);
-      await expect(card).toBeInViewport({ ratio: 1 });
-      await expect(card.locator('.pf-tag')).toBeInViewport({ ratio: 1 });
-    }
-  });
   test('links on the new pages match the requirements link table', async ({ page }) => {
     const checks: Array<[string, string, string]> = [
       ['/sparkkeeper', 'Join the beta', '/sparkkeeper/beta'],
@@ -337,7 +327,7 @@ test.describe('medium width', () => {
     });
   }
 
-  for (const route of ['/sparkkeeper', '/apps/magnet', '/apps/academy', '/apps/nest', '/services', '/trust']) {
+  for (const route of ['/sparkkeeper', '/apps/magnet', '/apps/academy', '/apps/nest', '/services']) {
     test(`no horizontal scroll at 768: ${route}`, async ({ page }) => {
       await page.setViewportSize({ width: 768, height: 900 });
       await page.goto(route);

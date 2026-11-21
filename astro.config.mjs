@@ -25,6 +25,7 @@ export default defineConfig({
     '/spark-studio': { status: 301, destination: '/services' },
     '/bring-ai-in': { status: 301, destination: '/apps' },
     '/scale-ai': { status: 301, destination: '/services' },
+    '/trust': { status: 301, destination: '/services#trust' },
   },
   integrations: [copyCname],
 });
