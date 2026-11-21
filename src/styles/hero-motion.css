@@ -17,6 +17,29 @@
   --bg2: var(--sw-hero-navy-2);
 }
 
+/* Colour and light sit in CSS, so the canvas only draws stars and the moving piece. */
+.mx-hero[data-motion-scene='home'],
+.apps-hero.mx-hero,
+.mx-hero:has(#hiw-title) {
+  background:
+    radial-gradient(46% 58% at 84% 36%, color-mix(in srgb, var(--sw-color-violet) 62%, transparent) 0%, transparent 70%),
+    radial-gradient(38% 46% at 96% 84%, color-mix(in srgb, var(--sw-color-accent) 40%, transparent) 0%, transparent 72%),
+    radial-gradient(52% 64% at 6% 0%, color-mix(in srgb, var(--sw-color-action) 55%, transparent) 0%, transparent 68%),
+    radial-gradient(120% 110% at 72% 42%, var(--sw-color-deep) 0%, var(--sw-hero-deep-2) 72%);
+}
+
+.mx-hero[data-motion-scene='home']::before,
+.apps-hero.mx-hero::before,
+.mx-hero:has(#hiw-title)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--sw-color-on-deep) 18%, transparent) 1.2px, transparent 1.4px);
+  background-size: 28px 28px;
+}
+
 .mx-canvas {
   position: absolute;
   inset: 0;
