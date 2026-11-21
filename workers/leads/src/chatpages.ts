@@ -23,7 +23,7 @@ export const topicNames: Record<string, string> = {
   unlabelled: 'Not labelled yet',
 };
 
-const palette = ['#0d3b36', '#1f8a70', '#d99a1f', '#8cc9b3', '#b3541e', '#6b4e9b', '#5b7f95', '#9a9a8a'];
+const palette = ['#0d3b36', '#1f8a70', '#feb938', '#8cc9b3', '#b3541e', '#6b4e9b', '#5b7f95', '#9a9a8a'];
 const rust = ['#6b2d0c', '#b3541e', '#e8a36f', '#f6dccb'];
 
 function chips(base: string, current: string): string {

@@ -20,9 +20,9 @@ export function shell(title: string, active: NavKey, user: string, body: string)
   return `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>${esc(title)}</title><style>${style}${extraStyle}</style></head>
-<body><main>
-<h1>Sparkwing leads</h1>
-<p class="who">Signed in as ${esc(user)}</p>
+<body>
+<header class="bar"><h1>Sparkwing leads</h1><p class="who">Signed in as ${esc(user)}</p></header>
+<main>
 <div class="layout">
 <div class="side">
 <nav aria-label="Leads"><h2>Leads</h2>${links(leadsNav)}</nav>
