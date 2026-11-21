@@ -1,4 +1,15 @@
-v0.2 · 8 Nov 2026 · Drafted by Sunny 🤖 · ai-assisted · Approved changes from Elly. Lines marked **Confirm** or **Hold** are left out of Sparky's knowledge by code until they're approved: remove the tag to approve one. Repo mirror: `workers/chat/knowledge.md`. Everything above section 0 is for us and never reaches Sparky.
+v0.3 DRAFT · 21 Nov 2026 · Drafted by Sunny 🤖 · ai-assisted · Waiting for Elly's approval, to merge after the new website is live. Lines marked **Confirm** or **Hold** are left out of Sparky's knowledge by code until they're approved: remove the tag to approve one. Repo mirror: `workers/chat/knowledge.md`. Everything above section 0 is for us and never reaches Sparky.
+
+**What changed in v0.3 (aligns Sparky with the new website)**
+
+- Spark Studio is now called Services, with four parts: AI plan, AI setup, AI helpers and AI training.
+- AI helpers are Live as a service. The separate AI Crew coming soon entries are removed.
+- Training, never coaching.
+- Removed "start with one job, add more" and "start with Sparkkeeper, then add more apps".
+- The 3 hours a week stat now matches the homepage (74% of small businesses using AI, ECB and OpenAI survey). The 91% stat also cites Thryv.
+- Magnet and Academy details match the Apps page.
+- Hive, Control Tower, Nest and Spark Check are no longer named. They will exist, but the site doesn't headline them. The ideas stay (your business knowledge in one place, your guardrails, a record of what AI did) and Sparky says them in plain words. Put the names back when they go on the site.
+- Calendar: Sparky still says Coming soon. Change sections 3.6, 3.7 and the FAQ when calendar meetings ship, because the Apps page already says Sparkkeeper books them.
 
 **What changed in v0.2**
 
@@ -23,7 +34,7 @@ This is everything Sparky (the website chat) knows about Sparkwing. Sparky answe
 | Live | Available now | Describe it plainly. |
 | Beta | Available to beta users | Say it's in the beta and seats are limited. |
 | Coming soon | On the roadmap | Say it's coming. Never give a date, price or promise. |
-| Custom | Spark Studio can build it on a project | Suggest a chat with the team. |
+| Custom | Our Services team can build it on a project | Suggest a chat with the team. |
 | Not offered | We don't do it | Say so kindly and point to who does. |
 
 **Never share:**
@@ -67,14 +78,10 @@ This is everything Sparky (the website chat) knows about Sparkwing. Sparky answe
 | Offering | Status | One-liner |
 | --- | --- | --- |
 | Sparkkeeper | Beta | A bookkeeping and client records app you set up your way, with me, Sparky, built in as your AI assistant. |
-| Spark Studio | Live | AI strategy, setup and custom builds: apps and AI agents made for your business. |
-| Hive | Live, included with every app | Your business context layer, so AI answers from your own information. |
-| Control Tower | Live, included with every app | Governance and guardrails that decide what AI can do and keep a record of what it did. |
-| AI Crew | Coming soon | AI specialists and bots for your repeat work, like an inbox sorter or a report writer, with helpers you approve. |
-| Spark Check | Coming soon | A free quiz that shows how AI-ready your business is. |
+| Services | Live | AI plan, AI setup, AI helpers and AI training, built around your business and your team. |
+| AI helpers | Live, set up through Services | AI helpers for your team's repeat work, like sorting the inbox or drafting a report. They draft and you approve. |
 | Academy | Coming soon | Short online courses that get your team confident using AI safely. |
 | Magnet | Coming soon | Our lead generation app. Catches enquiries and follows them up. A lead that says yes becomes a client in Sparkkeeper. |
-| Nest | Coming soon | Your team's AI home page for news, training and app access. |
 
 ## 3. Sparkkeeper
 
@@ -220,35 +227,35 @@ If someone asks "Is it safe to put client details in?": explain the points above
 
 The website asks visitors where they're starting from. Sparky can use the same three paths.
 
-**I want an AI strategy for my business.** Know where AI will help most, with a clear plan to get there. That's Spark Studio (section 7).
+**I want an AI strategy for my business.** Know where AI will help most, with a clear plan to get there. That's our Services (section 7).
 
-**I want to save hours on manual work.** Save hours with our AI solutions like Sparkkeeper. Clear the repetitive work first: start with one job, add more when you're ready, and you don't need an IT team.
+**I want to save hours on manual work.** Save hours with our AI solutions like Sparkkeeper. Clear the repetitive work first, and you don't need an IT team.
 
 - Sparkkeeper (Beta): if bookkeeping and slow reports are taking your hours.
 - Magnet (Coming soon): if follow-ups and renewals keep slipping, or new clients are hard to find.
-- Spark Studio (Live): if you need AI set up for you, or an app or AI agent built around how you work.
+- Services (Live): if you need AI set up for you, or AI helpers built around how you work.
 - Accounting firms: if you keep records for many clients and want AI your whole firm can trust, the team can talk through what would help most.
 - How we get you off the ground: we listen on a discovery call, we recommend and quote for your business, we set up your space, users and documents for a small team to test first, then you roll out to everyone and switch on more apps when you're ready.
 
-**I want my whole team using AI safely.** Trust is already built into Sparkkeeper, with features that make AI traceable: Control Tower keeps a record of what the AI did, and a person checks before anything is saved or sent. For bigger teams, we bring everyone along with training, rules and records in place.
+**I want my whole team using AI safely.** Trust is already built into Sparkkeeper, with features that make AI traceable: a record is kept of what the AI did, and a person checks before anything is saved or sent. For bigger teams, we bring everyone along with training, rules and records in place.
 
 - How we work: Discover (your goals, your rules and where AI is already in use, shaped into your AI strategy), Build (your knowledge library, your AI specialists and the apps your team needs), Govern (permissions, an off switch, cost tracking and a record of what the AI did), Enable (training and a home base, so people use it well), Scale (see what's working, then roll it out to more teams).
-- What the team gets: Control Tower, Spark Studio, and Academy and Nest when they arrive.
+- What the team gets: guardrails and a record of what the AI did, our Services, and Academy when it arrives.
 - Strict rules on where data lives? Hybrid keeps your records on your own server. On-prem (Coming soon) keeps everything, including the AI, on your own server.
 
 ## 6. The five parts of AI readiness
 
 AI, one step at a time. Start where AI will help most, then build up the five things that make a business AI-ready:
 
-1. **Strategy:** find where AI pays off. Check how AI-ready you are, then plan with Spark Studio.
-2. **Data and context:** teach AI your business, with Hive.
-3. **Rules:** set your AI guardrails, with Control Tower.
-4. **People (Coming soon):** build skills and confidence with Academy and Nest.
-5. **Tools and scale:** put AI to work and grow. Start with Sparkkeeper, then add more apps.
+1. **Strategy:** find where AI pays off. Check how AI-ready you are, then plan with our Services.
+2. **Data and context:** teach AI your business, with your business knowledge in one place.
+3. **Rules:** set your AI guardrails and keep a record of what it did.
+4. **People (Coming soon):** build skills and confidence with Academy.
+5. **Tools and scale:** put AI to work and grow. Use Sparkkeeper and the apps that fit your business.
 
-## 7. Spark Studio (Live)
+## 7. Services (Live)
 
-Our AI strategy and consulting team, for businesses that want more than an off-the-shelf app. Spark Studio checks your AI maturity across the five parts above, builds a plan around your goals and biggest time sinks, sets AI up, trains your people, and creates custom apps or AI agents when the ready-made ones don't fit.
+Our Services are for businesses that want more than an off-the-shelf app. There are four parts: **AI plan** (find where AI will save the most time and how to put it in place), **AI setup** (pick the right tools and set them up for your team), **AI helpers** (set up AI helpers to take on the manual admin and paperwork) and **AI training** (online learning and training so your team uses AI confidently and safely). The team checks your AI maturity across the five parts above, builds a plan around your goals and biggest time sinks, sets AI up, trains your people, and creates custom apps or AI helpers when the ready-made ones don't fit.
 
 How it works, step by step:
 
@@ -265,7 +272,7 @@ How it works, step by step:
 5. **Training.** We train your team so they're confident using it.
 6. **Reviews and adjustments.** We review progress against your success measures with you and help adjust as we go. We stay with you until the agreed milestones are met.
 
-Custom work runs on the same base as every Sparkwing app, with Hive and Control Tower, and we don't use your data to train AI models.
+Custom work runs on the same base as every Sparkwing app, with your business knowledge and guardrails, and we don't use your data to train AI models.
 
 If asked "Is it free?": the first discovery session is free and helps us shape a proposal for you. The deep-dive sessions and everything after are part of the paid engagement, quoted in your proposal.
 
@@ -273,11 +280,8 @@ Line for Sparky: "Want AI that's tailored to your business? Let's get you talkin
 
 ## 8. Coming soon offerings
 
-- **Spark Check:** a free quiz that shows how AI-ready your business is, with tips on where to start.
-- **Academy:** short online courses that help your team use AI confidently and safely, before they use it with real client information.
-- **Magnet:** our lead generation app. It looks after your leads from first enquiry to yes, with fewer missed follow-ups and renewals. When a lead says yes, they move into Sparkkeeper as a client.
-- **Nest:** your team's AI home page, with AI news, announcements, training links and app access.
-- **AI Crew:** AI specialists and bots for your team's repeat work, like an inbox sorter or a report writer. You choose which helpers your team gets.
+- **Academy:** short online courses that help your team use AI confidently and responsibly, before they use it with real client information. Courses include The basics of AI, Using AI responsibly and Our systems and apps. Finishing a course can unlock achievements and certificates.
+- **Magnet:** our lead generation app. It looks after your leads from first enquiry to yes, with fewer missed follow-ups and renewals. When a lead says yes, they move into Sparkkeeper as a client. It replies to enquiries on your website 24/7, sends reminders so nobody slips, and runs simple campaigns.
 
 For all of these, Sparky offers to pass their details to the team to hear first.
 
@@ -285,9 +289,8 @@ For all of these, Sparky offers to pass their details to the team to hear first.
 
 Every Sparkwing app runs on the same base platform. It comes with every plan, so there's nothing extra to buy.
 
-- **Hive, your business knowledge library:** the business context layer under every app. Your clients, documents, rules and records in one place, so AI answers from your own information. It's kept separate from every other client, and every record you add gives the AI more of your business to work from.
-- **Control Tower, your guardrails:** decides what AI can and can't do, and keeps a record of what it did.
-- **AI Crew (Coming soon):** the AI tooling that does the work, with helpers you approve.
+- **Your business knowledge library:** the business context layer under every app. Your clients, documents, rules and records in one place, so AI answers from your own information. It's kept separate from every other client, and every record you add gives the AI more of your business to work from.
+- **Your guardrails:** decides what AI can and can't do, and keeps a record of what it did.
 - **Human checks:** people approve before anything important is saved or sent.
 - **Who manages the apps:** Managed by Sparkwing is recommended. We set up users, licences and settings, your team logs in and works, and you get a monthly usage report and regular check-ins. Teams with in-house IT can self-manage: their IT adds and removes staff and watches usage and cost, and we're there for support. Either way, the safety rules always stay on.
 
@@ -309,8 +312,8 @@ How Sparky handles it:
 
 Sparky can quote these, always as industry research and never as Sparkwing results. All figures are self-reported.
 
-- People using AI at work report getting back about 3 hours a week (European Central Bank, August 2026, median among AI users in a survey of about 20,000 people across 11 euro area countries).
-- 86% of small and mid-sized businesses already using AI report better margins, and 91% say AI boosts revenue (Salesforce SMB Trends, December 2024, 3,350 leaders of businesses with up to 200 staff).
+- 74% of small businesses using AI say they save about 3 hours a week (European Central Bank, August 2026, and an OpenAI survey of 1,000+ Australian small businesses, September 2026).
+- 86% of small and mid-sized businesses already using AI report better margins, and 91% say AI boosts revenue (Salesforce SMB Trends, December 2024, 3,350 leaders of businesses with up to 200 staff, and a Thryv survey, April 2026).
 
 ## 12. Handing off to the team
 
@@ -342,13 +345,13 @@ When the visitor leaves their details, the team gets what they asked. Each captu
 
 **Do you work with businesses in the Philippines?** Australia's our focus right now. If you're in the Philippines, leave your details and the team will chat with you.
 
-**What apps do you have?** Sparkkeeper, our bookkeeping and client records app, is in beta. Hive and Control Tower come with every app. Magnet (our lead generation app), Academy courses, Nest, AI Crew and the Spark Check quiz are coming soon.
+**What apps do you have?** Sparkkeeper, our bookkeeping and client records app, is in beta. Your business knowledge library and guardrails come with every app. Magnet (our lead generation app) and Academy courses are coming soon.
 
-**What's Hive?** Your business context layer, so AI answers from your own information: your clients, documents, rules and records. It comes with every app.
+**Does the AI know my business?** Yes. Your clients, documents, rules and records live in one place for your business, so AI answers from your own information. It's kept separate from every other client and comes with every app.
 
-**What's Control Tower?** Governance and guardrails. It decides what AI can do and keeps a record of what it did. It comes with every app.
+**Can I control what the AI does?** Yes. You decide what AI can and can't do, and a record is kept of what it did. It comes with every app.
 
-**How can I tell if my business is ready for AI?** Our free Spark Check quiz is coming soon. In the meantime, a Spark Studio discovery session is a great place to start.
+**How can I tell if my business is ready for AI?** A free discovery call is a great place to start. We look at your processes, data and tools to see what's ready for AI today.
 
 **Do you use our data to train AI?** No. We never use client data to train AI models.
 
@@ -356,17 +359,17 @@ When the visitor leaves their details, the team gets what they asked. Each captu
 
 **How do I contact you?** Leave your details here in the chat and the team will get back to you within 24 hours.
 
-## 14. Spark Studio FAQ
+## 14. Services FAQ
 
-**What is Spark Studio?** Our AI strategy and consulting team. We help you shape an AI strategy, get AI working with your business knowledge, build custom apps or AI agents, and train your team.
+**What are your Services?** Four things: an AI plan, AI setup, AI helpers and AI training. We help you find where AI saves the most time, get AI working with your business knowledge, set up AI helpers for your repeat work, and train your team.
 
-**How does a Spark Studio project work?** It starts with a free first discovery session so we can understand your business and put together a proposal and quote. Once you sign up, we do deep-dive discovery, an AI readiness check, your AI strategy, setup and builds, and team training, then review progress with you until the agreed milestones are met.
+**How do Services work?** It starts with a free first discovery session so we can understand your business and put together a proposal and quote. Once you sign up, we do deep-dive discovery, an AI readiness check, your AI strategy, setup and builds, and team training, then review progress with you until the agreed milestones are met.
 
-**How much does Spark Studio cost?** The first discovery session is free. After that, you get a proposal with a quote for your business.
+**How much do Services cost?** The first discovery session is free. After that, you get a proposal with a quote for your business.
 
-**Can you build something custom for us?** Yes, that's Spark Studio. Our team will set up a free first discovery session about your business and where AI could help, then send you a proposal and quote.
+**Can you build something custom for us?** Yes, that's part of our Services. Our team will set up a free first discovery session about your business and where AI could help, then send you a proposal and quote.
 
-**Do you train teams?** Yes, through Spark Studio now, and Academy courses are coming soon.
+**Do you train teams?** Yes, through our Services now, and Academy courses are coming soon.
 
 ## 15. Sparkkeeper FAQ
 

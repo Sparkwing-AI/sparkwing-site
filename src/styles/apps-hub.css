@@ -94,11 +94,17 @@
 }
 
 .apps-band--silk {
-  background: var(--sw-color-page);
+  background:
+    radial-gradient(46% 80% at 0% 0%, color-mix(in srgb, var(--sw-color-violet) 16%, transparent) 0%, transparent 70%),
+    radial-gradient(40% 70% at 100% 100%, color-mix(in srgb, var(--sw-color-action) 18%, transparent) 0%, transparent 72%),
+    var(--sw-color-page);
 }
 
 .apps-band--white {
-  background: var(--sw-color-surface);
+  background:
+    radial-gradient(42% 80% at 100% 0%, color-mix(in srgb, var(--sw-color-violet) 10%, transparent) 0%, transparent 70%),
+    radial-gradient(36% 70% at 0% 100%, color-mix(in srgb, var(--sw-color-accent) 18%, transparent) 0%, transparent 72%),
+    var(--sw-color-surface);
 }
 
 .apps-band--tint {

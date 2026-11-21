@@ -68,7 +68,7 @@ assert.ok(!/\*\*(Confirm|Hold)\b/i.test(KNOWLEDGE), 'no Confirm or Hold lines');
 assert.ok(!/encrypted|stored in Australia|flags possible duplicates/i.test(KNOWLEDGE), 'unapproved facts are gone');
 assert.ok(!/[^\s@]+@[^\s@]+\.[a-z]{2}/i.test(KNOWLEDGE), 'no email address');
 assert.ok(!/anthropic|claude|cloudflare|haiku/i.test(KNOWLEDGE), 'no vendor names');
-assert.ok(/Hive/.test(KNOWLEDGE) && /Control Tower/.test(KNOWLEDGE), 'site names are there');
+assert.ok(/Services/.test(KNOWLEDGE) && !/Hive|Control Tower|AI Crew|Spark Studio/.test(KNOWLEDGE), 'names match the new site');
 assert.ok(readFileSync(new URL('../knowledge.md', import.meta.url), 'utf8').includes('**Confirm:**'), 'the wiki still has its Confirm items');
 const blocks = buildSystem(3, 'ZZ9');
 assert.equal(blocks[0].text, STATIC_SYSTEM, 'the cached block is the same every turn');

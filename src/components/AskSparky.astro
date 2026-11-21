@@ -88,9 +88,11 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
   /** Links come from this list only. The model can name a page, never write a link. */
   const sourcePages: Record<string, { label: string; href: string } | undefined> = {
     home: { label: 'Home', href: '/' },
+    services: { label: 'Services', href: '/services' },
+    apps: { label: 'Apps', href: '/apps' },
     'bring-ai-in': { label: 'Cut manual admin', href: '/bring-ai-in' },
     'scale-ai': { label: 'Use AI safely', href: '/scale-ai' },
-    'spark-studio': { label: 'Spark Studio', href: '/spark-studio' },
+    'spark-studio': { label: 'Services', href: '/services' },
     trust: { label: 'Trust', href: '/trust' },
     sparkkeeper: { label: 'Sparkkeeper', href: '/sparkkeeper' },
     beta: { label: 'Sparkkeeper beta', href: '/sparkkeeper/beta' },
@@ -263,9 +265,9 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
     if (count >= 3) return { text: "Want the team to show you how this could work for your business? Leave your details and they'll get back to you.", lead: true };
     if (/custom|agent|build|consult|strategy|govern|whole team/.test(text)) {
       return {
-        text: "Love that you're thinking ahead on this. Spark Studio sounds like your fit: we set AI up around your business, and build custom apps or AI agents when you need more.",
-        src: 'Spark Studio page',
-        href: '/spark-studio',
+        text: "Love that you're thinking ahead on this. Our Services sound like your fit: we plan and set AI up around your business, set up AI helpers and train your team.",
+        src: 'Services page',
+        href: '/services',
         call: true,
       };
     }
