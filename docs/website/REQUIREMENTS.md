@@ -29,7 +29,7 @@ Screens in the bundle are at `design/screens/<Page>-<width>.png`, at widths 1440
 
 | Route | Page | Canvas boards | Screens | Purpose |
 | --- | --- | --- | --- | --- |
-| `/` | Sparkwing: AI strategy, workflows and automation | AI strategy, AI workflows, AI automation, custom AI apps and training for businesses in Australia and the Philippines. Book a discovery call. |
+| `/` | Sparkwing: AI consulting for growing businesses | We set up AI around your business and train your team to use it with confidence. AI consulting from Sydney. Book a free discovery call. |
 | `/sparkkeeper` | Sparkkeeper | Sparkkeeper, SparkkeeperMedium, SparkkeeperCompact | `Sparkkeeper-*.png` | Product detail, scope, beta |
 | `/apps/magnet` | Magnet: AI for leads and follow-ups, Sparkwing | Catch enquiries and follow them up. When a lead says yes, they become a client in Sparkkeeper. Coming soon. |
 | `/apps/academy` | Academy | Apps (Academy tab) | Same template | Coming soon app |
