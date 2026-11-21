@@ -597,7 +597,7 @@
 
 @media (min-width: 1200px) {
   .sw-header--overlay ~ main {
-    margin-top: calc(-1 * (var(--sw-target-min) + 2 * var(--sw-space-4)));
+    margin-top: calc(-1 * (var(--sw-space-8) + 2 * var(--sw-space-4)));
   }
 
   .sw-header--overlay ~ main .mx-grid {
