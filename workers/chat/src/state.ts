@@ -1,6 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import { buildSystem, MODEL } from './prompt';
 import { cleanAnswer, costUsd, rejectReason, SAFE, SAFE_AFTER_LEAD, SAFE_AGAIN, type CleanAnswer } from './checks';
+import { outcomeForDecision } from './insights';
 
 export interface Env {
   ANTHROPIC_API_KEY?: string;
@@ -9,6 +10,8 @@ export interface Env {
   EXPECTED_HOSTNAME?: string;
   CHAT_ENABLED?: string;
   DAILY_BUDGET_USD?: string;
+  /** Days to keep masked transcripts. 30 unless set. Never more than 90. */
+  CHAT_RETENTION_DAYS?: string;
   MODEL_API_URL?: string;
   DB?: D1Database;
   SESSIONS: DurableObjectNamespace<ChatSession>;
@@ -202,6 +205,15 @@ export class ChatSession extends DurableObject<Env> {
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
         .bind(new Date().toISOString(), sessionId, turn, page, question, answer, action, capture.join(','), decision, model?.input ?? 0, model?.output ?? 0, model?.cacheWrite ?? 0, model?.cacheRead ?? 0, model?.cost ?? 0)
+        .run();
+      // The per-chat summary has counts and labels only, never the visitor's words.
+      await this.env.DB.prepare(
+        `UPDATE chat_sessions SET turns = ?, last_page = ?, start_page = CASE WHEN start_page = '' THEN ? ELSE start_page END,
+           last_activity_at = ?, offered = MAX(offered, ?),
+           outcome = CASE WHEN outcome = 'lead' OR ? = '' THEN outcome ELSE ? END, cost_usd = cost_usd + ?
+         WHERE session_id = ?`,
+      )
+        .bind(turn, page, page, new Date().toISOString(), action === 'talk_to_team' || action === 'apply_beta' ? 1 : 0, outcomeForDecision(decision), outcomeForDecision(decision), model?.cost ?? 0, sessionId)
         .run();
     } catch (error) {
       console.error('chat log failed', error instanceof Error ? error.message : 'unknown');

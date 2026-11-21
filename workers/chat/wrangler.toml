@@ -44,6 +44,8 @@ name = "sparkwing-chat"
 ALLOWED_ORIGINS = "https://sparkwing.com.au,https://www.sparkwing.com.au"
 EXPECTED_HOSTNAME = "sparkwing.com.au"
 DAILY_BUDGET_USD = "1"
+# CHAT_RETENTION_DAYS is not set here either, so a deploy never resets it. Missing means 30, which matches
+# the live privacy policy. Set it to "90" in the Cloudflare dashboard only after the policy says 90.
 
 [env.production.durable_objects]
 bindings = [

@@ -36,10 +36,19 @@ const letter = (topic: string): Submission => ({
   marketing_consent: false,
   consent_wording_version: null,
   tags: '',
+  chat_session_id: null,
 });
 assert.equal(subjectFor(letter('demo')), '[Website enquiry] Request a demo: Sam');
 assert.equal(subjectFor(letter('pricing')), '[Website enquiry] Enquire about pricing: Sam');
 assert.equal(subjectFor(letter('general')), '[Website enquiry] General questions: Sam');
 assert.equal(subjectFor(letter('support')), '[Website enquiry] I need support: Sam');
+
+const session = '3f2a9c1e-5b7d-4e8a-9c3b-1d2e3f4a5b6c';
+const linked = chat({ chat_session_id: session.toUpperCase() });
+assert.equal(linked.ok === true ? linked.value.chat_session_id : 'x', session, 'a chat lead keeps its chat id, lower-cased');
+const forged = chat({ chat_session_id: "x'; DROP TABLE leads;--" });
+assert.equal(forged.ok === true ? forged.value.chat_session_id : 'x', null, 'anything that is not an id is dropped');
+const onForm = validate({ type: 'enquiry', name: 'Sam', email: 'sam@example.com', contact_consent: true, topic: 'call', message: 'Hi', chat_session_id: session });
+assert.equal(onForm.ok === true ? onForm.value.chat_session_id : 'x', null, 'forms other than chat have no chat id');
 
 console.log('validate tests passed');

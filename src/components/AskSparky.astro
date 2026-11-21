@@ -414,6 +414,7 @@ const previewReplies = import.meta.env.DEV && !site.chatEndpoint;
             marketing_consent: field('marketing').checked,
             consent_wording_version: 'chat-v1',
             capture: [...captured],
+            chat_session_id: sessionId || undefined,
             company_site: value('company_site'),
             turnstile,
           }),

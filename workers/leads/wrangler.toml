@@ -14,3 +14,10 @@ binding = "DB"
 database_name = "sparkwing-leads"
 database_id = "bb3edd0c-0de7-4ab7-88e9-a6c625723585"
 migrations_dir = "../forms/migrations"
+
+# The chat Worker's log of masked chats and per-chat summaries. This Worker only reads it.
+# Apply the chat Worker's migrations to this database before deploying (see docs/website/SPARKY-GOLIVE.md).
+[[d1_databases]]
+binding = "CHATLOG"
+database_name = "sparkwing-chat-log"
+database_id = "a08cf559-5f65-46de-8e3d-6fdf2cc6df5a"
