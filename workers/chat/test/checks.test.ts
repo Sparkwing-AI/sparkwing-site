@@ -33,6 +33,12 @@ assert.equal(cleanAnswer(json('It costs $49 a month.'), 'ZZ9'), null, 'invented 
 assert.equal(cleanAnswer(json('It costs 500 pesos.'), 'ZZ9'), null);
 assert.ok(cleanAnswer(json("No, Sparkkeeper isn't BIR accredited and doesn't handle e-filing."), 'ZZ9'), 'a true denial stays');
 assert.ok(cleanAnswer(json("I can't offer a discount."), 'ZZ9'));
+// Naming discounts as a topic for the team is fine. Offering one is not.
+assert.ok(cleanAnswer(json("I can't offer discounts. For prices and anything about discounts, the team is the right people to chat with."), 'ZZ9'), 'discount topic handed to the team');
+assert.ok(cleanAnswer(json('The team can answer questions on any discounts.'), 'ZZ9'));
+assert.equal(cleanAnswer(json('Ask the team about our discounts.'), 'ZZ9'), null, 'implies discounts exist');
+assert.equal(cleanAnswer(json('You get a discount, just ask the team about discounts.'), 'ZZ9'), null);
+assert.equal(cleanAnswer(json('There is news about discounts this month.'), 'ZZ9'), null, 'no team handoff');
 assert.equal(cleanAnswer(json('Hi', { action: 'delete_everything' }), 'ZZ9')?.action, 'none');
 assert.equal(cleanAnswer(json('Hi', { action: 'apply_beta' }), 'ZZ9')?.action, 'apply_beta');
 assert.deepEqual(cleanAnswer(json('Hi', { sources: ['sparkkeeper', 'evil'] }), 'ZZ9')?.sources, ['sparkkeeper']);
