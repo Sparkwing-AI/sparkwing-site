@@ -4,6 +4,140 @@
 
 ## Task summary
 
+Remove pages that nothing on the new site links to. `/bring-ai-in` and `/scale-ai` are deleted from the repo. Copies sit in `local-archive/orphaned-pages`, which is gitignored. `/how-it-works` and `/spark-studio` were already gone from this branch. Old addresses redirect: bring-ai-in to `/apps`, the other three to `/services`. Sparky is not edited. Sparkkeeper, Magnet, Academy, Nest, Trust and Contact stay, because live pages still link to them.
+
+## Acceptance criteria (footer)
+
+- [x] Footer columns are Apps, Services, Contact
+- [x] Your rules goes to `#trust`
+- [x] Playwright checks each Services anchor at 390, 900 and 1440, on a fresh load and from the footer
+- [ ] Draft PR updated after build
+
+## Work type
+
+[x] Other: marketing website footer and in-page anchors
+
+## QA tier
+
+**Tier:** 2. Multi-file navigation change.
+
+## User intent (verbatim, abridged)
+
+Remove the Learn more column. Keep the pages, and do not link to them from the header, footer or homepage. Services anchors land on the eyebrow, with scroll-margin of header height plus about 24px. Your rules goes to #trust. Add a Playwright test. Build, test, update the draft PR.
+
+## Acceptance criteria (enquiry topics)
+
+- [x] nav.ts and the forms worker topics are exactly those five labels and values
+- [x] Book a discovery call buttons use call, including Spark Studio. Ask us about this app uses demo. Footer Contact us uses general and still links to /contact without JavaScript
+- [x] No Request a demo, pricing, or support buttons exist yet
+- [x] The face shows the preselected label, updates when the visitor changes the dropdown, and updates again when the form is closed and opened from a different button
+- [x] Subject is `[Website enquiry] {topic label}: {name}`
+- [x] Forms tests passed. Astro check passed
+
+## Work type
+
+[x] Other: marketing website, enquiry form topics
+
+## QA tier
+
+**Tier:** 2. Multi-file form behaviour.
+
+## User intent (verbatim, abridged)
+
+Replace the enquiry topics with five named options. Preselect from data-enquiry. Book a discovery call is call, Request a demo on the Apps page is demo, Contact us is general, pricing and support if those links exist. The closed dropdown face must follow the preselected topic, a manual change, and a reopen from another button. Put the selected topic in the email subject.
+
+## Files touched
+
+src/config/nav.ts, src/components/EnquiryModal.astro, src/components/Footer.astro, src/components/AppPage.astro, src/pages/spark-studio.astro, src/archive/home-retired.astro, workers/forms/src/validate.ts, workers/forms/src/mail.ts (subject already used the topic label), workers/forms/test/validate.test.ts, workers/leads/src/render.ts, tests/pages.spec.ts
+
+## Regression risks
+
+Old topic values app, studio and other are rejected by the forms worker. Saved leads still have short labels for those old values. Footer Contact us opens the form when JavaScript runs, and goes to /contact when it does not.
+
+## UX notes
+
+Checked on the local homepage and Magnet. Header opens Book a discovery call. Changing the dropdown to I need support updates the face. Closing and opening Contact us shows General questions. Opening Book a discovery call again shows that label. Magnet's Ask us about this app opens Request a demo.
+
+---
+
+## Earlier task summary
+
+Homepage QA on `core-216-simpler-home`, checked at 1440, 900 and 390. Four fixes: source spaces, stat dividers, app name alignment, enquiry topic label. Do not merge.
+
+## Acceptance criteria (QA round)
+
+- [x] Stat sources read "Sources: Salesforce SMB Trends, Dec 2024 and Thryv survey, Apr 2026" and the same pattern on the other cards. Spaces are non-breaking characters inside the text, so Astro cannot strip them
+- [x] The three source dividers share one row at 1440 and 900. No fixed height. At 390 the cards stack and each source sits under its own divider
+- [x] Sparkkeeper has no Beta badge. An empty badge row keeps the three app names and descriptions on the same lines
+- [x] Enquiry topic label is "An AI plan for my business" in nav.ts and in the forms email label. Other pages still say "AI strategy"
+- [x] npm run lint, npm run build, and npm run chat:knowledge passed. Knowledge text did not change
+
+## Work type
+
+[x] Other: marketing website, localized homepage QA
+
+## QA tier
+
+**Tier:** 1. Localized layout and one label. Not NAB platform work.
+
+## User intent (verbatim, abridged)
+
+QA round on the homepage at 1440. Fix missing spaces in stat sources, align the source dividers, align the three app names after the Beta badge came off, and change the enquiry topic from "AI strategy" to a plain "AI plan" label. Report other "AI strategy" hits. Do not change other pages. Lint, build, chat:knowledge if copy changed. Push to the same branch. Check 1440, 900 and 390.
+
+## Files touched
+
+src/pages/index.astro, src/styles/home-rework.css, src/config/nav.ts, workers/forms/src/validate.ts, src/scripts/motion-engine.js
+
+## Regression risks
+
+The forms email for topic studio now says "An AI plan for my business". The stored topic value is still studio. Other pages and Sparky's knowledge still say AI strategy.
+
+## UX notes
+
+Checked at 1440, 900 and 390. Dividers share a top edge in the row. Stacked cards keep a divider above each source. App names and descriptions share rows.
+
+---
+
+## Earlier task summary
+
+Homepage hero and services panel on `core-216-simpler-home`. Match the board: galaxy animation with the butterfly at the centre, rotating line wide enough for "serve customers." on one line, services detail as two columns (copy beside the illustration). Local only. Do not merge.
+
+## Acceptance criteria (homepage pass)
+
+- [x] Hero canvas uses the board galaxy. Butterfly perches at the galaxy centre and uses the board size (0.46 desktop, 0.36 below 700px) on the home scene only
+- [x] "serve customers." stays one line at desktop. Column is wider than the line (about 749px vs 561px at 78px type)
+- [x] Services stage is two columns: number and sentence beside the illustration. Checked in the local preview at about 2030px wide
+- [ ] Preview workflow has not reported a run on the pull request, so there is no Cloudflare preview URL yet
+- [ ] Butterfly change is local and not committed
+
+## Work type
+
+[x] Other: marketing website, localized homepage layout and canvas
+
+## QA tier
+
+**Tier:** 1 for this pass (one animation tweak, layout already in place). The broader homepage rebuild remains Tier 2.
+
+## User intent (verbatim, abridged)
+
+Canvas animation changed: match the board. Widen the hero so "serve customers" is one line. Services stage should be two columns, as on the canvas.
+
+## Files touched
+
+src/scripts/motion-engine.js (home perch and butterfly size). Layout already in src/styles/home-rework.css and src/pages/index.astro.
+
+## Regression risks
+
+Other hero scenes keep the previous butterfly size and perch. Home only changes when there is no tile and no card.
+
+## UX notes
+
+Checked http://127.0.0.1:4322/. "serve customers." is one line. Services show the sentence beside the picture. After the flight, the butterfly sits in the galaxy core.
+
+---
+
+## Earlier task summary
+
 Contact page at `/contact` and the business mobile in the footer and Organization JSON-LD. Branch `feature/contact-page`. Copy and structure from `design/source/Contact.dc.html` and the Say hello block in `design/source/Footer.dc.html`. Privacy and Terms already regenerated. Do not merge.
 
 ## Acceptance criteria

@@ -1,57 +1,23 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 // Header menu, footer and enquiry modal behaviour (FR-001 to FR-005, FR-904, FR-905, FR-910).
 
 test.describe('header menu', () => {
-  test('wide: Apps opens a dropdown, Esc closes and focus returns to the button', async ({ page }, info) => {
+  test('wide nav lists Home, Services and Apps, with no dropdown', async ({ page }, info) => {
     test.skip(info.project.name === 'compact', 'Wide layout only');
     await page.goto('/');
-    const apps = page.getByRole('button', { name: 'Apps' });
-    await expect(apps).toHaveAttribute('aria-expanded', 'false');
-    await apps.click();
-    await expect(apps).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('.sw-menu-item')).toHaveCount(3);
-    await expect(page.locator('.sw-menu-item', { hasText: 'Sparkkeeper' })).toBeVisible();
-    await expect(page.locator('.sw-menu-item', { hasText: 'Hive' })).toHaveCount(0);
-    await page.keyboard.press('Escape');
-    await expect(apps).toHaveAttribute('aria-expanded', 'false');
-    await expect(apps).toBeFocused();
-    await expect(page.locator('#sw-menu')).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Products' })).toHaveCount(0);
+    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
+    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/services');
+    await expect(page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Apps' })).toHaveAttribute('href', '/apps');
+    await expect(page.locator('.sw-announce')).toHaveCount(0);
   });
 
-  test('wide: Apps dropdown opens on hover and closes when the pointer leaves', async ({ page }, info) => {
-    test.skip(info.project.name === 'compact', 'Wide layout only');
-    await page.goto('/');
-    const apps = page.getByRole('button', { name: 'Apps' });
-    await apps.hover();
-    await expect(page.locator('#sw-menu')).toBeVisible();
-    await page.locator('#sw-menu').hover();
-    await page.waitForTimeout(300);
-    await expect(page.locator('#sw-menu')).toBeVisible();
-    await page.mouse.move(700, 700);
-    await expect(page.locator('#sw-menu')).toBeHidden();
-  });
-
-  test('wide: the other main links lead to their pages', async ({ page }, info) => {
-    test.skip(info.project.name === 'compact', 'Wide layout only');
-    await page.goto('/');
-    const nav = page.getByRole('navigation', { name: 'Main' });
-    await expect(nav.getByRole('link')).toHaveText(['Services', 'How it works', 'Trust']);
-    await expect(nav.getByRole('link', { name: 'How it works' })).toHaveAttribute('href', '/how-it-works');
-  });
-
-  test('clicking outside closes the dropdown', async ({ page }, info) => {
-    test.skip(info.project.name === 'compact', 'Wide layout only');
-    await page.goto('/');
-    await page.getByRole('button', { name: 'Apps' }).click();
-    await page.locator('footer h2').click();
-    await expect(page.locator('#sw-menu')).toBeHidden();
-  });
-
-  test('compact: Menu button reads Menu or Close and lists page links first', async ({ page }, info) => {
+  test('compact: Menu button reads Menu or Close and lists the same links', async ({ page }, info) => {
     test.skip(info.project.name !== 'compact', 'Compact layout only');
     await page.goto('/');
+    await expect(page.locator('.sw-nav-book')).toBeHidden();
     const menu = page.locator('.sw-menu-btn');
     await expect(page.getByRole('navigation', { name: 'Main' })).toBeHidden();
     await menu.click();
@@ -59,29 +25,41 @@ test.describe('header menu', () => {
     await expect(close).toHaveAttribute('aria-expanded', 'true');
     const first = page.locator('#sw-menu a').first();
     await expect(first).toHaveText('Home');
+    await expect(page.locator('#sw-menu').getByRole('link', { name: 'Book a discovery call' })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.locator('.sw-menu-btn')).toBeFocused();
+    await expect(page.locator('#sw-menu')).toBeHidden();
   });
 });
+
+async function openCallEnquiry(page: Page) {
+  const bar = page.locator('.sw-nav-book');
+  if (await bar.isVisible()) {
+    await bar.click();
+    return;
+  }
+  await page.getByRole('link', { name: 'Book a free discovery call' }).click();
+}
 
 test.describe('enquiry modal', () => {
   test('opens from the footer button with the topic set, and Esc returns focus', async ({ page }) => {
     await page.goto('/');
-    const button = page.locator('footer').getByRole('link', { name: 'Book a discovery call' });
-    await expect(button).toHaveAttribute('href', 'mailto:info@sparkwing.com.au');
-    await button.click();
+    const button = page.locator('.sw-nav-book');
+    const opener = (await button.isVisible()) ? button : page.getByRole('link', { name: 'Book a free discovery call' });
+    if (await button.isVisible()) await expect(button).toHaveAttribute('href', 'mailto:info@sparkwing.com.au');
+    await opener.click();
     const dialog = page.getByRole('dialog', { name: 'Talk to us' });
     await expect(dialog).toBeVisible();
     await expect(page.getByLabel('Your name')).toBeFocused();
     await expect(page.getByLabel("What you're after")).toHaveValue('call');
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
-    await expect(button).toBeFocused();
+    await expect(opener).toBeFocused();
   });
 
   test('shows errors under fields, focuses the first, keeps entries', async ({ page }) => {
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     await page.getByLabel('Email', { exact: true }).fill('not-an-email');
     await page.getByRole('button', { name: 'Send' }).click();
     const name = page.getByLabel('Your name');
@@ -96,7 +74,7 @@ test.describe('enquiry modal', () => {
 
   test('both tickboxes start unticked and the marketing one never blocks sending', async ({ page }) => {
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     await expect(page.locator('#enq-consent')).not.toBeChecked();
     await expect(page.locator('#enq-marketing')).not.toBeChecked();
     await page.getByLabel('Your name').fill('Ada');
@@ -115,7 +93,7 @@ test.describe('enquiry modal', () => {
       });
     });
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     await page.getByLabel('Your name').fill('Ada');
     await page.getByLabel('Email', { exact: true }).fill('ada@example.com');
     await page.getByLabel('Your message').fill('Hello');
@@ -135,7 +113,7 @@ test.describe('enquiry modal', () => {
       });
     });
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     await page.getByLabel('Your name').fill('Ada');
     await page.getByLabel('Email', { exact: true }).fill('ada@example.com');
     await page.getByLabel('Your message').fill('Hello');
@@ -150,7 +128,7 @@ test.describe('enquiry modal', () => {
   test('fits at 320px and scrolls inside itself', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 480 });
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     const box = await page.getByRole('dialog').boundingBox();
     expect(box!.x).toBeGreaterThanOrEqual(0);
     expect(box!.x + box!.width).toBeLessThanOrEqual(320);
@@ -161,7 +139,7 @@ test.describe('enquiry modal', () => {
 
   test('axe passes with the modal open', async ({ page }) => {
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
       .analyze();
@@ -190,7 +168,7 @@ test.describe('legal links inside forms', () => {
     await expect(page.locator('main a[href="/privacy"]').nth(1)).not.toHaveAttribute('target', '_blank');
 
     await page.goto('/');
-    await page.locator('footer').getByRole('link', { name: 'Book a discovery call' }).click();
+    await openCallEnquiry(page);
     const dialog = page.getByRole('dialog', { name: 'Talk to us' });
     await dialog.getByLabel('Your name').fill('Grace');
     await dialog.getByLabel('Email', { exact: true }).fill('grace@example.com');
@@ -211,6 +189,29 @@ test.describe('legal links inside forms', () => {
   });
 });
 
+const serviceAnchors = [
+  { name: 'Our process', id: 'steps' },
+  { name: 'Your AI plan', id: 'plan' },
+  { name: 'Your business knowledge', id: 'business-knowledge' },
+  { name: 'Your rules', id: 'trust' },
+  { name: 'Team training', id: 'training' },
+] as const;
+
+async function expectEyebrowBelowHeader(page: Page, id: string) {
+  const eyebrow = page.locator(`#${id}`);
+  await expect(eyebrow).toBeInViewport();
+  const place = await page.evaluate((anchorId) => {
+    const label = document.getElementById(anchorId)?.getBoundingClientRect();
+    const header = document.querySelector('[data-header]')?.getBoundingClientRect();
+    if (!label || !header) return null;
+    const headerBottom = header.bottom > 0 && header.top < window.innerHeight ? header.bottom : 0;
+    return { top: label.top, headerBottom };
+  }, id);
+  expect(place).not.toBeNull();
+  expect(place!.top).toBeGreaterThanOrEqual(place!.headerBottom - 1);
+  expect(place!.top - place!.headerBottom).toBeLessThanOrEqual(140);
+}
+
 test.describe('footer', () => {
   test('company line reads as required and ACN is absent', async ({ page }) => {
     await page.goto('/');
@@ -219,4 +220,37 @@ test.describe('footer', () => {
     );
     await expect(page.locator('body')).not.toContainText('ACN');
   });
+
+  test('lists Apps, Services and Contact, with no Learn more column', async ({ page }) => {
+    await page.goto('/');
+    const headings = page.locator('.sw-footer-heading');
+    await expect(headings).toHaveText(['Services', 'Apps', 'Contact']);
+    await expect(page.locator('footer').getByRole('link', { name: 'Build your AI plan' })).toHaveCount(0);
+    await expect(page.locator('footer').getByRole('link', { name: 'Cut manual admin' })).toHaveCount(0);
+    await expect(page.locator('footer').getByRole('link', { name: 'Use AI safely' })).toHaveCount(0);
+    await expect(page.locator('header').getByRole('link', { name: 'Cut manual admin' })).toHaveCount(0);
+    await expect(page.locator('header').getByRole('link', { name: 'Use AI safely' })).toHaveCount(0);
+  });
+
+  for (const width of [390, 900, 1440]) {
+    test(`Services links land on the eyebrow at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+
+      for (const anchor of serviceAnchors) {
+        await page.goto(`/services#${anchor.id}`);
+        await expectEyebrowBelowHeader(page, anchor.id);
+      }
+
+      await page.goto('/services');
+      for (const anchor of serviceAnchors) {
+        await page.locator('footer').getByRole('link', { name: anchor.name, exact: true }).click();
+        await expect(page).toHaveURL(new RegExp(`/services#${anchor.id}$`));
+        await expectEyebrowBelowHeader(page, anchor.id);
+      }
+
+      await page.getByRole('link', { name: 'See the five steps' }).click();
+      await expect(page).toHaveURL(/#steps$/);
+      await expectEyebrowBelowHeader(page, 'steps');
+    });
+  }
 });

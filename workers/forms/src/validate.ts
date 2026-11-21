@@ -1,9 +1,10 @@
 export const countries = ['Australia', 'Somewhere else'] as const;
 export const topics = {
   call: 'Book a discovery call',
-  app: 'Ask about an app',
-  studio: 'AI strategy or transformation for my business',
-  other: 'Something else',
+  demo: 'Request a demo',
+  pricing: 'Enquire about pricing',
+  general: 'General questions',
+  support: 'I need support',
 } as const;
 
 /** How a chat capture is filed: any mix of these. The browser sends what Sparky tagged, and only these words are kept. */

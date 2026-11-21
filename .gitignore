@@ -11,6 +11,7 @@ test-results/
 .wrangler/
 
 # Local working copies, kept out of the repo
+local-archive/
 assets/site handoff/
 assets/reference/
 sparkwing-site-handoff.zip

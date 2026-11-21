@@ -18,6 +18,7 @@
   --sw-brand-morning-silk: #FFF8E7;
   --sw-brand-inkwell: #1E2B2A;
   --sw-brand-white: #FFFFFF;
+  --sw-brand-black: #000000;
   --sw-brand-navy-900: #14263D;
   --sw-brand-navy-800: #1F3450;
   --sw-brand-navy-700: #3A4C66;
@@ -46,6 +47,7 @@
   --sw-color-text: var(--sw-brand-inkwell);
   --sw-color-text-muted: var(--sw-brand-lagoon-700);
   --sw-color-on-deep: var(--sw-brand-white);
+  --sw-color-black: var(--sw-brand-black);
   --sw-color-on-deep-soft: var(--sw-brand-lagoon-50);
   --sw-color-on-deep-muted: var(--sw-brand-lagoon-100);
   --sw-color-link: var(--sw-brand-glade);
@@ -162,4 +164,23 @@
   --sw-bp-medium: 600px;
   --sw-bp-large: 1024px;
   --sw-bp-wide: 1200px;
+
+  /* Gradient ink. Stops that are not already brand colours, then the fills the boards use on words and figures. */
+  --sw-brand-lagoon-bright: #5FD6C4;
+  --sw-brand-violet-bright: #A99AF0;
+  --sw-brand-ember-bright: #F5A04A;
+  --sw-brand-coral: #FF7A59;
+  --sw-brand-ember-deep: #C2410C;
+  --sw-gradient-spectrum: linear-gradient(100deg, var(--sw-brand-lagoon-bright), var(--sw-brand-violet-bright), var(--sw-brand-ember-bright));
+  --sw-gradient-lagoon-violet: linear-gradient(100deg, var(--sw-brand-lagoon), var(--sw-brand-wing-violet));
+  --sw-gradient-violet-lagoon: linear-gradient(100deg, var(--sw-brand-wing-violet), var(--sw-brand-lagoon));
+  --sw-gradient-deep-violet: linear-gradient(100deg, var(--sw-brand-lagoon-900), var(--sw-brand-wing-violet));
+  --sw-gradient-violet-ember: linear-gradient(100deg, var(--sw-brand-wing-violet), var(--sw-brand-ember));
+  --sw-gradient-ember-deep: linear-gradient(100deg, var(--sw-brand-ember), var(--sw-brand-ember-deep));
+  --sw-gradient-lagoon-ember: linear-gradient(100deg, var(--sw-brand-lagoon), var(--sw-brand-ember));
+  --sw-gradient-aqua-violet: linear-gradient(100deg, var(--sw-brand-lagoon-bright), var(--sw-brand-violet-bright));
+  --sw-gradient-violet-peach: linear-gradient(100deg, var(--sw-brand-violet-bright), var(--sw-brand-ember-bright));
+  --sw-gradient-peach-coral: linear-gradient(100deg, var(--sw-brand-ember-bright), var(--sw-brand-coral));
+  --sw-gradient-aqua-peach: linear-gradient(100deg, var(--sw-brand-lagoon-bright), var(--sw-brand-ember-bright));
+  --sw-gradient-gold-peach: linear-gradient(100deg, var(--sw-brand-spark-gold), var(--sw-brand-ember-bright));
 }
