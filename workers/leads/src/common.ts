@@ -4,8 +4,7 @@ export const esc = (value: string | number | null | undefined) =>
 export const when = (iso: string) => esc(iso.slice(0, 16).replace('T', ' ')) + ' UTC';
 
 export const style = `
-:root { color-scheme: light dark; --bg: #fff8e7; --ink: #0d3b36; --card: #fff; --line: #cfc9b6; --accent: #1f8a70; }
-@media (prefers-color-scheme: dark) { :root { --bg: #0d2b28; --ink: #f4efe0; --card: #123b36; --line: #2d5b54; --accent: #4fc4a3; } }
+:root { color-scheme: light; --bg: #fff8e7; --ink: #0d3b36; --card: #fff; --line: #cfc9b6; --accent: #1f8a70; }
 * { box-sizing: border-box; }
 body { margin: 0; padding: 24px 16px 64px; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
 main { max-width: 1100px; margin: 0 auto; }
@@ -40,7 +39,6 @@ form.edit textarea { width: 100%; }
 label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
 select, textarea { font: inherit; color: inherit; background-color: var(--bg); border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; }
 select { appearance: none; padding-right: 44px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%230d3b36' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px 16px; }
-@media (prefers-color-scheme: dark) { select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.5 6 L8 10.5 L12.5 6' stroke='%23f4efe0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); } }
 textarea { min-width: min(100%, 420px); min-height: 44px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 600px) { dl { grid-template-columns: 1fr; } }
