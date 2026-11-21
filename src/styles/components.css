@@ -150,8 +150,8 @@
   gap: var(--sw-space-3);
   min-height: var(--sw-target-min);
   color: var(--sw-color-on-deep);
-  font-size: var(--sw-text-h3);
-  font-weight: var(--sw-weight-semibold);
+  font-size: var(--sw-text-h4);
+  font-weight: var(--sw-weight-medium);
   line-height: 1;
   letter-spacing: -0.02em;
   text-decoration: none;
@@ -415,8 +415,7 @@
     width: var(--sw-target-min);
     height: var(--sw-target-min);
     padding: 0;
-    border: 1.5px solid var(--sw-color-on-deep);
-    border-radius: var(--sw-radius-pill);
+    border: 0;
     background: transparent;
     color: var(--sw-color-on-deep);
     cursor: pointer;

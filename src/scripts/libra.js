@@ -14,6 +14,7 @@ export function startLibra(canvas) {
   let W = 0;
   let H = 0;
   let dpr = 1;
+  let dprCap = 1;
   let stars = [];
   let mets = [];
   let t = 0;
@@ -38,6 +39,9 @@ export function startLibra(canvas) {
     return s;
   };
   const bands = [mkBand(95, 214, 196), mkBand(150, 132, 232), mkBand(60, 200, 150)];
+  const sky = document.createElement('canvas');
+  const skyCtx = sky.getContext('2d');
+  let skyFrame = 0;
   const glow = document.createElement('canvas');
   glow.width = glow.height = 64;
   {
@@ -52,7 +56,7 @@ export function startLibra(canvas) {
   }
   const layout = () => {
     const b = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, dprCap);
     W = Math.round(b.width);
     H = Math.round(b.height);
     if (!W || !H) return false;
@@ -102,8 +106,6 @@ export function startLibra(canvas) {
   };
 
   const drawCube = () => {
-    const fade = Math.max(0, Math.min(1, (t - 0.3) / 1.6));
-    if (fade <= 0) return;
     const TOP = [[1, 1, 1], [2, 3, 3], [2, 4, 4]];
     const FRONT = [[2, 4, 4], [2, 4, 5], [2, 5, 5]];
     const RIGHT = [[1, 3, 4], [1, 3, 5], [1, 5, 5]];
@@ -130,7 +132,7 @@ export function startLibra(canvas) {
       { map: LEFT, shade: 0.08, vis: -sT, v: (a, b) => proj(-0.5, 0.5 - b / 3, 0.5 - a / 3) },
     ];
     const faces = allFaces.filter((f) => f.vis > 0.02);
-    ctx.globalAlpha = fade;
+    ctx.globalAlpha = 1;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     const seg = (p, q, w) => {
@@ -165,8 +167,6 @@ export function startLibra(canvas) {
       ctx.font = '800 46px "DM Sans", system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(254,185,56,0.8)';
-      ctx.shadowBlur = 14;
       ctx.fillStyle = 'rgba(255,233,176,0.95)';
       ctx.fillText(label, 0, 2);
       ctx.restore();
@@ -187,42 +187,53 @@ export function startLibra(canvas) {
     });
   };
 
-  const draw = () => {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'lighter';
+  const paintSky = () => {
+    sky.width = W;
+    sky.height = H;
+    const sctx = skyCtx;
+    sctx.setTransform(1, 0, 0, 1, 0, 0);
+    sctx.clearRect(0, 0, W, H);
+    sctx.globalCompositeOperation = 'lighter';
     if (cube.L) {
       const cx = cube.x;
       const cy = cube.y;
       const R = Math.max(W, H) * 0.3;
-      [[-0.55, -0.2, [60, 110, 215], 0.12, 0.55], [0.35, 0.15, [140, 90, 215], 0.27, 0.7], [0.1, -0.5, [195, 95, 190], 0.17, 0.5], [-0.15, 0.5, [50, 170, 190], 0.08, 0.45], [0.75, -0.2, [115, 80, 205], 0.23, 0.6], [0.6, 0.6, [70, 130, 220], 0.09, 0.5], [-0.7, 0.45, [165, 90, 205], 0.17, 0.5]].forEach(([dx, dy, c, a, sz], i) => {
+      [[-0.55, -0.2, [60, 110, 215], 0.12, 0.55], [0.35, 0.15, [140, 90, 215], 0.27, 0.7], [0.1, -0.5, [195, 95, 190], 0.17, 0.5], [-0.15, 0.5, [50, 170, 190], 0.08, 0.45], [0.75, -0.2, [115, 80, 205], 0.23, 0.6], [0.6, 0.6, [70, 130, 220], 0.09, 0.5], [-0.7, 0.45, [165, 90, 205], 0.17, 0.5], [0.72, 0.62, [254, 185, 56], 0.2, 0.5]].forEach(([dx, dy, c, a, sz], i) => {
         const x = cx + dx * R + Math.sin(t * 0.05 + i) * R * 0.1;
         const y = cy + dy * R + Math.cos(t * 0.04 + i * 2) * R * 0.08;
         const r = R * sz * 1.2;
-        const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+        const g = sctx.createRadialGradient(x, y, 0, x, y, r);
         g.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${a})`);
         g.addColorStop(0.45, `rgba(${c[0]},${c[1]},${c[2]},${a * 0.4})`);
         g.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = g;
-        ctx.fillRect(x - r, y - r, r * 2, r * 2);
+        sctx.globalAlpha = 1;
+        sctx.fillStyle = g;
+        sctx.fillRect(x - r, y - r, r * 2, r * 2);
       });
     }
     const ramp = (x) => Math.max(0, Math.min(1, (x - W * 0.28) / (W * 0.3)));
     bands.forEach((bs, k) => {
-      for (let x = W * 0.28; x < W; x += 6) {
+      for (let x = W * 0.28; x < W; x += 24) {
         const h = H * (0.34 + 0.1 * Math.sin(x * 0.004 + t * 0.22 + k * 2.1));
         const y0 = H * (0.04 + 0.14 * k) + Math.sin(x * 0.006 - t * 0.17 + k) * H * 0.05;
-        ctx.globalAlpha = 0.07 * ramp(x) * (0.55 + 0.45 * Math.sin(x * 0.011 + t * 0.3 + k));
-        ctx.drawImage(bs, x, y0, 7, h);
+        sctx.globalAlpha = 0.07 * ramp(x) * (0.55 + 0.45 * Math.sin(x * 0.011 + t * 0.3 + k));
+        sctx.drawImage(bs, x, y0, 7, h);
       }
     });
+  };
+
+  const draw = () => {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    if (skyFrame % 90 === 0) paintSky();
+    skyFrame += 1;
+    if (sky.width) ctx.drawImage(sky, 0, 0);
     stars.forEach((s) => {
       ctx.globalAlpha = s.a * (0.6 + 0.4 * Math.sin(t * 0.9 + s.ph));
       ctx.fillStyle = '#EBFAF7';
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, 6.29);
-      ctx.fill();
+      const d = s.r * 2;
+      ctx.fillRect(s.x - s.r, s.y - s.r, d, d);
     });
     if (cube.L) drawCube();
     ctx.lineCap = 'round';

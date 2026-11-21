@@ -56,7 +56,10 @@
 }
 
 .home-why {
-  background: var(--sw-color-page);
+  background:
+    radial-gradient(42% 80% at 0% 0%, color-mix(in srgb, var(--sw-color-violet) 14%, transparent) 0%, transparent 70%),
+    radial-gradient(36% 70% at 100% 100%, color-mix(in srgb, var(--sw-color-action) 16%, transparent) 0%, transparent 72%),
+    var(--sw-color-page);
 }
 
 .home-stats-panel {
@@ -377,7 +380,10 @@
 }
 
 .home-apps {
-  background: var(--sw-color-surface);
+  background:
+    radial-gradient(40% 80% at 100% 0%, color-mix(in srgb, var(--sw-color-violet) 12%, transparent) 0%, transparent 70%),
+    radial-gradient(34% 70% at 0% 100%, color-mix(in srgb, var(--sw-color-accent) 22%, transparent) 0%, transparent 72%),
+    var(--sw-color-surface);
 }
 
 .home-app-row {

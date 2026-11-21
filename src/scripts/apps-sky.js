@@ -22,7 +22,7 @@ export function startAppsSky(canvas) {
 
   const layout = () => {
     const b = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, 1);
     W = Math.round(b.width);
     H = Math.round(b.height);
     if (!W || !H) return false;
@@ -69,9 +69,8 @@ export function startAppsSky(canvas) {
     stars.forEach((s) => {
       ctx.globalAlpha = s.a * (0.6 + 0.4 * Math.sin(t * 0.9 + s.ph));
       ctx.fillStyle = '#EBFAF7';
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, 6.29);
-      ctx.fill();
+      const d = s.r * 2;
+      ctx.fillRect(s.x - s.r, s.y - s.r, d, d);
     });
     mets.forEach((m) => {
       const sp = Math.hypot(m.vx, m.vy) || 1;
@@ -80,12 +79,8 @@ export function startAppsSky(canvas) {
       const tx = m.x - dx * m.len;
       const ty = m.y - dy * m.len;
       const [r, g, b] = m.col;
-      const grad = ctx.createLinearGradient(m.x, m.y, tx, ty);
-      grad.addColorStop(0, 'rgba(255,255,255,1)');
-      grad.addColorStop(0.15, `rgba(${r},${g},${b},0.85)`);
-      grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = grad;
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.85)`;
       ctx.lineWidth = m.w;
       ctx.lineCap = 'round';
       ctx.beginPath();
