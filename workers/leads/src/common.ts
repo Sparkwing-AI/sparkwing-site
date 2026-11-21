@@ -103,5 +103,6 @@ table.data a { display: inline-flex; align-items: center; min-height: 44px; padd
 .tag-flag { background: #f6dccb; color: #6b2d0c; }
 .tag-done { background: var(--ink); color: var(--bg); }
 .tag-quiet { border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
+.tag-live { border: 1.5px dashed var(--accent); background: transparent; color: var(--ink); }
 tr.picked { background: #fff3cf; color: #0d3b36; }
 `;

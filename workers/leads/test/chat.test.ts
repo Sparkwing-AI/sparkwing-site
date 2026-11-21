@@ -41,6 +41,15 @@ assert.equal(s.topics.find((t) => t.id === 'unlabelled')?.n, 1, 'an unlabelled c
 assert.equal(s.spam[0].label, 'Prompt injection phrases');
 assert.equal(effectiveOutcome({ outcome: 'active', turns: 0 }), 'no_message');
 assert.equal(effectiveOutcome({ outcome: 'active', turns: 4 }), 'left');
+const now = Date.parse('2026-11-21T03:00:00.000Z');
+assert.equal(effectiveOutcome({ outcome: 'active', turns: 2, last_activity_at: '2026-11-21T02:50:00.000Z' }, now), 'in_progress', 'a chat 10 minutes quiet is still going');
+assert.equal(effectiveOutcome({ outcome: 'active', turns: 2, last_activity_at: '2026-11-21T02:20:00.000Z' }, now), 'left', 'a chat 40 minutes quiet fell off');
+assert.equal(effectiveOutcome({ outcome: 'active', turns: 0, last_activity_at: '2026-11-21T02:59:00.000Z' }, now), 'no_message');
+assert.equal(effectiveOutcome({ outcome: 'lead', turns: 2, last_activity_at: '2026-11-21T02:59:00.000Z' }, now), 'lead');
+const withLive = computeStats([...rows, row(8, { turns: 2, outcome: 'active', last_activity_at: '2026-11-21T02:55:00.000Z' })], now);
+assert.equal(withLive.fallOff, 4, 'a chat in progress is not a fall-off');
+assert.equal(withLive.genuine, 6);
+assert.equal(withLive.topics.find((t) => t.id === 'pricing')?.drop, s.topics.find((t) => t.id === 'pricing')?.drop, 'a chat in progress is not a topic drop');
 assert.equal(pct(1, 0), '0%');
 assert.equal(computeStats([]).opened, 0, 'no chats is fine');
 assert.match(insightLines(s)[0], /Not enough genuine chats/);
@@ -108,6 +117,10 @@ assert.match(transcripts, /Left details/);
 assert.match(transcripts, /Flagged/);
 assert.match(transcripts, /Fell off/);
 assert.equal((await (await get('/chat/transcripts?filter=flagged')).text()).includes('class="tag tag-done"'), false, 'the flagged filter hides leads');
+
+const liveEnv = { DB: leadsDb, CHATLOG: chatDb([row(9, { turns: 1, outcome: 'active', last_activity_at: new Date().toISOString() })]) };
+assert.match(await (await get('/chat/transcripts', liveEnv)).text(), /tag-live">In progress</, 'a chat still going is in progress');
+assert.equal((await (await get('/chat/transcripts?filter=left', liveEnv)).text()).includes('In progress'), false, 'the fell off filter hides chats still going');
 
 const opened = await (await get(`/chat/transcripts?session=${id(4)}`)).text();
 assert.match(opened, /&lt;script&gt;alert\(1\)&lt;\/script&gt; &amp; &quot;quote&quot;/, 'visitor text is escaped');
