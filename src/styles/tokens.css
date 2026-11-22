@@ -27,7 +27,7 @@
   --sw-brand-glow-light: #FFF3C9;
 
   /* Surfaces */
-  --sw-color-page: var(--sw-brand-morning-silk);
+  --sw-color-page: var(--sw-brand-white);
   --sw-color-surface: var(--sw-brand-white);
   --sw-color-deep: var(--sw-brand-lagoon-900);
   --sw-color-deep-raised: var(--sw-brand-lagoon-800);
